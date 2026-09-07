@@ -1000,7 +1000,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-07T13:51:45Z';
+window.ONWARD_BUILD = '2026-09-07T14:07:14Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2289,7 +2289,7 @@ function calcolaCommessa(c) {
   const s = r.strati || { R: 0, o: 0, e: 0, sc: 0 };
   r.mdc_gg = r.gg_senior ? r.mdc / r.gg_senior : null;
   r.incidenza = S.ctx.r.netti ? r.netto / S.ctx.r.netti : 0;
-  if (!s.industriale && s.R) { const cum = (s.o + s.e) / s.R; if (cum > 0.6 + 1e-9 && c.tipologia !== 'diagnosi' && c.tipologia !== 'partner') r.verifiche.push(['Cumulato origination ed esecuzione oltre il 60%', 'Quando origina ed esegue la stessa persona il cumulato non supera il ' + F.pct(P.exec_q + P.orig_max) + ' (capitolo IX).', 'allarme']); }
+  if (!s.industriale && s.R && c.tipologia !== 'diagnosi' && c.tipologia !== 'partner') { const cum = (s.o + s.e) / s.R; const tetto = P.exec_q + P.orig_max; const stessa = c.origina && c.esegue && c.origina === c.esegue && c.origina !== 'altro'; if (cum > tetto + 1e-9) { if (stessa) r.verifiche.push(['Cumulato origination ed esecuzione oltre il ' + F.pct(tetto), 'La stessa persona origina ed esegue: il cumulato è ' + F.pct1(cum) + ', oltre il tetto del ' + F.pct(tetto) + ' (' + F.pct(P.exec_q) + ' di esecuzione più ' + F.pct(P.orig_max) + ' di origination, capitolo IX).', 'allarme']); else if (!c.origina || !c.esegue) r.verifiche.push(['Cumulato da verificare', 'Se la stessa persona origina ed esegue, il cumulato sarebbe ' + F.pct1(cum) + ', oltre il tetto del ' + F.pct(tetto) + '; indicare chi origina e chi esegue.', 'nota']); } }
   if (r.incidenza > P.tetto_conc) r.verifiche.push(['Concentrazione: la commessa vale il ' + F.pct1(r.incidenza) + ' dei ricavi netti dello scenario base', 'Tetto di concentrazione per cliente: ' + F.pct(P.tetto_conc) + ' dei ricavi netti (capitolo XVII, § 4).', 'allarme']);
   if (grado > 0) r.verifiche.push(['Coda di origination', 'La quota di origination (' + F.pct(grado) + ') si applica ai mandati successivi con lo stesso cliente per ' + F.num(P.coda_orig) + ' mesi; la segnalazione va iscritta nel registro prima della negoziazione.', 'regola']);
   r.verifiche.push(['Acconto alla firma', 'Regola di cassa e di qualificazione per ogni nuovo cliente (capitolo XIV, § 1).', 'regola']);

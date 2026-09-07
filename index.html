@@ -737,6 +737,45 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .tr-ctx mark { background: var(--chip-param); color: inherit; padding: 0 .15em; }
 .tr-pre { border: 1px solid var(--filo); border-radius: 4px; padding: .5rem .6rem; margin-bottom: .5rem; font-size: .82rem; }
 .nuova-versione { position: sticky; top: var(--barra-h, 52px); z-index: 44; margin: 0; border-left-color: var(--attesa); display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+/* ---- commenti a margine */
+.blk > .co-marg { position: absolute; left: -2.55rem; top: .05rem; width: 1.85rem; height: 1.35rem; padding: 0; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--secondario); font-size: .72rem; line-height: 1.25rem; text-align: center; cursor: pointer; opacity: 0; transition: opacity .15s; z-index: 4; font-family: inherit; }
+.blk:hover > .co-marg, .blk:focus-within > .co-marg, .blk > .co-marg.con, .blk > .co-marg.risolti, .blk > .co-marg:focus { opacity: 1; }
+.blk > .co-marg.con { background: color-mix(in srgb, var(--attesa) 16%, var(--carta)); border-color: var(--attesa); color: var(--attesa); font-weight: bold; }
+.blk > .co-marg.risolti { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 50%, var(--filo)); opacity: .75; }
+.blk > .co-marg:hover { color: var(--inchiostro); box-shadow: var(--ombra); }
+.blk.h2 > .co-marg { top: 1.6rem; } .blk.h3 > .co-marg { top: 1.25rem; } .blk.box > .co-marg { top: .5rem; }
+.blk.co-lampo > * { animation: co-lampo 1.6s ease-out; }
+@keyframes co-lampo { 0% { background: color-mix(in srgb, var(--attesa) 25%, transparent); } 100% { background: transparent; } }
+.co-pop { width: min(520px, calc(100vw - 24px)); }
+.co-estratto { font-size: .76rem; color: var(--secondario); border-left: 3px solid var(--filo); padding: .2rem .6rem; margin: .2rem 0 .7rem; }
+.co-voce { border: 1px solid var(--filo); border-radius: 6px; padding: .5rem .65rem; margin: .45rem 0; background: var(--carta); }
+.co-voce.risolto { opacity: .8; background: var(--lavaggio); }
+.co-testa { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .78rem; margin-bottom: .25rem; }
+.co-testa b { font-size: .82rem; } .co-quando { color: var(--secondario); }
+.co-corpo { font-size: .86rem; line-height: 1.45; white-space: normal; }
+.co-risposta { margin: .45rem 0 0 .9rem; padding: .35rem .55rem; border-left: 2px solid var(--filo); }
+.co-azioni { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .45rem; }
+.co-slot .campo-testo, .co-nuovo .campo-testo { display: block; font-size: .76rem; color: var(--secondario); margin: .4rem 0 .3rem; }
+.co-slot textarea, .co-nuovo textarea { width: 100%; font: inherit; font-size: .84rem; padding: .35rem .5rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--inchiostro); resize: vertical; }
+.co-nuovo { margin-top: .7rem; border-top: 1px solid var(--filo); padding-top: .4rem; }
+.co-nuovo .azioni, .co-slot .azioni { display: flex; gap: .4rem; align-items: center; justify-content: flex-end; margin-top: .3rem; }
+.co-risolti-tit { margin: .5rem 0 .2rem; }
+.co-filtri { display: flex; gap: 1rem; font-size: .8rem; margin: .2rem 0 .6rem; }
+.co-filtri label { display: inline-flex; gap: .3rem; align-items: center; }
+.co-tab td { white-space: normal; } .co-tab td small { display: block; color: var(--secondario); font-size: .72rem; }
+@media (max-width: 1000px) { .blk > .co-marg { left: -1.7rem; width: 1.45rem; opacity: .4; } .blk > .co-marg.con, .blk > .co-marg.risolti { opacity: 1; } }
+@media print { .co-marg { display: none; } }
+/* ---- regime di approvazione */
+.proposta-banner { position: sticky; top: var(--barra-h, 52px); z-index: 44; margin: 0; border-left-color: var(--accento); display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+.proposta-banner .pb-azioni { display: flex; gap: .4rem; flex-wrap: wrap; }
+.finestra-proposta { width: min(960px, 96vw); }
+.finestra-proposta .pr-diffs .diff { max-height: 40vh; }
+.finestra-proposta .pr-descr { font-size: .92rem; margin: .3rem 0 .6rem; padding: .5rem .7rem; border-left: 3px solid var(--accento); background: var(--lavaggio); }
+.finestra-proposta .fin-testa { gap: .6rem; }
+.finestra-proposta .fin-testa .sem { margin-right: auto; }
+.pr-tab td { white-space: normal; } .pr-tab td small { display: block; color: var(--secondario); font-size: .72rem; }
+.sem.mod-proposta { color: #6a3d9a; border-color: #6a3d9a; background: color-mix(in srgb, #6a3d9a 10%, transparent); }
+.sem.mod-commento { color: var(--attesa); border-color: var(--attesa); background: color-mix(in srgb, var(--attesa) 12%, transparent); }
 
 </style>
 </head>
@@ -758,10 +797,10 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
   <button class="btn grigio" id="b-storico">Cronologia</button>
   <div class="tendina" id="esporta"><button class="btn" id="b-esporta" aria-haspopup="true" aria-expanded="false">Esportazione</button><div class="tendina-menu" hidden><button id="b-word">Word</button><button id="b-stampa" title="Stampa o salva in PDF dal browser">PDF (stampa)</button><button id="b-json">Dati (JSON)</button></div></div>
-  <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi e modifiche in ordine cronologico">Modifiche</button>
+  <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico">Modifiche</button>
 </div>
 <div class="mappe modifiche" id="modifiche" hidden>
-  <div class="mappe-testa"><b>Accessi e modifiche</b><div class="mappe-azioni"><select class="ricerca mod-filtro" id="mod-nome"><option value="">Tutti i Soci</option></select><select class="ricerca mod-filtro" id="mod-tipo"><option value="tutti">Tutto</option><option value="accessi">Solo accessi e link</option><option value="modifica">Solo modifiche</option><option value="avvio">Solo avvio del repository</option></select><button class="btn piccolo" id="mod-aggiorna">Aggiorna</button><span class="nota-pannello">Chi ha ricevuto il link, quando è entrato e che cosa ha salvato: il registro è letto dal repository condiviso, quindi è lo stesso per tutti.</span></div><button class="btn piccolo" id="modifiche-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Accessi e modifiche</b><div class="mappe-azioni"><select class="ricerca mod-filtro" id="mod-nome"><option value="">Tutti i Soci</option></select><select class="ricerca mod-filtro" id="mod-tipo"><option value="tutti">Tutto</option><option value="accessi">Solo accessi e link</option><option value="modifica">Solo modifiche</option><option value="proposta">Solo proposte</option><option value="commento">Solo commenti</option><option value="avvio">Solo avvio del repository</option></select><button class="btn piccolo" id="mod-aggiorna">Aggiorna</button><span class="nota-pannello">Chi ha ricevuto il link, quando è entrato e che cosa ha salvato, con le proposte in attesa e i commenti a margine: il registro è letto dal repository condiviso, quindi è lo stesso per tutti.</span></div><button class="btn piccolo" id="modifiche-chiudi">Chiudi</button></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe riassunto" id="riassunto" hidden>
@@ -1004,7 +1043,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-07T14:48:27Z';
+window.ONWARD_BUILD = '2026-09-07T16:57:33Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1026,7 +1065,7 @@ const S = {
   dirty: new Set(), saving: false, base: {}, readonly: false, autore: '',
   glossario: (SEED.glossario && SEED.glossario.voci) || [], evid: null, noLink: false,
   rete: SEED.rete || reteVuota(), generando: false, mappaVista: 'rete', mappaEvid: null,
-  commesse: (SEED.commesse && SEED.commesse.commesse) || [], commessa: null, quote: SEED.quote ? Object.assign(quoteDefault(), SEED.quote) : quoteDefault(), scenari: SEED.scenari ? Object.assign(scenariDefault(), SEED.scenari) : scenariDefault(), sintesiParte: 0, riassuntoParte: 0, accessi: null, mod: null, ripristini: new Set()
+  commesse: (SEED.commesse && SEED.commesse.commesse) || [], commessa: null, quote: SEED.quote ? Object.assign(quoteDefault(), SEED.quote) : quoteDefault(), scenari: SEED.scenari ? Object.assign(scenariDefault(), SEED.scenari) : scenariDefault(), sintesiParte: 0, riassuntoParte: 0, accessi: null, mod: null, ripristini: new Set(), commenti: null, regole: null, proposte: null, proposteDett: {}, bozza: new Set(), msgExtra: {}, cmFiltro: 'aperti'
 };
 try { S.cfg = JSON.parse(localStorage.getItem('onward.cfg') || 'null'); } catch (e) { S.cfg = null; }
 try { S.mode = localStorage.getItem('onward.mode') || 'lettura'; } catch (e) {}
@@ -1262,7 +1301,7 @@ function svgFigura(id) { const { r, s, P } = S.ctx; const f = GRAFICI[id]; retur
 // ================================================================ rendering dei blocchi
 function mkTxt(text, cls, noLink) { const d = el('div', { class: 'txt' + (cls ? ' ' + cls : '') }); S.noLink = !!noLink; d.innerHTML = renderTesto(text); S.noLink = false; if (S.mode === 'modifica' && !S.readonly && !S.generando) d.contentEditable = 'true'; return d; }
 function renderBlocco(b) {
-  if (b.t === 'rete') return renderRete(b);
+  if (b.t === 'rete') { const wr = renderRete(b); marcaBlocco(wr); return wr; }
   const w = el('div', { class: 'blk ' + b.t, dataset: { id: b.id, t: b.t } });
   if (b.t === 'p' || b.t === 'li' || b.t === 'h2' || b.t === 'h3') { w.appendChild(mkTxt(b.text, null, b.t === 'h2' || b.t === 'h3')); if (b.t === 'h2') w.id = 'h2-' + b.id; }
   else if (b.t === 'box') { const r = el('div', { class: 'riquadro' }); for (const t of b.paras) r.appendChild(mkTxt(t)); w.appendChild(r); }
@@ -1270,6 +1309,7 @@ function renderBlocco(b) {
   else if (b.t === 'fig') { const f = el('div', { class: 'figura' }); f.innerHTML = svgFigura(b.fig); const did = el('div', { class: 'did' }); did.innerHTML = '<span class="num">Figura ' + (S.figure[b.id] || '?') + '.</span> '; did.appendChild(mkTxt(b.caption || '', 'inl', true)); f.appendChild(did); w.appendChild(f); }
   else if (b.t === 'modello') { w.appendChild(renderModello()); const did = el('div', { class: 'did figura' }); did.appendChild(mkTxt(b.caption || '', null, true)); w.appendChild(did); }
   if (S.mode === 'modifica') attrezza(w, b);
+  marcaBlocco(w);
   return w;
 }
 function renderTabella(b) {
@@ -1342,6 +1382,7 @@ function applicaModo() {
   else { for (const s of $$('.strumenti, td.controlli')) s.remove(); }
   if (ed) { for (const tr of $$('table.tab tr')) if (!$('td.controlli', tr) && !tr.closest('.blk.rete')) { const tc = el('td', { class: 'controlli' }); tc.innerHTML = '<button class="btn piccolo" title="Aggiungi una riga sotto" data-az="riga+">+</button> <button class="btn piccolo pericolo" title="Elimina la riga" data-az="riga-">×</button>'; tr.appendChild(tc); } }
   try { localStorage.setItem('onward.mode', S.mode); } catch (e) {}
+  marcaCommenti(); aggiornaBannerProposta();
   if ($('#pan-glossario') && $('#pan-glossario').classList.contains('aperto')) aggiornaGlossario();
   if ($('#mappe') && !$('#mappe').hidden) disegnaMappe();
 }
@@ -1471,7 +1512,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -1481,6 +1522,10 @@ function datiDi(key) {
   if (key === 'quote') return S.quote;
   if (key === 'scenari') return S.scenari;
   if (key === 'accessi') return S.accessi || accessiVuoti();
+  if (key === 'commenti') return S.commenti || commentiVuoti();
+  if (key === 'regole') return S.regole || regoleVuote();
+  if (key === 'proposte') return S.proposte || proposteVuote();
+  if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
 }
 function applicaDati(key, d) {
@@ -1491,14 +1536,19 @@ function applicaDati(key, d) {
   if (key === 'quote') { S.quote = Object.assign(quoteDefault(), d || {}); return; }
   if (key === 'scenari') { S.scenari = Object.assign(scenariDefault(), d || {}); return; }
   if (key === 'accessi') { S.accessi = Object.assign(accessiVuoti(), d || {}); if (!Array.isArray(S.accessi.soci)) S.accessi.soci = []; if (!Array.isArray(S.accessi.accessi)) S.accessi.accessi = []; return; }
+  if (key === 'commenti') { S.commenti = Object.assign(commentiVuoti(), d || {}); if (!Array.isArray(S.commenti.commenti)) S.commenti.commenti = []; return; }
+  if (key === 'regole') { S.regole = Object.assign(regoleVuote(), d || {}); if (!Array.isArray(S.regole.approvatori)) S.regole.approvatori = []; return; }
+  if (key === 'proposte') { S.proposte = Object.assign(proposteVuote(), d || {}); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return; }
+  if (key.startsWith('prop:')) { if (!S.proposteDett) S.proposteDett = {}; S.proposteDett[key.slice(5)] = d; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
   constructor() { this.nome = 'locale'; }
-  async carica() { let n = 0; for (const k of tuttiKey().concat(['accessi'])) { try { const raw = localStorage.getItem('onward.file.' + k); if (raw) { applicaDati(k, JSON.parse(raw)); if (k !== 'accessi') n++; } } catch (e) {} } return n; }
+  async carica() { let n = 0; for (const k of tuttiKey().concat(CHIAVI_EXTRA)) { try { const raw = localStorage.getItem('onward.file.' + k); if (raw) { applicaDati(k, JSON.parse(raw)); if (!CHIAVI_EXTRA.includes(k)) n++; } } catch (e) {} } return n; }
   async salva(key, dati, messaggio) { localStorage.setItem('onward.file.' + key, JSON.stringify(dati)); let st = []; try { st = JSON.parse(localStorage.getItem('onward.storico.' + key) || '[]'); } catch (e) {} st.unshift({ quando: new Date().toISOString(), autore: S.autore || 'questo browser', messaggio, dati }); if (st.length > 30) st.length = 30; try { localStorage.setItem('onward.storico.' + key, JSON.stringify(st)); } catch (e) {} }
   async storico(key) { try { return JSON.parse(localStorage.getItem('onward.storico.' + key) || '[]').map((v, i) => ({ id: String(i), quando: v.quando, autore: v.autore, messaggio: v.messaggio, dati: v.dati })); } catch (e) { return []; } }
   async versione(key, id) { const st = await this.storico(key); return st[+id] && st[+id].dati; }
@@ -1512,7 +1562,7 @@ class ArchivioGitHub {
   async albero() { let t = null; try { t = await this.api('/git/trees/' + encodeURIComponent(this.cfg.branch) + '?recursive=1'); } catch (e) { if (e.status === 409) t = null; else throw e; } if (!t) { this.ultimoAlbero = {}; this.altri = {}; return {}; } const m = {}; this.altri = {}; for (const e of t.tree) { if (e.type !== 'blob') continue; if (e.path.startsWith('contenuto/')) m[e.path] = e.sha; else this.altri[e.path] = e.sha; } this.ultimoAlbero = m; return m; }
   async caricaFile(path, bytes, messaggio) { let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); const body = { message: messaggio, content: btoa(bin), branch: this.cfg.branch }; const cur = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (cur && cur.sha) body.sha = cur.sha; if (this.cfg.autore) body.author = body.committer = { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') }; const r = await this.api('/contents/' + path, { method: 'PUT', json: body }); if (this.altri) this.altri[path] = r.content.sha; return true; }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); if (alb['contenuto/accessi.json']) { const d = await this.leggi('contenuto/accessi.json'); if (d) applicaDati('accessi', d); } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -1522,12 +1572,12 @@ class ArchivioGitHub {
   }
   async storico(key) { const path = fileDi(key); const l = await this.api('/commits?path=' + encodeURIComponent(path) + '&sha=' + encodeURIComponent(this.cfg.branch) + '&per_page=40'); return (l || []).map(c => ({ id: c.sha, quando: c.commit.author.date, autore: c.commit.author.name, messaggio: c.commit.message })); }
   async versione(key, sha) { const r = await this.api('/contents/' + fileDi(key) + '?ref=' + sha); if (!r) return null; return JSON.parse(decodeURIComponent(escape(atob(r.content.replace(/\n/g, ''))))); }
-  async novita() { const prima = this.ultimoAlbero || {}; const alb = await this.albero(); const out = []; for (const k of tuttiKey().concat(['accessi'])) { const p = fileDi(k); if (alb[p] && alb[p] !== prima[p]) out.push(k); } return out; }
+  async novita() { const prima = this.ultimoAlbero || {}; const alb = await this.albero(); const out = []; for (const k of tuttiKey().concat(CHIAVI_EXTRA)) { const p = fileDi(k); if (alb[p] && alb[p] !== prima[p]) out.push(k); } return out; }
   async inizializza(progress) { const alb = await this.albero(); let n = 0; for (const k of tuttiKey()) { const p = fileDi(k); if (alb[p]) { this.sha[p] = alb[p]; continue; } await this.salva(k, datiDi(k), 'Contenuto iniziale: ' + p); n++; if (progress) progress(n); } if (!alb['README.md']) { try { await this.api('/contents/README.md', { method: 'PUT', json: { message: 'README', branch: this.cfg.branch, author: this.cfg.autore ? { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') } : undefined, content: btoa(unescape(encodeURIComponent('# Onward · Dossier Soci fondatori e Modello di business\n\nRepository dei contenuti del dossier vivo. I file in `contenuto/` sono scritti dall’applicazione; ogni salvataggio è un commit attribuito a chi ha fatto la modifica.\n'))) } }); } catch (e) {} } return n; }
 }
 
 // coda di salvataggio con fusione a livello di blocco in caso di conflitto
-function segna(key) { if (S.readonly) return; S.dirty.add(key); stato('attesa', 'Modifiche in attesa'); salvaDebounced(); }
+function segna(key) { if (S.readonly) return; if (inRegime() && chiaveProponibile(key)) { segnaProposta(key); return; } S.dirty.add(key); stato('attesa', 'Modifiche in attesa'); salvaDebounced(); }
 const salvaDebounced = debounce(() => salvaTutto(), 1500);
 async function salvaTutto() {
   if (S.saving || !S.dirty.size || !S.backend) return; S.saving = true; stato('attesa', 'Salvataggio…');
@@ -1541,7 +1591,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Scenari e traiettoria aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Scenari e traiettoria aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -1551,6 +1601,9 @@ async function fondi(k) {
   if (k === 'commesse') { S.commesse = fondiBlocchi(base && base.commesse || [], S.commesse, remoto.commesse || []); return; }
   if (k === 'quote') { const out = Object.assign(quoteDefault(), remoto || {}); out.righe = fondiBlocchi(base && base.righe || [], S.quote.righe || [], (remoto && remoto.righe) || []); for (const kk of ['scenario', 'priv', 'cumulo', 'soglia', 'versato_default']) if (JSON.stringify(S.quote[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.quote[kk]); S.quote = out; return; }
   if (k === 'accessi') { fondiAccessi(remoto); return; }
+  if (k === 'commenti') { fondiCommenti(remoto); return; }
+  if (k === 'proposte') { fondiProposte(remoto); return; }
+  if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
 }
@@ -1566,7 +1619,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k)) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; applicaDati(k, d); S.base[k] = clone(d); if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -1623,8 +1676,8 @@ function costruisciImpostazioni() {
     '<label class="campo-testo">Token di accesso personale (con permesso Contents: lettura e scrittura sul repository)<input id="cfg-token" type="password" value="' + esc(cfg.token || '') + '"><span>Il token resta salvato solo in questo browser.</span></label>' +
     '<label class="campo-testo">Indirizzo e-mail per i commit (facoltativo)<input id="cfg-email" value="' + esc(cfg.email || '') + '"></label></div>' +
     '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn primario" id="cfg-salva">Salva e collega</button><button class="btn" id="cfg-init"' + (S.repoVuoto && !G ? '' : ' hidden') + '>' + (S.repoMancanti && S.repoMancanti < tuttiKey().length ? 'Completa il repository (' + S.repoMancanti + ' file mancanti)' : 'Inizializza il repository con questo contenuto') + '</button><button class="btn"' + (G ? ' hidden' : '') + ' id="cfg-azzera">Azzera le modifiche locali</button><button class="btn" id="cfg-importa">Importa dati (JSON)</button><input type="file" id="cfg-file" accept="application/json,.json" hidden>' + (S.backend && S.backend.nome === 'github' && !S.repoVuoto && !G ? '<button class="btn" id="cfg-carica-html" title="Mette una copia di questo file nel repository, così i Soci possono scaricarlo da lì">Carica il file dell’applicazione nel repository</button><input type="file" id="cfg-file-html" accept="text/html,.html" hidden>' + (window.ONWARD_GUSCIO_GZ && window.ONWARD_PAGINA_REPO ? '<button class="btn" id="cfg-pagina" title="Scrive la versione della pagina dei Soci contenuta in questo file nel repository pubblico che la pubblica">Aggiorna la pagina dei Soci</button>' : '') : '') + '</div><div id="cfg-esito">' + (S.backend && S.backend.nome === 'github' && S.repoFile && !S.repoVuoto ? '<div class="avviso">Collegato: ' + S.repoFile + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.' + (S.htmlNelRepo ? ' Il file dell’applicazione è nel repository: <a href="https://github.com/' + esc(S.cfg.owner + '/' + S.cfg.repo) + '/blob/' + esc(S.cfg.branch) + '/Onward_Dossier_vivo.html" target="_blank" rel="noopener">Onward_Dossier_vivo.html</a>.' : '') + '</div>' : '') + '</div>' +
-    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogamo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
-  $('#cfg-tipo', c).onchange = e => { $('#cfg-gh', c).hidden = e.target.value !== 'github'; };
+    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogamo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + htmlRegole() + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
+  $('#cfg-tipo', c).onchange = e => { $('#cfg-gh', c).hidden = e.target.value !== 'github'; }; attivaRegole(c);
   $('#cfg-tema', c).value = document.documentElement.dataset.theme || ''; $('#cfg-tema', c).onchange = e => { if (e.target.value) document.documentElement.dataset.theme = e.target.value; else delete document.documentElement.dataset.theme; try { localStorage.setItem('onward.tema', e.target.value); } catch (x) {} };
   $('#cfg-salva', c).onclick = async () => { const cfg = { tipo: $('#cfg-tipo', c).value, autore: $('#cfg-autore', c).value.trim(), owner: $('#cfg-owner', c).value.trim(), repo: $('#cfg-repo', c).value.trim(), branch: $('#cfg-branch', c).value.trim() || 'main', token: $('#cfg-token', c).value.trim(), email: $('#cfg-email', c).value.trim() }; S.cfg = cfg; try { localStorage.setItem('onward.cfg', JSON.stringify(cfg)); } catch (e) {} await collega(true); };
   const lk = $('#lk-componi', c); if (lk) { lk.onclick = () => { const nm = $('#lk-nome', c).value.trim(), tk = $('#lk-token', c).value.trim(); if (!tk) { toast('Inserire il token creato per il Socio'); return; } const base = window.ONWARD_GUSCIO ? (location.origin + location.pathname) : window.ONWARD_PAGINA; const url = base + '#n=' + encodeURIComponent(nm) + '&t=' + encodeURIComponent(tk); const out = $('#lk-esito', c); out.value = url; out.hidden = false; $('#lk-copia', c).hidden = false; registraSocioLink(nm); }; $('#lk-copia', c).onclick = async () => { try { await navigator.clipboard.writeText($('#lk-esito', c).value); toast('Link copiato negli appunti'); } catch (e) { $('#lk-esito', c).select(); toast('Selezionato: copiare con Cmd+C'); } }; }
@@ -1643,11 +1696,11 @@ async function collega(mostra) {
       else if (n === 0) { S.readonly = false; stato('attesa', 'Repository vuoto: inizializzarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Il repository è raggiungibile ma non contiene ancora il dossier. Premere «Inizializza il repository con questo contenuto» per scrivere i file (una sola volta, da parte di chi lo crea).</div>'; }
       else if (mancanti.length) { stato('attesa', 'Repository incompleto: completarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Collegato al repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + ': contiene ' + n + ' file del dossier, ne mancano ' + mancanti.length + '. Premere «Completa il repository» per scrivere i file mancanti con il contenuto corrente di questo file.</div>'; }
       else { stato('ok', 'Collegato al repository (' + n + ' file)'); if (esito) esito.innerHTML = '<div class="avviso">Collegato: ' + n + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.</div>'; }
-      for (const k of tuttiKey().concat(['accessi'])) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, 60000); if (!S.readonly && !mancanti.length) registraAccesso();
+      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche();
       if (n > 0 && S.backend.ultimoAlbero) for (const k of ['glossario', 'rete', 'commesse', 'quote', 'scenari']) if (!S.backend.ultimoAlbero[fileDi(k)]) segna(k); }
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
-  else { S.backend = new ArchivioLocale(); const n = await S.backend.carica(); for (const k of tuttiKey()) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); stato('ok', n ? 'Archivio locale: ' + n + ' file modificati in questo browser' : 'Contenuto incorporato (archivio locale)'); if (mostra && esito) esito.innerHTML = '<div class="avviso">Modalità di prova: le modifiche restano in questo browser.</div>'; }
+  else { S.backend = new ArchivioLocale(); const n = await S.backend.carica(); for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); stato('ok', n ? 'Archivio locale: ' + n + ' file modificati in questo browser' : 'Contenuto incorporato (archivio locale)'); if (mostra && esito) esito.innerHTML = '<div class="avviso">Modalità di prova: le modifiche restano in questo browser.</div>'; }
   applicaModo();
 }
 function esportaJSON() { scarica('onward-dossier-contenuto.json', JSON.stringify({ meta: S.meta, nota: S.nota, parti: S.parti, ipotesi: S.P, glossario: { voci: S.glossario }, rete: S.rete, commesse: { commesse: S.commesse }, quote: S.quote, scenari: S.scenari, esportato: new Date().toISOString() }, null, 1), 'application/json'); }
@@ -3160,9 +3213,9 @@ function avviaRiassunto() {
 }
 // ================================================================ Modifiche: Soci con accesso, accessi e modifiche in ordine cronologico
 function accessiVuoti() { return { soci: [], accessi: [] }; }
-function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); return p.slice('contenuto/'.length, -5); }
+function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Scenari e traiettoria'; if (k === 'accessi') return 'Registro degli accessi';
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Scenari e traiettoria'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -3187,7 +3240,11 @@ const ETICHETTE_IPOTESI = (() => { const m = {}; try { for (const g of SCHEMA) f
 function etichettaIpotesi(k) { const m = k.match(/^soci_dett\.(\d+)\.(\w+)$/); if (m) { const s = (S.P.soci_dett || [])[+m[1]]; const campo = { gg: 'giornate annue', q_prod: 'quota produzione', q_orig: 'quota origination', q_gest: 'quota gestione', nome: 'nome', id: 'identificativo' }[m[2]] || m[2]; return 'Socio ' + (+m[1] + 1) + (s && s.nome ? ' (' + s.nome + ')' : '') + ': ' + campo; } const e = ETICHETTE_IPOTESI[k]; return e ? e[0] : k; }
 function fmtIpotesi(k, v) { if (v === undefined) return 'assente'; const m = k.match(/^soci_dett\.\d+\.(q_\w+|gg)$/); if (m && typeof v === 'number') return m[1] === 'gg' ? MODELLO.F.num(v) : MODELLO.F.pct(v); const e = ETICHETTE_IPOTESI[k]; const f = e && MODELLO.F && MODELLO.F[e[1]]; return typeof f === 'function' && typeof v === 'number' ? f(v) : String(v); }
 function diffDue(key, vecchia, nuova) {
-  const V = vecchia || null, N = nuova || null; if (!N) return '<div class="p">Voce eliminata dal repository.</div>'; const pre = V ? '' : '<div class="b">Voce creata</div>';
+  const V = vecchia || null, N = nuova || null;
+  if (key.startsWith('prop:')) { const d = N || V; return d ? '<div class="p">Proposta di ' + esc(d.autore || '') + ' del ' + esc(dataIt(d.quando)) + ': ' + esc(d.descrizione || '') + ' (' + Object.keys(d.modifiche || {}).map(nomeChiave).join('; ') + ').</div>' : '<div class="p">File della proposta.</div>'; }
+  if (key === 'commenti') { const a = ((V && V.commenti) || []), b = ((N && N.commenti) || []); const am = new Map(a.map(c => [c.id, c])); const out = []; for (const c of b) { const o = am.get(c.id); if (!o) out.push('Nuovo commento di ' + c.autore + ' (' + nomeCapitoloBlocco(c.blocco) + '): «' + estrattoTesto(c.testo, 120) + '»'); else if (JSON.stringify(o) !== JSON.stringify(c)) { if (o.stato !== c.stato) out.push('Commento di ' + c.autore + ' ' + (c.stato === 'risolto' ? 'risolto' : 'riaperto') + (c.risolto && c.risolto.da ? ' da ' + c.risolto.da : '')); if ((c.risposte || []).length > (o.risposte || []).length) { const r = c.risposte[c.risposte.length - 1]; out.push('Risposta di ' + r.autore + ' al commento di ' + c.autore + ': «' + estrattoTesto(r.testo, 120) + '»'); } if ((c.risposte || []).length < (o.risposte || []).length) out.push('Risposta eliminata nel commento di ' + c.autore); } } for (const c of a) if (!b.find(x => x.id === c.id)) out.push('Commento di ' + c.autore + ' eliminato'); return out.length ? out.map(x => '<div class="p">' + esc(x) + '</div>').join('') : '<div class="p">Nessuna differenza nei commenti.</div>'; }
+  if (key === 'proposte') { const a = ((V && V.proposte) || []), b = ((N && N.proposte) || []); const am = new Map(a.map(p => [p.id, p])); const out = []; for (const p of b) { const o = am.get(p.id); if (!o) out.push('Proposta inviata da ' + p.autore + ': ' + p.descrizione); else if (o.stato !== p.stato) out.push('Proposta di ' + p.autore + ' ' + p.stato + (p.decisione && p.decisione.da && p.stato !== 'ritirata' ? ' da ' + p.decisione.da : '') + (p.decisione && p.decisione.nota ? ' (' + p.decisione.nota + ')' : '')); } return out.length ? out.map(x => '<div class="p">' + esc(x) + '</div>').join('') : '<div class="p">Nessuna differenza nelle proposte.</div>'; }
+  if (key === 'regole') { const r = N || regoleVuote(); return '<div class="p">Regime di approvazione ' + (r.approvazione ? 'attivo; approvatori: ' + esc((r.approvatori || []).join(', ')) : 'non attivo') + '.</div>'; } if (!N) return '<div class="p">Voce eliminata dal repository.</div>'; const pre = V ? '' : '<div class="b">Voce creata</div>';
   if (key === 'ipotesi') { const cur = flat(N), old = flat(V || {}); const out = []; for (const k of new Set([...Object.keys(cur), ...Object.keys(old)])) if (cur[k] !== old[k] && !/\.id$/.test(k)) out.push('<div class="p"><b>' + esc(etichettaIpotesi(k)) + '</b>: <del>' + esc(fmtIpotesi(k, old[k])) + '</del> <ins>' + esc(fmtIpotesi(k, cur[k])) + '</ins></div>'); return pre + (out.length ? out.join('') : '<div class="p">Nessuna differenza nelle ipotesi.</div>'); }
   if (key === 'accessi') { const a = Object.assign(accessiVuoti(), V || {}), b = Object.assign(accessiVuoti(), N || {}); const ns = b.soci.filter(s => !a.soci.find(x => x.nome === s.nome)).map(s => s.nome); const na = b.accessi.length - a.accessi.length; return pre + '<div class="p">' + (ns.length ? 'Link registrati per: ' + esc(ns.join(', ')) + '. ' : '') + (na > 0 ? na + (na === 1 ? ' accesso registrato.' : ' accessi registrati.') : '') + (!ns.length && na <= 0 ? 'Aggiornamento del registro.' : '') + '</div>'; }
   const lista = d => { if (!d) return [];
@@ -3207,12 +3264,12 @@ function diffDue(key, vecchia, nuova) {
   return n ? h : '<div class="p">Nessuna differenza nel testo (modifica di formattazione o di dati tecnici).</div>';
 }
 function semeDi(key) { let d; try { d = JSON.parse($('#seme').textContent); } catch (e) { return null; } if (key === 'struttura') return { meta: d.meta, nota: d.nota, parti: d.parti }; if (key === 'ipotesi') return Object.assign(clone(MODELLO.IPOTESI_DEFAULT), d.ipotesi || {}); if (key === 'glossario') return d.glossario || { voci: [] }; if (key === 'rete') return d.rete || null; if (key === 'commesse') return d.commesse || { commesse: [] }; if (key === 'quote') return d.quote || null; if (key === 'scenari') return d.scenari || null; if (key === 'accessi') return null; if (key.startsWith('cap:')) { for (const p of d.parti || []) for (const c of p.capitoli || []) if (c.id === key.slice(4)) return { id: c.id, titolo: c.titolo, blocchi: c.blocchi || [] }; } return null; }
-function tipoCommit(c) { const m = c.messaggio || ''; if (/^Registro degli accessi/.test(m)) return 'registro'; if (/^(Contenuto iniziale|README|File dell)/.test(m)) return 'avvio'; return 'modifica'; }
+function tipoCommit(c) { const m = c.messaggio || ''; if (/^Registro degli accessi/.test(m)) return 'registro'; if (/^Proposta /.test(m)) return 'proposta'; if (/^Commenti a margine/.test(m)) return 'commento'; if (/^(Regole di approvazione|Elenco delle proposte)/.test(m)) return 'proposta'; if (/^(Contenuto iniziale|README|File dell)/.test(m)) return 'avvio'; return 'modifica'; }
 function descrizioneCommit(c) { let m = (c.messaggio || '').split('\n')[0]; if (c.autore) m = m.replace(' (' + c.autore + ')', ''); if (/^Contenuto iniziale: /.test(m)) { const k = chiaveDiPath(m.slice('Contenuto iniziale: '.length)); return 'Contenuto iniziale: ' + (k ? nomeChiave(k) : m.slice(20)); } return m; }
 async function caricaCommitModifiche(altri) {
   const B = S.backend, M = S.mod; if (!B) return; if (!altri) { M.commits = []; M.pagina = 0; M.fine = false; } if (M.fine) return;
   if (B.nome === 'github') { const page = M.pagina + 1; const l = await B.api('/commits?sha=' + encodeURIComponent(B.cfg.branch) + '&per_page=100&page=' + page); const arr = (l || []).map(c => ({ sha: c.sha, quando: c.commit.author.date, autore: c.commit.author.name, messaggio: c.commit.message, parent: (c.parents && c.parents[0] && c.parents[0].sha) || null })); M.commits = M.commits.concat(arr); M.pagina = page; if (arr.length < 100) M.fine = true; }
-  else { const out = []; for (const k of tuttiKey().concat(['accessi'])) { const st = await B.storico(k); st.forEach((v, i) => out.push({ sha: k + '#' + v.id, quando: v.quando, autore: v.autore, messaggio: v.messaggio, key: k, id: v.id, parent: st[i + 1] ? st[i + 1].id : null })); } out.sort((a, b) => (Date.parse(b.quando) || 0) - (Date.parse(a.quando) || 0)); M.commits = out; M.fine = true; }
+  else { const out = []; for (const k of tuttiKey().concat(CHIAVI_EXTRA)) { const st = await B.storico(k); st.forEach((v, i) => out.push({ sha: k + '#' + v.id, quando: v.quando, autore: v.autore, messaggio: v.messaggio, key: k, id: v.id, parent: st[i + 1] ? st[i + 1].id : null })); } out.sort((a, b) => (Date.parse(b.quando) || 0) - (Date.parse(a.quando) || 0)); M.commits = out; M.fine = true; }
 }
 async function dettaglioCommit(c) {
   const B = S.backend, M = S.mod; if (M.dettagli[c.sha]) return M.dettagli[c.sha]; const out = [];
@@ -3240,12 +3297,13 @@ async function disegnaModifiche(ricarica) {
   let h = '<section class="q-sez"><div class="q-testa"><h3>Soci con accesso al dossier</h3><span class="nota-pannello">Chi ha ricevuto un link personale, quando è entrato e quante modifiche ha salvato. Gli accessi sono registrati a ogni apertura del dossier collegato al repository (al massimo una l’ora per persona).</span></div>';
   h += righe.length ? '<div class="tabella-wrap"><table class="tab q-tab mod-tab"><tr class="intestazione"><td>Socio</td><td>Link personale</td><td>Primo accesso</td><td>Ultimo accesso</td><td>Accessi</td><td>Modifiche salvate</td><td></td></tr>' + righe.map(r => '<tr><td><b>' + esc(r.n) + '</b>' + (r.n === S.autore ? '<small>questo collegamento</small>' : '') + '</td><td>' + (r.reg ? 'creato il ' + esc(dataIt(r.reg.quando)) + (r.reg.da ? '<small>da ' + esc(r.reg.da) + '</small>' : '') : '<span class="mod-muto">non registrato</span>') + '</td><td>' + nd(r.primo) + '</td><td>' + nd(r.ultimo) + '</td><td>' + r.acc + '</td><td>' + r.mods + (r.avvii ? '<small>' + r.avvii + ' di avvio</small>' : '') + '</td><td>' + (r.reg && !S.readonly ? '<button class="btn piccolo" data-mod="rimuovi" data-nome="' + esc(r.n) + '" title="Toglie il nome dall’elenco dei link creati; per revocare l’accesso va cancellato il token su GitHub">Rimuovi dall’elenco</button>' : '') + '</td></tr>').join('') + '</table></div>' : '<p class="nota-pannello">Nessun accesso registrato finora.</p>';
   h += '</section>';
+  h += htmlElencoProposte() + htmlElencoCommenti(S.cmFiltro);
   const filtrati = ev.filter(e => (!M.filtroNome || e.nome === M.filtroNome) && (M.filtroTipo === 'tutti' || (M.filtroTipo === 'accessi' ? (e.tipo === 'accesso' || e.tipo === 'link') : e.tipo === M.filtroTipo)));
   h += '<section class="q-sez"><div class="q-testa"><h3>Registro cronologico</h3><span class="nota-pannello">Dal più recente: accessi, link creati e ogni salvataggio nel repository. «Cosa è cambiato» mostra le parole tolte e aggiunte da quel salvataggio; «Apri nella cronologia» permette di confrontare e ripristinare le versioni.</span></div>';
   if (!filtrati.length) h += '<p class="nota-pannello">Nessun evento per il filtro scelto.</p>';
   let giorno = ''; for (const e of filtrati) { const g = new Date(e.quando).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); if (g !== giorno) { h += '<div class="mod-giorno">' + esc(g) + '</div>'; giorno = g; }
-    const ora = new Date(e.quando).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }); const badge = e.tipo === 'accesso' ? '<span class="sem ok">accesso</span>' : e.tipo === 'link' ? '<span class="sem attenzione">link</span>' : e.tipo === 'avvio' ? '<span class="sem mod-avvio">avvio</span>' : '<span class="sem mod-modifica">modifica</span>';
-    h += '<div class="mod-voce"' + (e.commit ? ' data-sha="' + esc(e.commit.sha) + '"' : '') + '><span class="mod-ora">' + esc(ora) + '</span>' + badge + '<b class="mod-nome">' + esc(e.nome || '') + '</b><span class="mod-testo">' + esc(e.testo) + '</span>' + (e.commit && e.tipo === 'modifica' ? '<span class="mod-azioni"><button class="btn piccolo" data-mod="diff">Cosa è cambiato</button></span>' : '') + '<div class="diff-slot"></div></div>'; }
+    const ora = new Date(e.quando).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }); const badge = e.tipo === 'accesso' ? '<span class="sem ok">accesso</span>' : e.tipo === 'link' ? '<span class="sem attenzione">link</span>' : e.tipo === 'avvio' ? '<span class="sem mod-avvio">avvio</span>' : e.tipo === 'proposta' ? '<span class="sem mod-proposta">proposta</span>' : e.tipo === 'commento' ? '<span class="sem mod-commento">commento</span>' : '<span class="sem mod-modifica">modifica</span>';
+    h += '<div class="mod-voce"' + (e.commit ? ' data-sha="' + esc(e.commit.sha) + '"' : '') + '><span class="mod-ora">' + esc(ora) + '</span>' + badge + '<b class="mod-nome">' + esc(e.nome || '') + '</b><span class="mod-testo">' + esc(e.testo) + '</span>' + (e.commit && (e.tipo === 'modifica' || e.tipo === 'proposta' || e.tipo === 'commento') ? '<span class="mod-azioni"><button class="btn piccolo" data-mod="diff">Cosa è cambiato</button></span>' : '') + '<div class="diff-slot"></div></div>'; }
   if (!M.fine) h += '<div style="margin-top:.6rem"><button class="btn piccolo" data-mod="altri">Carica salvataggi precedenti</button></div>';
   h += '</section>'; corpo.innerHTML = h;
 }
@@ -3403,6 +3461,206 @@ async function controllaVersionePagina() {
     if ($('#nuova-versione')) return; const div = el('div', { class: 'avviso nuova-versione', id: 'nuova-versione' }); div.innerHTML = 'È disponibile una versione più recente della pagina dei Soci (' + esc(m[1].slice(0, 10)) + '). <button class="btn piccolo" id="nv-ricarica">Ricarica</button> <span class="nota-pannello" style="margin:0">Se dopo la ricarica non cambia nulla, forzarla con Cmd+Shift+R (Mac) o Ctrl+F5.</span>';
     document.body.insertBefore(div, document.body.firstChild); $('#nv-ricarica', div).onclick = () => { if (S.dirty.size) { toast('Attendere il salvataggio in corso'); return; } location.replace(location.pathname + '?v=' + encodeURIComponent(m[1]) + location.hash); }; } catch (e) {}
 }
+// ---- commenti_mod + proposte_mod
+// ================================================================ commenti a margine (contenuto/commenti.json)
+function commentiVuoti() { return { commenti: [] }; }
+function tuttiCommenti() { if (!S.commenti) S.commenti = commentiVuoti(); if (!Array.isArray(S.commenti.commenti)) S.commenti.commenti = []; return S.commenti.commenti; }
+function commentiDiBlocco(id) { return tuttiCommenti().filter(c => c.blocco === id); }
+function commentiAperti(id) { return commentiDiBlocco(id).filter(c => c.stato !== 'risolto'); }
+function commentoDi(id) { return tuttiCommenti().find(c => c.id === id) || null; }
+function estrattoTesto(t, n) { const s = String(t || '').replace(/\{\{cap:[^}]+\}\}/g, 'capitolo').replace(/\{\{[^}]+\}\}/g, '…').replace(/\*\*|\*/g, '').replace(/\s+/g, ' ').trim(); return s.length > (n || 110) ? s.slice(0, (n || 110)).replace(/\s+\S*$/, '') + '…' : s; }
+function estrattoBlocco(id) { const info = blocco(id); if (!info) return ''; return estrattoTesto(testoBlocco(info.b), 110); }
+function capitoloDiBlocco(id) { const info = blocco(id); if (!info) return null; return info.cap ? info.cap.id : 'nota'; }
+function nomeCapitoloBlocco(id) { const c = capitoloDiBlocco(id); if (!c) return 'blocco non più presente'; if (c === 'nota') return 'Nota di lettura'; return 'Capitolo ' + (S.numeri[c] || '') + ' ' + ((capitolo(c) || {}).c || {}).titolo; }
+function puoCommentare() { return !S.readonly && !!S.backend; }
+function marcaBlocco(w) {
+  if (!w || !w.dataset || !w.dataset.id) return; const id = w.dataset.id; const n = commentiAperti(id).length, tot = commentiDiBlocco(id).length;
+  let m = $(':scope > .co-marg', w); if (!n && !tot && !puoCommentare()) { if (m) m.remove(); return; }
+  if (!m) { m = el('button', { class: 'co-marg', type: 'button', dataset: { commenti: id } }); m.setAttribute('contenteditable', 'false'); w.appendChild(m); }
+  m.classList.toggle('con', n > 0); m.classList.toggle('risolti', n === 0 && tot > 0); m.classList.toggle('vuoto', n === 0 && tot === 0);
+  m.textContent = n > 0 ? String(n) : (tot > 0 ? 'r' : '+');
+  m.title = n > 0 ? (n === 1 ? 'Un commento aperto: apri la discussione' : n + ' commenti aperti: apri la discussione') : tot > 0 ? (tot === 1 ? 'Un commento risolto' : tot + ' commenti risolti') : 'Aggiungi un commento a margine';
+}
+function marcaCommenti(root) { for (const w of $$('.blk[data-id]', root || document)) marcaBlocco(w); }
+function vaiAlBlocco(id) { const w = $('.blk[data-id="' + CSS.escape(id) + '"]'); if (!w) { toast('Il blocco commentato non è più nel documento'); return null; } const y = w.getBoundingClientRect().top + window.scrollY - (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--barra-h')) || 52) - 24; window.scrollTo({ top: y, behavior: 'smooth' }); w.classList.add('co-lampo'); setTimeout(() => w.classList.remove('co-lampo'), 1800); return w; }
+function htmlCommento(c) {
+  const mio = c.autore && S.autore && c.autore === S.autore; const risolto = c.stato === 'risolto';
+  let h = '<div class="co-voce' + (risolto ? ' risolto' : '') + '" data-cid="' + esc(c.id) + '"><div class="co-testa"><b>' + esc(c.autore || 'anonimo') + '</b><span class="co-quando">' + esc(dataIt(c.quando)) + '</span>' + (risolto ? '<span class="sem ok">risolto' + (c.risolto && c.risolto.da ? ' da ' + esc(c.risolto.da) : '') + '</span>' : '<span class="sem attenzione">aperto</span>') + '</div><div class="co-corpo">' + esc(c.testo || '').replace(/\n/g, '<br>') + '</div>';
+  for (const r of (c.risposte || [])) h += '<div class="co-risposta" data-rid="' + esc(r.id) + '"><div class="co-testa"><b>' + esc(r.autore || 'anonimo') + '</b><span class="co-quando">' + esc(dataIt(r.quando)) + '</span>' + (puoCommentare() && r.autore === S.autore ? '<button class="btn piccolo" data-co="elimina-risposta" data-cid="' + esc(c.id) + '" data-rid="' + esc(r.id) + '">Elimina</button>' : '') + '</div><div class="co-corpo">' + esc(r.testo || '').replace(/\n/g, '<br>') + '</div></div>';
+  if (puoCommentare()) h += '<div class="co-azioni"><button class="btn piccolo" data-co="rispondi" data-cid="' + esc(c.id) + '">Rispondi</button>' + (risolto ? '<button class="btn piccolo" data-co="riapri" data-cid="' + esc(c.id) + '">Riapri</button>' : '<button class="btn piccolo" data-co="risolvi" data-cid="' + esc(c.id) + '">Risolvi</button>') + (mio ? '<button class="btn piccolo pericolo" data-co="elimina" data-cid="' + esc(c.id) + '">Elimina</button>' : '') + '</div><div class="co-slot"></div>';
+  return h + '</div>';
+}
+function apriCommenti(id, anchor, opt) {
+  opt = opt || {}; const lista = commentiDiBlocco(id); const aperti = lista.filter(c => c.stato !== 'risolto'), risolti = lista.filter(c => c.stato === 'risolto'); const mostra = opt.mostraRisolti || !aperti.length;
+  let h = '<div class="pop-testa"><b>Commenti a margine</b><button class="btn piccolo" id="pop-chiudi">Chiudi</button></div><div class="co-estratto">' + esc(nomeCapitoloBlocco(id)) + ' · «' + esc(estrattoBlocco(id) || 'blocco senza testo') + '»</div>';
+  if (!lista.length) h += '<p class="nota-pannello">Nessun commento su questo blocco.</p>';
+  h += aperti.map(htmlCommento).join('');
+  if (risolti.length) h += '<div class="co-risolti-tit"><button class="btn piccolo" data-co="mostra-risolti" data-mostra="' + (mostra ? '0' : '1') + '">' + (mostra ? 'Nascondi i risolti' : 'Mostra i risolti (' + risolti.length + ')') + '</button></div>' + (mostra ? risolti.map(htmlCommento).join('') : '');
+  if (puoCommentare()) h += '<div class="co-nuovo"><label class="campo-testo">Nuovo commento<textarea id="co-testo" rows="3" placeholder="Osservazione, domanda o proposta su questo passaggio"></textarea></label><div class="azioni"><span class="nota-pannello" style="flex:1">I commenti sono condivisi con tutti i Soci e restano nella cronologia.</span><button class="btn primario piccolo" data-co="invia">Invia il commento</button></div></div>';
+  else h += '<p class="nota-pannello">Per commentare occorre essere collegati al repository con il proprio nome.</p>';
+  const rect = anchor && anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : null; const pop = popFisso(h, rect); pop.dataset.commenti = id; pop.classList.add('co-pop');
+  $('#pop-chiudi', pop).onclick = chiudiPopover; const ta = $('#co-testo', pop); if (ta && !lista.length) ta.focus();
+  return pop;
+}
+function ridisegnaCommenti(id, mostraRisolti) { const pop = $('#popover'); if (!pop || pop.dataset.commenti !== id) return; const top = pop.style.top, left = pop.style.left; const bozza = $('#co-testo', pop) ? $('#co-testo', pop).value : ''; const np = apriCommenti(id, null, { mostraRisolti }); np.style.top = top; np.style.left = left; const ta = $('#co-testo', np); if (ta && bozza) ta.value = bozza; }
+function aggiungiCommento(id, testo) {
+  testo = String(testo || '').trim(); if (!testo) { toast('Scrivere il testo del commento'); return null; } if (!puoCommentare()) return null;
+  const ora = new Date().toISOString(); const c = { id: uid('c'), blocco: id, capitolo: capitoloDiBlocco(id), estratto: estrattoBlocco(id), autore: S.autore || 'anonimo', quando: ora, agg: ora, testo, stato: 'aperto', risolto: null, risposte: [] };
+  tuttiCommenti().push(c); segna('commenti'); marcaBlocco($('.blk[data-id="' + CSS.escape(id) + '"]')); return c;
+}
+function rispondiCommento(cid, testo) { testo = String(testo || '').trim(); const c = commentoDi(cid); if (!c || !testo) return; const ora = new Date().toISOString(); (c.risposte = c.risposte || []).push({ id: uid('r'), autore: S.autore || 'anonimo', quando: ora, testo }); c.agg = ora; segna('commenti'); }
+function stataCommento(cid, stato) { const c = commentoDi(cid); if (!c) return; const ora = new Date().toISOString(); c.stato = stato; c.risolto = stato === 'risolto' ? { da: S.autore || 'anonimo', quando: ora } : null; c.agg = ora; segna('commenti'); marcaBlocco($('.blk[data-id="' + CSS.escape(c.blocco) + '"]')); }
+function eliminaCommento(cid) { const l = tuttiCommenti(); const i = l.findIndex(c => c.id === cid); if (i < 0) return; const b = l[i].blocco; l.splice(i, 1); segna('commenti'); marcaBlocco($('.blk[data-id="' + CSS.escape(b) + '"]')); }
+function fondiCommenti(remoto) {
+  const R = Object.assign(commentiVuoti(), remoto || {}), M = S.commenti || commentiVuoti(); const out = new Map();
+  for (const c of (R.commenti || []).concat(M.commenti || [])) { const cur = out.get(c.id); if (!cur) { out.set(c.id, clone(c)); continue; } const vince = (Date.parse(c.agg || c.quando) || 0) >= (Date.parse(cur.agg || cur.quando) || 0) ? clone(c) : cur; const ris = new Map(); for (const r of (cur.risposte || []).concat(c.risposte || [])) if (!ris.has(r.id)) ris.set(r.id, clone(r)); vince.risposte = [...ris.values()].sort((a, b) => (Date.parse(a.quando) || 0) - (Date.parse(b.quando) || 0)); out.set(c.id, vince); }
+  // un commento eliminato da me non deve tornare dal remoto: lo riconosco perché era nella base ed e' assente nel mio
+  const base = (S.base && S.base.commenti && S.base.commenti.commenti) || []; const miei = new Set((M.commenti || []).map(c => c.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
+  S.commenti = { commenti: [...out.values()].sort((a, b) => (Date.parse(a.quando) || 0) - (Date.parse(b.quando) || 0)) };
+}
+function htmlElencoCommenti(filtro) {
+  const l = tuttiCommenti().slice().sort((a, b) => (Date.parse(b.agg || b.quando) || 0) - (Date.parse(a.agg || a.quando) || 0)); const f = filtro || 'aperti'; const sel = l.filter(c => f === 'tutti' || (f === 'aperti' ? c.stato !== 'risolto' : c.stato === 'risolto'));
+  const nA = l.filter(c => c.stato !== 'risolto').length;
+  let h = '<section class="q-sez"><div class="q-testa"><h3>Commenti a margine' + (nA ? ' <span class="sem attenzione">' + nA + (nA === 1 ? ' aperto' : ' aperti') + '</span>' : '') + '</h3><span class="nota-pannello">Osservazioni dei Soci sui singoli passaggi del testo (pulsante nel margine sinistro di ogni blocco). Ogni commento porta al blocco a cui si riferisce.</span></div>';
+  h += '<div class="co-filtri"><label><input type="radio" name="co-filtro" value="aperti"' + (f === 'aperti' ? ' checked' : '') + '> Aperti</label><label><input type="radio" name="co-filtro" value="risolti"' + (f === 'risolti' ? ' checked' : '') + '> Risolti</label><label><input type="radio" name="co-filtro" value="tutti"' + (f === 'tutti' ? ' checked' : '') + '> Tutti</label></div>';
+  if (!sel.length) h += '<p class="nota-pannello">' + (l.length ? 'Nessun commento per il filtro scelto.' : 'Nessun commento finora.') + '</p>';
+  else h += '<div class="tabella-wrap"><table class="tab q-tab mod-tab co-tab"><tr class="intestazione"><td>Stato</td><td>Chi</td><td>Quando</td><td>Dove</td><td>Commento</td><td></td></tr>' + sel.map(c => '<tr><td>' + (c.stato === 'risolto' ? '<span class="sem ok">risolto</span>' : '<span class="sem attenzione">aperto</span>') + '</td><td><b>' + esc(c.autore || '') + '</b>' + ((c.risposte || []).length ? '<small>' + (c.risposte.length === 1 ? 'una risposta' : c.risposte.length + ' risposte') + '</small>' : '') + '</td><td>' + esc(dataIt(c.quando)) + '</td><td>' + esc(nomeCapitoloBlocco(c.blocco)) + '<small>«' + esc(estrattoTesto(c.estratto || estrattoBlocco(c.blocco), 70)) + '»</small></td><td>' + esc(estrattoTesto(c.testo, 160)) + '</td><td><button class="btn piccolo" data-co="vai" data-blocco="' + esc(c.blocco) + '">Vai al blocco</button></td></tr>').join('') + '</table></div>';
+  return h + '</section>';
+}
+document.addEventListener('click', ev => {
+  const marg = ev.target.closest('.co-marg'); if (marg) { ev.preventDefault(); ev.stopPropagation(); if ($('#popover') && $('#popover').dataset.commenti === marg.dataset.commenti) { chiudiPopover(); return; } apriCommenti(marg.dataset.commenti, marg); return; }
+  const b = ev.target.closest('button[data-co]'); if (!b) return; const az = b.dataset.co; const pop = b.closest('#popover'); const id = pop ? pop.dataset.commenti : null;
+  if (az === 'invia') { const ta = $('#co-testo', pop); const c = aggiungiCommento(id, ta && ta.value); if (c) { ta.value = ''; ridisegnaCommenti(id); } return; }
+  if (az === 'rispondi') { const slot = $('.co-voce[data-cid="' + CSS.escape(b.dataset.cid) + '"] .co-slot', pop); if (!slot) return; if (slot.innerHTML) { slot.innerHTML = ''; return; } slot.innerHTML = '<label class="campo-testo">Risposta<textarea class="co-risp" rows="2"></textarea></label><div class="azioni"><button class="btn piccolo" data-co="annulla-risposta">Annulla</button><button class="btn primario piccolo" data-co="invia-risposta" data-cid="' + esc(b.dataset.cid) + '">Invia la risposta</button></div>'; $('.co-risp', slot).focus(); return; }
+  if (az === 'annulla-risposta') { const slot = b.closest('.co-slot'); if (slot) slot.innerHTML = ''; return; }
+  if (az === 'invia-risposta') { const ta = $('.co-risp', b.closest('.co-slot')); const t = ta ? ta.value.trim() : ''; if (!t) { toast('Scrivere il testo della risposta'); return; } rispondiCommento(b.dataset.cid, t); ridisegnaCommenti(id); return; }
+  if (az === 'risolvi' || az === 'riapri') { stataCommento(b.dataset.cid, az === 'risolvi' ? 'risolto' : 'aperto'); ridisegnaCommenti(id, az === 'risolvi'); return; }
+  if (az === 'elimina') { if (!confirm('Eliminare questo commento e le sue risposte?')) return; eliminaCommento(b.dataset.cid); ridisegnaCommenti(id); return; }
+  if (az === 'elimina-risposta') { const c = commentoDi(b.dataset.cid); if (!c) return; c.risposte = (c.risposte || []).filter(r => r.id !== b.dataset.rid); c.agg = new Date().toISOString(); segna('commenti'); ridisegnaCommenti(id, c.stato === 'risolto'); return; }
+  if (az === 'mostra-risolti') { ridisegnaCommenti(id, b.dataset.mostra === '1'); return; }
+  if (az === 'vai') { const bid = b.dataset.blocco; chiudiViste(); chiudiPannelli(); setTimeout(() => { const w = vaiAlBlocco(bid); if (w) setTimeout(() => apriCommenti(bid, $('.co-marg', w) || w, { mostraRisolti: true }), 500); }, 80); return; }
+});
+document.addEventListener('change', ev => { const r = ev.target.closest('input[name="co-filtro"]'); if (!r) return; S.cmFiltro = r.value; const sez = r.closest('section.q-sez'); if (sez) { const tmp = el('div'); tmp.innerHTML = htmlElencoCommenti(S.cmFiltro); sez.replaceWith(tmp.firstElementChild); } });
+
+// ================================================================ regime di approvazione: regole (contenuto/regole.json) e proposte (contenuto/proposte.json + contenuto/proposte/<id>.json)
+function regoleVuote() { return { approvazione: false, approvatori: [] }; }
+function proposteVuote() { return { proposte: [] }; }
+function normNome(n) { return String(n || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x => String(x || '').trim()).filter(Boolean); }
+function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
+function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
+function inRegime() { return regimeAttivo() && !isApprovatore(); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte'].includes(k) && !String(k).startsWith('prop:'); }
+function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
+function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
+function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
+function chiaveBozza() { return 'onward.bozza.' + ((S.cfg && (S.cfg.owner + '/' + S.cfg.repo)) || 'locale'); }
+function salvaBozzaLocale() { try { if (!S.bozza || !S.bozza.size) { localStorage.removeItem(chiaveBozza()); return; } const o = { quando: new Date().toISOString(), autore: S.autore || '', chiavi: {}, base: {} }; for (const k of S.bozza) { o.chiavi[k] = datiDi(k); o.base[k] = S.base[k] || null; } localStorage.setItem(chiaveBozza(), JSON.stringify(o)); } catch (e) { console.warn('bozza locale', e); } }
+function leggiBozzaLocale() { try { return JSON.parse(localStorage.getItem(chiaveBozza()) || 'null'); } catch (e) { return null; } }
+function statoBozza() { const n = S.bozza ? S.bozza.size : 0; if (n) stato('attesa', 'Bozza di proposta: ' + n + (n === 1 ? ' elemento modificato, non ancora inviato' : ' elementi modificati, non ancora inviati')); }
+function segnaProposta(key) { if (!S.bozza) S.bozza = new Set(); S.bozza.add(key); salvaBozzaLocale(); statoBozza(); aggiornaBannerProposta(); }
+function ridisegnaTutto() { renderDocumento(); costruisciPannelloIpotesi(); aggiornaCalcolati(); if ($('#mappe') && !$('#mappe').hidden) disegnaMappe(); if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); if ($('#soci') && !$('#soci').hidden) disegnaSoci(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if ($('#pan-glossario') && $('#pan-glossario').classList.contains('aperto')) aggiornaGlossario(); }
+function ripristinaBase(chiavi) { for (const k of chiavi) if (S.base[k]) applicaDati(k, clone(S.base[k])); ridisegnaTutto(); }
+function caricaBozzaLocale() {
+  const b = leggiBozzaLocale(); if (!b || !b.chiavi || !Object.keys(b.chiavi).length) return; if (b.autore && S.autore && normNome(b.autore) !== normNome(S.autore)) return;
+  if (inRegime()) { S.bozza = new Set(); for (const [k, d] of Object.entries(b.chiavi)) { try { applicaDati(k, clone(d)); S.bozza.add(k); } catch (e) {} } ridisegnaTutto(); statoBozza(); aggiornaBannerProposta(); toast('Bozza di proposta ripresa da questo browser (' + S.bozza.size + ' elementi): inviarla o scartarla dalla barra in alto', 6000); }
+  else { let n = 0; for (const [k, d] of Object.entries(b.chiavi)) { try { applicaDati(k, clone(d)); segna(k); n++; } catch (e) {} } try { localStorage.removeItem(chiaveBozza()); } catch (e) {} if (n) { ridisegnaTutto(); toast('Modifiche in bozza salvate direttamente nel repository (' + n + ' elementi): il regime di approvazione non è attivo per questo nome', 6000); } }
+}
+function aggiornaBannerProposta() {
+  let div = $('#proposta-banner'); const n = S.bozza ? S.bozza.size : 0; const mostra = n > 0 || (inRegime() && S.mode === 'modifica');
+  if (!mostra) { if (div) div.remove(); return; }
+  if (!div) { div = el('div', { class: 'avviso proposta-banner', id: 'proposta-banner' }); const bar = $('.barra'); if (bar && bar.nextSibling) bar.parentNode.insertBefore(div, bar.nextSibling); else document.body.insertBefore(div, document.body.firstChild); }
+  const nomi = approvatori(); const chi = nomi.length ? nomi.join(', ') : 'un approvatore';
+  div.innerHTML = '<span><b>Regime di approvazione.</b> Le modifiche che salvi restano in bozza in questo browser: entrano nel testo solo dopo il via libera di ' + esc(chi) + '.' + (n ? ' In bozza: ' + n + (n === 1 ? ' elemento' : ' elementi') + ' (' + esc(Array.from(S.bozza).map(nomeChiave).join('; ')) + ').' : '') + '</span>' + (n ? '<span class="pb-azioni"><button class="btn piccolo primario" id="pb-invia">Invia la proposta</button><button class="btn piccolo" id="pb-diff">Vedi le modifiche</button><button class="btn piccolo pericolo" id="pb-scarta">Scarta la bozza</button></span>' : '');
+  const bi = $('#pb-invia', div); if (bi) bi.onclick = () => finestraProposta(); const bd = $('#pb-diff', div); if (bd) bd.onclick = () => finestraProposta(true); const bs = $('#pb-scarta', div); if (bs) bs.onclick = scartaBozza;
+}
+function scartaBozza() { if (!S.bozza || !S.bozza.size) return; if (!confirm('Scartare la bozza? Le modifiche non inviate andranno perse e il testo tornerà alla versione condivisa.')) return; const chiavi = Array.from(S.bozza); S.bozza.clear(); try { localStorage.removeItem(chiaveBozza()); } catch (e) {} ripristinaBase(chiavi); aggiornaBannerProposta(); stato('ok', 'Bozza scartata'); }
+function htmlDiffBozza() { let h = ''; for (const k of Array.from(S.bozza || [])) h += '<div class="diff"><div class="mod-file">' + esc(nomeChiave(k)) + '</div>' + diffDue(k, S.base[k] || null, datiDi(k)) + '</div>'; return h || '<p class="nota-pannello">Nessuna modifica in bozza.</p>'; }
+function finestraProposta(soloDiff) {
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-proposta', id: 'finestra' });
+  fin.innerHTML = '<div class="fin-testa"><b>' + (soloDiff ? 'Modifiche in bozza' : 'Invia la proposta di modifica') + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    '<p class="nota-pannello">' + (soloDiff ? 'Differenze tra la versione condivisa e la tua bozza.' : 'La proposta viene salvata nel repository come file separato e sottoposta a ' + esc(approvatori().join(', ') || 'un approvatore') + '. Il testo condiviso non cambia finché non è approvata; tu vedrai la tua proposta nella voce Modifiche.') + '</p>' +
+    (soloDiff ? '' : '<label class="campo-testo">Descrizione della proposta (che cosa cambia e perché)<textarea id="pr-descr" rows="3"></textarea></label>') +
+    '<div class="pr-diffs">' + htmlDiffBozza() + '</div>' +
+    '<div class="azioni gl-azioni"><span class="spazio"></span><button class="btn piccolo" id="fin-annulla">' + (soloDiff ? 'Chiudi' : 'Annulla') + '</button>' + (soloDiff ? '' : '<button class="btn piccolo primario" id="pr-invia">Invia la proposta</button>') + '</div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+  const bi = $('#pr-invia', fin); if (bi) bi.onclick = async () => { const d = $('#pr-descr', fin).value.trim(); if (!d) { toast('Indicare una breve descrizione della proposta'); $('#pr-descr', fin).focus(); return; } bi.disabled = true; bi.textContent = 'Invio…'; try { await inviaProposta(d); chiudiFinestra(); } catch (e) { bi.disabled = false; bi.textContent = 'Invia la proposta'; toast('Invio non riuscito: ' + (e.message || e), 6000); } };
+}
+async function inviaProposta(descrizione) {
+  if (!S.bozza || !S.bozza.size || !S.backend) throw new Error('nessuna modifica in bozza');
+  const ora = new Date().toISOString(); const id = uid('pr'); const chiavi = Array.from(S.bozza); const dett = { id, autore: S.autore || 'anonimo', quando: ora, descrizione, modifiche: {} };
+  for (const k of chiavi) dett.modifiche[k] = { prima: S.base[k] ? clone(S.base[k]) : null, dopo: clone(datiDi(k)) };
+  if (!S.proposteDett) S.proposteDett = {}; S.proposteDett[id] = dett;
+  await S.backend.salva('prop:' + id, dett, 'Proposta inviata: ' + descrizione.slice(0, 80) + (S.autore ? ' (' + S.autore + ')' : ''));
+  elencoProposte().push({ id, autore: dett.autore, quando: ora, agg: ora, descrizione, stato: 'in attesa', chiavi, decisione: null });
+  if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.proposte = 'Proposta in attesa di approvazione: ' + descrizione.slice(0, 80); segna('proposte');
+  S.bozza.clear(); try { localStorage.removeItem(chiaveBozza()); } catch (e) {} ripristinaBase(chiavi); aggiornaBannerProposta(); aggiornaBadgeModifiche();
+  toast('Proposta inviata: sarà esaminata da ' + (approvatori().join(', ') || 'un approvatore') + '. La trovi nella voce Modifiche.', 6000);
+}
+async function dettaglioProposta(id) { if (!S.proposteDett) S.proposteDett = {}; if (S.proposteDett[id]) return S.proposteDett[id]; const d = await S.backend.leggi(fileDi('prop:' + id)); if (d) S.proposteDett[id] = d; return d; }
+function etichettaStatoProposta(s) { return s === 'in attesa' ? '<span class="sem attenzione">in attesa</span>' : s === 'approvata' ? '<span class="sem ok">approvata</span>' : s === 'respinta' ? '<span class="sem allarme">respinta</span>' : '<span class="sem mod-avvio">' + esc(s || '') + '</span>'; }
+function htmlElencoProposte() {
+  const l = elencoProposte().slice().sort((a, b) => (Date.parse(b.quando) || 0) - (Date.parse(a.quando) || 0)); const att = l.filter(p => p.stato === 'in attesa').length;
+  let h = '<section class="q-sez"><div class="q-testa"><h3>Proposte di modifica' + (att ? ' <span class="sem attenzione">' + att + ' in attesa</span>' : '') + '</h3><span class="nota-pannello">' + (regimeAttivo() ? 'Regime di approvazione attivo: approvatori ' + esc(approvatori().join(', ') || 'nessuno') + '. Le modifiche degli altri Soci entrano nel testo solo dopo il via libera.' : 'Il regime di approvazione non è attivo: tutti i Soci scrivono direttamente nel testo. Si attiva dalle Impostazioni.') + '</span></div>';
+  if (!l.length) h += '<p class="nota-pannello">Nessuna proposta finora.</p>';
+  else h += '<div class="tabella-wrap"><table class="tab q-tab mod-tab pr-tab"><tr class="intestazione"><td>Stato</td><td>Chi</td><td>Quando</td><td>Proposta</td><td>Che cosa tocca</td><td>Decisione</td><td></td></tr>' + l.map(p => '<tr><td>' + etichettaStatoProposta(p.stato) + '</td><td><b>' + esc(p.autore || '') + '</b></td><td>' + esc(dataIt(p.quando)) + '</td><td>' + esc(p.descrizione || '') + '</td><td>' + esc((p.chiavi || []).map(nomeChiave).join('; ')) + '</td><td>' + (p.decisione ? esc((p.decisione.da || '') + ', ' + dataIt(p.decisione.quando)) + (p.decisione.nota ? '<small>' + esc(p.decisione.nota) + '</small>' : '') : '<span class="mod-muto">in sospeso</span>') + '</td><td><button class="btn piccolo" data-pr="apri" data-id="' + esc(p.id) + '">' + (p.stato === 'in attesa' && isApprovatore() ? 'Esamina' : 'Apri') + '</button></td></tr>').join('') + '</table></div>';
+  return h + '</section>';
+}
+async function finestraEsame(id) {
+  const p = propostaDi(id); if (!p) return; chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-proposta', id: 'finestra' });
+  fin.innerHTML = '<div class="fin-testa"><b>Proposta di ' + esc(p.autore || '') + ' del ' + esc(dataIt(p.quando)) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div><p class="nota-pannello">Lettura della proposta dal repository…</p>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = chiudiFinestra;
+  let d = null; try { d = await dettaglioProposta(id); } catch (e) { fin.innerHTML += '<div class="avviso errore">Proposta non leggibile: ' + esc(e.message) + '</div>'; return; }
+  if (!d) { $('.nota-pannello', fin).textContent = 'Il file della proposta non è più nel repository.'; return; }
+  const mod = d.modifiche || {}; let diffs = ''; let conflitti = 0;
+  for (const [k, m] of Object.entries(mod)) { const attuale = datiDi(k); const cambiato = JSON.stringify(attuale) !== JSON.stringify(m.prima); if (cambiato && p.stato === 'in attesa') conflitti++; diffs += '<div class="diff"><div class="mod-file">' + esc(nomeChiave(k)) + (cambiato && p.stato === 'in attesa' ? ' <span class="sem allarme">il testo condiviso è cambiato dopo la proposta</span>' : '') + '</div>' + diffDue(k, m.prima, m.dopo) + (cambiato && p.stato === 'in attesa' ? '<div class="b">Rispetto alla versione condivisa di adesso</div>' + diffDue(k, attuale, m.dopo) : '') + '</div>'; }
+  const mio = normNome(p.autore) === normNome(S.autore); const puo = isApprovatore() && p.stato === 'in attesa' && !S.readonly;
+  fin.innerHTML = '<div class="fin-testa"><b>Proposta di ' + esc(p.autore || '') + ' del ' + esc(dataIt(p.quando)) + '</b>' + etichettaStatoProposta(p.stato) + '<button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    '<div class="pr-descr">' + esc(p.descrizione || '') + '</div>' + (p.decisione ? '<div class="avviso">Decisione di ' + esc(p.decisione.da || '') + ' del ' + esc(dataIt(p.decisione.quando)) + (p.decisione.nota ? ': ' + esc(p.decisione.nota) : '') + '</div>' : '') +
+    (conflitti ? '<div class="avviso errore">Per ' + conflitti + (conflitti === 1 ? ' elemento' : ' elementi') + ' il testo condiviso è cambiato dopo l’invio: approvando, la versione proposta sostituisce quella attuale per intero. Verificare il secondo confronto prima di decidere.</div>' : '') +
+    '<div class="pr-diffs">' + diffs + '</div>' +
+    (puo ? '<label class="campo-testo">Nota per l’autore (facoltativa, obbligatoria se si respinge)<textarea id="pr-nota" rows="2"></textarea></label>' : '') +
+    '<div class="azioni gl-azioni">' + (mio && p.stato === 'in attesa' && !S.readonly ? '<button class="btn piccolo pericolo" id="pr-ritira">Ritira la proposta</button>' : '') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Chiudi</button>' + (puo ? '<button class="btn piccolo pericolo" id="pr-respingi">Respingi</button><button class="btn piccolo primario" id="pr-approva">Approva e applica</button>' : '') + '</div>';
+  $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+  const ba = $('#pr-approva', fin); if (ba) ba.onclick = () => { if (conflitti && !confirm('Il testo condiviso è cambiato dopo la proposta: applicarla comunque per intero?')) return; decidiProposta(id, 'approvata', $('#pr-nota', fin).value.trim(), d); chiudiFinestra(); };
+  const br = $('#pr-respingi', fin); if (br) br.onclick = () => { const nota = $('#pr-nota', fin).value.trim(); if (!nota) { toast('Indicare all’autore il motivo del rifiuto'); $('#pr-nota', fin).focus(); return; } decidiProposta(id, 'respinta', nota, d); chiudiFinestra(); };
+  const bt = $('#pr-ritira', fin); if (bt) bt.onclick = () => { if (!confirm('Ritirare la proposta? Resta nell’elenco come ritirata.')) return; decidiProposta(id, 'ritirata', '', d); chiudiFinestra(); };
+}
+function decidiProposta(id, stato, nota, dett) {
+  const p = propostaDi(id); if (!p) return; const ora = new Date().toISOString(); if (!S.msgExtra) S.msgExtra = {};
+  if (stato === 'approvata' && dett) { for (const [k, m] of Object.entries(dett.modifiche || {})) { applicaDati(k, clone(m.dopo)); S.msgExtra[k] = 'Proposta di ' + (p.autore || '') + ' approvata: ' + String(p.descrizione || '').slice(0, 60); segna(k); } ridisegnaTutto(); }
+  p.stato = stato; p.agg = ora; p.decisione = { da: S.autore || 'anonimo', quando: ora, nota: nota || '' };
+  S.msgExtra.proposte = 'Proposta di ' + (p.autore || '') + ' ' + stato + (stato === 'ritirata' ? '' : ' da ' + (S.autore || '')) + ': ' + String(p.descrizione || '').slice(0, 60); segna('proposte');
+  if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); aggiornaBadgeModifiche();
+  toast(stato === 'approvata' ? 'Proposta approvata e applicata al testo condiviso' : stato === 'respinta' ? 'Proposta respinta: l’autore vedrà la nota' : 'Proposta ritirata');
+}
+function fondiProposte(remoto) { const R = Object.assign(proposteVuote(), remoto || {}), M = S.proposte || proposteVuote(); const out = new Map(); for (const p of (R.proposte || []).concat(M.proposte || [])) { const cur = out.get(p.id); if (!cur || (Date.parse(p.agg || p.quando) || 0) >= (Date.parse(cur.agg || cur.quando) || 0)) out.set(p.id, clone(p)); } S.proposte = { proposte: [...out.values()].sort((a, b) => (Date.parse(a.quando) || 0) - (Date.parse(b.quando) || 0)) }; }
+function aggiornaBadgeModifiche() { const b = $('#b-modifiche'); if (!b) return; const n = isApprovatore() ? proposteInAttesa().length : 0; b.textContent = n ? 'Modifiche (' + n + ')' : 'Modifiche'; b.title = n ? n + (n === 1 ? ' proposta in attesa di approvazione' : ' proposte in attesa di approvazione') : 'Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico'; }
+function notificaProposte(prima) {
+  const P = new Map((prima && prima.proposte || []).map(p => [p.id, p])); const mio = normNome(S.autore);
+  for (const p of elencoProposte()) { const old = P.get(p.id); if (!old) { if (isApprovatore() && p.stato === 'in attesa' && normNome(p.autore) !== mio) toast('Nuova proposta di ' + p.autore + ' in attesa di approvazione: «' + String(p.descrizione || '').slice(0, 60) + '» (voce Modifiche)', 7000); continue; }
+    if (old.stato !== p.stato && normNome(p.autore) === mio && (p.stato === 'approvata' || p.stato === 'respinta')) toast('La tua proposta «' + String(p.descrizione || '').slice(0, 60) + '» è stata ' + p.stato + (p.decisione && p.decisione.da ? ' da ' + p.decisione.da : '') + (p.decisione && p.decisione.nota ? ': ' + p.decisione.nota : ''), 9000); }
+}
+function dopoNovita(k, prima) {
+  if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
+  if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
+  if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
+  return false;
+}
+function htmlRegole() {
+  if (!S.backend || S.backend.nome !== 'github' || S.repoVuoto) return '';
+  const R = S.regole || regoleVuote(); const puo = !S.readonly && (isApprovatore() || !approvatori().length);
+  return '<h4>Regime di approvazione delle modifiche</h4><p class="nota-pannello">Con il regime attivo, le modifiche dei Soci non indicati come approvatori restano in bozza e diventano una proposta: entrano nel testo condiviso solo dopo il via libera di un approvatore (voce Modifiche). ' + (puo ? 'Chi attiva il regime è aggiunto agli approvatori se l’elenco è vuoto.' : 'Solo gli approvatori possono cambiare queste regole.') + '</p>' +
+    '<label class="campo-testo" style="display:flex;gap:.5rem;align-items:center"><input type="checkbox" id="reg-on"' + (R.approvazione ? ' checked' : '') + (puo ? '' : ' disabled') + ' style="width:auto"> Le modifiche entrano nel testo solo dopo approvazione</label>' +
+    '<label class="campo-testo">Approvatori (nomi come compaiono nel collegamento, uno per riga)<textarea id="reg-appr" rows="3"' + (puo ? '' : ' disabled') + '>' + esc(approvatori().join('\n')) + '</textarea></label>' +
+    (puo ? '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button class="btn" id="reg-salva">Salva le regole</button></div>' : '');
+}
+function attivaRegole(c) {
+  const b = $('#reg-salva', c); if (!b) return;
+  b.onclick = () => { const on = !!$('#reg-on', c).checked; let nomi = $('#reg-appr', c).value.split('\n').map(x => x.trim()).filter(Boolean); if (on && !nomi.length && S.autore) nomi = [S.autore]; if (on && !nomi.length) { toast('Indicare almeno un approvatore'); return; } if (on && S.autore && !nomi.map(normNome).includes(normNome(S.autore)) && !confirm('Il tuo nome non è tra gli approvatori: le tue modifiche future resteranno in bozza fino all’approvazione. Confermare?')) return; S.regole = { approvazione: on, approvatori: nomi }; segna('regole'); aggiornaBannerProposta(); aggiornaBadgeModifiche(); costruisciImpostazioni(); toast(on ? 'Regime di approvazione attivo: approvatori ' + nomi.join(', ') : 'Regime di approvazione disattivato'); };
+}
+document.addEventListener('click', ev => { const b = ev.target.closest('button[data-pr]'); if (!b) return; if (b.dataset.pr === 'apri') finestraEsame(b.dataset.id); });
+
 // ================================================================ scorrimento e avvio
 function evidenziaSommario() { const cur = capitoloVisibile() || 'nota'; for (const a of $$('#sommario a')) a.classList.toggle('attuale', a.getAttribute('href') === '#cap-' + cur); }
 document.addEventListener('scroll', debounce(evidenziaSommario, 120), { passive: true });

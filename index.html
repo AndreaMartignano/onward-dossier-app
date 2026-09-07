@@ -736,6 +736,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .tr-occ input { margin-top: .2rem; }
 .tr-ctx mark { background: var(--chip-param); color: inherit; padding: 0 .15em; }
 .tr-pre { border: 1px solid var(--filo); border-radius: 4px; padding: .5rem .6rem; margin-bottom: .5rem; font-size: .82rem; }
+.nuova-versione { position: sticky; top: var(--barra-h, 52px); z-index: 44; margin: 0; border-left-color: var(--attesa); display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
 
 </style>
 </head>
@@ -999,6 +1000,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
+window.ONWARD_BUILD = '2026-09-07T12:34:56Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3370,20 +3372,27 @@ const SOSTITUZIONI_PREDEFINITE = [{ id: 'figure-2026', nome: 'Nuove denominazion
   [/\bUn Senior Consultant a \{\{eur:P\.jr_costo\}\}/g, 'Un Consultant a {{eur:P.jr_costo}}'], [/costo azienda di un Senior Consultant/g, 'costo azienda di un Consultant'], [/^Senior Consultant: costo azienda/g, 'Consultant: costo azienda'], [/giornata Senior Consultant/g, 'giornata Consultant'],
   [/\blistino Partner\b/g, 'listino Advisor'], [/\bgiornata Partner\b/g, 'giornata Advisor'], [/\bGiornata Partner\b/g, 'Giornata Advisor'], [/\btariffa piena Partner\b/g, 'tariffa piena Advisor'], [/\btariffa Partner\b/g, 'tariffa Advisor'],
   [/\bEquity Partner\b/g, 'Strategic Partner']
-], chiavi: /^(struttura|glossario|cap:)/, celle: { junior: 'Junior Consultant', senior: 'Consultant', director: 'Senior Consultant', partner: 'Advisor', equity: 'Strategic Partner' } }];
+], chiavi: /^(struttura|glossario|cap:)/, celle: { senior: ['Senior Consultant', 'Consultant'], director: ['Director', 'Senior Consultant'], partner: ['Partner', 'Advisor'], equity: ['Equity Partner', 'Strategic Partner'] } }];
 function anteprimaPredefinita(sp) {
   let n = 0; const punti = new Set(); const campi = campiTesto();
   for (const c of campi) { if (sp.chiavi && !sp.chiavi.test(c.key)) continue; let s = c.get(); if (!s) continue; let k = 0; for (const [re, sost] of sp.coppie) { const m = s.match(re); if (m) { k += m.length; s = s.replace(re, sost); } } if (k) { n += k; punti.add(c.dove); } }
-  if (sp.celle) { for (const p of S.parti) for (const cp of p.capitoli) for (const b of cp.blocchi) if (b.t === 'tbl') for (const r of b.rows || []) { const key = celleListino(r); if (key && r[0] && r[0].text !== sp.celle[key]) { n++; punti.add('Capitolo ' + (S.numeri[cp.id] || '') + ' ' + cp.titolo); } } }
+  if (sp.celle) { for (const p of S.parti) for (const cp of p.capitoli) for (const b of cp.blocchi) if (b.t === 'tbl') for (const r of b.rows || []) { const key = celleListino(r); const et = r[0] && r[0].text; if (key && sp.celle[key] && et === sp.celle[key][0]) { n++; punti.add('Capitolo ' + (S.numeri[cp.id] || '') + ' ' + cp.titolo); } } }
   return { n, punti: [...punti] };
 }
 function celleListino(riga) { for (const c of riga.slice(1)) { const m = String(c.text || '').match(/^\{\{eur:P\.listino\.(junior|senior|director|partner|equity)\}\}$/); if (m) return m[1]; } return null; }
 function applicaPredefinita(sp) {
   const chiavi = new Set(); let n = 0;
   for (const c of campiTesto()) { if (sp.chiavi && !sp.chiavi.test(c.key)) continue; let s = c.get(); if (!s) continue; let t = s; for (const [re, sost] of sp.coppie) t = t.replace(re, (m) => { n++; return sost; }); if (t !== s) { c.set(t); chiavi.add(c.key); } }
-  if (sp.celle) { for (const p of S.parti) for (const cp of p.capitoli) for (const b of cp.blocchi) if (b.t === 'tbl') for (const r of b.rows || []) { const key = celleListino(r); if (key && r[0] && r[0].text !== sp.celle[key]) { r[0].text = sp.celle[key]; n++; chiavi.add('cap:' + cp.id); } } }
+  if (sp.celle) { for (const p of S.parti) for (const cp of p.capitoli) for (const b of cp.blocchi) if (b.t === 'tbl') for (const r of b.rows || []) { const key = celleListino(r); const et = r[0] && r[0].text; if (key && sp.celle[key] && et === sp.celle[key][0]) { r[0].text = sp.celle[key][1]; n++; chiavi.add('cap:' + cp.id); } } }
   for (const k of chiavi) segna(k); if (chiavi.has('glossario') || chiavi.has('rete')) costruisciRegexTermini(); renderDocumento(); if (chiavi.has('glossario')) aggiornaGlossario(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto();
   return n;
+}
+// ================================================================ pagina dei Soci: avviso di nuova versione (la cache del browser può trattenere quella vecchia)
+async function controllaVersionePagina() {
+  if (!window.ONWARD_GUSCIO || !window.ONWARD_BUILD || !/^https?:/.test(location.protocol)) return;
+  try { const t = await fetch(location.pathname + '?v=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.text() : ''); const m = t.match(/window\.ONWARD_BUILD = '([^']+)'/); if (!m || m[1] === window.ONWARD_BUILD || m[1] < window.ONWARD_BUILD) return;
+    if ($('#nuova-versione')) return; const div = el('div', { class: 'avviso nuova-versione', id: 'nuova-versione' }); div.innerHTML = 'È disponibile una versione più recente della pagina dei Soci (' + esc(m[1].slice(0, 10)) + '). <button class="btn piccolo" id="nv-ricarica">Ricarica</button> <span class="nota-pannello" style="margin:0">Se dopo la ricarica non cambia nulla, forzarla con Cmd+Shift+R (Mac) o Ctrl+F5.</span>';
+    document.body.insertBefore(div, document.body.firstChild); $('#nv-ricarica', div).onclick = () => { if (S.dirty.size) { toast('Attendere il salvataggio in corso'); return; } location.replace(location.pathname + '?v=' + encodeURIComponent(m[1]) + location.hash); }; } catch (e) {}
 }
 // ================================================================ scorrimento e avvio
 function evidenziaSommario() { const cur = capitoloVisibile() || 'nota'; for (const a of $$('#sommario a')) a.classList.toggle('attuale', a.getAttribute('href') === '#cap-' + cur); }
@@ -3405,7 +3414,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

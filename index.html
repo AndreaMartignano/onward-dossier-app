@@ -1000,7 +1000,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-07T12:34:56Z';
+window.ONWARD_BUILD = '2026-09-07T13:51:45Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1836,7 +1836,8 @@ function renderGlossarioStampa() {
 
 // ================================================================ rete di partenza: dati strutturati, tabelle generate, mappe, schede, modifica
 const TIPI = { socio: { plurale: 'Soci', singolare: 'Socio', lista: 'soci' }, advisor: { plurale: 'Advisor', singolare: 'Advisor', lista: 'advisor' }, partner: { plurale: 'Società partner', singolare: 'Società partner', lista: 'partner' }, consulente: { plurale: 'Consulenti', singolare: 'Consulente', lista: 'consulenti' } };
-const RUOLI = { guida: 'guida', presidio: 'presidio', partecipa: 'partecipa', riferimento: 'riferimento' };
+const RUOLI = { guida: 'guida', presidio: 'presidio', partecipa: 'partecipa', riferimento: 'Advisor' };
+function etichettaRuolo(r, tipo) { if (r === 'riferimento') return tipo === 'partner' ? 'Società partner' : tipo === 'consulente' ? 'Consulente' : 'Advisor'; return RUOLI[r] || r; }
 function reteVuota() { return { practice: [], cerchi: {}, soci: [], advisor: [], partner: [], consulenti: [], note: {} }; }
 function tuttiEnti() { const R = S.rete; return [].concat(R.soci || [], R.advisor || [], R.partner || [], R.consulenti || []); }
 function ente(id) { return tuttiEnti().find(e => e.id === id) || null; }
@@ -2087,7 +2088,7 @@ function modificaEnte(id) {
   chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente', id: 'finestra' });
   const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
   const campo = (k, lab, ta, rows) => '<label class="campo-testo" data-campo="' + k + '">' + lab + (ta ? '<textarea class="f" data-f="' + k + '" rows="' + (rows || 3) + '">' + esc(e[k] || '') + '</textarea>' : '<input class="f" data-f="' + k + '" value="' + esc(e[k] || '') + '">') + '</label>';
-  const practiceRighe = (S.rete.practice || []).map(p => { const cur = (e.practice || []).find(x => x.id === p.id); return '<div class="pr-riga"><input type="checkbox" class="pr-c" id="pr-c-' + p.id + '" data-pr="' + p.id + '"' + (cur ? ' checked' : '') + '><label class="pr-nome" for="pr-c-' + p.id + '"><b>' + esc(p.num) + '</b> ' + esc(p.nome) + '</label><select class="pr-r" data-pr="' + p.id + '" title="Ruolo nella Practice">' + ['guida', 'presidio', 'partecipa', 'riferimento'].map(r => opt(r, cur ? cur.ruolo : (e.tipo === 'socio' ? 'presidio' : 'riferimento'), r)).join('') + '</select></div>'; }).join('');
+  const practiceRighe = (S.rete.practice || []).map(p => { const cur = (e.practice || []).find(x => x.id === p.id); return '<div class="pr-riga"><input type="checkbox" class="pr-c" id="pr-c-' + p.id + '" data-pr="' + p.id + '"' + (cur ? ' checked' : '') + '><label class="pr-nome" for="pr-c-' + p.id + '"><b>' + esc(p.num) + '</b> ' + esc(p.nome) + '</label><select class="pr-r" data-pr="' + p.id + '" title="Ruolo nella Practice">' + ['guida', 'presidio', 'partecipa', 'riferimento'].map(r => opt(r, cur ? cur.ruolo : (e.tipo === 'socio' ? 'presidio' : 'riferimento'), etichettaRuolo(r, e.tipo))).join('') + '</select></div>'; }).join('');
   fin.innerHTML = '<div class="fin-testa"><b>' + (nuova ? 'Nuova persona o società' : 'Modifica la scheda: ' + esc(e.nome)) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
     '<p class="nota-pannello">Le modifiche aggiornano le tabelle del capitolo VIII § 6, le schede dell’Appendice C, il presidio delle Practice nell’Appendice A, la capacità per Practice del capitolo XIII e le mappe. Le cifre vive si scrivono come nel resto del documento (per esempio {{eur:r.netti}}).</p>' +
     '<div class="fin-griglia"><label class="campo-testo">Categoria<select class="f" data-f="tipo"' + (nuova ? '' : ' disabled') + '>' + opt('socio', e.tipo, 'Socio') + opt('advisor', e.tipo, 'Advisor') + opt('partner', e.tipo, 'Società partner') + opt('consulente', e.tipo, 'Consulente') + '</select></label>' +
@@ -2101,7 +2102,7 @@ function modificaEnte(id) {
   document.body.appendChild(fin); $('#sfondo').classList.add('aperto');
   $('.f[data-f="alias"]', fin).value = (e.alias || []).join('; ');
   const tipoSel = $('.f[data-f="tipo"]', fin);
-  const adatta = () => { const t = tipoSel.value; for (const c of $$('[data-campo]', fin)) { const k = c.dataset.campo; c.hidden = (k === 'societa' && !(t === 'advisor' || t === 'consulente')) || ((k === 'sintesi' || k === 'presidio') && t !== 'socio') || (k === 'ambito' && t !== 'partner') || (k === 'sede' && !(t === 'partner' || t === 'socio')); } };
+  const adatta = () => { const t = tipoSel.value; for (const sel of $$('.pr-r', fin)) { for (const o of sel.options) { const socioOpt = o.value !== 'riferimento'; o.hidden = o.disabled = (t === 'socio') ? !socioOpt : socioOpt; if (o.value === 'riferimento') o.textContent = etichettaRuolo('riferimento', t); } if (t === 'socio' && sel.value === 'riferimento') sel.value = 'presidio'; if (t !== 'socio') sel.value = 'riferimento'; } for (const c of $$('[data-campo]', fin)) { const k = c.dataset.campo; c.hidden = (k === 'societa' && !(t === 'advisor' || t === 'consulente')) || ((k === 'sintesi' || k === 'presidio') && t !== 'socio') || (k === 'ambito' && t !== 'partner') || (k === 'sede' && !(t === 'partner' || t === 'socio')); } };
   tipoSel.onchange = adatta; adatta();
   $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
   const del = $('#fin-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare la scheda di «' + e.nome + '»? Resta nella cronologia della rete.')) return; const l = listaDi(e.tipo); const i = l.findIndex(x => x.id === e.id); if (i >= 0) l.splice(i, 1); for (const a of (S.rete.advisor || []).concat(S.rete.consulenti || [])) if (a.societa === e.id) a.societa = ''; chiudiFinestra(); dopoModificaRete(); };
@@ -3308,7 +3309,7 @@ async function pubblicaPaginaSoci(btn, esito) {
     const arch = new ArchivioGitHub(Object.assign({}, S.cfg, { owner: R.owner, repo: R.repo, branch: R.branch || 'main' }));
     let cur = null; try { cur = await arch.api('/contents/' + R.path + '?ref=' + encodeURIComponent(R.branch || 'main')); } catch (e) { if (e.status === 401 || e.status === 403) throw new Error('il token non ha accesso al repository ' + R.owner + '/' + R.repo + ' (GitHub ' + e.status + '): serve un token che includa anche quel repository, con permesso Contents in lettura e scrittura'); throw e; }
     if (cur && cur.sha === sha) { esito.innerHTML = '<div class="avviso">La pagina dei Soci è già aggiornata a questa versione: ' + link + '.</div>'; btn.disabled = false; btn.textContent = testo; return; }
-    await arch.caricaFile(R.path, bytes, 'Pagina dei Soci aggiornata dal Dossier vivo' + (S.autore ? ' (' + S.autore + ')' : ''));
+    try { await arch.caricaFile(R.path, bytes, 'Pagina dei Soci aggiornata dal Dossier vivo' + (S.autore ? ' (' + S.autore + ')' : '')); } catch (e) { if (e.status === 401 || e.status === 403 || e.status === 404) throw new Error('il token in uso non può scrivere nel repository ' + R.owner + '/' + R.repo + ' (GitHub ' + e.status + '). Su GitHub, in Settings, Developer settings, Fine-grained tokens, aprire il token e aggiungere quel repository con permesso Contents in lettura e scrittura, oppure creare un token che copra entrambi i repository'); throw e; }
     esito.innerHTML = '<div class="avviso">Pagina dei Soci aggiornata nel repository ' + esc(R.owner + '/' + R.repo) + ' (' + Math.round(bytes.length / 1024) + ' KB). Entro un paio di minuti sarà in linea su ' + link + '; chi l’ha già aperta la vede alla prossima ricarica (se necessario forzando l’aggiornamento con Cmd+Shift+R).</div>';
   } catch (e) { esito.innerHTML = '<div class="avviso errore">Pubblicazione non riuscita: ' + esc(e.message || String(e)) + '. In alternativa si scarica index.html e lo si carica a mano nel repository.</div>'; }
   btn.disabled = false; btn.textContent = testo;

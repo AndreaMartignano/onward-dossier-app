@@ -852,6 +852,8 @@ const MODELLO = (() => {
     r.gg_vend = r.capacita / nS;
     r.gg_orig = r.gg_orig_tot / nS;
     r.gg_gest = r.gg_gest_tot / nS;
+    r.gg_apporto_tot = r.gg_orig_tot + r.gg_gest_tot; // giornate non fatturate: origination e sviluppo piu' gestione, metodo, formazione
+    r.gg_apporto = r.gg_apporto_tot / nS;
     r.gg_anno_medio = r.gg_anno_tot / nS;
     r.q_prod_medio = r.gg_anno_tot ? r.capacita / r.gg_anno_tot : 0; r.q_orig_medio = r.gg_anno_tot ? r.gg_orig_tot / r.gg_anno_tot : 0; r.q_gest_medio = r.gg_anno_tot ? r.gg_gest_tot / r.gg_anno_tot : 0;
     r.tetto = r.capacita * p.listino.partner;
@@ -954,7 +956,8 @@ const MODELLO = (() => {
     ind.onward_tot = ind.onward_comp + r.utile_socio; ind.vantaggio = ind.onward_tot / ind.proprio - 1;
     r.indiff = ind;
     // capitale
-    r.apporto_opera = r.gg_orig_tot * p.costo_opp;
+    r.apporto_opera = r.gg_apporto_tot * p.costo_opp; // tutte le giornate non fatturate (origination, sviluppo, gestione, metodo) al costo opportunita'
+    r.apporto_opera_orig = r.gg_orig_tot * p.costo_opp; r.apporto_opera_gest = r.gg_gest_tot * p.costo_opp;
     r.valore = r.mo * p.multiplo;
     r.ingresso_20_valore = r.valore * 0.20; r.ingresso_20_nominale = p.capitale * 0.25;
     r.sconto_nominale = 1 - r.ingresso_20_nominale / r.ingresso_20_valore;
@@ -968,6 +971,7 @@ const MODELLO = (() => {
       s.gg_vendute = s.gg_vend * u; s.comp_exec = poolExec * s.quota_cap; s.comp_orig = poolOrig * s.quota_orig; s.compenso = s.comp_exec + s.comp_orig;
       s.utile = r.utile_socio; s.reddito = s.compenso + s.utile;
       s.proprio = s.gg_vendute * ind.netto_proprio_gg; s.vantaggio = s.proprio ? s.reddito / s.proprio - 1 : 0;
+      s.gg_apporto = s.gg_orig + s.gg_gest; s.apporto = s.gg_apporto * p.costo_opp;
     }
     r.soci_dett = D; r.pool_orig = poolOrig; r.pool_exec = poolExec; r.quote_ok = D.every(s => Math.abs(s.somma_quote - 1) < 0.005);
     r.reddito_min = D.length ? Math.min.apply(null, D.map(s => s.reddito)) : 0; r.reddito_max = D.length ? Math.max.apply(null, D.map(s => s.reddito)) : 0;
@@ -1000,7 +1004,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-07T14:07:14Z';
+window.ONWARD_BUILD = '2026-09-07T14:48:27Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1086,6 +1090,7 @@ function renderInline(t) {
 }
 function testoPiano(s) { const h = esc(s); return S.noLink ? h : linkaTermini(h); }
 function renderTesto(t) { return renderInline(String(t == null ? '' : t)); }
+function linkEsterno(u) { const t = String(u).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''); return '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(t) + '</a>'; }
 function tokHtml(fmt, expr) {
   if (fmt === 'cap') {
     const num = S.numeri[expr] || '?';
@@ -1618,7 +1623,7 @@ function costruisciImpostazioni() {
     '<label class="campo-testo">Token di accesso personale (con permesso Contents: lettura e scrittura sul repository)<input id="cfg-token" type="password" value="' + esc(cfg.token || '') + '"><span>Il token resta salvato solo in questo browser.</span></label>' +
     '<label class="campo-testo">Indirizzo e-mail per i commit (facoltativo)<input id="cfg-email" value="' + esc(cfg.email || '') + '"></label></div>' +
     '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn primario" id="cfg-salva">Salva e collega</button><button class="btn" id="cfg-init"' + (S.repoVuoto && !G ? '' : ' hidden') + '>' + (S.repoMancanti && S.repoMancanti < tuttiKey().length ? 'Completa il repository (' + S.repoMancanti + ' file mancanti)' : 'Inizializza il repository con questo contenuto') + '</button><button class="btn"' + (G ? ' hidden' : '') + ' id="cfg-azzera">Azzera le modifiche locali</button><button class="btn" id="cfg-importa">Importa dati (JSON)</button><input type="file" id="cfg-file" accept="application/json,.json" hidden>' + (S.backend && S.backend.nome === 'github' && !S.repoVuoto && !G ? '<button class="btn" id="cfg-carica-html" title="Mette una copia di questo file nel repository, così i Soci possono scaricarlo da lì">Carica il file dell’applicazione nel repository</button><input type="file" id="cfg-file-html" accept="text/html,.html" hidden>' + (window.ONWARD_GUSCIO_GZ && window.ONWARD_PAGINA_REPO ? '<button class="btn" id="cfg-pagina" title="Scrive la versione della pagina dei Soci contenuta in questo file nel repository pubblico che la pubblica">Aggiorna la pagina dei Soci</button>' : '') : '') + '</div><div id="cfg-esito">' + (S.backend && S.backend.nome === 'github' && S.repoFile && !S.repoVuoto ? '<div class="avviso">Collegato: ' + S.repoFile + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.' + (S.htmlNelRepo ? ' Il file dell’applicazione è nel repository: <a href="https://github.com/' + esc(S.cfg.owner + '/' + S.cfg.repo) + '/blob/' + esc(S.cfg.branch) + '/Onward_Dossier_vivo.html" target="_blank" rel="noopener">Onward_Dossier_vivo.html</a>.' : '') + '</div>' : '') + '</div>' +
-    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogramo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
+    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogamo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
   $('#cfg-tipo', c).onchange = e => { $('#cfg-gh', c).hidden = e.target.value !== 'github'; };
   $('#cfg-tema', c).value = document.documentElement.dataset.theme || ''; $('#cfg-tema', c).onchange = e => { if (e.target.value) document.documentElement.dataset.theme = e.target.value; else delete document.documentElement.dataset.theme; try { localStorage.setItem('onward.tema', e.target.value); } catch (x) {} };
   $('#cfg-salva', c).onclick = async () => { const cfg = { tipo: $('#cfg-tipo', c).value, autore: $('#cfg-autore', c).value.trim(), owner: $('#cfg-owner', c).value.trim(), repo: $('#cfg-repo', c).value.trim(), branch: $('#cfg-branch', c).value.trim() || 'main', token: $('#cfg-token', c).value.trim(), email: $('#cfg-email', c).value.trim() }; S.cfg = cfg; try { localStorage.setItem('onward.cfg', JSON.stringify(cfg)); } catch (e) {} await collega(true); };
@@ -1913,6 +1918,7 @@ function reteBlocchi(vista, b) {
       if (tipo === 'partner' && e.ambito) rows.push(['**Ambito di competenza**', e.ambito]);
       rows.push(['**Attività svolte**', e.attivita || 'Da completare.']); rows.push(['**Reti relazionali**', e.reti || 'Da completare.']);
       rows.push(['**Progetti già messi a fatto comune con Onward**', e.progetti || 'Da completare.']); rows.push(['**Da completare o validare**', e.da_completare || '']);
+      if (e.link) rows.push(['**Profilo pubblico**', e.link]);
       out.push(tblV(false, rows, [0.24, 0.76], { anchor: 'scheda-' + e.id, header: true }));
     }
   } else if (vista === 'capacita-practice') {
@@ -1982,6 +1988,7 @@ function apriScheda(id, anchor) {
   if ((tipo === 'advisor' || tipo === 'consulente')) { const p = e.societa && ente(e.societa); meta += '<div class="sc-riga">Società partner di provenienza: ' + (p ? lk('ente', p.id, p.nome) : '<i>nessuna</i>') + '</div>'; }
   if (tipo === 'partner') { const ad = advisorDi(e.id); meta += '<div class="sc-riga">Advisor che ne provengono: ' + (ad.length ? ad.map(a => lk('ente', a.id, a.nome)).join(', ') : '<i>nessuno</i>') + '</div>'; if (e.ambito) meta += '<div class="sc-riga">Ambito: ' + renderTesto(e.ambito) + '</div>'; }
   if (tipo === 'socio' && e.presidio) meta += '<div class="sc-riga">Presidio in Onward: ' + renderTesto(e.presidio) + '</div>';
+  if (e.link) meta += '<div class="sc-riga">Profilo pubblico: ' + linkEsterno(e.link) + '</div>';
   const sez = [[tipo === 'partner' ? 'Profilo societario' : 'Profilo professionale', e.profilo], ['Attività svolte', e.attivita], ['Reti relazionali', e.reti], ['Progetti già messi a fatto comune con Onward', e.progetti], ['Da completare o validare', e.da_completare]];
   const corpo = sez.filter(([, t]) => t).map(([k, t]) => '<div class="pop-tit">' + esc(k) + '</div><div class="pop-def">' + renderTesto(t) + '</div>').join('');
   const html = '<div class="pop-testa"><b>' + esc(e.nome) + '</b><button class="btn piccolo" id="pop-chiudi">Chiudi</button></div>' + meta + corpo +
@@ -2084,7 +2091,7 @@ function boardPractice() {
 // ---------------------------------------------------------------- modifica di una scheda
 function nuovoEnte() { modificaEnte(null); }
 function modificaEnte(id) {
-  const e0 = id ? ente(id) : null; const nuova = !e0; const e = e0 ? clone(e0) : { id: '', tipo: 'socio', nome: '', breve: '', qualifica: '', sede: '', societa: '', practice: [], sintesi: '', presidio: '', ambito: '', profilo: '', attivita: '', reti: '', progetti: '', da_completare: '', alias: [] };
+  const e0 = id ? ente(id) : null; const nuova = !e0; const e = e0 ? clone(e0) : { id: '', tipo: 'socio', nome: '', breve: '', qualifica: '', sede: '', societa: '', practice: [], sintesi: '', presidio: '', ambito: '', profilo: '', attivita: '', reti: '', progetti: '', da_completare: '', alias: [], link: '' };
   chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente', id: 'finestra' });
   const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
   const campo = (k, lab, ta, rows) => '<label class="campo-testo" data-campo="' + k + '">' + lab + (ta ? '<textarea class="f" data-f="' + k + '" rows="' + (rows || 3) + '">' + esc(e[k] || '') + '</textarea>' : '<input class="f" data-f="' + k + '" value="' + esc(e[k] || '') + '">') + '</label>';
@@ -2094,7 +2101,7 @@ function modificaEnte(id) {
     '<div class="fin-griglia"><label class="campo-testo">Categoria<select class="f" data-f="tipo"' + (nuova ? '' : ' disabled') + '>' + opt('socio', e.tipo, 'Socio') + opt('advisor', e.tipo, 'Advisor') + opt('partner', e.tipo, 'Società partner') + opt('consulente', e.tipo, 'Consulente') + '</select></label>' +
     campo('nome', 'Nome') + campo('breve', 'Nome breve (mappe)') + campo('qualifica', 'Qualifica o ruolo') + campo('sede', 'Sede') +
     '<label class="campo-testo" data-campo="societa">Società partner di provenienza<select class="f" data-f="societa">' + opt('', e.societa || '', 'Nessuna') + (S.rete.partner || []).map(p => opt(p.id, e.societa || '', p.nome)).join('') + '</select></label>' +
-    campo('alias', 'Altre forme del nome nel testo (separate da punto e virgola)') + '</div>' +
+    campo('alias', 'Altre forme del nome nel testo (separate da punto e virgola)') + campo('link', 'Profilo pubblico o sito (indirizzo web)') + '</div>' +
     '<div class="pop-tit">Practice di appartenenza e ruolo</div><div class="pr-lista">' + practiceRighe + '</div>' +
     campo('sintesi', 'Profilo in sintesi (tabella dei Soci)', true, 2) + campo('presidio', 'Presidio in Onward (tabella dei Soci)', true, 2) + campo('ambito', 'Ambito di competenza (tabella delle società partner)', true, 2) +
     campo('profilo', 'Profilo professionale o societario', true, 5) + campo('attivita', 'Attività svolte', true, 4) + campo('reti', 'Reti relazionali', true, 3) + campo('progetti', 'Progetti già messi a fatto comune con Onward', true, 4) + campo('da_completare', 'Da completare o validare', true, 2) +
@@ -2113,6 +2120,7 @@ function modificaEnte(id) {
     n.nome = nome; n.breve = f('breve') || nome; n.qualifica = f('qualifica'); n.sede = f('sede'); n.societa = (tipo === 'advisor' || tipo === 'consulente') ? f('societa') : ''; n.alias = f('alias').split(';').map(x => x.trim()).filter(Boolean);
     n.practice = $$('.pr-c:checked', fin).map(c => ({ id: c.dataset.pr, ruolo: $('.pr-r[data-pr="' + c.dataset.pr + '"]', fin).value }));
     for (const k of ['sintesi', 'presidio', 'ambito', 'profilo', 'attivita', 'reti', 'progetti', 'da_completare']) n[k] = f(k);
+    n.link = f('link').replace(/^(?!https?:\/\/)(?=\S)/, 'https://');
     if (nuova) { const base = slugVoce(cognome(nome) || nome); let id = base, k = 2; while (ente(id) || voceDi(id)) id = base + '-' + k++; n.id = id; listaDi(tipo).push(n); }
     chiudiFinestra(); dopoModificaRete(nuova ? n.id : e.id);
   };
@@ -2383,7 +2391,7 @@ function calcolaQuote() {
   const Q = S.quote; const P = S.P; const r = S.ctx.r; const F = MODELLO.F; const out = { righe: [], tot: {}, scen: {}, avvisi: [] };
   const cap = num(P.capitale); const totPct = Q.righe.reduce((a, x) => a + num(x.pct), 0);
   const pctA = Q.righe.filter(x => x.cat === 'A').reduce((a, x) => a + num(x.pct), 0), pctB = Q.righe.filter(x => x.cat === 'B').reduce((a, x) => a + num(x.pct), 0);
-  const nProf = (S.rete.soci || []).length || 1; const apportoSocio = r.gg_orig * P.costo_opp;
+  const nProf = (S.rete.soci || []).length || 1; const apportoSocio = r.gg_apporto * P.costo_opp; const apportoDi = id => { const d = (r.soci_dett || []).find(s => s.id && s.id === id); return d ? d.apporto : apportoSocio; };
   // utile: privilegio B sull'utile eccedente la soglia, poi pro quota
   const utile = r.utile_distr; const soglia = num(Q.soglia); const priv = num(Q.priv);
   const versB = Q.righe.filter(x => x.cat === 'B').reduce((a, x) => a + num(x.pct) * cap * num(x.versato), 0);
@@ -2394,7 +2402,7 @@ function calcolaQuote() {
     const voto = x.cat === 'A' && pctA ? pct / pctA : 0;
     const privRiga = x.cat === 'B' && versB ? privTot * (pct * cap * num(x.versato)) / versB : 0;
     const dividendo = privRiga + residuo * (totPct ? pct / totPct : 0);
-    out.righe.push({ x, nome: nomeRiga(x), tipo: tipoRiga(x), prof, pct, capitale, versato, fin, voto, dividendo, privRiga, valore: r.valore * pct, apporto: prof ? apportoSocio : 0, multiplo: versato ? r.valore * pct / versato : null });
+    out.righe.push({ x, nome: nomeRiga(x), tipo: tipoRiga(x), prof, pct, capitale, versato, fin, voto, dividendo, privRiga, valore: r.valore * pct, apporto: prof ? apportoDi(x.id) : 0, multiplo: versato ? r.valore * pct / versato : null });
   }
   out.tot = { pct: totPct, pctA, pctB, capitale: cap, versato: out.righe.reduce((a, y) => a + y.versato, 0), fin: out.righe.reduce((a, y) => a + y.fin, 0), utile, privTot, residuo, valore: r.valore, apporto: r.apporto_opera, nProf, nA: Q.righe.filter(x => x.cat === 'A').length, nB: Q.righe.filter(x => x.cat === 'B').length };
   if (Math.abs(totPct - 1) > 0.0005) out.avvisi.push(['Le quote sommano al ' + F.pct1(totPct) + ', non al 100%', 'Usare «Normalizza al 100%» o correggere le percentuali.', 'allarme']);
@@ -2476,7 +2484,7 @@ function disegnaSoci() {
     '<div class="cm-kpi"><span>Quote A / quote B</span><b>' + F.pct1(c.tot.pctA) + ' / ' + F.pct1(c.tot.pctB) + '</b><small>tetto alla categoria B ' + chipP('pct', 'P.tetto_B') + '; ' + c.tot.nA + ' Soci A, ' + c.tot.nB + ' Soci B</small></div>' +
     '<div class="cm-kpi"><span>Valore a fine 2° esercizio</span><b>' + chipP('eur', 'r.valore') + '</b><small>margine operativo ' + chipP('eur', 'r.mo') + ' × multiplo ' + chipP('num', 'P.multiplo') + '</small></div>' +
     '<div class="cm-kpi"><span>Utile distribuibile</span><b>' + chipP('eur', 'r.utile_distr') + '</b><small>' + chipP('pct', 'P.q_utile') + ' del margine operativo</small></div>' +
-    '<div class="cm-kpi"><span>Apporto d’opera del 1° esercizio</span><b>' + chipP('eur', 'r.apporto_opera') + '</b><small>' + F.eur(c.tot.nProf ? c.tot.apporto / P.soci : 0) + ' per Socio del modello, non iscritto a bilancio</small></div></div>';
+    '<div class="cm-kpi"><span>Apporto d’opera del 1° esercizio</span><b>' + chipP('eur', 'r.apporto_opera') + '</b><small>' + F.eur(c.tot.nProf ? c.tot.apporto / P.soci : 0) + ' in media per Socio (' + F.num(S.ctx.r.gg_apporto) + ' giornate non fatturate di origination, sviluppo, gestione e metodo a ' + F.eur(P.costo_opp) + '), non iscritto a bilancio</small></div></div>';
   // compagine
   h += '<section class="q-sez"><div class="q-testa"><h3>La compagine e le quote</h3><div class="q-azioni">' + (ro ? '' : '<button class="btn piccolo" data-qa="uguali">Parti uguali tra i Soci A</button><button class="btn piccolo" data-qa="normalizza">Normalizza al 100%</button><button class="btn piccolo" data-qa="aggiungi">Aggiungi socio B o finanziatore</button>') + '</div></div>' +
     '<div class="tabella-wrap"><table class="tab q-tab"><colgroup><col style="width:20%"><col style="width:8%"><col style="width:9%"><col style="width:11%"><col style="width:8%"><col style="width:10%"><col style="width:9%"><col style="width:11%"><col style="width:10%"><col style="width:4%"></colgroup>' +
@@ -2875,7 +2883,7 @@ function sintesiParte2() {
   if (XIV) { const s = n => siSez(XIV, n + '.'); const s3 = s(3);
     h += siSezione('Prezzo, ripartizione e reddito del Socio', '<div class="si-h3">' + esc(siTitolo(s(1))) + '</div>' + siTesto(siPrima(s(1).blocchi), 2) + siTessereTbl(siTbl(s(1).blocchi), { cls: 'si-4' }) + siTessereLi(siLi(s(1).blocchi), { cls: 'si-3' }) + siTesto(siDopo(s(1).blocchi), 3) + '<div class="si-due"><div><div class="si-h3">' + esc(siTitolo(s(2))) + '</div>' + anelloRegola + siMatrice(siTbl(s(2).blocchi, 1)) + siBoxHtml(siBox(s(2).blocchi)) + '</div><div><div class="si-h3">' + esc(siTitolo(s3)) + '</div>' + siKpi([['Compenso corrente medio', 'eur', 'r.comp_socio', 'origination ed esecuzione, mensile'], ['Quota di utile media', 'eur', 'r.utile_socio', 'annuale, residuale'], ['Reddito medio per Socio', 'eur', 'r.tot_socio', '+' + tokHtml('pct', 'r.indiff.vantaggio') + ' rispetto al lavoro in proprio']]) + siTessereTbl(siTbl(s3.blocchi), { cls: 'si-3' }) + siFig('socio') + siTessereLi(siLi(s3.blocchi), { cls: 'si-3' }) + '</div></div>', { occhiello: 'Capitolo ' + siNum(XIV.id), vai: 'cap-' + XIV.id }); }
   if (XV) { const s = n => siSez(XV, n + '.');
-    h += siSezione('Capitale, soci finanziatori e attività individuali', '<div class="si-due"><div><div class="si-h3">' + esc(siTitolo(s(1))) + '</div>' + siTesto(s(1).blocchi, 4) + siKpi([['Apporto d’opera dei Soci (1° esercizio)', 'eur', 'r.apporto_opera', 'giornate di origination non fatturate'], ['Valore di riferimento a fine 2° esercizio', 'eur', 'r.valore', tokHtml('num', 'P.multiplo') + ' volte il margine operativo'], ['Ingresso al 20% a valore', 'eur', 'r.ingresso_20_valore', 'contro ' + tokHtml('eur', 'r.ingresso_20_nominale') + ' a nominale'], ['Trasferimento senza corrispettivo', 'eur', 'r.trasferimento', 'sconto implicito ' + tokHtml('pct', 'r.sconto_nominale')]]) + siBoxHtml(siBox(s(1).blocchi)) + '<div class="si-h3">' + esc(siTitolo(s(2))) + '</div>' + siTesto(s(2).blocchi, 5) + '</div><div><div class="si-h3">' + esc(siTitolo(s(3))) + '</div>' + siTesto(s(3).blocchi, 2) + siTessereLi(siLi(s(3).blocchi), { cls: 'si-3' }) + siBoxHtml(siBox(s(3).blocchi)) + '<button class="si-vai" data-soci="1">Apri il simulatore delle quote (Soci)</button></div></div><div class="si-h3">' + esc(siTitolo(s(4))) + '</div>' + siTesto(siPrima(s(4).blocchi), 3) + siMatrice(siTbl(s(4).blocchi)) + siTesto(siDopo(s(4).blocchi), 4), { occhiello: 'Capitolo ' + siNum(XV.id), vai: 'cap-' + XV.id }); }
+    h += siSezione('Capitale, soci finanziatori e attività individuali', '<div class="si-due"><div><div class="si-h3">' + esc(siTitolo(s(1))) + '</div>' + siTesto(s(1).blocchi, 4) + siKpi([['Apporto d’opera dei Soci (1° esercizio)', 'eur', 'r.apporto_opera', tokHtml('num', 'r.gg_apporto_tot') + ' giornate non fatturate di origination, sviluppo, gestione e metodo'], ['Valore di riferimento a fine 2° esercizio', 'eur', 'r.valore', tokHtml('num', 'P.multiplo') + ' volte il margine operativo'], ['Ingresso al 20% a valore', 'eur', 'r.ingresso_20_valore', 'contro ' + tokHtml('eur', 'r.ingresso_20_nominale') + ' a nominale'], ['Trasferimento senza corrispettivo', 'eur', 'r.trasferimento', 'sconto implicito ' + tokHtml('pct', 'r.sconto_nominale')]]) + siBoxHtml(siBox(s(1).blocchi)) + '<div class="si-h3">' + esc(siTitolo(s(2))) + '</div>' + siTesto(s(2).blocchi, 5) + '</div><div><div class="si-h3">' + esc(siTitolo(s(3))) + '</div>' + siTesto(s(3).blocchi, 2) + siTessereLi(siLi(s(3).blocchi), { cls: 'si-3' }) + siBoxHtml(siBox(s(3).blocchi)) + '<button class="si-vai" data-soci="1">Apri il simulatore delle quote (Soci)</button></div></div><div class="si-h3">' + esc(siTitolo(s(4))) + '</div>' + siTesto(siPrima(s(4).blocchi), 3) + siMatrice(siTbl(s(4).blocchi)) + siTesto(siDopo(s(4).blocchi), 4), { occhiello: 'Capitolo ' + siNum(XV.id), vai: 'cap-' + XV.id }); }
   return h;
 }
 // ---------------------------------------------------------------- Parte terza: il piano e la sua misura

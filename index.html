@@ -638,7 +638,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .popover .codice { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .72rem; color: var(--secondario); word-break: break-all; margin-bottom: .4rem; }
 
 /* pannelli laterali */
-.pannello { position: fixed; top: var(--barra-h, 52px); right: 0; bottom: 0; width: min(560px, 100vw); background: var(--carta); border-left: 1px solid var(--filo); box-shadow: var(--ombra); z-index: 35; display: none; flex-direction: column; }
+.pannello { position: fixed; top: var(--barra-h, 52px); right: 0; bottom: 0; width: min(560px, 100vw); background: var(--carta); border-left: 1px solid var(--filo); box-shadow: var(--ombra); z-index: 47; display: none; flex-direction: column; }
 .pannello.aperto { display: flex; }
 .pannello header { display: flex; align-items: center; justify-content: space-between; padding: .7rem 1rem; border-bottom: 1px solid var(--filo); font-weight: bold; }
 .pannello .corpo { overflow-y: auto; padding: .8rem 1rem 2rem; font-size: .86rem; }
@@ -776,6 +776,50 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pr-tab td { white-space: normal; } .pr-tab td small { display: block; color: var(--secondario); font-size: .72rem; }
 .sem.mod-proposta { color: #6a3d9a; border-color: #6a3d9a; background: color-mix(in srgb, #6a3d9a 10%, transparent); }
 .sem.mod-commento { color: var(--attesa); border-color: var(--attesa); background: color-mix(in srgb, var(--attesa) 12%, transparent); }
+/* ---- menu a tendina doppio (Sintesi Documento) */
+.tendina-menu.tendina-doppia { flex-direction: row; gap: .3rem; min-width: 0; }
+.tendina-gruppo { display: flex; flex-direction: column; min-width: 150px; }
+.tendina-tit { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: var(--secondario); padding: .35rem .7rem .15rem; font-weight: bold; }
+.tendina-gruppo + .tendina-gruppo { border-left: 1px solid var(--filo); }
+/* ---- schede progetto */
+.pg-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 1rem; align-items: start; }
+.pg-filtri { position: sticky; top: .5rem; background: var(--carta); border: 1px solid var(--filo); border-radius: 8px; padding: .8rem .9rem; display: flex; flex-direction: column; gap: .55rem; max-height: calc(100vh - var(--barra-h, 52px) - 90px); overflow: auto; }
+.pg-cerca { display: block; font-size: .74rem; color: var(--secondario); }
+.pg-cerca input, .pg-cerca select, .pg-gruppo input[type="search"] { width: 100%; font: inherit; font-size: .84rem; padding: .35rem .5rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--inchiostro); margin-top: .15rem; }
+.pg-gruppo { border-top: 1px solid var(--filo); padding-top: .45rem; }
+.pg-gtit { font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: var(--secondario); font-weight: bold; margin-bottom: .25rem; }
+.pg-opt { display: flex; align-items: center; gap: .4rem; font-size: .8rem; padding: .12rem 0; cursor: pointer; }
+.pg-opt input { margin: 0; }
+.pg-opt small { margin-left: auto; color: var(--secondario); font-size: .7rem; }
+.pg-multi { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .1rem .8rem; margin: .2rem 0 .5rem; }
+.pg-lista { display: flex; flex-direction: column; gap: .8rem; }
+.pg-riepilogo { font-size: .84rem; color: var(--secondario); display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; padding: .2rem .2rem .1rem; }
+.pg-riepilogo b { color: var(--inchiostro); }
+.pg-card { background: var(--carta); border: 1px solid var(--filo); border-radius: 8px; padding: .8rem 1rem .6rem; }
+.pg-testa { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .3rem; }
+.pg-testa h3 { margin: 0; font-size: 1.02rem; flex: 1 1 auto; min-width: 0; }
+.pg-valore { font-weight: bold; font-variant-numeric: tabular-nums; }
+.pg-muto { color: var(--secondario); font-weight: normal; font-size: .8rem; }
+.pg-meta { display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: .8rem; color: var(--secondario); margin-bottom: .35rem; }
+.pg-meta b { color: var(--inchiostro); font-weight: 600; margin-right: .2rem; }
+.pg-chips { display: flex; gap: .3rem; flex-wrap: wrap; margin-bottom: .45rem; }
+.pg-chip { display: inline-block; font-size: .7rem; padding: .08rem .5rem; border-radius: 999px; border: 1px solid; }
+.pg-chip.pg-pr { color: #2f6b3a; border-color: #8cc59a; background: color-mix(in srgb, #8cc59a 22%, transparent); }
+.pg-chip.pg-sin { color: var(--accento); border-color: var(--chip-bordo); background: var(--chip); }
+.pg-descr { font-size: .88rem; line-height: 1.5; white-space: pre-wrap; }
+.pg-descr.pg-clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.pg-lnk { margin-top: .3rem; }
+.pg-piede { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; border-top: 1px solid var(--filo); margin-top: .5rem; padding-top: .4rem; font-size: .72rem; color: var(--secondario); }
+.pg-azioni { display: flex; gap: .35rem; }
+.sem.pg-stato { text-transform: none; }
+.sem.pg-suspect { color: var(--secondario); border-color: var(--filo); background: var(--lavaggio); }
+.sem.pg-lead { color: var(--accento); border-color: var(--accento); background: color-mix(in srgb, var(--accento) 10%, transparent); }
+.sem.pg-prospect { color: var(--attesa); border-color: var(--attesa); background: color-mix(in srgb, var(--attesa) 14%, transparent); }
+.sem.pg-customer { color: var(--ok); border-color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, transparent); }
+.sem.pg-promoter { color: #6a3d9a; border-color: #6a3d9a; background: color-mix(in srgb, #6a3d9a 10%, transparent); }
+.finestra-progetto { width: min(960px, 96vw); }
+.finestra-progetto textarea { min-height: 9rem; }
+@media (max-width: 1000px) { .pg-layout { grid-template-columns: 1fr; } .pg-filtri { position: static; max-height: none; } }
 
 </style>
 </head>
@@ -787,17 +831,19 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <div class="zoom" id="zoom" title="Dimensione del documento"><button data-z="-" title="Riduci">−</button><button data-z="0" id="zoom-val" title="Torna al 100%">100%</button><button data-z="+" title="Ingrandisci">+</button></div>
   <div class="spazio"></div>
   <button class="btn ipotesi" id="b-ipotesi" title="Le ipotesi del modello: i valori in giallo del documento">Ipotesi</button>
-  <button class="btn arancio" id="b-commessa">Commessa</button>
-  <button class="btn arancio" id="b-scenari">Scenari</button>
-  <button class="btn verde" id="b-mappe">Mappe</button>
-  <button class="btn blu" id="b-soci">Soci</button>
-  <div class="tendina" id="sintesi-menu"><button class="btn rosso" id="b-sintesi" aria-haspopup="true" aria-expanded="false">Struttura</button><div class="tendina-menu" hidden><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div></div>
-  <div class="tendina" id="riassunto-menu"><button class="btn rosso" id="b-riassunto" aria-haspopup="true" aria-expanded="false">Sintesi</button><div class="tendina-menu" hidden><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div></div>
+  <button class="btn blu" id="b-progetti" title="I progetti che i Soci seguono e porteranno in Onward: schede consultabili da tutti, con ricerca e filtri">Schede Progetto</button>
+  <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa e Scenari">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Scenari</button></div></div>
+  <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Rete di partenza, Practice e struttura delle quote">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Partnership</button><button id="b-practice">Practice</button><button id="b-soci">Soci</button></div></div>
+  <div class="tendina" id="sintesi-menu"><button class="btn rosso" id="b-sintesi" aria-haspopup="true" aria-expanded="false" title="Le quattro Parti in tavole (Estesa) o in una pagina (Sintetica)">Sintesi Documento</button><div class="tendina-menu tendina-doppia" hidden><div class="tendina-gruppo"><div class="tendina-tit">Estesa</div><button data-vista="estesa" data-parte="0">Parte prima</button><button data-vista="estesa" data-parte="1">Parte seconda</button><button data-vista="estesa" data-parte="2">Parte terza</button><button data-vista="estesa" data-parte="3">Parte quarta</button></div><div class="tendina-gruppo"><div class="tendina-tit">Sintetica</div><button data-vista="sintetica" data-parte="0">Parte prima</button><button data-vista="sintetica" data-parte="1">Parte seconda</button><button data-vista="sintetica" data-parte="2">Parte terza</button><button data-vista="sintetica" data-parte="3">Parte quarta</button></div></div></div>
   <button class="btn grigio" id="b-glossario">Glossario</button>
   <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
   <button class="btn grigio" id="b-storico">Cronologia</button>
   <div class="tendina" id="esporta"><button class="btn" id="b-esporta" aria-haspopup="true" aria-expanded="false">Esportazione</button><div class="tendina-menu" hidden><button id="b-word">Word</button><button id="b-stampa" title="Stampa o salva in PDF dal browser">PDF (stampa)</button><button id="b-json">Dati (JSON)</button></div></div>
   <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico">Modifiche</button>
+</div>
+<div class="mappe progetti" id="progetti" hidden>
+  <div class="mappe-testa"><b>Schede Progetto</b><div class="mappe-azioni"><button class="btn piccolo primario" id="pg-nuova">Nuova scheda</button><button class="btn piccolo" id="pg-esporta" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><span class="nota-pannello">I progetti che ciascun Socio segue e porterà in Onward: consultabili da tutti, con ricerca libera e filtri per stato, Practice, sinergie, referente e luogo.</span></div><button class="btn piccolo" id="progetti-chiudi">Chiudi</button></div>
+  <div class="mappe-corpo"></div>
 </div>
 <div class="mappe modifiche" id="modifiche" hidden>
   <div class="mappe-testa"><b>Accessi e modifiche</b><div class="mappe-azioni"><select class="ricerca mod-filtro" id="mod-nome"><option value="">Tutti i Soci</option></select><select class="ricerca mod-filtro" id="mod-tipo"><option value="tutti">Tutto</option><option value="accessi">Solo accessi e link</option><option value="modifica">Solo modifiche</option><option value="proposta">Solo proposte</option><option value="commento">Solo commenti</option><option value="avvio">Solo avvio del repository</option></select><button class="btn piccolo" id="mod-aggiorna">Aggiorna</button><span class="nota-pannello">Chi ha ricevuto il link, quando è entrato e che cosa ha salvato, con le proposte in attesa e i commenti a margine: il registro è letto dal repository condiviso, quindi è lo stesso per tutti.</span></div><button class="btn piccolo" id="modifiche-chiudi">Chiudi</button></div>
@@ -824,7 +870,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
 </div>
 <div class="mappe" id="mappe" hidden>
-  <div class="mappe-testa"><b>Mappe della rete di partenza</b><div class="schede"><button data-vista="rete">Rete di partenza</button><button data-vista="practice">Le Practice</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Practices e Persone</b><div class="schede"><button data-vista="rete">Partnership</button><button data-vista="practice">Practice</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="pagina">
@@ -1043,7 +1089,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-07T16:57:33Z';
+window.ONWARD_BUILD = '2026-09-08T08:50:56Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1065,7 +1111,7 @@ const S = {
   dirty: new Set(), saving: false, base: {}, readonly: false, autore: '',
   glossario: (SEED.glossario && SEED.glossario.voci) || [], evid: null, noLink: false,
   rete: SEED.rete || reteVuota(), generando: false, mappaVista: 'rete', mappaEvid: null,
-  commesse: (SEED.commesse && SEED.commesse.commesse) || [], commessa: null, quote: SEED.quote ? Object.assign(quoteDefault(), SEED.quote) : quoteDefault(), scenari: SEED.scenari ? Object.assign(scenariDefault(), SEED.scenari) : scenariDefault(), sintesiParte: 0, riassuntoParte: 0, accessi: null, mod: null, ripristini: new Set(), commenti: null, regole: null, proposte: null, proposteDett: {}, bozza: new Set(), msgExtra: {}, cmFiltro: 'aperti'
+  commesse: (SEED.commesse && SEED.commesse.commesse) || [], commessa: null, quote: SEED.quote ? Object.assign(quoteDefault(), SEED.quote) : quoteDefault(), scenari: SEED.scenari ? Object.assign(scenariDefault(), SEED.scenari) : scenariDefault(), sintesiParte: 0, riassuntoParte: 0, accessi: null, mod: null, ripristini: new Set(), commenti: null, regole: null, proposte: null, proposteDett: {}, bozza: new Set(), msgExtra: {}, cmFiltro: 'aperti', progetti: null, prog: null
 };
 try { S.cfg = JSON.parse(localStorage.getItem('onward.cfg') || 'null'); } catch (e) { S.cfg = null; }
 try { S.mode = localStorage.getItem('onward.mode') || 'lettura'; } catch (e) {}
@@ -1392,7 +1438,7 @@ function attrezza(w, b) {
   const bt = (az, lab, title) => { const x = el('button', { dataset: { az }, title: title || lab }); x.textContent = lab; return x; };
   s.appendChild(bt('para+', '＋ paragrafo', 'Aggiungi un paragrafo dopo questo blocco'));
   if (b.t === 'box') s.appendChild(bt('boxpara+', '＋ riga nel riquadro'));
-  if (b.t === 'rete') s.appendChild(bt('rete', 'modifica la rete', 'Apre le mappe: le schede si modificano da lì')); else s.appendChild(bt('valore', '＋ valore', 'Inserisci un valore del modello nel testo'));
+  if (b.t === 'rete') s.appendChild(bt('rete', 'modifica la rete', 'Apre Practices e Persone: le schede si modificano da lì')); else s.appendChild(bt('valore', '＋ valore', 'Inserisci un valore del modello nel testo'));
   s.appendChild(bt('su', '↑', 'Sposta in alto')); s.appendChild(bt('giu', '↓', 'Sposta in basso'));
   s.appendChild(bt('elimina', 'elimina', 'Elimina il blocco'));
   w.appendChild(s);
@@ -1512,7 +1558,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -1525,6 +1571,7 @@ function datiDi(key) {
   if (key === 'commenti') return S.commenti || commentiVuoti();
   if (key === 'regole') return S.regole || regoleVuote();
   if (key === 'proposte') return S.proposte || proposteVuote();
+  if (key === 'progetti') return S.progetti || progettiVuoti();
   if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
 }
@@ -1540,10 +1587,11 @@ function applicaDati(key, d) {
   if (key === 'regole') { S.regole = Object.assign(regoleVuote(), d || {}); if (!Array.isArray(S.regole.approvatori)) S.regole.approvatori = []; return; }
   if (key === 'proposte') { S.proposte = Object.assign(proposteVuote(), d || {}); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return; }
   if (key.startsWith('prop:')) { if (!S.proposteDett) S.proposteDett = {}; S.proposteDett[key.slice(5)] = d; return; }
+  if (key === 'progetti') { S.progetti = Object.assign(progettiVuoti(), d || {}); if (!Array.isArray(S.progetti.progetti)) S.progetti.progetti = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
-const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte'];
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
@@ -1562,7 +1610,7 @@ class ArchivioGitHub {
   async albero() { let t = null; try { t = await this.api('/git/trees/' + encodeURIComponent(this.cfg.branch) + '?recursive=1'); } catch (e) { if (e.status === 409) t = null; else throw e; } if (!t) { this.ultimoAlbero = {}; this.altri = {}; return {}; } const m = {}; this.altri = {}; for (const e of t.tree) { if (e.type !== 'blob') continue; if (e.path.startsWith('contenuto/')) m[e.path] = e.sha; else this.altri[e.path] = e.sha; } this.ultimoAlbero = m; return m; }
   async caricaFile(path, bytes, messaggio) { let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); const body = { message: messaggio, content: btoa(bin), branch: this.cfg.branch }; const cur = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (cur && cur.sha) body.sha = cur.sha; if (this.cfg.autore) body.author = body.committer = { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') }; const r = await this.api('/contents/' + path, { method: 'PUT', json: body }); if (this.altri) this.altri[path] = r.content.sha; return true; }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -1591,7 +1639,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Scenari e traiettoria aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Scenari e traiettoria aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -1603,6 +1651,7 @@ async function fondi(k) {
   if (k === 'accessi') { fondiAccessi(remoto); return; }
   if (k === 'commenti') { fondiCommenti(remoto); return; }
   if (k === 'proposte') { fondiProposte(remoto); return; }
+  if (k === 'progetti') { fondiProgetti(remoto); return; }
   if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
@@ -1619,7 +1668,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -1627,14 +1676,14 @@ function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent
 // ================================================================ cronologia
 async function apriCronologia(keySel) {
   apriPannello('pan-storico'); const c = $('#pan-storico .corpo'); c.innerHTML = '<p class="nota-pannello">Scegliere un capitolo: ogni salvataggio è una versione, con autore e data. Si può confrontare una versione con il testo attuale o ripristinarla (il ripristino è a sua volta una nuova versione).</p>';
-  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Scenari e traiettoria</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
+  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Scenari e traiettoria</option><option value="progetti">Schede progetto</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
   const attuale = $('.capitolo:not(#cap-nota)') && capitoloVisibile(); if (attuale) sel.value = 'cap:' + attuale; if (typeof keySel === 'string' && [...sel.options].some(o => o.value === keySel)) sel.value = keySel;
   c.appendChild(sel); const lista = el('div', { id: 'st-lista' }); c.appendChild(lista);
   const carica = async () => { lista.innerHTML = '<p class="nota-pannello">Caricamento…</p>'; try { const st = await S.backend.storico(sel.value); if (!st.length) { lista.innerHTML = '<p class="nota-pannello">Nessuna versione salvata per questa voce.</p>'; return; } lista.innerHTML = st.map(v => '<div class="storico-voce"><div><b>' + esc(v.autore || '') + '</b></div><div class="quando">' + esc(dataIt(v.quando)) + ' · ' + esc(v.messaggio || '') + '</div><div class="azioni"><button class="btn piccolo" data-st="confronta" data-id="' + esc(v.id) + '">Confronta con il testo attuale</button><button class="btn piccolo" data-st="ripristina" data-id="' + esc(v.id) + '">Ripristina</button></div><div class="diff-slot"></div></div>').join(''); } catch (e) { lista.innerHTML = '<div class="avviso errore">Cronologia non disponibile: ' + esc(e.message) + '</div>'; } };
   sel.onchange = carica; await carica();
   lista.onclick = async e => { const b = e.target.closest('button[data-st]'); if (!b) return; const key = sel.value; const v = await S.backend.versione(key, b.dataset.id); if (!v) { toast('Versione non trovata'); return; }
     if (b.dataset.st === 'confronta') { const slot = b.closest('.storico-voce').querySelector('.diff-slot'); slot.innerHTML = '<div class="diff">' + diffVersioni(key, v) + '</div>'; return; }
-    if (!confirm('Ripristinare questa versione? Il testo attuale resta nella cronologia.')) return; applicaDati(key, v); S.ripristini.add(key); segna(key); if (key === 'ipotesi') { aggiornaCalcolati(); aggiornaPannelloIpotesi(true); } else if (key === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (key === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (key === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else { renderDocumento(); if (key === 'glossario') aggiornaGlossario(); if (key === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); toast('Versione ripristinata: verrà salvata come nuova versione'); };
+    if (!confirm('Ripristinare questa versione? Il testo attuale resta nella cronologia.')) return; applicaDati(key, v); S.ripristini.add(key); segna(key); if (key === 'ipotesi') { aggiornaCalcolati(); aggiornaPannelloIpotesi(true); } else if (key === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (key === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (key === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (key === 'progetti') { if ($('#progetti') && !$('#progetti').hidden) disegnaProgetti(true); } else { renderDocumento(); if (key === 'glossario') aggiornaGlossario(); if (key === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); toast('Versione ripristinata: verrà salvata come nuova versione'); };
 }
 function capitoloVisibile() { let best = null; for (const s of $$('section.capitolo')) { const r = s.getBoundingClientRect(); if (r.top <= 120) best = s.dataset.cap; } return best === 'nota' ? null : best; }
 function testoBlocco(b) { if (!b) return ''; if (b.t === 'rete') return '[tabelle generate dalla rete di partenza: ' + b.vista + ']'; if (b.t === 'tbl') return b.rows.map(r => r.map(c => c.text).join(' | ')).join('\n'); if (b.t === 'box') return b.paras.join('\n'); return b.text || b.caption || ''; }
@@ -1646,6 +1695,7 @@ function diffVersioni(key, vecchia) {
   if (key === 'commesse') return diffCommesse(vecchia);
   if (key === 'quote') return diffQuote(vecchia);
   if (key === 'scenari') return diffScenari(vecchia);
+  if (key === 'progetti') return diffDue('progetti', vecchia, datiDi('progetti'));
   const vb = key === 'struttura' ? (vecchia.nota || []) : (vecchia.blocchi || []); const cb = key === 'struttura' ? S.nota : capitolo(key.slice(4)).c.blocchi;
   const vm = new Map(vb.map(b => [b.id, b])); const cm = new Map(cb.map(b => [b.id, b])); let h = ''; let n = 0;
   for (const b of cb) { const o = vm.get(b.id); const tn = testoBlocco(b), to = testoBlocco(o); if (!o) { h += '<div class="b">Blocco aggiunto</div><div class="p"><ins>' + esc(tn) + '</ins></div>'; n++; } else if (to !== tn) { h += '<div class="b">Blocco modificato</div><div class="p">' + diffParole(to, tn) + '</div>'; n++; } }
@@ -1781,7 +1831,7 @@ function apriPopoverTermine(anchor, id, pos) {
   $('#pop-evid', pop).onclick = () => { chiudiPopover(); evidenzia(id); };
   for (const a of $$('.pop-link', pop)) a.onclick = e => { e.preventDefault(); apriPopoverTermine(anchor, a.dataset.term, { left: pop.style.left, top: pop.style.top }); };
 }
-document.addEventListener('keydown', ev => { if (ev.key !== 'Escape') return; if ($('#popover')) chiudiPopover(); else if ($('#finestra')) chiudiFinestra(); else { chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); } });
+document.addEventListener('keydown', ev => { if (ev.key !== 'Escape') return; if ($('#popover')) chiudiPopover(); else if ($('#finestra')) chiudiFinestra(); else { chiudiViste(); } });
 
 // pannello
 function apriGlossario(id) {
@@ -2080,7 +2130,7 @@ document.addEventListener('click', ev => {
 // ---------------------------------------------------------------- mappe
 const PR_COL = { p01: 'pr1', p02: 'pr2', p03: 'pr3', p04: 'pr4', p05: 'pr5' };
 function apriMappe(vista, evid) {
-  const m = $('#mappe'); if (!m) return; chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); S.mappaVista = vista || S.mappaVista || 'rete'; S.mappaEvid = evid || null; disegnaMappe();
+  const m = $('#mappe'); if (!m) return; chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); S.mappaVista = vista || S.mappaVista || 'rete'; S.mappaEvid = evid || null; disegnaMappe();
   if (evid) setTimeout(() => { const n = $('#mappe [data-ente="' + evid + '"], #mappe [data-pr="' + evid + '"]'); if (n) n.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 50);
 }
 function chiudiMappe() { const m = $('#mappe'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
@@ -2359,7 +2409,7 @@ function calcolaCommessa(c) {
 }
 
 // ---------------------------------------------------------------- vista
-function apriCommessa() { const m = $('#commessa'); if (!m) return; chiudiMappe(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); if (!S.commessa) S.commessa = commessaNuova(); disegnaCommessa(); }
+function apriCommessa() { const m = $('#commessa'); if (!m) return; chiudiMappe(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); if (!S.commessa) S.commessa = commessaNuova(); disegnaCommessa(); }
 function chiudiCommessa() { const m = $('#commessa'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function campoC(lab, k, val, opt) { opt = opt || {}; const id = 'cm-' + k.replace(/[.\[\]]/g, '-'); return '<label class="campo-testo" for="' + id + '">' + lab + (opt.select ? '<select id="' + id + '" data-k="' + k + '">' + opt.select.map(([v, l]) => '<option value="' + esc(v) + '"' + (String(v) === String(val) ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' : '<input id="' + id + '" data-k="' + k + '" data-fmt="' + (opt.fmt || 'num') + '" value="' + esc(opt.fmt === 'pct' ? String(Math.round(num(val) * 10000) / 100).replace('.', ',') : opt.fmt === 'testo' ? (val || '') : opt.fmt === 'dec' ? String(num(val)).replace('.', ',') : MODELLO.F.num(num(val))) + '"' + (opt.fmt === 'testo' ? '' : ' inputmode="decimal"') + '>') + (opt.nota ? '<span>' + opt.nota + '</span>' : '') + '</label>'; }
 function formCommessa(c) {
@@ -2524,7 +2574,7 @@ function svgValore(tot, titolo) {
   return h + '</svg>';
 }
 // ---------------------------------------------------------------- vista
-function apriSoci() { const m = $('#soci'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); if (sincronizzaQuote()) segna('quote'); disegnaSoci(); }
+function apriSoci() { const m = $('#soci'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); if (sincronizzaQuote()) segna('quote'); disegnaSoci(); }
 function chiudiSoci() { const m = $('#soci'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function chipP(fmt, expr) { return tokHtml(fmt, expr); }
 function inpQ(k, v, fmt, extra) { const shown = fmt === 'pct' ? String(Math.round(num(v) * 10000) / 100).replace('.', ',') : fmt === 'testo' ? (v || '') : MODELLO.F.num(num(v)); return '<input class="q-inp" data-q="' + esc(k) + '" data-fmt="' + fmt + '" value="' + esc(shown) + '"' + (fmt === 'testo' ? '' : ' inputmode="decimal"') + (extra || '') + '>'; }
@@ -2686,7 +2736,7 @@ function svgRedditoSocio(anni, titolo) {
   return h + '</svg>';
 }
 // ---------------------------------------------------------------- vista
-function apriScenari() { const m = $('#scenari'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); if (typeof sincronizzaQuote === 'function' && sincronizzaQuote()) segna('quote'); disegnaScenari(); }
+function apriScenari() { const m = $('#scenari'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); if (typeof sincronizzaQuote === 'function' && sincronizzaQuote()) segna('quote'); disegnaScenari(); }
 function chiudiScenari() { const m = $('#scenari'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function inpS(k, v, fmt, extra) { const shown = fmt === 'pct' ? String(Math.round(num(v) * 10000) / 100).replace('.', ',') : fmt === 'testo' ? (v || '') : fmt === 'dec' ? String(num(v)).replace('.', ',') : MODELLO.F.num(num(v)); return '<input class="s-inp" data-s="' + esc(k) + '" data-fmt="' + fmt + '" value="' + esc(shown) + '"' + (fmt === 'testo' ? '' : ' inputmode="decimal"') + (extra || '') + '>'; }
 function inpP(k, v, w) { return inpS(k, v, 'pct', ' style="width:' + (w || '4.5em') + ';display:inline-block"') + '<span class="s-unita">%</span>'; }
@@ -2913,7 +2963,7 @@ function sintesiParte1() {
     const orgTbl = siTbl(s(4).blocchi); const org = orgTbl ? '<div class="si-org">' + orgTbl.rows.slice(1).map(rw => '<div class="si-org-nodo"><b>' + renderTesto(rw[0].text) + '</b><div class="si-txt">' + renderTesto(rw[1] ? rw[1].text : '') + '</div></div>').join('') + '</div>' : '';
     const reg = siTessereLi(siLi(s(5).blocchi), { cls: 'si-4' });
     const retiT = siTbl(s6.blocchi, 0), attT = siTbl(s6.blocchi, 1);
-    const rete = '<div class="si-rete-conta"><div class="cm-kpi"><span>Soci</span><b>' + N.soci + '</b></div><div class="cm-kpi"><span>Advisor</span><b>' + N.advisor + '</b></div><div class="cm-kpi"><span>Società partner</span><b>' + N.partner + '</b></div>' + (N.consulenti ? '<div class="cm-kpi"><span>Consulenti</span><b>' + N.consulenti + '</b></div>' : '') + '<div class="cm-kpi"><span>Practice presidiate</span><b>' + Object.values(N.practice).filter(q => q.soci).length + ' su ' + Object.keys(N.practice).length + '</b></div><button class="si-vai" data-mappe="rete">Apri le mappe della rete</button></div>' + siMatrice(reteBlocchi('practice-presidi', {})[0]);
+    const rete = '<div class="si-rete-conta"><div class="cm-kpi"><span>Soci</span><b>' + N.soci + '</b></div><div class="cm-kpi"><span>Advisor</span><b>' + N.advisor + '</b></div><div class="cm-kpi"><span>Società partner</span><b>' + N.partner + '</b></div>' + (N.consulenti ? '<div class="cm-kpi"><span>Consulenti</span><b>' + N.consulenti + '</b></div>' : '') + '<div class="cm-kpi"><span>Practice presidiate</span><b>' + Object.values(N.practice).filter(q => q.soci).length + ' su ' + Object.keys(N.practice).length + '</b></div><button class="si-vai" data-mappe="rete">Apri Practices e Persone della rete</button></div>' + siMatrice(reteBlocchi('practice-presidi', {})[0]);
     h += siSezione('Assetto societario e governance', '<div class="si-due"><div><div class="si-h3">' + esc(siTitolo(s(1))) + '</div>' + siTesto(s(1).blocchi, 5) + '<div class="si-h3">' + esc(siTitolo(s(2))) + '</div>' + siTesto(s(2).blocchi, 3) + piramide + '</div><div><div class="si-h3">' + esc(siTitolo(s(3))) + '</div>' + quoteHtml + siTesto(s(3).blocchi, 3) + '<div class="si-h3">' + esc(siTitolo(s(4))) + '</div>' + org + '</div></div><div class="si-h3">' + esc(siTitolo(s(5))) + '</div>' + siTesto(s(5).blocchi, 2) + reg + '<div class="si-h3">' + esc(siTitolo(s6)) + '</div>' + rete + (retiT ? '<div class="si-h3">Le reti di sistema</div>' + siTessereTbl(retiT, { cls: 'si-4' }) : '') + (attT ? '<div class="si-h3">Attività già avviate</div>' + siTessereTbl(attT, { pill: [2], cls: 'si-4' }) : '') + siBoxHtml(siBox(s6.blocchi)), { occhiello: 'Capitolo ' + siNum(VIII.id), vai: 'cap-' + VIII.id }); }
   return h;
 }
@@ -2973,9 +3023,9 @@ function sintesiParte4() {
   return h;
 }
 // ---------------------------------------------------------------- vista
-function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
+function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function chiudiViste() { chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); }
+function chiudiViste() { chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
   const tp = String(parte.titolo || '').split('·'); $('#sintesi-tit').innerHTML = '<span class="si-parte-num">' + esc(tp[0].trim()) + '</span>' + esc((tp[1] || '').trim());
@@ -2989,7 +3039,7 @@ function avviaSintesi() {
   const m = $('#sintesi'); if (!m) return; const tend = $('#sintesi-menu'); const menu = $('.tendina-menu', tend);
   $('#b-sintesi').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-sintesi').setAttribute('aria-expanded', String(!menu.hidden)); };
   document.addEventListener('click', e => { if (!e.target.closest('#sintesi-menu')) { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); } });
-  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; apriSintesi(+x.dataset.parte); });
+  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); if (x.dataset.vista === 'sintetica') apriRiassunto(+x.dataset.parte); else apriSintesi(+x.dataset.parte); });
   for (const x of $$('#sintesi .schede button')) x.onclick = () => apriSintesi(+x.dataset.parte);
   $('#sintesi-chiudi').onclick = chiudiSintesi; $('#sintesi-doc').onclick = () => { const p = S.parti.find(pp => pp.id === SI_PARTI[S.sintesiParte || 0]); chiudiViste(); if (p) vaiA('parte-' + p.id, true); };
   m.addEventListener('click', ev => {
@@ -3187,7 +3237,7 @@ function riassuntoParte4() {
   return h;
 }
 // ---------------------------------------------------------------- vista
-function apriRiassunto(i) { const m = $('#riassunto'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiModifiche(); m.hidden = false; document.body.classList.add('con-mappe'); S.riassuntoParte = i == null ? (S.riassuntoParte || 0) : +i; disegnaRiassunto(); $('#riassunto .mappe-corpo').scrollTop = 0; }
+function apriRiassunto(i) { const m = $('#riassunto'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiModifiche(); chiudiProgetti(); m.hidden = false; document.body.classList.add('con-mappe'); S.riassuntoParte = i == null ? (S.riassuntoParte || 0) : +i; disegnaRiassunto(); $('#riassunto .mappe-corpo').scrollTop = 0; }
 function chiudiRiassunto() { const m = $('#riassunto'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function disegnaRiassunto() {
   const m = $('#riassunto'); if (!m) return; const i = S.riassuntoParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
@@ -3197,10 +3247,7 @@ function disegnaRiassunto() {
   const corpo = $('#riassunto .mappe-corpo'); corpo.innerHTML = '<div class="rz-board" style="--parte:' + RZ_PARTE_COL[i] + '">' + h + '</div>'; aggiornaTok(corpo);
 }
 function avviaRiassunto() {
-  const m = $('#riassunto'); if (!m) return; const tend = $('#riassunto-menu'); const menu = $('.tendina-menu', tend);
-  $('#b-riassunto').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-riassunto').setAttribute('aria-expanded', String(!menu.hidden)); };
-  document.addEventListener('click', e => { if (!e.target.closest('#riassunto-menu')) { menu.hidden = true; $('#b-riassunto').setAttribute('aria-expanded', 'false'); } });
-  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; apriRiassunto(+x.dataset.parte); });
+  const m = $('#riassunto'); if (!m) return;
   for (const x of $$('#riassunto .schede button')) x.onclick = () => apriRiassunto(+x.dataset.parte);
   $('#riassunto-chiudi').onclick = chiudiRiassunto; $('#riassunto-struttura').onclick = () => { const i = S.riassuntoParte || 0; chiudiRiassunto(); apriSintesi(i); };
   m.addEventListener('click', ev => {
@@ -3215,7 +3262,7 @@ function avviaRiassunto() {
 function accessiVuoti() { return { soci: [], accessi: [] }; }
 function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Scenari e traiettoria'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Scenari e traiettoria'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -3251,6 +3298,7 @@ function diffDue(key, vecchia, nuova) {
     if (key === 'glossario') return (d.voci || []).map(v => ({ id: v.id, nome: v.termine || '', tx: [v.termine, (v.varianti || []).join('; '), v.definizione || '', (v.calcolo || []).join('\n')].join('\n') }));
     if (key === 'rete') return [].concat(d.soci || [], d.advisor || [], d.partner || [], d.consulenti || []).map(e => ({ id: e.id, nome: e.nome || '', tx: [e.nome, e.qualifica || '', e.sede || '', e.societa || '', (e.practice || []).map(p => p.id + ':' + p.ruolo).join(' '), e.sintesi || '', e.presidio || '', e.ambito || '', e.profilo || '', e.attivita || '', e.reti || '', e.progetti || '', e.da_completare || ''].join('\n') }));
     if (key === 'commesse') return (d.commesse || []).map(c => ({ id: c.id, nome: c.titolo || '', tx: JSON.stringify(c, null, 1) }));
+    if (key === 'progetti') return (d.progetti || []).map(p => ({ id: p.id, nome: p.titolo || '', tx: ['Titolo: ' + (p.titolo || ''), 'Soggetti: ' + (p.soggetti || ''), 'Luogo: ' + (p.luogo || ''), 'Stato: ' + etichettaStato(p.stato), 'Referente: ' + (p.referente || ''), 'Practice: ' + (p.practice || []).map(nomePractice).join('; '), 'Sinergie: ' + (p.sinergie || []).map(nomePartner).join('; '), 'Valore: ' + (numeroIt(p.valore) !== null ? MODELLO.F.eur(numeroIt(p.valore)) : ''), 'Descrizione: ' + (p.descrizione || '')].join('\n') }));
     if (key === 'struttura') return [{ id: 'meta', nome: 'Frontespizio', tx: Object.values(d.meta || {}).join('\n') }].concat((d.nota || []).map(b => ({ id: b.id, nome: 'Nota di lettura', tx: testoBlocco(b) })), (d.parti || []).map(p => ({ id: 'parte:' + p.id, nome: 'Parte e titoli dei capitoli', tx: [p.titolo, p.intro || ''].concat((p.capitoli || []).map(c => c.titolo)).join('\n') })));
     if (key.startsWith('cap:')) return [{ id: 'titolo', nome: 'Titolo', tx: d.titolo || '' }].concat((d.blocchi || []).map(b => ({ id: b.id, nome: '', tx: testoBlocco(b) })));
     return null; };
@@ -3461,6 +3509,137 @@ async function controllaVersionePagina() {
     if ($('#nuova-versione')) return; const div = el('div', { class: 'avviso nuova-versione', id: 'nuova-versione' }); div.innerHTML = 'È disponibile una versione più recente della pagina dei Soci (' + esc(m[1].slice(0, 10)) + '). <button class="btn piccolo" id="nv-ricarica">Ricarica</button> <span class="nota-pannello" style="margin:0">Se dopo la ricarica non cambia nulla, forzarla con Cmd+Shift+R (Mac) o Ctrl+F5.</span>';
     document.body.insertBefore(div, document.body.firstChild); $('#nv-ricarica', div).onclick = () => { if (S.dirty.size) { toast('Attendere il salvataggio in corso'); return; } location.replace(location.pathname + '?v=' + encodeURIComponent(m[1]) + location.hash); }; } catch (e) {}
 }
+// ---- progetti_mod
+// ================================================================ schede progetto (contenuto/progetti.json)
+const STATI_PROGETTO = [['suspect', 'Suspect'], ['lead', 'Lead'], ['prospect', 'Prospect'], ['customer', 'Customer'], ['promoter', 'Promoter']];
+const ORDINI_PROGETTO = [['agg', 'Ultima modifica'], ['titolo', 'Titolo'], ['valore', 'Valore stimato (decrescente)'], ['stato', 'Stato (dal suspect al promoter)'], ['referente', 'Socio referente']];
+function progettiVuoti() { return { progetti: [] }; }
+function elencoProgetti() { if (!S.progetti) S.progetti = progettiVuoti(); if (!Array.isArray(S.progetti.progetti)) S.progetti.progetti = []; return S.progetti.progetti; }
+function progettoDi(id) { return elencoProgetti().find(p => p.id === id) || null; }
+function etichettaStato(s) { const x = STATI_PROGETTO.find(k => k[0] === s); return x ? x[1] : (s || ''); }
+function practiceElenco() { return (S.rete && S.rete.practice) || []; }
+function partnerElenco() { return ((S.rete && S.rete.partner) || []).slice().sort((a, b) => String(a.nome).localeCompare(String(b.nome), 'it')); }
+function nomiSociProgetti() { const n = ((S.rete && S.rete.soci) || []).map(s => s.nome).filter(Boolean); if (S.autore && !n.includes(S.autore)) n.push(S.autore); return n; }
+function nomePractice(id) { const p = practiceElenco().find(x => x.id === id); return p ? p.num + ' ' + p.nome : id; }
+function nomePartner(id) { const p = ((S.rete && S.rete.partner) || []).find(x => x.id === id); return p ? p.nome : id; }
+function puoScrivereProgetti() { return !S.readonly && !!S.backend; }
+function normTesto(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+function numeroIt(v) { if (v === null || v === undefined || v === '') return null; if (typeof v === 'number') return isFinite(v) ? v : null; const s = String(v).replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isFinite(n) ? n : null; }
+function filtroProgetti() { if (!S.prog) S.prog = { q: '', stato: [], practice: [], sinergie: [], referenti: [], luogo: '', ordine: 'agg', espansi: new Set() }; return S.prog; }
+function testoRicercaProgetto(p) { return normTesto([p.titolo, p.soggetti, p.luogo, p.descrizione, p.referente, p.autore, etichettaStato(p.stato), (p.practice || []).map(nomePractice).join(' '), (p.sinergie || []).map(nomePartner).join(' ')].join(' \n ')); }
+function progettiFiltrati() {
+  const F = filtroProgetti(); const q = normTesto(F.q).trim(); const parole = q ? q.split(/\s+/) : []; const luogo = normTesto(F.luogo).trim();
+  let l = elencoProgetti().filter(p => {
+    if (F.stato.length && !F.stato.includes(p.stato)) return false;
+    if (F.practice.length && !(p.practice || []).some(x => F.practice.includes(x))) return false;
+    if (F.sinergie.length && !(p.sinergie || []).some(x => F.sinergie.includes(x))) return false;
+    if (F.referenti.length && !F.referenti.includes(p.referente || '')) return false;
+    if (luogo && !normTesto(p.luogo).includes(luogo)) return false;
+    if (parole.length) { const t = testoRicercaProgetto(p); if (!parole.every(w => t.includes(w))) return false; }
+    return true;
+  });
+  const ordStato = Object.fromEntries(STATI_PROGETTO.map((s, i) => [s[0], i]));
+  const cmp = { agg: (a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0), titolo: (a, b) => String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'), valore: (a, b) => (numeroIt(b.valore) || 0) - (numeroIt(a.valore) || 0), stato: (a, b) => (ordStato[a.stato] ?? 99) - (ordStato[b.stato] ?? 99) || String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'), referente: (a, b) => String(a.referente || '').localeCompare(String(b.referente || ''), 'it') || String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it') };
+  l.sort(cmp[F.ordine] || cmp.agg); return l;
+}
+function apriProgetti() { const m = $('#progetti'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaProgetti(true); }
+function chiudiProgetti() { const m = $('#progetti'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function htmlChip(t, cls) { return '<span class="pg-chip ' + (cls || '') + '">' + esc(t) + '</span>'; }
+function htmlSchedaProgetto(p) {
+  const F = MODELLO.F; const v = numeroIt(p.valore); const esp = filtroProgetti().espansi.has(p.id); const descr = String(p.descrizione || '').trim();
+  const lunga = descr.length > 420 || descr.split('\n').length > 6;
+  return '<article class="pg-card" data-id="' + esc(p.id) + '"><div class="pg-testa"><h3>' + esc(p.titolo || 'Senza titolo') + '</h3><span class="sem pg-stato pg-' + esc(p.stato || 'suspect') + '">' + esc(etichettaStato(p.stato)) + '</span>' + (v !== null ? '<span class="pg-valore" title="Valore stimato">' + F.eur(v) + '</span>' : '<span class="pg-valore pg-muto">valore da stimare</span>') + '</div>' +
+    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + '</div>' +
+    '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
+    (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
+    '<div class="pg-piede"><span>' + esc('Inserita da ' + (p.autore || '') + ' il ' + dataIt(p.creato)) + (p.agg && p.agg !== p.creato ? esc('; aggiornata da ' + (p.aggDa || p.autore || '') + ' il ' + dataIt(p.agg)) : '') + '</span>' + (puoScrivereProgetti() ? '<span class="pg-azioni"><button class="btn piccolo" data-pg="modifica" data-id="' + esc(p.id) + '">Modifica</button><button class="btn piccolo pericolo" data-pg="elimina" data-id="' + esc(p.id) + '">Elimina</button></span>' : '') + '</div></article>';
+}
+function htmlFiltriProgetti() {
+  const F = filtroProgetti(); const tutti = elencoProgetti();
+  const gruppo = (tit, nome, voci, sel) => '<div class="pg-gruppo"><div class="pg-gtit">' + esc(tit) + '</div>' + (voci.length ? voci.map(([v, l, n]) => '<label class="pg-opt"><input type="checkbox" data-pgf="' + nome + '" value="' + esc(v) + '"' + (sel.includes(v) ? ' checked' : '') + '> <span>' + esc(l) + '</span>' + (n !== undefined ? '<small>' + n + '</small>' : '') + '</label>').join('') : '<div class="pg-muto">nessuna voce</div>') + '</div>';
+  const conta = f => tutti.filter(f).length;
+  const stati = STATI_PROGETTO.map(([v, l]) => [v, l, conta(p => p.stato === v)]);
+  const pr = practiceElenco().map(p => [p.id, p.num + ' ' + p.nome, conta(x => (x.practice || []).includes(p.id))]);
+  const sin = partnerElenco().map(p => [p.id, p.nome, conta(x => (x.sinergie || []).includes(p.id))]);
+  const ref = [...new Set(tutti.map(p => p.referente).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it')).map(n => [n, n, conta(p => p.referente === n)]);
+  return '<div class="pg-filtri"><label class="pg-cerca">Cerca<input type="search" id="pg-q" placeholder="titolo, soggetti, luogo, descrizione, Socio, Practice, partner" value="' + esc(F.q) + '"></label>' +
+    '<label class="pg-cerca">Ordina per<select id="pg-ordine">' + ORDINI_PROGETTO.map(([v, l]) => '<option value="' + v + '"' + (F.ordine === v ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></label>' +
+    gruppo('Stato', 'stato', stati, F.stato) + gruppo('Practice di riferimento', 'practice', pr, F.practice) + gruppo('Sinergie (società partner)', 'sinergie', sin, F.sinergie) + gruppo('Socio referente', 'referenti', ref, F.referenti) +
+    '<div class="pg-gruppo"><div class="pg-gtit">Luogo</div><input type="search" id="pg-luogo" placeholder="contiene…" value="' + esc(F.luogo) + '"></div>' +
+    '<button class="btn piccolo" id="pg-azzera">Azzera ricerca e filtri</button></div>';
+}
+function htmlRiepilogoProgetti(l) {
+  const F = MODELLO.F; const tot = elencoProgetti().length; const val = l.reduce((a, p) => a + (numeroIt(p.valore) || 0), 0);
+  const perStato = STATI_PROGETTO.map(([v, lab]) => { const n = l.filter(p => p.stato === v).length; return n ? '<span class="sem pg-stato pg-' + v + '">' + esc(lab) + ' ' + n + '</span>' : ''; }).join('');
+  return '<div class="pg-riepilogo"><b>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + '</b>' + (l.length !== tot ? ' su ' + tot : '') + ' · valore stimato complessivo ' + F.eur(val) + (perStato ? ' · ' + perStato : '') + '</div>';
+}
+function disegnaProgetti(tutto) {
+  const m = $('#progetti'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); const F = filtroProgetti();
+  if (tutto || !$('.pg-layout', corpo)) { corpo.innerHTML = '<div class="pg-layout">' + htmlFiltriProgetti() + '<div class="pg-lista"></div></div>'; }
+  else { const nf = el('div'); nf.innerHTML = htmlFiltriProgetti(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'pg-q'; const pos = focusQ ? attivo.selectionStart : null; $('.pg-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#pg-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
+  const l = progettiFiltrati(); const lista = $('.pg-lista', corpo);
+  lista.innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">' + (elencoProgetti().length ? 'Nessuna scheda corrisponde alla ricerca o ai filtri scelti.' : 'Nessuna scheda progetto finora. Con «Nuova scheda» ciascun Socio inserisce i progetti che sta seguendo e che porterà in Onward.') + '</div>');
+  const nb = $('#pg-nuova', m); if (nb) nb.hidden = !puoScrivereProgetti();
+}
+function aggiornaListaProgetti() { const corpo = $('#progetti .mappe-corpo'); if (!corpo || !$('.pg-lista', corpo)) return; const l = progettiFiltrati(); $('.pg-lista', corpo).innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">Nessuna scheda corrisponde alla ricerca o ai filtri scelti.</div>'); }
+function formProgetto(id) {
+  const p0 = id ? progettoDi(id) : null; const nuova = !p0; const p = p0 ? clone(p0) : { id: '', titolo: '', soggetti: '', luogo: '', stato: 'suspect', descrizione: '', practice: [], valore: null, sinergie: [], referente: S.autore || '' };
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-progetto', id: 'finestra' });
+  const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+  const campo = (k, lab, ph) => '<label class="campo-testo">' + lab + '<input class="f" data-f="' + k + '" value="' + esc(p[k] || '') + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + '></label>';
+  const chk = (k, voci, sel) => '<div class="pg-multi">' + voci.map(([v, l]) => '<label class="pg-opt"><input type="checkbox" data-m="' + k + '" value="' + esc(v) + '"' + (sel.includes(v) ? ' checked' : '') + '> <span>' + esc(l) + '</span></label>').join('') + '</div>';
+  const soci = nomiSociProgetti(); if (p.referente && !soci.includes(p.referente)) soci.push(p.referente);
+  const v = numeroIt(p.valore);
+  fin.innerHTML = '<div class="fin-testa"><b>' + (nuova ? 'Nuova scheda progetto' : 'Modifica la scheda: ' + esc(p.titolo || '')) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    '<p class="nota-pannello">La scheda descrive un progetto che il Socio sta seguendo e che porterà in Onward. È condivisa con tutti i Soci e ogni salvataggio resta nella cronologia.</p>' +
+    '<div class="fin-griglia">' + campo('titolo', 'Titolo *', 'es. Piattaforma AI per la logistica di un gruppo industriale') + campo('soggetti', 'Soggetto/i di riferimento', 'es. azienda, ente, persona di contatto') + campo('luogo', 'Luogo', 'es. Milano; Napoli e Campania; Lugano') +
+    '<label class="campo-testo">Stato *<select class="f" data-f="stato">' + STATI_PROGETTO.map(([k, l]) => opt(k, p.stato, l)).join('') + '</select></label>' +
+    '<label class="campo-testo">Valore stimato (euro)<input class="f" data-f="valore" inputmode="decimal" placeholder="es. 120.000" value="' + (v !== null ? esc(MODELLO.F.num(v)) : '') + '"></label>' +
+    '<label class="campo-testo">Socio referente<select class="f" data-f="referente">' + opt('', p.referente || '', 'non indicato') + soci.map(n => opt(n, p.referente || '', n)).join('') + '</select></label></div>' +
+    '<div class="pop-tit">Practices di riferimento (una o più)</div>' + chk('practice', practiceElenco().map(x => [x.id, x.num + ' ' + x.nome]), p.practice || []) +
+    '<div class="pop-tit">Sinergie con le società partner (una o più)</div>' + chk('sinergie', partnerElenco().map(x => [x.id, x.nome]), p.sinergie || []) +
+    '<label class="campo-testo" style="margin-top:.6rem">Descrizione (senza limiti di lunghezza)<textarea class="f" data-f="descrizione" rows="9" placeholder="Contesto, esigenza del cliente, servizi di Onward coinvolti, prossimi passi, tempi">' + esc(p.descrizione || '') + '</textarea></label>' +
+    '<div class="azioni gl-azioni">' + (nuova ? '' : '<button class="btn piccolo pericolo" id="pg-elimina">Elimina la scheda</button>') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="pg-salva">Salva la scheda</button></div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra; $('.f[data-f="titolo"]', fin).focus();
+  const del = $('#pg-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); chiudiFinestra(); };
+  $('#pg-salva', fin).onclick = () => {
+    const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };
+    const titolo = f('titolo'); if (!titolo) { toast('Indicare il titolo del progetto'); $('.f[data-f="titolo"]', fin).focus(); return; }
+    const valoreTxt = f('valore'); const valore = valoreTxt ? numeroIt(valoreTxt) : null; if (valoreTxt && valore === null) { toast('Il valore stimato deve essere un numero (per esempio 120.000)'); $('.f[data-f="valore"]', fin).focus(); return; }
+    const ora = new Date().toISOString(); const n = nuova ? { id: uid('pg'), autore: S.autore || 'anonimo', creato: ora } : p0;
+    n.titolo = titolo; n.soggetti = f('soggetti'); n.luogo = f('luogo'); n.stato = f('stato') || 'suspect'; n.descrizione = f('descrizione'); n.valore = valore; n.referente = f('referente');
+    n.practice = $$('input[data-m="practice"]:checked', fin).map(x => x.value); n.sinergie = $$('input[data-m="sinergie"]:checked', fin).map(x => x.value); n.agg = ora; n.aggDa = S.autore || 'anonimo';
+    if (nuova) elencoProgetti().push(n);
+    if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + titolo.slice(0, 60) + '» ' + (nuova ? 'inserita' : 'aggiornata'); segna('progetti');
+    chiudiFinestra(); disegnaProgetti(true); toast(nuova ? 'Scheda inserita: è visibile a tutti i Soci' : 'Scheda aggiornata');
+  };
+}
+function eliminaProgetto(id) { const l = elencoProgetti(); const i = l.findIndex(p => p.id === id); if (i < 0) return; const t = l[i].titolo || ''; l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + t.slice(0, 60) + '» eliminata'; segna('progetti'); disegnaProgetti(true); }
+function fondiProgetti(remoto) {
+  const R = Object.assign(progettiVuoti(), remoto || {}), M = S.progetti || progettiVuoti(); const out = new Map();
+  for (const p of (R.progetti || []).concat(M.progetti || [])) { const cur = out.get(p.id); if (!cur || (Date.parse(p.agg || p.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(p.id, clone(p)); }
+  const base = (S.base && S.base.progetti && S.base.progetti.progetti) || []; const miei = new Set((M.progetti || []).map(p => p.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
+  S.progetti = { progetti: [...out.values()] };
+}
+function esportaProgetti() {
+  const l = progettiFiltrati(); const F = MODELLO.F; const val = l.reduce((a, p) => a + (numeroIt(p.valore) || 0), 0);
+  let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Schede Progetto</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt} table{border-collapse:collapse;width:100%;font-size:9.5pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:4pt 5pt;vertical-align:top} tr.i td{background:#e9eff7;font-weight:bold} td.e{width:28%;background:#f3f5f8} p{margin:0 0 6pt}</style></head><body>';
+  h += '<h1>Onward · Schede Progetto</h1><p>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + '; valore stimato complessivo ' + F.eur(val) + '.' + (filtroProgetti().q || filtroProgetti().stato.length || filtroProgetti().practice.length || filtroProgetti().sinergie.length || filtroProgetti().referenti.length || filtroProgetti().luogo ? ' Elenco filtrato secondo la ricerca corrente.' : '') + '</p>';
+  h += '<table><tr class="i"><td>Titolo</td><td>Stato</td><td>Referente</td><td>Luogo</td><td>Practice</td><td>Sinergie</td><td>Valore</td></tr>' + l.map(p => '<tr><td>' + esc(p.titolo || '') + '</td><td>' + esc(etichettaStato(p.stato)) + '</td><td>' + esc(p.referente || '') + '</td><td>' + esc(p.luogo || '') + '</td><td>' + esc((p.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc((p.sinergie || []).map(nomePartner).join('; ')) + '</td><td>' + (numeroIt(p.valore) !== null ? F.eur(numeroIt(p.valore)) : '') + '</td></tr>').join('') + '</table>';
+  for (const p of l) { const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(p.titolo || '') + '</h2><table>' + riga('Stato', esc(etichettaStato(p.stato))) + riga('Soggetti di riferimento', esc(p.soggetti)) + riga('Luogo', esc(p.luogo)) + riga('Socio referente', esc(p.referente)) + riga('Practices di riferimento', esc((p.practice || []).map(nomePractice).join('; '))) + riga('Sinergie', esc((p.sinergie || []).map(nomePartner).join('; '))) + riga('Valore stimato', numeroIt(p.valore) !== null ? F.eur(numeroIt(p.valore)) : '') + riga('Descrizione', esc(p.descrizione || '').replace(/\n/g, '<br>')) + riga('Inserita', esc((p.autore || '') + ', ' + dataIt(p.creato))) + (p.agg && p.agg !== p.creato ? riga('Aggiornata', esc((p.aggDa || '') + ', ' + dataIt(p.agg))) : '') + '</table>'; }
+  scarica('Onward_Schede_Progetto.doc', h + '</body></html>', 'application/msword');
+}
+function avviaProgetti() {
+  const m = $('#progetti'); if (!m) return; $('#b-progetti').onclick = apriProgetti; $('#progetti-chiudi').onclick = chiudiProgetti; $('#pg-nuova', m).onclick = () => formProgetto(null); $('#pg-esporta', m).onclick = () => { toast('Preparazione del file Word…'); esportaProgetti(); };
+  m.addEventListener('input', ev => { const F = filtroProgetti(); if (ev.target.id === 'pg-q') { F.q = ev.target.value; aggiornaListaProgetti(); } if (ev.target.id === 'pg-luogo') { F.luogo = ev.target.value; aggiornaListaProgetti(); } });
+  m.addEventListener('change', ev => { const F = filtroProgetti(); const c = ev.target.closest('input[data-pgf]'); if (c) { const k = c.dataset.pgf; const cur = new Set(F[k]); if (c.checked) cur.add(c.value); else cur.delete(c.value); F[k] = [...cur]; aggiornaListaProgetti(); return; } if (ev.target.id === 'pg-ordine') { F.ordine = ev.target.value; aggiornaListaProgetti(); } });
+  m.addEventListener('click', ev => { const b = ev.target.closest('button[data-pg], #pg-azzera'); if (!b) return; const F = filtroProgetti();
+    if (b.id === 'pg-azzera') { F.q = ''; F.luogo = ''; F.stato = []; F.practice = []; F.sinergie = []; F.referenti = []; disegnaProgetti(true); return; }
+    const az = b.dataset.pg; if (az === 'modifica') { if (!puoScrivereProgetti()) return; formProgetto(b.dataset.id); return; }
+    if (az === 'elimina') { const p = progettoDi(b.dataset.id); if (!p) return; if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); return; }
+    if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
+}
+
 // ---- commenti_mod + proposte_mod
 // ================================================================ commenti a margine (contenuto/commenti.json)
 function commentiVuoti() { return { commenti: [] }; }
@@ -3550,7 +3729,7 @@ function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x
 function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
 function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
 function inRegime() { return regimeAttivo() && !isApprovatore(); }
-function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte'].includes(k) && !String(k).startsWith('prop:'); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti'].includes(k) && !String(k).startsWith('prop:'); }
 function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
 function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
 function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
@@ -3644,6 +3823,7 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
+  if (k === 'progetti') { if ($('#progetti') && !$('#progetti').hidden) disegnaProgetti(true); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }
@@ -3673,15 +3853,16 @@ function avvia() {
   try { const t = localStorage.getItem('onward.tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   $$('#modo button').forEach(b => b.onclick = () => { S.mode = b.dataset.modo; applicaModo(); aggiornaPannelloIpotesi(true); });
   $('#b-ipotesi').onclick = () => apriPannello('pan-ipotesi'); $('#b-storico').onclick = apriCronologia; $('#b-impostazioni').onclick = () => { costruisciImpostazioni(); apriPannello('pan-impostazioni'); };
-  $('#b-glossario').onclick = () => apriGlossario(); $('#b-mappe').onclick = () => apriMappe(); $('#mappe-chiudi').onclick = chiudiMappe; for (const b of $$('#mappe .schede button')) b.onclick = () => { S.mappaVista = b.dataset.vista; S.mappaEvid = null; disegnaMappe(); }; $('#b-stampa').onclick = () => window.print(); $('#b-json').onclick = esportaJSON; $('#b-word').onclick = () => { toast('Preparazione del file Word…'); esportaWord(); };
+  $('#b-glossario').onclick = () => apriGlossario(); $('#b-mappe').onclick = () => apriMappe('rete'); $('#b-practice').onclick = () => apriMappe('practice'); $('#mappe-chiudi').onclick = chiudiMappe; for (const b of $$('#mappe .schede button')) b.onclick = () => { S.mappaVista = b.dataset.vista; S.mappaEvid = null; disegnaMappe(); }; $('#b-stampa').onclick = () => window.print(); $('#b-json').onclick = esportaJSON; $('#b-word').onclick = () => { toast('Preparazione del file Word…'); esportaWord(); };
   for (const b of $$('.pannello .chiudi')) b.onclick = chiudiPannelli;
   const tend = $('#esporta'); const menu = $('.tendina-menu', tend); $('#b-esporta').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-esporta').setAttribute('aria-expanded', String(!menu.hidden)); }; document.addEventListener('click', e => { if (!e.target.closest('#esporta')) { menu.hidden = true; $('#b-esporta').setAttribute('aria-expanded', 'false'); } }); for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; });
+  for (const id of ['strumenti-menu', 'persone-menu']) { const tend = $('#' + id); if (!tend) continue; const btn = $(':scope > .btn', tend), menu = $('.tendina-menu', tend); btn.onclick = e => { e.stopPropagation(); const era = menu.hidden; for (const t of $$('.tendina-menu')) t.hidden = true; for (const b of $$('.tendina > .btn[aria-haspopup]')) b.setAttribute('aria-expanded', 'false'); menu.hidden = !era; btn.setAttribute('aria-expanded', String(!menu.hidden)); }; document.addEventListener('click', e => { if (!e.target.closest('#' + id)) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); } }); for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }); }
   $('#sfondo').onclick = chiudiFinestra;
   window.addEventListener('beforeunload', e => { if (S.dirty.size) { e.preventDefault(); e.returnValue = ''; } });
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); avviaProgetti(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

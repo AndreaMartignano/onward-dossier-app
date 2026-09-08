@@ -804,7 +804,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pg-meta b { color: var(--inchiostro); font-weight: 600; margin-right: .2rem; }
 .pg-chips { display: flex; gap: .3rem; flex-wrap: wrap; margin-bottom: .45rem; }
 .pg-chip { display: inline-block; font-size: .7rem; padding: .08rem .5rem; border-radius: 999px; border: 1px solid; }
-.pg-chip.pg-pr { color: #2f6b3a; border-color: #8cc59a; background: color-mix(in srgb, #8cc59a 22%, transparent); }
+.pg-chip.pg-pr { color: var(--ok); border-color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
 .pg-chip.pg-sin { color: var(--accento); border-color: var(--chip-bordo); background: var(--chip); }
 .pg-descr { font-size: .88rem; line-height: 1.5; white-space: pre-wrap; }
 .pg-descr.pg-clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
@@ -820,6 +820,29 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .finestra-progetto { width: min(960px, 96vw); }
 .finestra-progetto textarea { min-height: 9rem; }
 @media (max-width: 1000px) { .pg-layout { grid-template-columns: 1fr; } .pg-filtri { position: static; max-height: none; } }
+/* ---- parametri di progetto e pipeline */
+.modifica .blk.rete.progetti::before { content: "Generato dalle Schede Progetto: si modifica dalle schede"; }
+.pg-param { border-top: 1px dashed var(--filo); margin-top: .55rem; padding-top: .45rem; }
+.pg-param-tit { font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: var(--secondario); font-weight: bold; margin-bottom: .3rem; }
+.pg-param-tit small { text-transform: none; letter-spacing: 0; font-weight: normal; margin-left: .4rem; }
+.pg-pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .3rem .8rem; }
+.pg-kv > span { display: block; font-size: .66rem; text-transform: uppercase; letter-spacing: .04em; color: var(--secondario); }
+.pg-kv > b { display: block; font-size: .84rem; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.3; }
+.pg-kv > b small { display: block; font-size: .68rem; color: var(--secondario); font-weight: normal; }
+.pg-kv.pg-pesato > b { color: var(--accento); font-size: .95rem; }
+.pg-kv.pg-vuoto > b { color: var(--errore); font-weight: normal; }
+.pg-fgriglia { grid-template-columns: 1fr 1fr 1fr; }
+.pg-fgriglia .campo-testo > span { display: block; font-size: .68rem; color: var(--secondario); font-weight: normal; margin-top: .1rem; line-height: 1.3; }
+.pg-anteprima { margin: .3rem 0 .6rem; padding: .5rem .7rem; border-radius: 6px; background: var(--lavaggio); border: 1px solid var(--filo); font-size: .82rem; line-height: 1.45; }
+.pg-anteprima .pg-gtit { display: block; }
+.pg-anteprima b { color: var(--accento); }
+.pg-pipeline { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: center; font-size: .78rem; color: var(--secondario); padding: .25rem .2rem .35rem; border-bottom: 1px solid var(--filo); margin-bottom: .2rem; }
+.pg-pipeline .pg-gtit { margin: 0; width: 100%; }
+.pg-pl-anno b { color: var(--inchiostro); }
+.s-pipeline { border-color: var(--accento); color: var(--accento); font-weight: 600; }
+.q-pipeline .s-tab small { display: block; font-size: .68rem; color: var(--secondario); font-weight: normal; }
+@media (max-width: 900px) { .pg-fgriglia { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .pg-fgriglia { grid-template-columns: 1fr; } }
 
 </style>
 </head>
@@ -1063,6 +1086,37 @@ const MODELLO = (() => {
     return r;
   }
 
+  // ------------------------------------------------------------ pipeline dalle Schede Progetto
+  const LINEE_PIPELINE = [['diag', 'Diagnosi fondativa D³'], ['ret', 'Mandato continuativo (retainer)'], ['spec', 'Progetto specialistico'], ['part', 'Progetto con partner tecnico (Onward capofila)'], ['fin', 'Finanza agevolata'], ['form', 'Formazione finanziata'], ['altro', 'Altro o da definire']];
+  const PROB_STATO = { suspect: 0.10, lead: 0.25, prospect: 0.50, customer: 1, promoter: 1 };
+  const ORIGINATION_GRADO = { segnalazione: 'orig_min', introduzione: 'orig_med', affiancamento: 'orig_max' };
+  function vuoto(v) { return v === null || v === undefined || v === ''; }
+  function probabilitaScheda(pr) { const q = pr.parametri || {}; return !vuoto(q.probabilita) ? Math.max(0, Math.min(1, num(q.probabilita, 0))) : (PROB_STATO[pr.stato] != null ? PROB_STATO[pr.stato] : 0.1); }
+  function giornateAuto(p, linea, valore) { const tar = p.tariffa_media[1] || 1; if (linea === 'diag') return num(p.gg_diag, 0); if (linea === 'ret') return num(p.gg_ret, 0); if (linea === 'part') return valore / 100000 * num(p.gg_dir_per_100k, 0); if (linea === 'fin') return num(p.gg_fin, 0); if (linea === 'form') return num(p.gg_form, 0); return valore ? valore / tar : 0; }
+  function terziAuto(p, linea) { if (linea === 'part') return 1 - num(p.m_part, 0); if (linea === 'fin') return 1 - num(p.m_fin, 0); if (linea === 'form') return 1 - num(p.m_form, 0); return 0; }
+  function schedaDerivata(pr, p, nA) {
+    const q = pr.parametri || {}; const valore = Math.max(0, num(pr.valore, 0)); const stato = pr.stato || 'suspect'; const prob = probabilitaScheda(pr); const linea = q.linea || 'altro';
+    const es = Math.min(nA - 1, Math.max(0, vuoto(q.esercizio) ? 0 : Math.round(num(q.esercizio, 0)))); const ric = q.ricorrenza ? q.ricorrenza === 'annuale' : linea === 'ret';
+    const gg = !vuoto(q.giornate) ? Math.max(0, num(q.giornate, 0)) : giornateAuto(p, linea, valore); const terzi = !vuoto(q.terzi) ? Math.max(0, Math.min(1, num(q.terzi, 0))) : terziAuto(p, linea);
+    const pesato = valore * prob; const netto = pesato * (1 - terzi); const grado = ORIGINATION_GRADO[q.origination] ? num(p[ORIGINATION_GRADO[q.origination]], 0) : num(p.orig_med, 0);
+    return { id: pr.id, titolo: pr.titolo || '', stato, linea, prob, esercizio: es, ricorrente: ric, valore, pesato, netto, terzi, gg, gg_pesate: gg * prob, grado, origination: pesato * grado, practice: pr.practice || [], sinergie: pr.sinergie || [], referente: pr.referente || '', canale: q.canale || '', settore: q.settore || '', cliente: q.cliente || '', esecutore: q.esecutore || '', trimestre: q.trimestre || '', gg_auto: vuoto(q.giornate), terzi_auto: vuoto(q.terzi), prob_auto: vuoto(q.probabilita) };
+  }
+  function pipeline(progetti, p, opt) {
+    opt = opt || {}; const nomiAnni = opt.anni || ['Primo esercizio', 'Secondo esercizio', 'Terzo esercizio']; const nA = nomiAnni.length;
+    const schede = (Array.isArray(progetti) ? progetti : []).map(pr => schedaDerivata(pr, p, nA));
+    const somma = (l, k) => l.reduce((a, s) => a + (s[k] || 0), 0);
+    const agg = l => ({ n: l.length, valore: somma(l, 'valore'), pesato: somma(l, 'pesato'), netto: somma(l, 'netto'), gg: somma(l, 'gg_pesate'), origination: somma(l, 'origination') });
+    const anni = [];
+    for (let i = 0; i < nA; i++) {
+      const in_anno = schede.filter(s => s.esercizio === i || (s.ricorrente && s.esercizio < i)); const vol = [0, 0, 0, 0, 0, 0];
+      for (const s of in_anno) { if (s.linea === 'diag') vol[0] += s.valore ? s.pesato / num(p.tk_diag, 1) : s.prob; else if (s.linea === 'ret') vol[1] += s.valore ? s.pesato / num(p.tk_ret, 1) : s.prob; else if (s.linea === 'spec') vol[2] += s.pesato; else if (s.linea === 'part') vol[3] += s.pesato; else if (s.linea === 'fin') vol[4] += s.pesato; else if (s.linea === 'form') vol[5] += s.valore ? s.pesato / num(p.tk_form, 1) : s.prob; }
+      const a = agg(in_anno); a.i = i; a.nome = nomiAnni[i]; a.volumi = vol.map(x => Math.round(x * 100) / 100); a.altro = somma(in_anno.filter(s => s.linea === 'altro'), 'pesato'); a.ricorrenti = somma(in_anno.filter(s => s.ricorrente), 'pesato'); a.schede = in_anno.map(s => s.id); anni.push(a);
+    }
+    const per = (chiave, etichette) => { const out = {}; for (const s of schede) { const ks = Array.isArray(s[chiave]) ? (s[chiave].length ? s[chiave] : ['']) : [s[chiave] || '']; for (const k of ks) { const kk = k || 'nd'; if (!out[kk]) out[kk] = { n: 0, valore: 0, pesato: 0, netto: 0, gg: 0, origination: 0, nome: (etichette && etichette[kk]) || (kk === 'nd' ? 'Non indicato' : kk) }; const o = out[kk]; o.n++; o.valore += s.valore; o.pesato += s.pesato; o.netto += s.netto; o.gg += s.gg_pesate; o.origination += s.origination; } } return out; };
+    const tot = agg(schede);
+    return Object.assign(tot, { attiva: schede.length > 0, anni, schede, perStato: per('stato', { suspect: 'Suspect', lead: 'Lead', prospect: 'Prospect', customer: 'Customer', promoter: 'Promoter' }), perLinea: per('linea', Object.fromEntries(LINEE_PIPELINE)), perPractice: per('practice'), perReferente: per('referente'), perCanale: per('canale'), perSettore: per('settore'), perCliente: per('cliente'), perSinergia: per('sinergie'), prob_media: tot.valore ? tot.pesato / tot.valore : 0, ricorrenti: somma(schede.filter(s => s.ricorrente), 'pesato') });
+  }
+
   // ------------------------------------------------------------ formati (convenzione italiana)
   // formattazione italiana con separatore delle migliaia sempre presente (anche a quattro cifre: 7.500, non 7500), uguale in tutti i browser
   const gruppi = (intero) => intero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -1082,14 +1136,14 @@ const MODELLO = (() => {
     if (x == null || Number.isNaN(x) || !Number.isFinite(x)) return '…';
     return (F[fmt] || F.num)(x);
   }
-  return { IPOTESI_DEFAULT, calcola, formatta, F, dettaglioSoci: dettaglio, sincronizzaSoci, applicaATutti, medieSoci: medie };
+  return { IPOTESI_DEFAULT, calcola, formatta, F, dettaglioSoci: dettaglio, sincronizzaSoci, applicaATutti, medieSoci: medie, pipeline, LINEE_PIPELINE, PROB_STATO, probabilitaScheda, giornateAuto, terziAuto, schedaDerivata };
 })();
 
 
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-08T08:50:56Z';
+window.ONWARD_BUILD = '2026-09-08T09:48:34Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1120,7 +1174,7 @@ try { S.mode = localStorage.getItem('onward.mode') || 'lettura'; } catch (e) {}
 const exprCache = new Map();
 function compila(expr) {
   if (!exprCache.has(expr)) {
-    try { exprCache.set(expr, Function('r', 's', 'P', 'N', 'Math', '"use strict"; return (' + expr + ')')); }
+    try { exprCache.set(expr, Function('r', 's', 'P', 'N', 'pl', 'Math', '"use strict"; return (' + expr + ')')); }
     catch (e) { exprCache.set(expr, null); }
   }
   return exprCache.get(expr);
@@ -1129,11 +1183,12 @@ function ricalcola() {
   const P = S.P; sincronizzaSoci();
   const r = MODELLO.calcola(P, 'Base', 1);
   const s = { Prudente: MODELLO.calcola(P, 'Prudente', 1), Base: r, Sviluppo: MODELLO.calcola(P, 'Sviluppo', 1) };
-  S.ctx = { r, s, P, N: contaRete() };
+  S.ctx = { r, s, P, N: contaRete(), pl: null };
+  S.ctx.pl = calcolaPipeline(); if (S.ctx.pl.attiva && S.ctx.pl.anni[1] && S.ctx.pl.anni[1].r) s.Pipeline = S.ctx.pl.anni[1].r;
 }
 function valuta(expr) {
   const f = compila(expr); if (!f) return NaN;
-  try { return f(S.ctx.r, S.ctx.s, S.ctx.P, S.ctx.N, Math); } catch (e) { return NaN; }
+  try { return f(S.ctx.r, S.ctx.s, S.ctx.P, S.ctx.N, S.ctx.pl, Math); } catch (e) { return NaN; }
 }
 function getPath(obj, path) {
   const parts = path.replace(/^P\./, '').replace(/\[(\d+)\]/g, '.$1').split('.');
@@ -1347,7 +1402,7 @@ function svgFigura(id) { const { r, s, P } = S.ctx; const f = GRAFICI[id]; retur
 // ================================================================ rendering dei blocchi
 function mkTxt(text, cls, noLink) { const d = el('div', { class: 'txt' + (cls ? ' ' + cls : '') }); S.noLink = !!noLink; d.innerHTML = renderTesto(text); S.noLink = false; if (S.mode === 'modifica' && !S.readonly && !S.generando) d.contentEditable = 'true'; return d; }
 function renderBlocco(b) {
-  if (b.t === 'rete') { const wr = renderRete(b); marcaBlocco(wr); return wr; }
+  if (b.t === 'rete' || b.t === 'progetti') { const wr = renderRete(b); marcaBlocco(wr); return wr; }
   const w = el('div', { class: 'blk ' + b.t, dataset: { id: b.id, t: b.t } });
   if (b.t === 'p' || b.t === 'li' || b.t === 'h2' || b.t === 'h3') { w.appendChild(mkTxt(b.text, null, b.t === 'h2' || b.t === 'h3')); if (b.t === 'h2') w.id = 'h2-' + b.id; }
   else if (b.t === 'box') { const r = el('div', { class: 'riquadro' }); for (const t of b.paras) r.appendChild(mkTxt(t)); w.appendChild(r); }
@@ -1438,7 +1493,7 @@ function attrezza(w, b) {
   const bt = (az, lab, title) => { const x = el('button', { dataset: { az }, title: title || lab }); x.textContent = lab; return x; };
   s.appendChild(bt('para+', '＋ paragrafo', 'Aggiungi un paragrafo dopo questo blocco'));
   if (b.t === 'box') s.appendChild(bt('boxpara+', '＋ riga nel riquadro'));
-  if (b.t === 'rete') s.appendChild(bt('rete', 'modifica la rete', 'Apre Practices e Persone: le schede si modificano da lì')); else s.appendChild(bt('valore', '＋ valore', 'Inserisci un valore del modello nel testo'));
+  if (b.t === 'rete') s.appendChild(bt('rete', 'modifica la rete', 'Apre Practices e Persone: le schede si modificano da lì')); else if (b.t === 'progetti') s.appendChild(bt('progetti', 'apri le schede', 'Tavola generata dalle Schede Progetto: si modifica da lì')); else s.appendChild(bt('valore', '＋ valore', 'Inserisci un valore del modello nel testo'));
   s.appendChild(bt('su', '↑', 'Sposta in alto')); s.appendChild(bt('giu', '↓', 'Sposta in basso'));
   s.appendChild(bt('elimina', 'elimina', 'Elimina il blocco'));
   w.appendChild(s);
@@ -1456,6 +1511,7 @@ document.addEventListener('click', ev => {
   if (az === 'elimina') { if (!confirm('Eliminare questo blocco? L’operazione resta nello storico e si può annullare ripristinando una versione precedente.')) return; const i = info.lista.indexOf(info.b); info.lista.splice(i, 1); w.remove(); segna(info.file); renderSommario(); numera(); aggiornaTok(); return; }
   if (az === 'valore') { apriSelettoreValori(w); return; }
   if (az === 'rete') { apriMappe(); return; }
+  if (az === 'progetti') { apriProgetti(); return; }
 });
 // modifica del testo: al blur si serializza
 document.addEventListener('focusin', ev => { const t = ev.target.closest('.txt[contenteditable="true"], .intro[contenteditable="true"], .titolo-parte[contenteditable="true"]'); if (t) { t.dataset.orig = serializza(t); attivaFormato(t); } });
@@ -1510,6 +1566,7 @@ function apriSelettoreValori(w, onScelta) {
   const { r, s, P } = S.ctx; const F = MODELLO.F;
   const voci = [['eur', 'r.ricavi', 'Ricavi lordi'], ['eur', 'r.netti', 'Ricavi netti'], ['eur', 'r.terzi', 'Corrispettivi a terzi'], ['eur', 'r.mdc', 'Margine di contribuzione'], ['eur', 'r.struttura', 'Costi di struttura'], ['eur', 'r.mo', 'Margine operativo'], ['pct1', 'r.mo_lordi', 'Margine operativo sui lordi'], ['pct1', 'r.mo_netti', 'Margine operativo sui netti'], ['eur', 'r.utile_distr', 'Utile distribuibile'], ['eur', 'r.compensi', 'Compensi ai Soci'], ['eur', 'r.comp_socio', 'Compenso corrente medio per Socio'], ['eur', 'r.utile_socio', 'Quota di utile media per Socio'], ['eur', 'r.tot_socio', 'Reddito medio per Socio'], ['pct', 'r.indiff.vantaggio', 'Vantaggio rispetto al lavoro in proprio'], ['num', 'r.capacita', 'Capacità (giornate senior)'], ['num', 'r.gg_vend', 'Giornate vendibili per Socio'], ['num', 'r.gg_tot', 'Giornate senior assorbite'], ['pct', 'r.utilizzo_impl', 'Utilizzo della capacità'], ['eur', 'r.tetto', 'Tetto del modello a tempo'], ['eur', 'r.ric_tempo[1]', 'Ricavo da tempo dei Soci (secondo esercizio)'], ['eur', 'r.cac', 'Costo di acquisizione del cliente'], ['eur', 'r.ltv', 'Valore atteso del cliente'], ['num', 'r.portafoglio', 'Portafoglio sostenibile'], ['num', 'r.contatti_necessari', 'Contatti da identificare'], ['eur', 'r.circolante', 'Circolante assorbito dal capofila'], ['num1', 'r.canale_bep', 'Pareggio del canale (clienti)'], ['eur', 'r.valore', 'Valore di riferimento della società'], ['eur', 'r.apporto_opera', 'Apporto d’opera dei Soci'], ['eur', 's.Prudente.mo', 'Margine operativo, scenario prudente'], ['eur', 's.Sviluppo.mo', 'Margine operativo, scenario di sviluppo'], ['eur', 's.Prudente.ricavi', 'Ricavi lordi, scenario prudente'], ['eur', 's.Sviluppo.ricavi', 'Ricavi lordi, scenario di sviluppo']];
   for (const [, vv] of SCHEMA) for (const [p, l, f] of vv) voci.push([f === 'dec' ? 'dec' : f, p, l]);
+  const pl = S.ctx.pl; if (pl) { voci.push(['num', 'pl.n', 'Schede Progetto: numero'], ['eur', 'pl.valore', 'Schede Progetto: valore stimato'], ['eur', 'pl.pesato', 'Schede Progetto: valore pesato'], ['eur', 'pl.netto', 'Schede Progetto: ricavo netto atteso'], ['num', 'pl.gg', 'Schede Progetto: giornate senior pesate'], ['eur', 'pl.origination', 'Schede Progetto: origination attesa'], ['pct', 'pl.prob_media', 'Schede Progetto: probabilità media']); pl.anni.forEach((a, i) => voci.push(['eur', 'pl.anni[' + i + '].pesato', 'Pipeline, ' + a.nome.toLowerCase() + ': valore pesato'], ['pct', 'pl.anni[' + i + '].copertura', 'Pipeline, ' + a.nome.toLowerCase() + ': copertura della traiettoria'])); }
   for (const k of Object.keys(r.linee)) { const l = r.linee[k]; voci.push(['eur', 'r.linee.' + k + '.ricavo', l.nome + ': ricavo'], ['eur', 'r.linee.' + k + '.mdc', l.nome + ': margine di contribuzione'], ['num', 'r.linee.' + k + '.gg', l.nome + ': giornate senior'], ['eur', 'r.linee.' + k + '.mdc_gg', l.nome + ': margine per giornata']); }
   const fin = el('div', { class: 'finestra aperta', id: 'finestra' });
   fin.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem"><b>Inserisci un valore del modello</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div><p class="nota-pannello">Il valore viene inserito alla fine del blocco selezionato (o dove si trova il cursore) e si aggiorna da solo quando cambiano le ipotesi.</p><input class="ricerca" id="fin-cerca" placeholder="Cerca…"><div class="selettore-valori" id="fin-lista"></div>';
@@ -1686,7 +1743,7 @@ async function apriCronologia(keySel) {
     if (!confirm('Ripristinare questa versione? Il testo attuale resta nella cronologia.')) return; applicaDati(key, v); S.ripristini.add(key); segna(key); if (key === 'ipotesi') { aggiornaCalcolati(); aggiornaPannelloIpotesi(true); } else if (key === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (key === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (key === 'scenari') { if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); } else if (key === 'progetti') { if ($('#progetti') && !$('#progetti').hidden) disegnaProgetti(true); } else { renderDocumento(); if (key === 'glossario') aggiornaGlossario(); if (key === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); toast('Versione ripristinata: verrà salvata come nuova versione'); };
 }
 function capitoloVisibile() { let best = null; for (const s of $$('section.capitolo')) { const r = s.getBoundingClientRect(); if (r.top <= 120) best = s.dataset.cap; } return best === 'nota' ? null : best; }
-function testoBlocco(b) { if (!b) return ''; if (b.t === 'rete') return '[tabelle generate dalla rete di partenza: ' + b.vista + ']'; if (b.t === 'tbl') return b.rows.map(r => r.map(c => c.text).join(' | ')).join('\n'); if (b.t === 'box') return b.paras.join('\n'); return b.text || b.caption || ''; }
+function testoBlocco(b) { if (!b) return ''; if (b.t === 'rete') return '[tabelle generate dalla rete di partenza: ' + b.vista + ']'; if (b.t === 'progetti') return '[tavola generata dalle Schede Progetto: ' + b.vista + ']'; if (b.t === 'tbl') return b.rows.map(r => r.map(c => c.text).join(' | ')).join('\n'); if (b.t === 'box') return b.paras.join('\n'); return b.text || b.caption || ''; }
 function diffVersioni(key, vecchia) {
   if (key === 'ipotesi' && typeof diffDue === 'function') return diffDue('ipotesi', vecchia, S.P);
   if (key === 'ipotesi') { const out = []; const cur = flat(S.P), old = flat(vecchia); for (const k of new Set([...Object.keys(cur), ...Object.keys(old)])) if (cur[k] !== old[k]) out.push('<div class="p"><b>' + esc(k) + '</b>: <del>' + esc(String(old[k])) + '</del> <ins>' + esc(String(cur[k])) + '</ins></div>'); return out.length ? out.join('') : '<div class="p">Nessuna differenza nelle ipotesi.</div>'; }
@@ -1726,8 +1783,8 @@ function costruisciImpostazioni() {
     '<label class="campo-testo">Token di accesso personale (con permesso Contents: lettura e scrittura sul repository)<input id="cfg-token" type="password" value="' + esc(cfg.token || '') + '"><span>Il token resta salvato solo in questo browser.</span></label>' +
     '<label class="campo-testo">Indirizzo e-mail per i commit (facoltativo)<input id="cfg-email" value="' + esc(cfg.email || '') + '"></label></div>' +
     '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn primario" id="cfg-salva">Salva e collega</button><button class="btn" id="cfg-init"' + (S.repoVuoto && !G ? '' : ' hidden') + '>' + (S.repoMancanti && S.repoMancanti < tuttiKey().length ? 'Completa il repository (' + S.repoMancanti + ' file mancanti)' : 'Inizializza il repository con questo contenuto') + '</button><button class="btn"' + (G ? ' hidden' : '') + ' id="cfg-azzera">Azzera le modifiche locali</button><button class="btn" id="cfg-importa">Importa dati (JSON)</button><input type="file" id="cfg-file" accept="application/json,.json" hidden>' + (S.backend && S.backend.nome === 'github' && !S.repoVuoto && !G ? '<button class="btn" id="cfg-carica-html" title="Mette una copia di questo file nel repository, così i Soci possono scaricarlo da lì">Carica il file dell’applicazione nel repository</button><input type="file" id="cfg-file-html" accept="text/html,.html" hidden>' + (window.ONWARD_GUSCIO_GZ && window.ONWARD_PAGINA_REPO ? '<button class="btn" id="cfg-pagina" title="Scrive la versione della pagina dei Soci contenuta in questo file nel repository pubblico che la pubblica">Aggiorna la pagina dei Soci</button>' : '') : '') + '</div><div id="cfg-esito">' + (S.backend && S.backend.nome === 'github' && S.repoFile && !S.repoVuoto ? '<div class="avviso">Collegato: ' + S.repoFile + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.' + (S.htmlNelRepo ? ' Il file dell’applicazione è nel repository: <a href="https://github.com/' + esc(S.cfg.owner + '/' + S.cfg.repo) + '/blob/' + esc(S.cfg.branch) + '/Onward_Dossier_vivo.html" target="_blank" rel="noopener">Onward_Dossier_vivo.html</a>.' : '') + '</div>' : '') + '</div>' +
-    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogamo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + htmlRegole() + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
-  $('#cfg-tipo', c).onchange = e => { $('#cfg-gh', c).hidden = e.target.value !== 'github'; }; attivaRegole(c);
+    ((window.ONWARD_PAGINA || G) && S.backend && S.backend.nome === 'github' && !S.repoVuoto ? '<h4>Link personali per i Soci</h4><p class="nota-pannello">' + (G ? 'Sezione per chi distribuisce gli accessi. ' : '') + 'Per ciascun Socio si crea su GitHub un token di accesso al solo repository (Contents in lettura e scrittura) e lo si compone qui con il nome: il link apre la pagina dei Soci già collegata, senza altro da inserire. Va inviato in modo riservato, come una password; si revoca cancellando il token su GitHub.</p><label class="campo-testo">Nome del Socio<input id="lk-nome" placeholder="es. Francesco Filogamo"></label><label class="campo-testo">Token creato per il Socio<input id="lk-token" type="password"></label><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="lk-componi">Componi il link</button><button class="btn" id="lk-copia" hidden>Copia il link</button></div><input id="lk-esito" class="ricerca" readonly hidden style="width:100%;font-size:.78rem">' : '') + htmlRegole() + htmlTavolePipeline() + '<h4>Aspetto</h4><label class="campo-testo">Tema<select id="cfg-tema"><option value="">Come il sistema</option><option value="light">Chiaro</option><option value="dark">Scuro</option></select></label>';
+  $('#cfg-tipo', c).onchange = e => { $('#cfg-gh', c).hidden = e.target.value !== 'github'; }; attivaRegole(c); attivaTavolePipeline(c);
   $('#cfg-tema', c).value = document.documentElement.dataset.theme || ''; $('#cfg-tema', c).onchange = e => { if (e.target.value) document.documentElement.dataset.theme = e.target.value; else delete document.documentElement.dataset.theme; try { localStorage.setItem('onward.tema', e.target.value); } catch (x) {} };
   $('#cfg-salva', c).onclick = async () => { const cfg = { tipo: $('#cfg-tipo', c).value, autore: $('#cfg-autore', c).value.trim(), owner: $('#cfg-owner', c).value.trim(), repo: $('#cfg-repo', c).value.trim(), branch: $('#cfg-branch', c).value.trim() || 'main', token: $('#cfg-token', c).value.trim(), email: $('#cfg-email', c).value.trim() }; S.cfg = cfg; try { localStorage.setItem('onward.cfg', JSON.stringify(cfg)); } catch (e) {} await collega(true); };
   const lk = $('#lk-componi', c); if (lk) { lk.onclick = () => { const nm = $('#lk-nome', c).value.trim(), tk = $('#lk-token', c).value.trim(); if (!tk) { toast('Inserire il token creato per il Socio'); return; } const base = window.ONWARD_GUSCIO ? (location.origin + location.pathname) : window.ONWARD_PAGINA; const url = base + '#n=' + encodeURIComponent(nm) + '&t=' + encodeURIComponent(tk); const out = $('#lk-esito', c); out.value = url; out.hidden = false; $('#lk-copia', c).hidden = false; registraSocioLink(nm); }; $('#lk-copia', c).onclick = async () => { try { await navigator.clipboard.writeText($('#lk-esito', c).value); toast('Link copiato negli appunti'); } catch (e) { $('#lk-esito', c).select(); toast('Selezionato: copiare con Cmd+C'); } }; }
@@ -1770,7 +1827,7 @@ async function esportaWord() {
   const testo = t => renderTesto(t).replace(/<span class="(?:tok|termine)[^>]*>/g, '').replace(/<\/span>/g, '');
   let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>' + esc(S.meta.dossier) + '</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt;margin-top:24pt} h2{font-size:12.5pt;margin-top:14pt} h3{font-size:11pt;font-style:italic} p{text-align:justify;margin:0 0 8pt} table{border-collapse:collapse;width:100%;font-size:9.5pt} td{border:1px solid #bfbfbf;padding:4pt 5pt;vertical-align:top} tr.i td{background:#e4e4e4;font-weight:bold} td.e{background:#f2f2f2;font-weight:bold} .box{background:#f2f2f2;border:1px solid #bfbfbf;padding:8pt;margin:6pt 0 10pt} .parte{background:#dcdcdc;text-align:center;font-weight:bold;text-transform:uppercase;padding:10pt;margin-top:30pt;page-break-before:always} .did{font-size:9pt;font-style:italic;color:#595959;text-align:center} .fr{text-align:center}</style></head><body>';
   const m = S.meta; h += '<div class="fr"><p><b style="font-size:17pt">' + esc(m.titolo) + '</b></p><p>' + esc(m.sottotitolo) + '</p><p><b style="font-size:15pt">' + esc(m.dossier.toUpperCase()) + '</b></p><p>' + esc(m.occhiello) + '</p><p><i>' + esc(m.riservato) + '</i></p><p>' + esc(m.luogo) + '</p></div>';
-  const blocchiHtml = async (bl) => { let s = ''; for (const b of bl) { if (b.t === 'p') s += '<p>' + testo(b.text) + '</p>'; else if (b.t === 'li') s += '<p style="margin-left:14pt;text-indent:-10pt">• ' + testo(b.text) + '</p>'; else if (b.t === 'h2') s += '<h2>' + testo(b.text) + '</h2>'; else if (b.t === 'h3') s += '<h3>' + testo(b.text) + '</h3>'; else if (b.t === 'box') s += '<div class="box">' + b.paras.map(p => '<p>' + testo(p) + '</p>').join('') + '</div>'; else if (b.t === 'tbl') s += '<table>' + b.rows.map((r, ri) => '<tr' + (b.header && ri === 0 ? ' class="i"' : '') + '>' + r.map((c, ci) => '<td' + (c.span > 1 ? ' colspan="' + c.span + '"' : '') + (b.labelFill && ci === 0 && !(b.header && ri === 0) ? ' class="e"' : '') + '>' + testo(c.text) + '</td>').join('') + '</tr>').join('') + '</table><p></p>'; else if (b.t === 'rete') s += await blocchiHtml(reteBlocchi(b.vista, b)); else if (b.t === 'fig') { s += '<p class="fr"><img src="' + await svgToPng(svgFigura(b.fig)) + '" width="600"></p><p class="did">Figura ' + S.figure[b.id] + '. ' + testo(b.caption || '') + '</p>'; } else if (b.t === 'modello') { const t = renderModello(); s += t.innerHTML.replace(/<span class="(?:tok|termine)[^>]*>/g, '').replace(/<\/span>/g, '').replace(/<col [^>]*>/g, '').replace(/class="intestazione"/g, 'class="i"') + '<p class="did">' + testo(b.caption || '') + '</p>'; } } return s; };
+  const blocchiHtml = async (bl) => { let s = ''; for (const b of bl) { if (b.t === 'p') s += '<p>' + testo(b.text) + '</p>'; else if (b.t === 'li') s += '<p style="margin-left:14pt;text-indent:-10pt">• ' + testo(b.text) + '</p>'; else if (b.t === 'h2') s += '<h2>' + testo(b.text) + '</h2>'; else if (b.t === 'h3') s += '<h3>' + testo(b.text) + '</h3>'; else if (b.t === 'box') s += '<div class="box">' + b.paras.map(p => '<p>' + testo(p) + '</p>').join('') + '</div>'; else if (b.t === 'tbl') s += '<table>' + b.rows.map((r, ri) => '<tr' + (b.header && ri === 0 ? ' class="i"' : '') + '>' + r.map((c, ci) => '<td' + (c.span > 1 ? ' colspan="' + c.span + '"' : '') + (b.labelFill && ci === 0 && !(b.header && ri === 0) ? ' class="e"' : '') + '>' + testo(c.text) + '</td>').join('') + '</tr>').join('') + '</table><p></p>'; else if (b.t === 'rete' || b.t === 'progetti') s += await blocchiHtml(reteBlocchi(b.vista, b)); else if (b.t === 'fig') { s += '<p class="fr"><img src="' + await svgToPng(svgFigura(b.fig)) + '" width="600"></p><p class="did">Figura ' + S.figure[b.id] + '. ' + testo(b.caption || '') + '</p>'; } else if (b.t === 'modello') { const t = renderModello(); s += t.innerHTML.replace(/<span class="(?:tok|termine)[^>]*>/g, '').replace(/<\/span>/g, '').replace(/<col [^>]*>/g, '').replace(/class="intestazione"/g, 'class="i"') + '<p class="did">' + testo(b.caption || '') + '</p>'; } } return s; };
   h += '<h1>Nota di lettura</h1>' + await blocchiHtml(S.nota);
   for (const p of S.parti) { h += '<div class="parte">' + esc(p.titolo) + '</div><p>' + testo(p.intro || '') + '</p>'; for (const c of p.capitoli) h += '<h1>' + esc(S.numeri[c.id]) + '. ' + esc(c.titolo) + '</h1>' + await blocchiHtml(c.blocchi); }
   if (S.glossario.length) { h += '<h1>Glossario economico</h1><p>Termini economici del dossier in ordine alfabetico, con la definizione e i passaggi di calcolo alle ipotesi correnti.</p>'; for (const v of vociOrdinate()) { h += '<h3>' + esc(v.termine) + '</h3><p>' + testo(v.definizione) + '</p>' + (v.calcolo.length ? '<p style="margin-left:14pt"><i>Come si calcola.</i> ' + v.calcolo.map(x => testo(x)).join('<br>') + '</p>' : ''); } }
@@ -1979,6 +2036,7 @@ function practiceTesto(e, conNome) { const l = (e.practice || []).map(x => etich
 // ---------------------------------------------------------------- blocchi virtuali generati dalla rete
 function tblV(header, rows, widths, opt) { return Object.assign({ t: 'tbl', header: true, labelFill: true, widths, rows: rows.map(r => r.map(c => typeof c === 'string' ? { text: c } : c)) }, opt || {}); }
 function reteBlocchi(vista, b) {
+  if (String(vista || '').startsWith('pipeline-')) return pipelineBlocchi(vista, b);
   const R = S.rete; const out = [];
   if (vista === 'tre-cerchi') {
     const rows = [['**Cerchio**', '**Chi**', '**Che cosa porta**', '**Legame con la società**']];
@@ -2034,7 +2092,7 @@ function reteBlocchi(vista, b) {
   return out;
 }
 function renderRete(b) {
-  const w = el('div', { class: 'blk rete', dataset: { id: b.id, t: 'rete', vista: b.vista } });
+  const w = el('div', { class: 'blk rete' + (b.t === 'progetti' ? ' progetti' : ''), dataset: { id: b.id, t: b.t, vista: b.vista } });
   S.generando = true;
   for (const vb of reteBlocchi(b.vista, b)) {
     let x;
@@ -2682,6 +2740,7 @@ function calcolaScenario(volumi, anno, opt) {
 function scenariTutti() {
   const out = [['Prudente', S.P.scenari.Prudente, false], ['Base', S.P.scenari.Base, false], ['Sviluppo', S.P.scenari.Sviluppo, false]].map(([n, v]) => ({ nome: n, id: n, volumi: v.map(Number), r: calcolaScenario(v.map(Number), 1) }));
   for (const p of (S.scenari.personalizzati || [])) out.push({ nome: p.nome, id: p.id, volumi: (p.volumi || []).map(Number), r: calcolaScenario((p.volumi || []).map(Number), 1), pers: true });
+  const pl = S.ctx && S.ctx.pl; if (pl && pl.attiva && pl.anni[1]) out.push({ nome: 'Pipeline (Schede Progetto)', id: 'Pipeline', volumi: pl.anni[1].volumi.slice(), r: calcolaScenario(pl.anni[1].volumi.slice(), 1), pipeline: true });
   return out;
 }
 function anniTutti() {
@@ -2749,7 +2808,7 @@ function disegnaScenari() {
   h += '<section class="q-sez"><div class="q-testa"><h3>I tre scenari del secondo esercizio</h3><div class="q-azioni">' + (ro ? '' : '<button class="btn piccolo" data-sa="nuovo">Aggiungi uno scenario personalizzato</button>') + '</div></div>' +
     '<p class="nota-pannello">I volumi di Prudente, Base e Sviluppo sono ipotesi del modello (capitolo X, § 6): modificandoli qui cambiano le tabelle, i grafici e le cifre del documento. Gli scenari personalizzati restano in questa vista, condivisi con i Soci.</p>' +
     '<div class="tabella-wrap"><table class="tab s-tab"><tr class="intestazione"><td>Volume (secondo esercizio)</td>' + scen.map(s => '<td>' + (s.pers ? inpS('pers.' + s.id + '.nome', s.nome, 'testo', ro ? ' disabled' : '') + (ro ? '' : ' <button class="btn piccolo pericolo" data-sa="elimina" data-id="' + esc(s.id) + '" title="Elimina">×</button>') : esc(s.nome)) + '</td>').join('') + '</tr>' +
-    VOLUMI_ET.map((et, i) => '<tr><td class="etichetta">' + esc(et) + '</td>' + scen.map(s => '<td>' + inpS((s.pers ? 'pers.' + s.id + '.volumi.' + i : 'P.scenari.' + s.id + '[' + i + ']'), s.volumi[i], VOLUMI_FMT[i] === 'eur' ? 'eur' : 'num', ro ? ' disabled' : '') + '</td>').join('') + '</tr>').join('') + '</table></div>';
+    VOLUMI_ET.map((et, i) => '<tr><td class="etichetta">' + esc(et) + '</td>' + scen.map(s => '<td>' + (s.pipeline ? '<span class="s-legato s-pipeline" title="Volume implicato dalle Schede Progetto per il secondo esercizio: si modifica dalle schede">' + (VOLUMI_FMT[i] === 'eur' ? F.eur(s.volumi[i]) : F.num1(s.volumi[i])) + '</span>' : inpS((s.pers ? 'pers.' + s.id + '.volumi.' + i : 'P.scenari.' + s.id + '[' + i + ']'), s.volumi[i], VOLUMI_FMT[i] === 'eur' ? 'eur' : 'num', ro ? ' disabled' : '')) + '</td>').join('') + '</tr>').join('') + '</table></div>' + (scen.some(s => s.pipeline) ? '<p class="nota-pannello">La colonna «Pipeline (Schede Progetto)» riporta i volumi che le schede dei Soci implicano per il secondo esercizio, pesati per la probabilità di chiusura: è di sola lettura e si aggiorna con le schede (sezione «La pipeline delle Schede Progetto», più sotto).</p>' : '');
   const rigaR = (et, f) => '<tr><td class="etichetta">' + et + '</td>' + scen.map(s => '<td>' + f(s.r) + '</td>').join('') + '</tr>';
   h += '<div class="tabella-wrap"><table class="tab s-tab"><tr class="intestazione"><td>Risultato</td>' + scen.map(s => '<td>' + esc(s.nome) + '</td>').join('') + '</tr>' +
     rigaR('<b>Ricavi lordi</b>', r => '<b>' + F.eur(r.ricavi) + '</b>') + rigaR('Corrispettivi a terzi', r => F.eur(r.terzi)) + rigaR('Ricavi netti', r => F.eur(r.netti)) + rigaR('Compensi ai Soci', r => F.eur(r.compensi)) + rigaR('Margine di contribuzione', r => F.eur(r.mdc)) + rigaR('Costi di struttura', r => F.eur(r.struttura)) +
@@ -2781,6 +2840,8 @@ function disegnaScenari() {
     '<div class="q-grafici"><div>' + svgTraiettoria(anni, A.bande.ricavi, 'Ricavi e margine per esercizio, con gli intervalli del documento') + '</div><div>' + svgCapacita(anni, 'Giornate senior e capacità per esercizio') + '</div></div>' +
     '<p class="nota-pannello">I semafori confrontano i risultati con le indicazioni del capitolo XVI (tolleranza: 5% sui ricavi, due punti sulla quota di ricorrenti e sul margine). Le indicazioni del documento sono modificabili solo nel testo del capitolo; qui sono lette dal modello.</p>' +
     '<div class="q-grafici"><div>' + svgRedditoSocio(anni, 'Reddito medio per Socio per esercizio') + '</div><div>' + svgBarreGruppi([{ nome: 'margine operativo sui netti', valori: anni.map(a => a.r.mo_netti), col: 'var(--pr3)' }, { nome: 'ricavi ricorrenti sui netti', valori: anni.map(a => a.r.ricorrenti), col: 'var(--pr2)' }], anni.map(a => a.nome), 'Margine e ricorrenza per esercizio', { pct: true, banda: [num(Z.soglie.mo_min), num(Z.soglie.mo_max)], bandaEt: 'banda del margine ' + F.pct(Z.soglie.mo_min) + '-' + F.pct(Z.soglie.mo_max) }) + '</div></div></section>';
+  // 2 bis. pipeline delle Schede Progetto
+  h += htmlSezionePipeline(anni);
   // 3. fabbisogno di avvio
   const Fb = Z.fabbisogno; const a1 = anni[0]; const costiMese = a1.r.struttura_tot / 12; const mesi = num(Fb.mesi); const q = S.quote || {}; const capVers = (q.righe || []).reduce((s, x) => s + num(x.pct) * P.capitale * num(x.versato), 0) || P.capitale * 0.25; const finSoci = (q.righe || []).reduce((s, x) => s + num(x.fin), 0);
   const circ1 = a1.volumi[3] * (1 - P.m_part) * P.gg_cassa / 365; const creditoMesi = num(Fb.giorni_incasso) / 30; const incassiRitardati = a1.r.ricavi / 12 * creditoMesi * (1 - num(Fb.acconto));
@@ -2836,7 +2897,7 @@ function leggiScenari(inp) {
 }
 function avviaScenari() {
   const m = $('#scenari'); if (!m) return; $('#b-scenari').onclick = apriScenari; $('#scenari-chiudi').onclick = chiudiScenari;
-  m.addEventListener('change', ev => { const inp = ev.target.closest('.s-inp'); if (!inp) return; const k = leggiScenari(inp); if (k === 'ipotesi') { segna('ipotesi'); aggiornaCalcolati(); aggiornaPannelloIpotesi(true); } else if (k) { segna('scenari'); disegnaScenari(); } });
+  m.addEventListener('change', ev => { const inp = ev.target.closest('.s-inp'); if (!inp) return; const k = leggiScenari(inp); if (k === 'ipotesi') { segna('ipotesi'); aggiornaCalcolati(); aggiornaPannelloIpotesi(true); } else if (k) { segna('scenari'); dopoModificaScenari(); } });
   m.addEventListener('click', ev => { const b = ev.target.closest('button[data-sa]'); if (!b) return; const Z = S.scenari; const az = b.dataset.sa;
     if (az === 'nuovo') { Z.personalizzati = Z.personalizzati || []; Z.personalizzati.push({ id: uid('sc'), nome: 'Scenario ' + (Z.personalizzati.length + 1), volumi: S.P.scenari.Base.slice() }); }
     else if (az === 'elimina') Z.personalizzati = (Z.personalizzati || []).filter(x => x.id !== b.dataset.id);
@@ -2844,9 +2905,13 @@ function avviaScenari() {
     else if (az === 'sblocca2') Z.anni.volumi[1] = volumiAnno(1);
     else if (az === 'reset-anni') Z.anni = scenariDefault().anni;
     else if (az === 'soci-sblocca') Z.anni.soci[+b.dataset.i] = S.P.soci;
-    segna('scenari'); disegnaScenari(); });
+    else if (az === 'apri-progetti') { apriProgetti(); return; }
+    else if (az === 'pipeline-anno') { const pl = S.ctx.pl; const i = +b.dataset.i; if (!pl || !pl.attiva || !pl.anni[i]) return; Z.anni.volumi[i] = pl.anni[i].volumi.map((x, k) => VOLUMI_FMT[k] === 'eur' ? Math.round(x) : Math.round(x * 10) / 10); toast('Volumi della pipeline adottati come traiettoria del ' + (Z.anni.nomi[i] || '').toLowerCase()); }
+    else if (az === 'pipeline-scenario') { const pl = S.ctx.pl; if (!pl || !pl.attiva || !pl.anni[1]) return; Z.personalizzati = Z.personalizzati || []; Z.personalizzati.push({ id: uid('sc'), nome: 'Pipeline ' + new Date().toLocaleDateString('it-IT'), volumi: pl.anni[1].volumi.map((x, k) => VOLUMI_FMT[k] === 'eur' ? Math.round(x) : Math.round(x * 10) / 10) }); toast('Scenario personalizzato creato dai volumi della pipeline: si può rinominare e modificare'); }
+    segna('scenari'); dopoModificaScenari(); });
   $('#scenari-word').onclick = esportaScenari;
 }
+function dopoModificaScenari() { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); disegnaScenari(); }
 function esportaScenari() {
   const F = MODELLO.F; const scen = scenariTutti(); const anni = anniTutti();
   const tab = (testa, righe) => '<table><tr class="i">' + testa.map(x => '<td>' + x + '</td>').join('') + '</tr>' + righe.map(r => '<tr>' + r.map((x, i) => '<td' + (i === 0 ? ' class="e"' : '') + '>' + x + '</td>').join('') + '</tr>').join('') + '</table>';
@@ -2915,7 +2980,7 @@ function siBlocchi(bl, opt) {
     if (b.t === 'box') { h += siBoxHtml(b); i++; continue; }
     if (b.t === 'fig') { h += siFig(b.fig, b.caption); i++; continue; }
     if (b.t === 'tbl') { const nc = b.rows[0].length; const nr = b.rows.length; const primo = siPulisci((b.rows[1] || b.rows[0])[0].text); const testa = siPulisci(b.rows[0][0].text); if (opt.matrice || nc > 4 || nr > 10) h += siMatrice(b); else if (/^(fase|stadio|azione|livello|passo|tempo)$/i.test(testa)) h += siFlussoTbl(b); else h += siTessereTbl(b); i++; continue; }
-    if (b.t === 'rete') { for (const v of reteBlocchi(b.vista, b)) if (v.t === 'tbl') h += siMatrice(v); i++; continue; }
+    if (b.t === 'rete' || b.t === 'progetti') { for (const v of reteBlocchi(b.vista, b)) if (v.t === 'tbl') h += siMatrice(v); i++; continue; }
     i++; }
   svuota(); return h;
 }
@@ -2990,14 +3055,21 @@ function sintesiParte2() {
   return h;
 }
 // ---------------------------------------------------------------- Parte terza: il piano e la sua misura
+function siSezionePipeline() {
+  const F = MODELLO.F; const pl = S.ctx.pl; const nomi = nomiEsercizi();
+  if (!pl || !pl.attiva) return siSezione('La pipeline delle Schede Progetto', '<p class="si-nota">Nessuna scheda progetto finora: quando i Soci registrano i progetti che seguono, con i parametri di progetto, qui compaiono valore pesato, copertura della traiettoria e ripartizione per stato e per Socio.</p><div class="si-azioni"><button class="si-vai" data-progetti="1">Apri le Schede Progetto</button></div>', { occhiello: 'Schede Progetto', nota: 'Le schede alimentano il documento (capitoli VI, VIII, XVI e XVIII), il modello e la vista Scenari.' });
+  const tess = pl.anni.map((a, i) => '<div class="si-tessera" style="--pr:var(--pr' + (i + 1) + ')"><div class="si-tessera-tit">' + esc(nomi[i] || a.nome) + '</div><div class="si-scen-num"><b>' + F.eur(a.pesato) + '</b><span>valore pesato · ' + a.n + (a.n === 1 ? ' scheda' : ' schede') + '</span></div><div class="si-kv"><span>Valore stimato</span><div>' + F.eur(a.valore) + '</div></div><div class="si-kv"><span>Ricavo netto atteso</span><div>' + F.eur(a.netto) + '</div></div><div class="si-kv"><span>Giornate senior pesate</span><div>' + F.num(a.gg) + '</div></div>' + (a.rt ? '<div class="si-kv"><span>Copertura della traiettoria</span><div>' + F.pct(a.copertura) + ' <small>di ' + F.eur(a.ricavi_traiettoria) + '</small> ' + semaforo(a.copertura >= 0.75 ? 'ok' : a.copertura >= 0.4 ? 'attenzione' : 'allarme') + '</div></div>' : '') + '</div>').join('');
+  return siSezione('La pipeline delle Schede Progetto', siKpi([['Schede progetto', 'num', 'pl.n'], ['Valore stimato', 'eur', 'pl.valore'], ['Valore pesato', 'eur', 'pl.pesato', 'probabilità media ' + tokHtml('pct', 'pl.prob_media')], ['Origination attesa', 'eur', 'pl.origination']]) + '<div class="si-scen">' + tess + '</div><div class="si-due"><div>' + svgBarreGruppi([{ nome: 'valore pesato della pipeline', valori: pl.anni.map(a => a.pesato), col: 'var(--accento)' }, { nome: 'ricavi lordi della traiettoria', valori: pl.anni.map(a => a.ricavi_traiettoria || 0), col: 'var(--pr1)' }], pl.anni.map(a => nomi[a.i] || a.nome), 'Pipeline pesata e traiettoria per esercizio') + '</div><div>' + svgBarreGruppi([{ nome: 'valore stimato', valori: STATI_PROGETTO.map(s => pl.perStato[s[0]].valore), col: 'var(--pr2)' }, { nome: 'valore pesato', valori: STATI_PROGETTO.map(s => pl.perStato[s[0]].pesato), col: 'var(--accento)' }], STATI_PROGETTO.map(s => s[1]), 'Dal suspect al promoter: valore stimato e pesato') + '</div></div><div class="si-azioni"><button class="si-vai" data-progetti="1">Apri le Schede Progetto</button><button class="si-vai" data-scenari="1">Pipeline e scenari a confronto (Scenari)</button></div>', { occhiello: 'Schede Progetto', nota: 'I progetti che i Soci seguono, tradotti nei volumi del modello con i parametri di progetto: le tavole sono nei capitoli VI, VIII, XVI e XVIII.' });
+}
 function sintesiParte3() {
   const F = MODELLO.F; const P = S.P; const r = S.ctx.r; const Z = S.scenari; let h = '';
   const XVI = siCap('il-piano-e-gli-scenari'), XVII = siCap('indicatori-cruscotto-segnali-di-allarme-e-rischi');
-  const anni = anniTutti(); const scen = scenariTutti().filter(x => !x.pers);
+  const anni = anniTutti(); const scen = scenariTutti().filter(x => !x.pers && !x.pipeline);
   if (XVI) { const s = n => siSez(XVI, n + '.'); const tra = siTbl(s(1).blocchi);
     const colonne = tra ? '<div class="si-anni">' + tra.rows[0].slice(1).map((c, i) => '<div class="si-anno" style="--pr:var(--pr' + (i + 1) + ')"><div class="si-anno-tit">' + renderTesto(c.text) + '</div>' + tra.rows.slice(1).map(rw => '<div class="si-kv">' + siEt(rw[0].text) + '<div>' + renderTesto(rw[i + 1] ? rw[i + 1].text : '') + '</div></div>').join('') + (anni[i] ? '<div class="si-anno-mod"><span class="si-et">Dal modello (Scenari)</span><div>' + F.eur(anni[i].r.ricavi) + ' di ricavi lordi · margine ' + F.pct1(anni[i].r.mo_netti) + ' dei netti · ricorrenti ' + F.pct(anni[i].r.ricorrenti) + ' · ' + F.num(anni[i].soci) + ' Soci</div></div>' : '') + '</div>').join('') + '</div>' : '';
     h += siSezione('Dalle ipotesi al piano: i tre esercizi', siTesto(s(1).blocchi, 3) + colonne + '<div class="si-due"><div>' + svgTraiettoria(anni, Z.anni.bande.ricavi, 'Ricavi e margine per esercizio, con gli intervalli del documento') + '</div><div>' + svgRedditoSocio(anni, 'Reddito medio per Socio per esercizio') + '</div></div><div class="si-azioni"><button class="si-vai" data-scenari="1">Apri il modello completo (Scenari)</button></div>', { occhiello: 'Capitolo ' + siNum(XVI.id), vai: 'cap-' + XVI.id, nota: 'Le indicazioni per esercizio sono lette dalla tabella del capitolo; le cifre del modello dalla traiettoria della vista Scenari.' });
     h += siSezione('I tre scenari del secondo esercizio', siTesto(siPrima(s(2).blocchi), 3) + '<div class="si-scen">' + scen.map((x, i) => '<div class="si-tessera" style="--pr:var(--pr' + (i + 1) + ')"><div class="si-tessera-tit">' + esc(x.nome) + '</div><div class="si-scen-num"><b>' + F.eur(x.r.ricavi) + '</b><span>ricavi lordi</span></div><div class="si-kv"><span>Ricavi netti</span><div>' + F.eur(x.r.netti) + '</div></div><div class="si-kv"><span>Margine operativo</span><div>' + F.eur(x.r.mo) + ' <small>(' + F.pct1(x.r.mo_netti) + ' dei netti)</small></div></div><div class="si-kv"><span>Giornate senior</span><div>' + F.num(x.r.gg_tot) + ' <small>(' + F.pct(x.r.utilizzo_impl) + ' della capacità)</small></div></div><div class="si-kv"><span>Reddito medio per Socio</span><div>' + F.eur(x.r.tot_socio) + '</div></div><div class="si-kv"><span>Volumi</span><div>' + x.volumi.map((v, k) => (k === 2 || k === 3 || k === 4 ? F.eur(v) : F.num(v))).join(' · ') + '</div></div></div>').join('') + '</div>' + '<div class="si-due"><div>' + siFig('scenari') + '</div><div>' + svgBarreGruppi([{ nome: 'margine operativo sui ricavi netti', valori: scen.map(x => x.r.mo_netti), col: 'var(--pr3)' }], scen.map(x => x.nome), 'Margine operativo sui ricavi netti e banda obiettivo', { pct: true, banda: [num(Z.soglie.mo_min), num(Z.soglie.mo_max)], bandaEt: 'banda ' + F.pct(Z.soglie.mo_min) + '-' + F.pct(Z.soglie.mo_max) }) + '</div></div>' + siTesto(s(2).blocchi.slice(s(2).blocchi.findIndex(b => b.t === 'fig') + 1), 4), { occhiello: 'Capitolo ' + siNum(XVI.id) + ', § 2', vai: siH2Id(s(2)) });
+    h += siSezionePipeline();
     const costi = P.costi_struttura.map((c, i) => ({ nome: c.nome, val: Number(c.valore) || 0, col: 'var(--pr' + (i % 5 + 1) + ')', et: F.eur(Number(c.valore) || 0) }));
     h += siSezione('La struttura dei costi e il fabbisogno finanziario', '<div class="si-due"><div>' + svgAnello(costi, 'I costi di struttura del secondo esercizio', F.eur(r.struttura), 'undici voci') + '</div><div>' + siTesto(siPrima(s(3).blocchi), 3) + siTessereTbl(siTbl(s(3).blocchi), { cls: 'si-2' }) + '</div></div>' + siTesto(siDopo(s(3).blocchi), 4), { occhiello: 'Capitolo ' + siNum(XVI.id) + ', § 3', vai: siH2Id(s(3)) });
     h += siSezione('La remunerazione dei Soci', siTesto(siPrima(s(4).blocchi), 2) + siTessereTbl(siTbl(s(4).blocchi), { cls: 'si-4', num: true }) + siKpi([['Compenso corrente medio (2° esercizio)', 'eur', 'r.comp_socio'], ['Cariche e funzioni (totale)', 'eur', 'P.costi_struttura[9].valore'], ['Quota di utile media', 'eur', 'r.utile_socio', tokHtml('pct', 'P.q_utile') + ' del margine operativo, diviso per ' + tokHtml('num', 'P.soci')], ['Reddito medio per Socio', 'eur', 'r.tot_socio']]) + siTesto(siDopo(s(4).blocchi), 3), { occhiello: 'Capitolo ' + siNum(XVI.id) + ', § 4', vai: siH2Id(s(4)) }); }
@@ -3048,6 +3120,7 @@ function avviaSintesi() {
     if (ev.target.closest('[data-mappe]')) { apriMappe(ev.target.closest('[data-mappe]').dataset.mappe); return; }
     if (ev.target.closest('[data-soci]')) { apriSoci(); return; }
     if (ev.target.closest('[data-scenari]')) { apriScenari(); return; }
+    if (ev.target.closest('[data-progetti]')) { apriProgetti(); return; }
     const piu = ev.target.closest('.si-piu'); if (piu) { const c = piu.previousElementSibling; c.classList.toggle('aperto'); piu.textContent = c.classList.contains('aperto') ? 'Riduci' : 'Leggi tutto'; return; }
     const mov = ev.target.closest('.si-mov'); if (mov) { const k = mov.dataset.mov; for (const b of $$('.si-mov', m)) b.classList.toggle('attivo', b === mov); for (const p of $$('.si-mov-pan', m)) p.hidden = p.dataset.movPan !== k; for (const c of $$('.si-mov-pan:not([hidden]) .si-clamp', m)) { const b = c.nextElementSibling; if (c.scrollHeight > c.clientHeight + 6) { if (b) b.hidden = false; } else c.classList.add('libero'); } return; }
     const passo = ev.target.closest('.si-passo'); if (passo) { const fl = passo.closest('.si-flusso'); const det = $('#' + fl.dataset.flusso); if (!det) return; for (const p of $$('.si-passo', fl)) p.classList.toggle('attivo', p === passo); for (const d of det.children) d.hidden = d.dataset.k !== passo.dataset.k; return; }
@@ -3195,10 +3268,11 @@ function riassuntoParte2() {
 // ---------------------------------------------------------------- Parte terza
 function riassuntoParte3() {
   const F = MODELLO.F; const P = S.P; const r = S.ctx.r; const Z = S.scenari; const C = RZ_PARTE_COL[2]; let h = '';
-  const XVI = siCap('il-piano-e-gli-scenari'), XVII = siCap('indicatori-cruscotto-segnali-di-allarme-e-rischi'); const anni = anniTutti(); const scen = scenariTutti().filter(x => !x.pers);
+  const XVI = siCap('il-piano-e-gli-scenari'), XVII = siCap('indicatori-cruscotto-segnali-di-allarme-e-rischi'); const anni = anniTutti(); const scen = scenariTutti().filter(x => !x.pers && !x.pipeline);
   if (XVI) { const s = n => siSez(XVI, n + '.'); const tra = siTbl(s(1).blocchi);
     h += rzT(12, 'Capitolo ' + siNum(XVI.id) + ' · ' + siTitolo(s(1)), (tra ? '<div class="rz-anni">' + tra.rows[0].slice(1).map((c, i) => '<div class="rz-anno" style="--c:' + RZ_COL[i] + '"><b>' + renderTesto(c.text) + '</b>' + tra.rows.slice(1, 6).map(rw => '<div class="rz-kv"><span>' + siEt(rw[0].text) + '</span>' + renderTesto(rzFrase(rw[i + 1] ? rw[i + 1].text : '')) + '</div>').join('') + (anni[i] ? '<div class="rz-anno-mod"><b>' + F.eur(anni[i].r.ricavi) + '</b> ricavi lordi dal modello · margine ' + F.pct1(anni[i].r.mo_netti) + ' · ricorrenti ' + F.pct(anni[i].r.ricorrenti) + ' · ' + F.num(anni[i].soci) + ' Soci</div>' : '') + '</div>').join('') + '</div>' : '') + '<div class="rz-due">' + svgTraiettoria(anni, Z.anni.bande.ricavi, 'Ricavi e margine per esercizio') + svgRedditoSocio(anni, 'Reddito medio per Socio') + '</div><div class="rz-azioni"><button class="rz-lk" data-scenari="1">Modello completo (Scenari)</button></div>', { col: C, vai: siH2Id(s(1)) });
     h += rzT(7, siTitolo(s(2)), svgBarreGruppi([{ nome: 'ricavi lordi', valori: scen.map(x => x.r.ricavi), col: RZ_COL[0] }, { nome: 'ricavi netti', valori: scen.map(x => x.r.netti), col: RZ_COL[1] }, { nome: 'margine operativo', valori: scen.map(x => x.r.mo), col: RZ_COL[2] }], scen.map(x => x.nome), 'Ricavi e margine per scenario') + '<div class="rz-scen">' + scen.map((x, i) => '<div class="rz-mini" style="--c:' + RZ_COL[i] + '"><b>' + esc(x.nome) + '</b><div class="rz-frase piccola">margine ' + F.pct1(x.r.mo_netti) + ' dei netti · ' + F.num(x.r.gg_tot) + ' gg (' + F.pct(x.r.utilizzo_impl) + ') · ' + F.eur(x.r.tot_socio) + ' per Socio</div></div>').join('') + '</div>', { col: RZ_COL[0], vai: siH2Id(s(2)) });
+    const pl = S.ctx.pl; if (pl && pl.attiva) h += rzT(5, 'Pipeline delle Schede Progetto', '<div class="rz-nums">' + rzNum('Schede', 'num', 'pl.n', '', RZ_COL[0]) + rzNum('Valore pesato', 'eur', 'pl.pesato', 'su ' + F.eur(pl.valore) + ' stimati', RZ_COL[1]) + rzNum('Origination attesa', 'eur', 'pl.origination', '', RZ_COL[2]) + rzNumV('Copertura 2° esercizio', pl.anni[1] && pl.anni[1].rt ? F.pct(pl.anni[1].copertura) : 'n.d.', pl.anni[1] && pl.anni[1].rt ? 'di ' + F.eur(pl.anni[1].ricavi_traiettoria) : '', RZ_COL[3]) + '</div><div class="rz-azioni"><button class="rz-lk" data-progetti="1">Schede Progetto</button></div>', { col: RZ_COL[1] });
     const costi = P.costi_struttura.map((c, i) => ({ nome: c.nome, val: Number(c.valore) || 0, col: RZ_COL[i % 5], et: F.eur(Number(c.valore) || 0) })); const fabb = siTbl(s(3).blocchi);
     h += rzT(5, siTitolo(s(3)), svgAnello(costi, '', F.eur(r.struttura), 'costi di struttura') + (fabb ? rzChips(fabb.rows.slice(1).map(rw => ({ testo: rw[0].text, val: rzCorta(rzFrase(rw[1] ? rw[1].text : ''), 40), title: siPulisci(rw[2] ? rw[2].text : '') })), { num: false }) : ''), { col: RZ_COL[4], vai: siH2Id(s(3)) });
     const rem = siTbl(s(4).blocchi); h += rzT(12, siTitolo(s(4)), (rem ? '<div class="rz-4">' + rem.rows.slice(1).map((rw, i) => '<div class="rz-mini" style="--c:' + RZ_COL[i % 5] + '" title="' + esc(siPulisci(rw[1] ? rw[1].text : '')) + '"><b>' + renderTesto(rw[0].text) + '</b><div class="rz-frase piccola">' + renderTesto(rzFrase(rw[2] ? rw[2].text : '')) + '</div></div>').join('') + '</div>' : '') + '<div class="rz-nums">' + rzNum('Compenso corrente medio', 'eur', 'r.comp_socio', '', RZ_COL[0]) + rzNum('Cariche e funzioni', 'eur', 'P.costi_struttura[9].valore', 'complessivi', RZ_COL[1]) + rzNum('Quota di utile media', 'eur', 'r.utile_socio', '', RZ_COL[2]) + rzNum('Reddito medio per Socio', 'eur', 'r.tot_socio', '', RZ_COL[3]) + '</div>', { col: C, vai: siH2Id(s(4)) }); }
@@ -3256,6 +3330,7 @@ function avviaRiassunto() {
     if (ev.target.closest('[data-mappe]')) { apriMappe(ev.target.closest('[data-mappe]').dataset.mappe); return; }
     if (ev.target.closest('[data-soci]')) { apriSoci(); return; }
     if (ev.target.closest('[data-scenari]')) { apriScenari(); return; }
+    if (ev.target.closest('[data-progetti]')) { apriProgetti(); return; }
   });
 }
 // ================================================================ Modifiche: Soci con accesso, accessi e modifiche in ordine cronologico
@@ -3512,7 +3587,24 @@ async function controllaVersionePagina() {
 // ---- progetti_mod
 // ================================================================ schede progetto (contenuto/progetti.json)
 const STATI_PROGETTO = [['suspect', 'Suspect'], ['lead', 'Lead'], ['prospect', 'Prospect'], ['customer', 'Customer'], ['promoter', 'Promoter']];
-const ORDINI_PROGETTO = [['agg', 'Ultima modifica'], ['titolo', 'Titolo'], ['valore', 'Valore stimato (decrescente)'], ['stato', 'Stato (dal suspect al promoter)'], ['referente', 'Socio referente']];
+const ORDINI_PROGETTO = [['agg', 'Ultima modifica'], ['titolo', 'Titolo'], ['valore', 'Valore stimato (decrescente)'], ['pesato', 'Valore pesato (decrescente)'], ['stato', 'Stato (dal suspect al promoter)'], ['esercizio', 'Esercizio di avvio'], ['referente', 'Socio referente']];
+// ---- parametri di progetto: le tendine che alimentano il documento, il modello e gli scenari
+const OPZ_PROB = [['', 'Dallo stato della scheda'], [0.1, '10%'], [0.25, '25%'], [0.5, '50%'], [0.75, '75%'], [0.9, '90%'], [1, '100% (acquisito)']];
+const OPZ_RICORRENZA = [['', 'Secondo la linea di servizio'], ['una_tantum', 'Una tantum (un solo esercizio)'], ['annuale', 'Ricorrente (si ripete negli esercizi successivi)']];
+const OPZ_TERZI = [['', 'Secondo la linea di servizio'], [0, '0% (tutto ricavo di Onward)'], [0.2, '20%'], [0.4, '40%'], [0.5, '50%'], [0.6, '60%'], [0.8, '80%']];
+const OPZ_ORIGINATION = [['', 'Da indicare (grado medio)'], ['segnalazione', 'Sola segnalazione (grado minimo)'], ['introduzione', 'Segnalazione e introduzione qualificata (grado medio)'], ['affiancamento', 'Affiancamento fino alla firma (grado massimo)']];
+const OPZ_ESECUTORE = [['', 'Da indicare'], ['soci', 'Soci di Onward'], ['partner', 'Società partner o partner tecnico'], ['misto', 'Soci e partner insieme'], ['interno', 'Risorse interne (consulenti, analyst)']];
+const OPZ_CLIENTE = [['', 'Da indicare'], ['pmi', 'Piccola o media impresa'], ['grande', 'Grande impresa o gruppo'], ['famiglia', 'Impresa familiare in passaggio generazionale'], ['ente', 'Ente pubblico o amministrazione'], ['associazione', 'Associazione, rete o consorzio'], ['finanziario', 'Fondo, banca o investitore'], ['altro', 'Altro']];
+const OPZ_SETTORE = [['', 'Da indicare'], ['manifatturiero', 'Manifatturiero e industria'], ['servizi', 'Servizi alle imprese'], ['costruzioni', 'Costruzioni e immobiliare'], ['energia', 'Energia e ambiente'], ['agroalimentare', 'Agroalimentare'], ['sanita', 'Sanità e farmaceutico'], ['finanza', 'Finanza e assicurazioni'], ['digitale', 'ICT e digitale'], ['commercio', 'Commercio e distribuzione'], ['turismo', 'Turismo e cultura'], ['pa', 'Pubblica amministrazione'], ['altro', 'Altro']];
+const OPZ_CANALE = [['', 'Da indicare'], ['socio', 'Relazione diretta del Socio'], ['partner', 'Società partner'], ['advisor', 'Advisor'], ['rete', 'Rete associativa o istituzionale'], ['bancario', 'Canale bancario e finanziario'], ['evento', 'Eventi e comunicazione'], ['cliente', 'Segnalazione di un cliente'], ['altro', 'Altro']];
+const OPZ_TRIMESTRE = [['', 'Da indicare'], ['T1', 'Primo trimestre'], ['T2', 'Secondo trimestre'], ['T3', 'Terzo trimestre'], ['T4', 'Quarto trimestre']];
+const CAMPI_PARAM = ['linea', 'probabilita', 'esercizio', 'trimestre', 'ricorrenza', 'giornate', 'terzi', 'origination', 'esecutore', 'cliente', 'settore', 'canale'];
+function etichettaOpz(lista, v) { const x = lista.find(o => String(o[0]) === String(v == null ? '' : v)); return x ? x[1] : String(v == null ? '' : v); }
+function etichettaLinea(k) { const x = MODELLO.LINEE_PIPELINE.find(l => l[0] === k); return x ? x[1] : 'Da indicare'; }
+function nomiEsercizi() { const n = S.scenari && S.scenari.anni && Array.isArray(S.scenari.anni.nomi) ? S.scenari.anni.nomi.filter(Boolean) : []; return n.length ? n : ['Primo esercizio', 'Secondo esercizio', 'Terzo esercizio']; }
+function parametriDi(p) { return Object.assign({ linea: '', probabilita: '', esercizio: '', trimestre: '', ricorrenza: '', giornate: '', terzi: '', origination: '', esecutore: '', cliente: '', settore: '', canale: '' }, p && p.parametri || {}); }
+function derivataDi(p) { return MODELLO.schedaDerivata(p, S.P, nomiEsercizi().length); }
+function pipelineCorrente() { return (S.ctx && S.ctx.pl) || calcolaPipeline(); }
 function progettiVuoti() { return { progetti: [] }; }
 function elencoProgetti() { if (!S.progetti) S.progetti = progettiVuoti(); if (!Array.isArray(S.progetti.progetti)) S.progetti.progetti = []; return S.progetti.progetti; }
 function progettoDi(id) { return elencoProgetti().find(p => p.id === id) || null; }
@@ -3525,26 +3617,42 @@ function nomePartner(id) { const p = ((S.rete && S.rete.partner) || []).find(x =
 function puoScrivereProgetti() { return !S.readonly && !!S.backend; }
 function normTesto(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
 function numeroIt(v) { if (v === null || v === undefined || v === '') return null; if (typeof v === 'number') return isFinite(v) ? v : null; const s = String(v).replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isFinite(n) ? n : null; }
-function filtroProgetti() { if (!S.prog) S.prog = { q: '', stato: [], practice: [], sinergie: [], referenti: [], luogo: '', ordine: 'agg', espansi: new Set() }; return S.prog; }
-function testoRicercaProgetto(p) { return normTesto([p.titolo, p.soggetti, p.luogo, p.descrizione, p.referente, p.autore, etichettaStato(p.stato), (p.practice || []).map(nomePractice).join(' '), (p.sinergie || []).map(nomePartner).join(' ')].join(' \n ')); }
+function filtroProgetti() { if (!S.prog) S.prog = { q: '', stato: [], practice: [], sinergie: [], referenti: [], linea: [], esercizio: [], luogo: '', ordine: 'agg', espansi: new Set() }; if (!S.prog.linea) S.prog.linea = []; if (!S.prog.esercizio) S.prog.esercizio = []; return S.prog; }
+function testoRicercaProgetto(p) { const q = parametriDi(p); return normTesto([p.titolo, p.soggetti, p.luogo, p.descrizione, p.referente, p.autore, etichettaStato(p.stato), (p.practice || []).map(nomePractice).join(' '), (p.sinergie || []).map(nomePartner).join(' '), q.linea ? etichettaLinea(q.linea) : '', etichettaOpz(OPZ_CLIENTE, q.cliente), etichettaOpz(OPZ_SETTORE, q.settore), etichettaOpz(OPZ_CANALE, q.canale), q.esercizio !== '' ? (nomiEsercizi()[+q.esercizio] || '') : ''].join(' \n ')); }
 function progettiFiltrati() {
   const F = filtroProgetti(); const q = normTesto(F.q).trim(); const parole = q ? q.split(/\s+/) : []; const luogo = normTesto(F.luogo).trim();
   let l = elencoProgetti().filter(p => {
+    const d = derivataDi(p);
     if (F.stato.length && !F.stato.includes(p.stato)) return false;
     if (F.practice.length && !(p.practice || []).some(x => F.practice.includes(x))) return false;
     if (F.sinergie.length && !(p.sinergie || []).some(x => F.sinergie.includes(x))) return false;
     if (F.referenti.length && !F.referenti.includes(p.referente || '')) return false;
+    if (F.linea.length && !F.linea.includes(d.linea)) return false;
+    if (F.esercizio.length && !F.esercizio.includes(String(d.esercizio))) return false;
     if (luogo && !normTesto(p.luogo).includes(luogo)) return false;
     if (parole.length) { const t = testoRicercaProgetto(p); if (!parole.every(w => t.includes(w))) return false; }
     return true;
   });
-  const ordStato = Object.fromEntries(STATI_PROGETTO.map((s, i) => [s[0], i]));
-  const cmp = { agg: (a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0), titolo: (a, b) => String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'), valore: (a, b) => (numeroIt(b.valore) || 0) - (numeroIt(a.valore) || 0), stato: (a, b) => (ordStato[a.stato] ?? 99) - (ordStato[b.stato] ?? 99) || String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'), referente: (a, b) => String(a.referente || '').localeCompare(String(b.referente || ''), 'it') || String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it') };
+  const ordStato = Object.fromEntries(STATI_PROGETTO.map((s, i) => [s[0], i])); const tit = (a, b) => String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it');
+  const cmp = { agg: (a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0), titolo: tit, valore: (a, b) => (numeroIt(b.valore) || 0) - (numeroIt(a.valore) || 0), pesato: (a, b) => derivataDi(b).pesato - derivataDi(a).pesato || tit(a, b), stato: (a, b) => (ordStato[a.stato] ?? 99) - (ordStato[b.stato] ?? 99) || tit(a, b), esercizio: (a, b) => derivataDi(a).esercizio - derivataDi(b).esercizio || derivataDi(b).pesato - derivataDi(a).pesato || tit(a, b), referente: (a, b) => String(a.referente || '').localeCompare(String(b.referente || ''), 'it') || tit(a, b) };
   l.sort(cmp[F.ordine] || cmp.agg); return l;
 }
 function apriProgetti() { const m = $('#progetti'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaProgetti(true); }
 function chiudiProgetti() { const m = $('#progetti'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function htmlChip(t, cls) { return '<span class="pg-chip ' + (cls || '') + '">' + esc(t) + '</span>'; }
+function htmlParametriScheda(p) {
+  const F = MODELLO.F; const q = parametriDi(p); const d = derivataDi(p); const anni = nomiEsercizi();
+  const kv = (et, val, cls) => '<div class="pg-kv' + (cls ? ' ' + cls : '') + '"><span>' + esc(et) + '</span><b>' + val + '</b></div>';
+  const prob = F.pct(d.prob) + (d.prob_auto ? '<small>dallo stato</small>' : '<small>indicata</small>');
+  const gg = F.num1(d.gg) + (d.gg_auto ? '<small>dalla linea</small>' : '<small>indicate</small>');
+  const terzi = F.pct(d.terzi) + (d.terzi_auto ? '<small>dalla linea</small>' : '<small>indicata</small>');
+  let h = '<div class="pg-param"><div class="pg-param-tit">Parametri di progetto <small>alimentano il documento, il modello e gli scenari</small></div><div class="pg-pgrid">' +
+    kv('Linea di servizio', esc(q.linea ? etichettaLinea(q.linea) : 'Da indicare'), q.linea ? '' : 'pg-vuoto') + kv('Probabilità di chiusura', prob) + kv('Esercizio di avvio', esc((anni[d.esercizio] || '') + (q.trimestre ? ', ' + etichettaOpz(OPZ_TRIMESTRE, q.trimestre).toLowerCase() : ''))) +
+    kv('Ricorrenza', esc(d.ricorrente ? 'Ricorrente' : 'Una tantum')) + kv('Valore pesato', d.valore ? F.eur(d.pesato) : '<span class="pg-muto">valore da stimare</span>', 'pg-pesato') + kv('Ricavo netto atteso', d.valore ? F.eur(d.netto) : '<span class="pg-muto">valore da stimare</span>') +
+    kv('Giornate senior', gg) + kv('Quota a terzi', terzi) + kv('Origination', esc(etichettaOpz(OPZ_ORIGINATION, q.origination).replace(/\s*\(.*\)$/, '')) + '<small>grado ' + F.pct(d.grado) + (d.valore ? ' · ' + F.eur(d.origination) + ' attesi' : '') + '</small>') +
+    (q.esecutore ? kv('Esecuzione', esc(etichettaOpz(OPZ_ESECUTORE, q.esecutore))) : '') + (q.cliente ? kv('Tipo di cliente', esc(etichettaOpz(OPZ_CLIENTE, q.cliente))) : '') + (q.settore ? kv('Settore', esc(etichettaOpz(OPZ_SETTORE, q.settore))) : '') + (q.canale ? kv('Canale', esc(etichettaOpz(OPZ_CANALE, q.canale))) : '') + '</div></div>';
+  return h;
+}
 function htmlSchedaProgetto(p) {
   const F = MODELLO.F; const v = numeroIt(p.valore); const esp = filtroProgetti().espansi.has(p.id); const descr = String(p.descrizione || '').trim();
   const lunga = descr.length > 420 || descr.split('\n').length > 6;
@@ -3552,38 +3660,71 @@ function htmlSchedaProgetto(p) {
     '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + '</div>' +
     '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
     (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
-    '<div class="pg-piede"><span>' + esc('Inserita da ' + (p.autore || '') + ' il ' + dataIt(p.creato)) + (p.agg && p.agg !== p.creato ? esc('; aggiornata da ' + (p.aggDa || p.autore || '') + ' il ' + dataIt(p.agg)) : '') + '</span>' + (puoScrivereProgetti() ? '<span class="pg-azioni"><button class="btn piccolo" data-pg="modifica" data-id="' + esc(p.id) + '">Modifica</button><button class="btn piccolo pericolo" data-pg="elimina" data-id="' + esc(p.id) + '">Elimina</button></span>' : '') + '</div></article>';
+    htmlParametriScheda(p) +
+    '<div class="pg-piede"><span>' + esc('Inserita da ' + (p.autore || '') + ' il ' + dataIt(p.creato)) + (p.agg && p.agg !== p.creato ? esc('; aggiornata da ' + (p.aggDa || p.autore || '') + ' il ' + dataIt(p.agg)) : '') + '</span><span class="pg-azioni"><button class="btn piccolo" data-pg="commessa" data-id="' + esc(p.id) + '" title="Apre la Scheda di commessa precompilata con i dati di questo progetto">Scheda di commessa</button>' + (puoScrivereProgetti() ? '<button class="btn piccolo" data-pg="modifica" data-id="' + esc(p.id) + '">Modifica</button><button class="btn piccolo pericolo" data-pg="elimina" data-id="' + esc(p.id) + '">Elimina</button>' : '') + '</span></div></article>';
 }
 function htmlFiltriProgetti() {
-  const F = filtroProgetti(); const tutti = elencoProgetti();
-  const gruppo = (tit, nome, voci, sel) => '<div class="pg-gruppo"><div class="pg-gtit">' + esc(tit) + '</div>' + (voci.length ? voci.map(([v, l, n]) => '<label class="pg-opt"><input type="checkbox" data-pgf="' + nome + '" value="' + esc(v) + '"' + (sel.includes(v) ? ' checked' : '') + '> <span>' + esc(l) + '</span>' + (n !== undefined ? '<small>' + n + '</small>' : '') + '</label>').join('') : '<div class="pg-muto">nessuna voce</div>') + '</div>';
+  const F = filtroProgetti(); const tutti = elencoProgetti(); const anni = nomiEsercizi();
+  const gruppo = (tit, nome, voci, sel) => '<div class="pg-gruppo"><div class="pg-gtit">' + esc(tit) + '</div>' + (voci.length ? voci.map(([v, l, n]) => '<label class="pg-opt"><input type="checkbox" data-pgf="' + nome + '" value="' + esc(v) + '"' + (sel.includes(String(v)) ? ' checked' : '') + '> <span>' + esc(l) + '</span>' + (n !== undefined ? '<small>' + n + '</small>' : '') + '</label>').join('') : '<div class="pg-muto">nessuna voce</div>') + '</div>';
   const conta = f => tutti.filter(f).length;
   const stati = STATI_PROGETTO.map(([v, l]) => [v, l, conta(p => p.stato === v)]);
   const pr = practiceElenco().map(p => [p.id, p.num + ' ' + p.nome, conta(x => (x.practice || []).includes(p.id))]);
   const sin = partnerElenco().map(p => [p.id, p.nome, conta(x => (x.sinergie || []).includes(p.id))]);
   const ref = [...new Set(tutti.map(p => p.referente).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it')).map(n => [n, n, conta(p => p.referente === n)]);
-  return '<div class="pg-filtri"><label class="pg-cerca">Cerca<input type="search" id="pg-q" placeholder="titolo, soggetti, luogo, descrizione, Socio, Practice, partner" value="' + esc(F.q) + '"></label>' +
+  const linee = MODELLO.LINEE_PIPELINE.map(([k, l]) => [k, l, conta(p => derivataDi(p).linea === k)]).filter(x => x[2] > 0 || x[0] !== 'altro');
+  const es = anni.map((n, i) => [String(i), n, conta(p => derivataDi(p).esercizio === i)]);
+  return '<div class="pg-filtri"><label class="pg-cerca">Cerca<input type="search" id="pg-q" placeholder="titolo, soggetti, luogo, descrizione, Socio, Practice, partner, linea, settore" value="' + esc(F.q) + '"></label>' +
     '<label class="pg-cerca">Ordina per<select id="pg-ordine">' + ORDINI_PROGETTO.map(([v, l]) => '<option value="' + v + '"' + (F.ordine === v ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></label>' +
-    gruppo('Stato', 'stato', stati, F.stato) + gruppo('Practice di riferimento', 'practice', pr, F.practice) + gruppo('Sinergie (società partner)', 'sinergie', sin, F.sinergie) + gruppo('Socio referente', 'referenti', ref, F.referenti) +
+    gruppo('Stato', 'stato', stati, F.stato) + gruppo('Linea di servizio', 'linea', linee, F.linea) + gruppo('Esercizio di avvio', 'esercizio', es, F.esercizio) + gruppo('Practice di riferimento', 'practice', pr, F.practice) + gruppo('Sinergie (società partner)', 'sinergie', sin, F.sinergie) + gruppo('Socio referente', 'referenti', ref, F.referenti) +
     '<div class="pg-gruppo"><div class="pg-gtit">Luogo</div><input type="search" id="pg-luogo" placeholder="contiene…" value="' + esc(F.luogo) + '"></div>' +
     '<button class="btn piccolo" id="pg-azzera">Azzera ricerca e filtri</button></div>';
 }
 function htmlRiepilogoProgetti(l) {
-  const F = MODELLO.F; const tot = elencoProgetti().length; const val = l.reduce((a, p) => a + (numeroIt(p.valore) || 0), 0);
+  const F = MODELLO.F; const tot = elencoProgetti().length; const D = l.map(derivataDi); const val = D.reduce((a, d) => a + d.valore, 0); const pes = D.reduce((a, d) => a + d.pesato, 0); const gg = D.reduce((a, d) => a + d.gg_pesate, 0);
   const perStato = STATI_PROGETTO.map(([v, lab]) => { const n = l.filter(p => p.stato === v).length; return n ? '<span class="sem pg-stato pg-' + v + '">' + esc(lab) + ' ' + n + '</span>' : ''; }).join('');
-  return '<div class="pg-riepilogo"><b>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + '</b>' + (l.length !== tot ? ' su ' + tot : '') + ' · valore stimato complessivo ' + F.eur(val) + (perStato ? ' · ' + perStato : '') + '</div>';
+  const pl = pipelineCorrente(); const anni = nomiEsercizi();
+  return '<div class="pg-riepilogo"><b>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + '</b>' + (l.length !== tot ? ' su ' + tot : '') + ' · valore stimato ' + F.eur(val) + ' · <b>valore pesato ' + F.eur(pes) + '</b> · ' + F.num(gg) + ' giornate senior pesate' + (perStato ? ' · ' + perStato : '') + '</div>' +
+    (pl.attiva ? '<div class="pg-pipeline"><span class="pg-gtit">Pipeline per esercizio (tutte le schede)</span>' + pl.anni.map(a => '<span class="pg-pl-anno"><b>' + esc(anni[a.i] || a.nome) + '</b> ' + a.n + (a.n === 1 ? ' scheda' : ' schede') + ' · pesato ' + F.eur(a.pesato) + (a.rt ? ' · ' + F.pct(a.copertura) + ' dei ricavi della traiettoria (' + F.eur(a.ricavi_traiettoria) + ')' : '') + '</span>').join('') + '<button class="btn piccolo" data-pg="scenari">Apri Scenari</button></div>' : '');
 }
 function disegnaProgetti(tutto) {
   const m = $('#progetti'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); const F = filtroProgetti();
   if (tutto || !$('.pg-layout', corpo)) { corpo.innerHTML = '<div class="pg-layout">' + htmlFiltriProgetti() + '<div class="pg-lista"></div></div>'; }
   else { const nf = el('div'); nf.innerHTML = htmlFiltriProgetti(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'pg-q'; const pos = focusQ ? attivo.selectionStart : null; $('.pg-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#pg-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
   const l = progettiFiltrati(); const lista = $('.pg-lista', corpo);
-  lista.innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">' + (elencoProgetti().length ? 'Nessuna scheda corrisponde alla ricerca o ai filtri scelti.' : 'Nessuna scheda progetto finora. Con «Nuova scheda» ciascun Socio inserisce i progetti che sta seguendo e che porterà in Onward.') + '</div>');
+  lista.innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">' + (elencoProgetti().length ? 'Nessuna scheda corrisponde alla ricerca o ai filtri scelti.' : 'Nessuna scheda progetto finora. Con «Nuova scheda» ciascun Socio inserisce i progetti che sta seguendo e che porterà in Onward; i parametri di progetto alimentano il documento, il modello e gli scenari.') + '</div>');
   const nb = $('#pg-nuova', m); if (nb) nb.hidden = !puoScrivereProgetti();
 }
 function aggiornaListaProgetti() { const corpo = $('#progetti .mappe-corpo'); if (!corpo || !$('.pg-lista', corpo)) return; const l = progettiFiltrati(); $('.pg-lista', corpo).innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">Nessuna scheda corrisponde alla ricerca o ai filtri scelti.</div>'); }
+function htmlParametriForm(p) {
+  const F = MODELLO.F; const q = parametriDi(p); const anni = nomiEsercizi(); const P = S.P; const valore = Math.max(0, numeroIt(p.valore) || 0);
+  const sel = (k, lab, voci, cur, nota) => '<label class="campo-testo">' + lab + '<select class="q" data-q="' + k + '">' + voci.map(([v, l]) => '<option value="' + esc(String(v)) + '"' + (String(v) === String(cur == null ? '' : cur) ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' + (nota ? '<span>' + nota + '</span>' : '') + '</label>';
+  const linee = [['', 'Da indicare (conteggiata come «altro»)']].concat(MODELLO.LINEE_PIPELINE.filter(l => l[0] !== 'altro'), [['altro', 'Altro o da definire']]);
+  const ggAuto = MODELLO.giornateAuto(P, q.linea || 'altro', valore); const terziAuto = MODELLO.terziAuto(P, q.linea || 'altro'); const probAuto = MODELLO.PROB_STATO[p.stato] != null ? MODELLO.PROB_STATO[p.stato] : 0.1;
+  return '<div class="pop-tit">Parametri di progetto</div><p class="nota-pannello">Questi campi trasformano la scheda in un dato del piano: alimentano le tavole del documento (capitoli VI, VIII, XVI e XVIII), la colonna «Pipeline» degli Scenari e la Scheda di commessa. Dove si lascia «secondo la linea» o «dallo stato», il modello applica le proprie ipotesi: i valori automatici sono indicati sotto ciascun campo.</p>' +
+    '<div class="fin-griglia pg-fgriglia">' +
+    sel('linea', 'Linea di servizio *', linee, q.linea, 'La linea decide come il valore entra nel modello: numero di diagnosi, di mandati o di piani, oppure importo in euro per le linee a valore.') +
+    sel('probabilita', 'Probabilità di chiusura', OPZ_PROB, q.probabilita, 'Dallo stato: ' + F.pct(probAuto) + ' (suspect 10%, lead 25%, prospect 50%, customer e promoter 100%).') +
+    sel('esercizio', 'Esercizio di avvio', anni.map((n, i) => [i, n]), q.esercizio === '' ? 0 : q.esercizio, 'L’esercizio in cui il progetto produce ricavi; i nomi sono quelli della traiettoria (vista Scenari).') +
+    sel('trimestre', 'Trimestre di avvio', OPZ_TRIMESTRE, q.trimestre) +
+    sel('ricorrenza', 'Ricorrenza', OPZ_RICORRENZA, q.ricorrenza, 'Secondo la linea: i mandati continuativi si ripetono negli esercizi successivi, le altre linee no.') +
+    '<label class="campo-testo">Giornate senior stimate<input class="q" data-q="giornate" inputmode="decimal" placeholder="automatico: ' + esc(F.num1(ggAuto)) + '" value="' + (q.giornate === '' || q.giornate == null ? '' : esc(String(q.giornate).replace('.', ','))) + '"><span>Vuoto = automatico dalla linea e dal valore (' + esc(F.num1(ggAuto)) + ' giornate con le ipotesi correnti). Contano per il tetto di capacità.</span></label>' +
+    sel('terzi', 'Quota del valore che transita a terzi', OPZ_TERZI, q.terzi, 'Secondo la linea: ' + F.pct(terziAuto) + ' (partner tecnico, ente di formazione, struttura della finanza agevolata).') +
+    sel('origination', 'Grado di origination del Socio referente', OPZ_ORIGINATION, q.origination, 'Determina la quota di origination attesa: ' + F.pct(P.orig_min) + ', ' + F.pct(P.orig_med) + ' o ' + F.pct(P.orig_max) + ' del valore pesato.') +
+    sel('esecutore', 'Chi esegue', OPZ_ESECUTORE, q.esecutore) + sel('cliente', 'Tipo di cliente', OPZ_CLIENTE, q.cliente) + sel('settore', 'Settore', OPZ_SETTORE, q.settore) + sel('canale', 'Canale di provenienza', OPZ_CANALE, q.canale, 'Alimenta la tavola dei canali del capitolo VI.') +
+    '</div><div class="pg-anteprima" id="pg-anteprima"></div>';
+}
+function leggiParametriForm(fin) {
+  const q = {}; for (const k of CAMPI_PARAM) { const x = $('.q[data-q="' + k + '"]', fin); if (!x) { q[k] = ''; continue; } let v = x.value; if (k === 'giornate') { v = v.trim(); q[k] = v === '' ? '' : (numeroIt(v) == null ? '' : numeroIt(v)); } else if (k === 'probabilita' || k === 'terzi') q[k] = v === '' ? '' : Number(v); else if (k === 'esercizio') q[k] = v === '' ? '' : Number(v); else q[k] = v; }
+  return q;
+}
+function anteprimaParametri(fin) {
+  const box = $('#pg-anteprima', fin); if (!box) return; const F = MODELLO.F; const anni = nomiEsercizi();
+  const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };
+  const tmp = { stato: f('stato') || 'suspect', valore: numeroIt(f('valore')), parametri: leggiParametriForm(fin) }; const d = derivataDi(tmp);
+  box.innerHTML = '<span class="pg-gtit">Come entra nel piano</span>' + (d.valore ? '<b>' + F.eur(d.pesato) + '</b> di valore pesato (' + F.eur(d.valore) + ' × ' + F.pct(d.prob) + ') nel ' + esc((anni[d.esercizio] || '').toLowerCase()) + (d.ricorrente ? ' e negli esercizi successivi' : '') + '; ricavo netto atteso ' + F.eur(d.netto) + '; ' + F.num1(d.gg) + ' giornate senior (' + F.num1(d.gg_pesate) + ' pesate); origination attesa ' + F.eur(d.origination) + ' (grado ' + F.pct(d.grado) + ').' : 'Indicare il valore stimato: senza valore la scheda conta per il numero di progetti e per le giornate, non per i ricavi.');
+}
 function formProgetto(id) {
-  const p0 = id ? progettoDi(id) : null; const nuova = !p0; const p = p0 ? clone(p0) : { id: '', titolo: '', soggetti: '', luogo: '', stato: 'suspect', descrizione: '', practice: [], valore: null, sinergie: [], referente: S.autore || '' };
+  const p0 = id ? progettoDi(id) : null; const nuova = !p0; const p = p0 ? clone(p0) : { id: '', titolo: '', soggetti: '', luogo: '', stato: 'suspect', descrizione: '', practice: [], valore: null, sinergie: [], referente: S.autore || '', parametri: {} };
   chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-progetto', id: 'finestra' });
   const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
   const campo = (k, lab, ph) => '<label class="campo-testo">' + lab + '<input class="f" data-f="' + k + '" value="' + esc(p[k] || '') + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + '></label>';
@@ -3591,52 +3732,188 @@ function formProgetto(id) {
   const soci = nomiSociProgetti(); if (p.referente && !soci.includes(p.referente)) soci.push(p.referente);
   const v = numeroIt(p.valore);
   fin.innerHTML = '<div class="fin-testa"><b>' + (nuova ? 'Nuova scheda progetto' : 'Modifica la scheda: ' + esc(p.titolo || '')) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
-    '<p class="nota-pannello">La scheda descrive un progetto che il Socio sta seguendo e che porterà in Onward. È condivisa con tutti i Soci e ogni salvataggio resta nella cronologia.</p>' +
+    '<p class="nota-pannello">La scheda descrive un progetto che il Socio sta seguendo e che porterà in Onward. È condivisa con tutti i Soci, ogni salvataggio resta nella cronologia e i suoi parametri alimentano il documento, il modello e gli scenari.</p>' +
     '<div class="fin-griglia">' + campo('titolo', 'Titolo *', 'es. Piattaforma AI per la logistica di un gruppo industriale') + campo('soggetti', 'Soggetto/i di riferimento', 'es. azienda, ente, persona di contatto') + campo('luogo', 'Luogo', 'es. Milano; Napoli e Campania; Lugano') +
     '<label class="campo-testo">Stato *<select class="f" data-f="stato">' + STATI_PROGETTO.map(([k, l]) => opt(k, p.stato, l)).join('') + '</select></label>' +
     '<label class="campo-testo">Valore stimato (euro)<input class="f" data-f="valore" inputmode="decimal" placeholder="es. 120.000" value="' + (v !== null ? esc(MODELLO.F.num(v)) : '') + '"></label>' +
     '<label class="campo-testo">Socio referente<select class="f" data-f="referente">' + opt('', p.referente || '', 'non indicato') + soci.map(n => opt(n, p.referente || '', n)).join('') + '</select></label></div>' +
     '<div class="pop-tit">Practices di riferimento (una o più)</div>' + chk('practice', practiceElenco().map(x => [x.id, x.num + ' ' + x.nome]), p.practice || []) +
     '<div class="pop-tit">Sinergie con le società partner (una o più)</div>' + chk('sinergie', partnerElenco().map(x => [x.id, x.nome]), p.sinergie || []) +
-    '<label class="campo-testo" style="margin-top:.6rem">Descrizione (senza limiti di lunghezza)<textarea class="f" data-f="descrizione" rows="9" placeholder="Contesto, esigenza del cliente, servizi di Onward coinvolti, prossimi passi, tempi">' + esc(p.descrizione || '') + '</textarea></label>' +
+    '<label class="campo-testo" style="margin-top:.6rem">Descrizione (senza limiti di lunghezza)<textarea class="f" data-f="descrizione" rows="7" placeholder="Contesto, esigenza del cliente, servizi di Onward coinvolti, prossimi passi, tempi">' + esc(p.descrizione || '') + '</textarea></label>' +
+    htmlParametriForm(p) +
     '<div class="azioni gl-azioni">' + (nuova ? '' : '<button class="btn piccolo pericolo" id="pg-elimina">Elimina la scheda</button>') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="pg-salva">Salva la scheda</button></div>';
   document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra; $('.f[data-f="titolo"]', fin).focus();
+  anteprimaParametri(fin); fin.addEventListener('input', () => anteprimaParametri(fin)); fin.addEventListener('change', ev => { anteprimaParametri(fin); if (ev.target.matches('.q[data-q="linea"]')) { const q = leggiParametriForm(fin); const valore = Math.max(0, numeroIt($('.f[data-f="valore"]', fin).value) || 0); const gg = $('.q[data-q="giornate"]', fin); if (gg) gg.placeholder = 'automatico: ' + MODELLO.F.num1(MODELLO.giornateAuto(S.P, q.linea || 'altro', valore)); } });
   const del = $('#pg-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); chiudiFinestra(); };
   $('#pg-salva', fin).onclick = () => {
     const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };
     const titolo = f('titolo'); if (!titolo) { toast('Indicare il titolo del progetto'); $('.f[data-f="titolo"]', fin).focus(); return; }
     const valoreTxt = f('valore'); const valore = valoreTxt ? numeroIt(valoreTxt) : null; if (valoreTxt && valore === null) { toast('Il valore stimato deve essere un numero (per esempio 120.000)'); $('.f[data-f="valore"]', fin).focus(); return; }
+    const q = leggiParametriForm(fin); const ggTxt = ($('.q[data-q="giornate"]', fin) || {}).value || ''; if (ggTxt.trim() && q.giornate === '') { toast('Le giornate senior devono essere un numero (per esempio 12)'); $('.q[data-q="giornate"]', fin).focus(); return; }
     const ora = new Date().toISOString(); const n = nuova ? { id: uid('pg'), autore: S.autore || 'anonimo', creato: ora } : p0;
     n.titolo = titolo; n.soggetti = f('soggetti'); n.luogo = f('luogo'); n.stato = f('stato') || 'suspect'; n.descrizione = f('descrizione'); n.valore = valore; n.referente = f('referente');
-    n.practice = $$('input[data-m="practice"]:checked', fin).map(x => x.value); n.sinergie = $$('input[data-m="sinergie"]:checked', fin).map(x => x.value); n.agg = ora; n.aggDa = S.autore || 'anonimo';
+    n.practice = $$('input[data-m="practice"]:checked', fin).map(x => x.value); n.sinergie = $$('input[data-m="sinergie"]:checked', fin).map(x => x.value); n.parametri = q; n.agg = ora; n.aggDa = S.autore || 'anonimo';
     if (nuova) elencoProgetti().push(n);
     if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + titolo.slice(0, 60) + '» ' + (nuova ? 'inserita' : 'aggiornata'); segna('progetti');
-    chiudiFinestra(); disegnaProgetti(true); toast(nuova ? 'Scheda inserita: è visibile a tutti i Soci' : 'Scheda aggiornata');
+    chiudiFinestra(); dopoModificaProgetti(); toast(nuova ? 'Scheda inserita: è visibile a tutti i Soci e alimenta documento, modello e scenari' : 'Scheda aggiornata: documento, modello e scenari ricalcolati');
   };
 }
-function eliminaProgetto(id) { const l = elencoProgetti(); const i = l.findIndex(p => p.id === id); if (i < 0) return; const t = l[i].titolo || ''; l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + t.slice(0, 60) + '» eliminata'; segna('progetti'); disegnaProgetti(true); }
+function eliminaProgetto(id) { const l = elencoProgetti(); const i = l.findIndex(p => p.id === id); if (i < 0) return; const t = l[i].titolo || ''; l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + t.slice(0, 60) + '» eliminata'; segna('progetti'); dopoModificaProgetti(); }
 function fondiProgetti(remoto) {
   const R = Object.assign(progettiVuoti(), remoto || {}), M = S.progetti || progettiVuoti(); const out = new Map();
   for (const p of (R.progetti || []).concat(M.progetti || [])) { const cur = out.get(p.id); if (!cur || (Date.parse(p.agg || p.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(p.id, clone(p)); }
   const base = (S.base && S.base.progetti && S.base.progetti.progetti) || []; const miei = new Set((M.progetti || []).map(p => p.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
   S.progetti = { progetti: [...out.values()] };
 }
+// ---- pipeline: calcolo, aggiornamento delle viste, blocchi generati nel documento
+function calcolaPipeline() {
+  const nomi = nomiEsercizi(); const pl = MODELLO.pipeline(elencoProgetti(), S.P, { anni: nomi });
+  for (const [k, nome] of STATI_PROGETTO) if (!pl.perStato[k]) pl.perStato[k] = { n: 0, valore: 0, pesato: 0, netto: 0, gg: 0, origination: 0, nome };
+  for (const [k, nome] of MODELLO.LINEE_PIPELINE) if (!pl.perLinea[k]) pl.perLinea[k] = { n: 0, valore: 0, pesato: 0, netto: 0, gg: 0, origination: 0, nome };
+  const Z = S.scenari; const r0 = (S.ctx && S.ctx.r) || MODELLO.calcola(S.P, 'Base', 1); const base = r0.struttura;
+  if (Z && Z.anni) for (const a of pl.anni) {
+    const i = a.i; if (i > 2) continue; const volTra = volumiAnno(i); const soci = sociAnno(i); const junior = Number((Z.anni.junior || [])[i] || 0); const costi = base * Number((Z.anni.costi_fattore || [])[i] || 1) + (i === 0 ? Number(Z.anni.costituzione || 0) : 0);
+    try { a.traiettoria = volTra; a.rt = calcolaScenario(volTra, i, { soci, junior, costi }); a.r = calcolaScenario(a.volumi, i, { soci, junior, costi }); } catch (e) { continue; }
+    a.ricavi_traiettoria = a.rt.ricavi; a.ricavi_modello = a.r.ricavi; a.netti_modello = a.r.netti; a.mo_modello = a.r.mo; a.gg_traiettoria = a.rt.gg_tot; a.gg_modello = a.r.gg_tot;
+    a.copertura = a.rt.ricavi ? a.pesato / a.rt.ricavi : 0; a.copertura_lorda = a.rt.ricavi ? a.valore / a.rt.ricavi : 0; a.scarto = a.pesato - a.rt.ricavi;
+  }
+  return pl;
+}
+function aggiornaPipeline(opt) {
+  opt = opt || {}; ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti();
+  if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto();
+  if (opt.progetti !== false && $('#progetti') && !$('#progetti').hidden) disegnaProgetti(true);
+}
+function dopoModificaProgetti() { aggiornaPipeline(); }
+function aggiornaBlocchiProgetti() { for (const w of $$('.blk[data-t="progetti"]')) { const info = blocco(w.dataset.id); if (info) w.replaceWith(renderBlocco(info.b)); } }
+function commessaDaProgetto(id) {
+  const p = progettoDi(id); if (!p) return; const d = derivataDi(p); const P = S.P; const q = parametriDi(p);
+  const tipo = { diag: 'diagnosi', ret: 'retainer', spec: 'specialistico', part: 'partner', fin: 'finanza', form: 'formazione' }[d.linea] || 'specialistico';
+  const c = commessaNuova(tipo); c.titolo = p.titolo || ''; c.cliente = p.soggetti || ''; c.origina = p.referente && (S.rete.soci || []).some(s => s.nome === p.referente) ? p.referente : ''; c.esegue = q.esecutore === 'soci' ? c.origina : (q.esecutore === 'partner' || q.esecutore === 'interno' ? 'altro' : c.origina);
+  c.grado = d.grado || P.orig_med; c.note = 'Precompilata dalla Scheda Progetto «' + (p.titolo || '') + '» (stato ' + etichettaStato(p.stato) + ', probabilità ' + MODELLO.F.pct(d.prob) + ').';
+  const dd = c.dati; const v = d.valore;
+  if (tipo === 'diagnosi') { if (!d.gg_auto) dd.gg = d.gg; if (v && dd.gg) dd.prezzo_gg = Math.round(v / dd.gg); dd.prob = d.prob; }
+  else if (tipo === 'retainer') { if (v) dd.mensile = Math.round(v / 12); if (!d.gg_auto) dd.gg_mese = d.gg / 12; }
+  else if (tipo === 'specialistico') { if (v) { dd.forfait = v; dd.gg.partner = Math.round(d.gg); } }
+  else if (tipo === 'partner') { if (v) { dd.tecnica = v; dd.gg_dir = d.gg; } if (!d.terzi_auto) dd.m = 1 - d.terzi; }
+  else if (tipo === 'finanza') { if (v) { dd.modo = 'commessa'; dd.contributo = Math.round(v / (dd.fee || 0.04)); } dd.gg = d.gg; if (!d.terzi_auto) dd.m = 1 - d.terzi; }
+  else if (tipo === 'formazione') { if (v) dd.valore = v; dd.gg = d.gg; if (!d.terzi_auto) dd.m = 1 - d.terzi; }
+  S.commessa = c; apriCommessa(); toast('Scheda di commessa precompilata dal progetto: i dati si possono modificare e salvare');
+}
 function esportaProgetti() {
-  const l = progettiFiltrati(); const F = MODELLO.F; const val = l.reduce((a, p) => a + (numeroIt(p.valore) || 0), 0);
+  const l = progettiFiltrati(); const F = MODELLO.F; const D = l.map(derivataDi); const val = D.reduce((a, d) => a + d.valore, 0); const pes = D.reduce((a, d) => a + d.pesato, 0); const anni = nomiEsercizi();
   let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Schede Progetto</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt} table{border-collapse:collapse;width:100%;font-size:9.5pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:4pt 5pt;vertical-align:top} tr.i td{background:#e9eff7;font-weight:bold} td.e{width:28%;background:#f3f5f8} p{margin:0 0 6pt}</style></head><body>';
-  h += '<h1>Onward · Schede Progetto</h1><p>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + '; valore stimato complessivo ' + F.eur(val) + '.' + (filtroProgetti().q || filtroProgetti().stato.length || filtroProgetti().practice.length || filtroProgetti().sinergie.length || filtroProgetti().referenti.length || filtroProgetti().luogo ? ' Elenco filtrato secondo la ricerca corrente.' : '') + '</p>';
-  h += '<table><tr class="i"><td>Titolo</td><td>Stato</td><td>Referente</td><td>Luogo</td><td>Practice</td><td>Sinergie</td><td>Valore</td></tr>' + l.map(p => '<tr><td>' + esc(p.titolo || '') + '</td><td>' + esc(etichettaStato(p.stato)) + '</td><td>' + esc(p.referente || '') + '</td><td>' + esc(p.luogo || '') + '</td><td>' + esc((p.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc((p.sinergie || []).map(nomePartner).join('; ')) + '</td><td>' + (numeroIt(p.valore) !== null ? F.eur(numeroIt(p.valore)) : '') + '</td></tr>').join('') + '</table>';
-  for (const p of l) { const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(p.titolo || '') + '</h2><table>' + riga('Stato', esc(etichettaStato(p.stato))) + riga('Soggetti di riferimento', esc(p.soggetti)) + riga('Luogo', esc(p.luogo)) + riga('Socio referente', esc(p.referente)) + riga('Practices di riferimento', esc((p.practice || []).map(nomePractice).join('; '))) + riga('Sinergie', esc((p.sinergie || []).map(nomePartner).join('; '))) + riga('Valore stimato', numeroIt(p.valore) !== null ? F.eur(numeroIt(p.valore)) : '') + riga('Descrizione', esc(p.descrizione || '').replace(/\n/g, '<br>')) + riga('Inserita', esc((p.autore || '') + ', ' + dataIt(p.creato))) + (p.agg && p.agg !== p.creato ? riga('Aggiornata', esc((p.aggDa || '') + ', ' + dataIt(p.agg))) : '') + '</table>'; }
+  h += '<h1>Onward · Schede Progetto</h1><p>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + '; valore stimato complessivo ' + F.eur(val) + ', valore pesato per la probabilità di chiusura ' + F.eur(pes) + '.' + (filtroProgetti().q || filtroProgetti().stato.length || filtroProgetti().practice.length || filtroProgetti().sinergie.length || filtroProgetti().referenti.length || filtroProgetti().linea.length || filtroProgetti().esercizio.length || filtroProgetti().luogo ? ' Elenco filtrato secondo la ricerca corrente.' : '') + '</p>';
+  h += '<table><tr class="i"><td>Titolo</td><td>Stato</td><td>Referente</td><td>Linea</td><td>Esercizio</td><td>Practice</td><td>Sinergie</td><td>Valore</td><td>Probabilità</td><td>Pesato</td></tr>' + l.map((p, i) => { const d = D[i]; return '<tr><td>' + esc(p.titolo || '') + '</td><td>' + esc(etichettaStato(p.stato)) + '</td><td>' + esc(p.referente || '') + '</td><td>' + esc(etichettaLinea(d.linea)) + '</td><td>' + esc(anni[d.esercizio] || '') + '</td><td>' + esc((p.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc((p.sinergie || []).map(nomePartner).join('; ')) + '</td><td>' + (d.valore ? F.eur(d.valore) : '') + '</td><td>' + F.pct(d.prob) + '</td><td>' + (d.valore ? F.eur(d.pesato) : '') + '</td></tr>'; }).join('') + '</table>';
+  const pl = pipelineCorrente(); if (pl.attiva) h += '<h2>Pipeline per esercizio (tutte le schede)</h2><table><tr class="i"><td>Esercizio</td><td>Schede</td><td>Valore stimato</td><td>Valore pesato</td><td>Ricavo netto atteso</td><td>Giornate senior pesate</td><td>Ricavi della traiettoria</td><td>Copertura</td></tr>' + pl.anni.map(a => '<tr><td>' + esc(a.nome) + '</td><td>' + a.n + '</td><td>' + F.eur(a.valore) + '</td><td>' + F.eur(a.pesato) + '</td><td>' + F.eur(a.netto) + '</td><td>' + F.num(a.gg) + '</td><td>' + (a.rt ? F.eur(a.ricavi_traiettoria) : '') + '</td><td>' + (a.rt ? F.pct(a.copertura) : '') + '</td></tr>').join('') + '</table>';
+  for (const p of l) { const d = derivataDi(p); const q = parametriDi(p); const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(p.titolo || '') + '</h2><table>' + riga('Stato', esc(etichettaStato(p.stato))) + riga('Soggetti di riferimento', esc(p.soggetti)) + riga('Luogo', esc(p.luogo)) + riga('Socio referente', esc(p.referente)) + riga('Practices di riferimento', esc((p.practice || []).map(nomePractice).join('; '))) + riga('Sinergie', esc((p.sinergie || []).map(nomePartner).join('; '))) + riga('Valore stimato', d.valore ? F.eur(d.valore) : '') + riga('Descrizione', esc(p.descrizione || '').replace(/\n/g, '<br>')) +
+    riga('Linea di servizio', esc(etichettaLinea(d.linea))) + riga('Probabilità di chiusura', F.pct(d.prob) + (d.prob_auto ? ' (dallo stato)' : '')) + riga('Esercizio di avvio', esc((anni[d.esercizio] || '') + (q.trimestre ? ', ' + etichettaOpz(OPZ_TRIMESTRE, q.trimestre).toLowerCase() : ''))) + riga('Ricorrenza', d.ricorrente ? 'Ricorrente' : 'Una tantum') + riga('Valore pesato; ricavo netto atteso', d.valore ? F.eur(d.pesato) + '; ' + F.eur(d.netto) : '') + riga('Giornate senior', F.num1(d.gg) + (d.gg_auto ? ' (dalla linea)' : '')) + riga('Quota a terzi', F.pct(d.terzi) + (d.terzi_auto ? ' (dalla linea)' : '')) + riga('Origination', esc(etichettaOpz(OPZ_ORIGINATION, q.origination)) + '; grado ' + F.pct(d.grado) + (d.valore ? '; attesi ' + F.eur(d.origination) : '')) + riga('Chi esegue', esc(q.esecutore ? etichettaOpz(OPZ_ESECUTORE, q.esecutore) : '')) + riga('Tipo di cliente', esc(q.cliente ? etichettaOpz(OPZ_CLIENTE, q.cliente) : '')) + riga('Settore', esc(q.settore ? etichettaOpz(OPZ_SETTORE, q.settore) : '')) + riga('Canale di provenienza', esc(q.canale ? etichettaOpz(OPZ_CANALE, q.canale) : '')) +
+    riga('Inserita', esc((p.autore || '') + ', ' + dataIt(p.creato))) + (p.agg && p.agg !== p.creato ? riga('Aggiornata', esc((p.aggDa || '') + ', ' + dataIt(p.agg))) : '') + '</table>'; }
   scarica('Onward_Schede_Progetto.doc', h + '</body></html>', 'application/msword');
 }
+// ---- blocchi generati nel documento (t: 'progetti', vista: 'pipeline-…'): ogni cifra è un segnaposto sul contesto pl, quindi si aggiorna con le ipotesi
+const VISTE_PIPELINE = [['pipeline-esercizi', 'La pipeline per esercizio'], ['pipeline-confronto', 'Il secondo esercizio: pipeline e scenari a confronto'], ['pipeline-linee', 'La pipeline per linea di servizio'], ['pipeline-stati', 'La pipeline per stato del contatto'], ['pipeline-canali', 'La pipeline per canale di provenienza'], ['pipeline-settori', 'La pipeline per settore e tipo di cliente'], ['pipeline-soci', 'La pipeline per Socio referente'], ['pipeline-practice', 'La pipeline per Practice e sinergie']];
+function pipelineBlocchi(vista, b) {
+  const pl = pipelineCorrente(); const out = []; const anni = nomiEsercizi();
+  if (!pl.attiva) { out.push({ t: 'p', text: 'Nessuna Scheda Progetto è stata ancora inserita: questa tavola si compila da sola quando i Soci registrano i progetti che seguono (voce «Schede Progetto» del menu), con i parametri di progetto di ciascuna scheda.' }); return out; }
+  const tok = (fmt, expr) => '{{' + fmt + ':' + expr + '}}'; const chiave = k => JSON.stringify(String(k));
+  const rigaPer = (mappa, k, nome, extra) => ['**' + nome + '**', tok('num', 'pl.' + mappa + '[' + chiave(k) + '].n'), tok('eur', 'pl.' + mappa + '[' + chiave(k) + '].valore'), tok('eur', 'pl.' + mappa + '[' + chiave(k) + '].pesato'), tok('eur', 'pl.' + mappa + '[' + chiave(k) + '].netto'), tok('num', 'pl.' + mappa + '[' + chiave(k) + '].gg')].concat(extra || []);
+  const testaPer = (prima, extra) => ['**' + prima + '**', '**Schede**', '**Valore stimato**', '**Valore pesato**', '**Ricavo netto atteso**', '**Giornate pesate**'].concat(extra || []);
+  const totale = (extra) => ['**Totale**', '**' + tok('num', 'pl.n') + '**', '**' + tok('eur', 'pl.valore') + '**', '**' + tok('eur', 'pl.pesato') + '**', '**' + tok('eur', 'pl.netto') + '**', '**' + tok('num', 'pl.gg') + '**'].concat(extra || []);
+  const chiaviOrdinate = (mappa, ordine) => { const ks = Object.keys(pl[mappa]).filter(k => pl[mappa][k].n > 0); if (ordine) return ordine.filter(k => ks.includes(k)).concat(ks.filter(k => !ordine.includes(k))); return ks.sort((a, b) => pl[mappa][b].pesato - pl[mappa][a].pesato || String(pl[mappa][a].nome).localeCompare(String(pl[mappa][b].nome), 'it')); };
+  const W6 = [0.27, 0.1, 0.16, 0.16, 0.16, 0.15];
+  if (vista === 'pipeline-esercizi') {
+    const rows = [['**Esercizio**', '**Schede**', '**Valore stimato**', '**Valore pesato**', '**Ricavo netto atteso**', '**Giornate pesate**', '**Ricavi della traiettoria**', '**Copertura**']];
+    pl.anni.forEach((a, i) => rows.push(['**' + (anni[i] || a.nome) + '**', tok('num', 'pl.anni[' + i + '].n'), tok('eur', 'pl.anni[' + i + '].valore'), tok('eur', 'pl.anni[' + i + '].pesato'), tok('eur', 'pl.anni[' + i + '].netto'), tok('num', 'pl.anni[' + i + '].gg'), a.rt ? tok('eur', 'pl.anni[' + i + '].ricavi_traiettoria') : 'n.d.', a.rt ? tok('pct', 'pl.anni[' + i + '].copertura') : 'n.d.']));
+    out.push(tblV(true, rows, [0.17, 0.1, 0.13, 0.13, 0.13, 0.12, 0.12, 0.1]));
+    out.push({ t: 'p', text: 'Il valore pesato è il valore stimato moltiplicato per la probabilità di chiusura di ciascuna scheda; i mandati ricorrenti contano anche negli esercizi successivi a quello di avvio. La copertura confronta il valore pesato con i ricavi lordi della traiettoria (vista Scenari) e dice quanta parte del piano è già visibile nelle relazioni dei Soci: le schede non sostituiscono gli scenari, li verificano.' });
+  } else if (vista === 'pipeline-confronto') {
+    const a = pl.anni[1] || pl.anni[0]; const i = pl.anni[1] ? 1 : 0; const tra = anni[i] || a.nome;
+    const rows = [['**Volume del ' + tra.toLowerCase() + '**', '**Pipeline (schede)**', '**Prudente**', '**Base**', '**Sviluppo**']];
+    VOLUMI_ET.forEach((et, k) => { const f = VOLUMI_FMT[k] === 'eur' ? 'eur' : 'num1'; rows.push([et, tok(f, 'pl.anni[' + i + '].volumi[' + k + ']'), tok(VOLUMI_FMT[k] === 'eur' ? 'eur' : 'num', 'P.scenari.Prudente[' + k + ']'), tok(VOLUMI_FMT[k] === 'eur' ? 'eur' : 'num', 'P.scenari.Base[' + k + ']'), tok(VOLUMI_FMT[k] === 'eur' ? 'eur' : 'num', 'P.scenari.Sviluppo[' + k + ']')]); });
+    rows.push(['Altro o da definire (valore pesato non attribuito a una linea)', tok('eur', 'pl.anni[' + i + '].altro'), '', '', '']);
+    if (a.r) { rows.push(['**Ricavi lordi calcolati dal modello**', '**' + tok('eur', 'pl.anni[' + i + '].ricavi_modello') + '**', '**' + tok('eur', 's.Prudente.ricavi') + '**', '**' + tok('eur', 's.Base.ricavi') + '**', '**' + tok('eur', 's.Sviluppo.ricavi') + '**']); rows.push(['Ricavi netti', tok('eur', 'pl.anni[' + i + '].netti_modello'), tok('eur', 's.Prudente.netti'), tok('eur', 's.Base.netti'), tok('eur', 's.Sviluppo.netti')]); rows.push(['Margine operativo', tok('eur', 'pl.anni[' + i + '].mo_modello'), tok('eur', 's.Prudente.mo'), tok('eur', 's.Base.mo'), tok('eur', 's.Sviluppo.mo')]); rows.push(['Giornate senior assorbite', tok('num', 'pl.anni[' + i + '].gg_modello'), tok('num', 's.Prudente.gg_tot'), tok('num', 's.Base.gg_tot'), tok('num', 's.Sviluppo.gg_tot')]); }
+    out.push(tblV(true, rows, [0.36, 0.16, 0.16, 0.16, 0.16]));
+    out.push({ t: 'p', text: 'La colonna della pipeline traduce le schede nei volumi del modello: le diagnosi, i mandati e i piani di formazione in numero di contratti pesati per la probabilità, le linee a valore in euro pesati. Il modello ricalcola ricavi, margine e giornate con le stesse ipotesi degli scenari, così il confronto è omogeneo; dalla vista Scenari i volumi della pipeline si possono adottare come traiettoria o salvare come scenario personalizzato.' });
+  } else if (vista === 'pipeline-linee') {
+    const rows = [testaPer('Linea di servizio')]; for (const k of chiaviOrdinate('perLinea', MODELLO.LINEE_PIPELINE.map(l => l[0]))) rows.push(rigaPer('perLinea', k, pl.perLinea[k].nome)); rows.push(totale()); out.push(tblV(true, rows, W6));
+  } else if (vista === 'pipeline-stati') {
+    const rows = [testaPer('Stato del contatto', ['**Probabilità applicata**'])]; for (const k of chiaviOrdinate('perStato', STATI_PROGETTO.map(s => s[0]))) rows.push(rigaPer('perStato', k, pl.perStato[k].nome, [tok('pct', 'pl.perStato[' + chiave(k) + '].pesato / Math.max(1, pl.perStato[' + chiave(k) + '].valore)')])); rows.push(totale(['**' + tok('pct', 'pl.prob_media') + '**'])); out.push(tblV(true, rows, [0.2, 0.1, 0.14, 0.14, 0.14, 0.13, 0.15]));
+    out.push({ t: 'p', text: 'La probabilità applicata è quella dello stato (suspect 10%, lead 25%, prospect 50%, customer e promoter 100%) salvo che la scheda ne indichi una propria; la riga del totale riporta la probabilità media ponderata sul valore.' });
+  } else if (vista === 'pipeline-canali') {
+    const rows = [testaPer('Canale di provenienza')]; for (const k of chiaviOrdinate('perCanale')) rows.push(rigaPer('perCanale', k, k === 'nd' ? 'Canale non indicato' : etichettaOpz(OPZ_CANALE, k))); rows.push(totale()); out.push(tblV(true, rows, W6));
+  } else if (vista === 'pipeline-settori') {
+    const rows = [testaPer('Settore')]; for (const k of chiaviOrdinate('perSettore')) rows.push(rigaPer('perSettore', k, k === 'nd' ? 'Settore non indicato' : etichettaOpz(OPZ_SETTORE, k))); rows.push(totale()); out.push(tblV(true, rows, W6));
+    const rows2 = [testaPer('Tipo di cliente')]; for (const k of chiaviOrdinate('perCliente')) rows2.push(rigaPer('perCliente', k, k === 'nd' ? 'Tipo non indicato' : etichettaOpz(OPZ_CLIENTE, k))); rows2.push(totale()); out.push(tblV(true, rows2, W6));
+  } else if (vista === 'pipeline-soci') {
+    const rows = [testaPer('Socio referente', ['**Origination attesa**'])]; for (const k of chiaviOrdinate('perReferente')) rows.push(rigaPer('perReferente', k, k === 'nd' ? 'Referente non indicato' : k, [tok('eur', 'pl.perReferente[' + chiave(k) + '].origination')])); rows.push(totale(['**' + tok('eur', 'pl.origination') + '**'])); out.push(tblV(true, rows, [0.2, 0.1, 0.14, 0.14, 0.14, 0.13, 0.15]));
+    out.push({ t: 'p', text: 'L’origination attesa applica al valore pesato il grado indicato nella scheda (' + tok('pct', 'P.orig_min') + ', ' + tok('pct', 'P.orig_med') + ' o ' + tok('pct', 'P.orig_max') + ' secondo che il Socio abbia segnalato, introdotto o affiancato fino alla firma): è la parte del compenso corrente che il capitolo ' + '{{cap:prezzo-ripartizione-e-reddito-del-socio}}' + ' riconosce a chi porta il contatto.' });
+  } else if (vista === 'pipeline-practice') {
+    const rows = [testaPer('Practice di riferimento')]; for (const k of chiaviOrdinate('perPractice', practiceElenco().map(p => p.id))) rows.push(rigaPer('perPractice', k, k === 'nd' ? 'Practice non indicata' : nomePractice(k))); out.push(tblV(true, rows, W6));
+    const rows2 = [testaPer('Società partner in sinergia')]; for (const k of chiaviOrdinate('perSinergia')) rows2.push(rigaPer('perSinergia', k, k === 'nd' ? 'Nessuna sinergia indicata' : nomePartner(k))); out.push(tblV(true, rows2, W6));
+    out.push({ t: 'p', text: 'Una scheda con più Practice o più sinergie compare in ciascuna riga, perciò le colonne non si sommano al totale della pipeline (' + tok('eur', 'pl.pesato') + ' di valore pesato su ' + tok('num', 'pl.n') + ' schede).' });
+  } else out.push({ t: 'p', text: 'Vista della pipeline non disponibile: ' + vista });
+  return out;
+}
+// ---- sezione «pipeline» della vista Scenari
+function htmlSezionePipeline(anni) {
+  const F = MODELLO.F; const pl = pipelineCorrente(); const ro = S.readonly; const nomi = nomiEsercizi();
+  let h = '<section class="q-sez q-pipeline"><div class="q-testa"><h3>La pipeline delle Schede Progetto</h3><div class="q-azioni"><button class="btn piccolo" data-sa="apri-progetti">Apri le Schede Progetto</button></div></div>';
+  if (!pl.attiva) return h + '<p class="nota-pannello">Nessuna scheda progetto finora: quando i Soci registrano i progetti che seguono, con i parametri di progetto, qui compaiono i volumi che le schede implicano per ciascun esercizio, il confronto con la traiettoria e i comandi per adottarli.</p></section>';
+  h += '<p class="nota-pannello">' + pl.n + (pl.n === 1 ? ' scheda' : ' schede') + ' per ' + F.eur(pl.valore) + ' di valore stimato, ' + F.eur(pl.pesato) + ' pesati per la probabilità di chiusura (media ' + F.pct(pl.prob_media) + '), ' + F.num(pl.gg) + ' giornate senior pesate. Le schede sono tradotte nei volumi del modello per esercizio; i volumi della pipeline si possono adottare come traiettoria di un esercizio o salvare come scenario personalizzato del secondo esercizio, senza toccare le ipotesi del documento.</p>';
+  const rigaA = (et, f) => '<tr><td class="etichetta">' + et + '</td>' + pl.anni.map(a => '<td>' + f(a) + '</td>').join('') + '</tr>';
+  h += '<div class="tabella-wrap"><table class="tab s-tab"><tr class="intestazione"><td>Pipeline per esercizio</td>' + pl.anni.map(a => '<td>' + esc(nomi[a.i] || a.nome) + '</td>').join('') + '</tr>' +
+    rigaA('Schede che producono ricavi nell’esercizio', a => F.num(a.n) + (a.ricorrenti ? '<small>di cui ricorrenti ' + F.eur(a.ricorrenti) + '</small>' : '')) + rigaA('Valore stimato', a => F.eur(a.valore)) + rigaA('<b>Valore pesato</b>', a => '<b>' + F.eur(a.pesato) + '</b>') + rigaA('Ricavo netto atteso (al netto dei terzi)', a => F.eur(a.netto)) + rigaA('Giornate senior pesate', a => F.num(a.gg)) +
+    VOLUMI_ET.map((et, k) => '<tr><td class="etichetta">' + esc(et) + ' <small>pipeline · traiettoria</small></td>' + pl.anni.map(a => '<td>' + (VOLUMI_FMT[k] === 'eur' ? F.eur(a.volumi[k]) : F.num1(a.volumi[k])) + '<small>traiettoria: ' + (a.traiettoria ? (VOLUMI_FMT[k] === 'eur' ? F.eur(a.traiettoria[k]) : F.num(a.traiettoria[k])) : 'n.d.') + '</small></td>').join('') + '</tr>').join('') +
+    rigaA('Altro o da definire (non attribuito a una linea)', a => F.eur(a.altro)) +
+    rigaA('<b>Ricavi lordi: pipeline nel modello · traiettoria</b>', a => a.r ? '<b>' + F.eur(a.ricavi_modello) + '</b><small>traiettoria ' + F.eur(a.ricavi_traiettoria) + ' · copertura ' + F.pct(a.copertura) + ' ' + semaforo(a.copertura >= 0.75 ? 'ok' : a.copertura >= 0.4 ? 'attenzione' : 'allarme') + '</small>' : 'n.d.') +
+    rigaA('Margine operativo con i volumi della pipeline', a => a.r ? F.eur(a.mo_modello) + '<small>' + F.pct1(a.r.mo_netti) + ' dei netti</small>' : 'n.d.') + rigaA('Giornate senior: pipeline nel modello · traiettoria', a => a.r ? F.num(a.gg_modello) + '<small>traiettoria ' + F.num(a.gg_traiettoria) + ' · capacità ' + F.num(a.r.capacita) + '</small>' : 'n.d.') +
+    (ro ? '' : '<tr><td class="etichetta">Adotta i volumi della pipeline</td>' + pl.anni.map(a => '<td>' + (a.i <= 2 ? '<button class="btn piccolo" data-sa="pipeline-anno" data-i="' + a.i + '" title="Scrive i volumi della pipeline come valori propri di questo esercizio nella traiettoria">Come traiettoria</button>' + (a.i === 1 ? ' <button class="btn piccolo" data-sa="pipeline-scenario" data-i="1" title="Crea uno scenario personalizzato del secondo esercizio con i volumi della pipeline">Come scenario</button>' : '') : '') + '</td>').join('') + '</tr>') + '</table></div>';
+  h += '<div class="q-grafici"><div>' + svgBarreGruppi([{ nome: 'valore pesato della pipeline', valori: pl.anni.map(a => a.pesato), col: 'var(--accento)' }, { nome: 'ricavi lordi della traiettoria', valori: pl.anni.map(a => a.ricavi_traiettoria || 0), col: 'var(--pr1)' }], pl.anni.map(a => nomi[a.i] || a.nome), 'Pipeline pesata e traiettoria per esercizio') + '</div><div>' + svgBarreGruppi([{ nome: 'valore stimato', valori: STATI_PROGETTO.map(s => pl.perStato[s[0]].valore), col: 'var(--pr2)' }, { nome: 'valore pesato', valori: STATI_PROGETTO.map(s => pl.perStato[s[0]].pesato), col: 'var(--accento)' }], STATI_PROGETTO.map(s => s[1]), 'Dal suspect al promoter: valore stimato e pesato') + '</div></div>';
+  const linee = MODELLO.LINEE_PIPELINE.filter(l => pl.perLinea[l[0]].n > 0);
+  h += '<div class="q-grafici"><div>' + svgBarreGruppi([{ nome: 'valore pesato', valori: linee.map(l => pl.perLinea[l[0]].pesato), col: 'var(--accento)' }, { nome: 'ricavo netto atteso', valori: linee.map(l => pl.perLinea[l[0]].netto), col: 'var(--pr3)' }], linee.map(l => l[1].replace(' (Onward capofila)', '').replace(' (retainer)', '')), 'La pipeline per linea di servizio') + '</div><div>' + svgBarreGruppi([{ nome: 'valore pesato', valori: Object.values(pl.perReferente).map(x => x.pesato), col: 'var(--accento)' }, { nome: 'origination attesa', valori: Object.values(pl.perReferente).map(x => x.origination), col: 'var(--pr2)' }], Object.values(pl.perReferente).map(x => x.nome), 'La pipeline per Socio referente e origination attesa') + '</div></div>';
+  h += '<p class="nota-pannello">I semafori della copertura leggono il valore pesato sui ricavi lordi della traiettoria: verde dal 75%, giallo dal 40%. Le schede senza linea di servizio entrano nella riga «altro» e nei totali, non nei volumi del modello: indicare la linea nei parametri di progetto le rende pienamente calcolabili.</p></section>';
+  return h;
+}
+// ---- tavole della pipeline nel documento: inserimento guidato nei capitoli (una sola volta, da chi può scrivere)
+const TAVOLE_PIPELINE = [
+  { cap: 'la-strategia-di-accesso-al-mercato', dopo: { h2: '1.' , tbl: 0 }, blocchi: [{ t: 'h3', text: 'I canali nelle Schede Progetto' }, { t: 'p', text: 'Le Schede Progetto registrano il canale da cui ciascun progetto proviene: la tavola, generata dalle schede, mostra quanto ogni canale pesa oggi nel portafoglio dei Soci ({{num:pl.n}} schede, {{eur:pl.pesato}} di valore pesato).' }, { t: 'progetti', vista: 'pipeline-canali' }] },
+  { cap: 'la-strategia-di-accesso-al-mercato', dopo: { h2: '3.', fine: true }, blocchi: [{ t: 'h3', text: 'Il portafoglio nelle Schede Progetto' }, { t: 'p', text: 'Il portafoglio fondativo è tenuto vivo dalle Schede Progetto, che i Soci compilano e aggiornano dalla voce «Schede Progetto»: {{num:pl.n}} progetti per {{eur:pl.valore}} di valore stimato, {{eur:pl.pesato}} pesati per la probabilità di chiusura. Le tavole che seguono, generate dalle schede, li leggono per settore e per tipo di cliente.' }, { t: 'progetti', vista: 'pipeline-settori' }] },
+  { cap: 'assetto-societario-e-governance', dopo: { h2: '6.', fine: true }, blocchi: [{ t: 'h3', text: 'Le Schede Progetto: i progetti per Socio e per Practice' }, { t: 'p', text: 'Oltre alle attività già avviate, ciascun Socio registra nelle Schede Progetto i progetti che segue e porterà in Onward. Le tavole, generate dalle schede, riportano per Socio referente il valore pesato e l’origination attesa e, per Practice e società partner, dove il portafoglio si concentra.' }, { t: 'progetti', vista: 'pipeline-soci' }, { t: 'progetti', vista: 'pipeline-practice' }] },
+  { cap: 'il-piano-e-gli-scenari', dopo: { h2: '2.', fine: true }, blocchi: [{ t: 'h3', text: 'La pipeline delle Schede Progetto e gli scenari' }, { t: 'p', text: 'Gli scenari sono ipotesi; le Schede Progetto sono relazioni. Le tavole che seguono, generate dalle schede con i loro parametri di progetto, traducono il portafoglio dei Soci nei volumi del modello e lo confrontano con la traiettoria: {{eur:pl.pesato}} di valore pesato su {{num:pl.n}} schede, {{num:pl.gg}} giornate senior pesate, {{eur:pl.origination}} di origination attesa.' }, { t: 'progetti', vista: 'pipeline-esercizi' }, { t: 'progetti', vista: 'pipeline-confronto' }, { t: 'progetti', vista: 'pipeline-linee' }] },
+  { cap: 'la-generazione-e-la-gestione-della-domanda', dopo: { h2: '2.', tbl: 0 }, blocchi: [{ t: 'p', text: 'Le Schede Progetto sono il registro vivo di questo ciclo: ogni scheda ha uno stato (suspect, lead, prospect, customer, promoter) a cui il modello associa una probabilità di chiusura. La tavola, generata dalle schede, è il cruscotto della pipeline per stadio.' }, { t: 'progetti', vista: 'pipeline-stati' }] }
+];
+const GLOSSARIO_PIPELINE = [{"id": "pipeline-schede-progetto", "termine": "Pipeline delle Schede Progetto", "varianti": ["pipeline", "pipeline delle schede progetto", "schede progetto", "scheda progetto", "parametri di progetto"], "definizione": "L’insieme dei progetti che i Soci registrano nelle Schede Progetto, letto dal modello come portafoglio di opportunità. Ogni scheda porta uno stato (suspect, lead, prospect, customer, promoter), un valore stimato e i parametri di progetto (linea di servizio, probabilità, esercizio di avvio, ricorrenza, giornate senior, quota a terzi, grado di origination, esecutore, cliente, settore, canale); da questi il modello ricava valore pesato, ricavo netto atteso, giornate e origination attesa, li distribuisce per esercizio e li traduce nei volumi delle sei linee, confrontandoli con la traiettoria e con gli scenari. Le tavole generate dalle schede sono nei capitoli VI, VIII, XVI e XVIII; la colonna «Pipeline» della vista Scenari ne mostra i volumi del secondo esercizio.", "calcolo": ["Schede registrate: {{num:pl.n}} per {{eur:pl.valore}} di valore stimato", "Valore pesato = valore stimato × probabilità di chiusura: {{eur:pl.pesato}} (probabilità media {{pct:pl.prob_media}})", "Ricavo netto atteso = valore pesato × (1 − quota a terzi): {{eur:pl.netto}}", "Giornate senior pesate: {{num:pl.gg}}; origination attesa: {{eur:pl.origination}}"]}, {"id": "valore-pesato", "termine": "Valore pesato (probabilità di chiusura)", "varianti": ["valore pesato", "probabilità di chiusura", "copertura della traiettoria"], "definizione": "Il valore stimato di un progetto moltiplicato per la probabilità che si chiuda. La probabilità discende dallo stato della scheda (suspect 10%, lead 25%, prospect 50%, customer e promoter 100%) salvo che il Socio ne indichi una propria nei parametri di progetto. La copertura è il rapporto tra il valore pesato delle schede di un esercizio e i ricavi lordi che la traiettoria prevede per quell’esercizio: misura quanta parte del piano è già visibile nelle relazioni dei Soci.", "calcolo": ["Valore pesato complessivo: {{eur:pl.pesato}} su {{eur:pl.valore}} stimati", "Secondo esercizio: {{eur:pl.anni[1].pesato}} pesati; copertura della traiettoria {{pct:pl.anni[1].copertura}}"]}];
+function vociGlossarioMancanti() { const ids = new Set((S.glossario || []).map(v => v.id)); return GLOSSARIO_PIPELINE.filter(v => !ids.has(v.id)); }
+function tavolePipelineMancanti() { const out = []; for (const T of TAVOLE_PIPELINE) { const c = capitolo(T.cap); if (!c) continue; const viste = T.blocchi.filter(b => b.t === 'progetti').map(b => b.vista); if (!viste.every(v => c.c.blocchi.some(b => b.t === 'progetti' && b.vista === v))) out.push(T); } return out; }
+function inserisciTavolePipeline() {
+  const mancanti = tavolePipelineMancanti(); const voci = vociGlossarioMancanti(); if (!mancanti.length && !voci.length) { toast('Le tavole della pipeline sono già nel documento'); return 0; } const capi = new Set();
+  if (voci.length && Array.isArray(S.glossario)) { for (const v of voci) S.glossario.push(clone(v)); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.glossario = 'Glossario: aggiunte le voci sulla pipeline delle Schede Progetto'; segna('glossario'); costruisciRegexTermini(); }
+  for (const T of mancanti) {
+    const c = capitolo(T.cap); if (!c) continue; const bl = c.c.blocchi; let pos = bl.length;
+    const iH2 = bl.findIndex(b => b.t === 'h2' && String(b.text || '').replace(/\*\*/g, '').trim().startsWith(T.dopo.h2));
+    if (iH2 >= 0) { let fine = bl.length; for (let k = iH2 + 1; k < bl.length; k++) if (bl[k].t === 'h2') { fine = k; break; }
+      if (T.dopo.fine) pos = fine; else if (T.dopo.tbl != null) { let n = -1; pos = fine; for (let k = iH2 + 1; k < fine; k++) if (bl[k].t === 'tbl') { n++; if (n === T.dopo.tbl) { pos = k + 1; break; } } } else pos = fine; }
+    const nuovi = T.blocchi.filter(b => b.t !== 'progetti' || !bl.some(x => x.t === 'progetti' && x.vista === b.vista)).map(b => Object.assign({ id: uid('b') }, b));
+    bl.splice(pos, 0, ...nuovi); capi.add('cap:' + c.c.id);
+  }
+  if (!S.msgExtra) S.msgExtra = {}; for (const k of capi) { S.msgExtra[k] = 'Capitolo ' + (S.numeri[k.slice(4)] || '') + ': inserite le tavole della pipeline delle Schede Progetto'; segna(k); } renderDocumento(); if ($('#pan-glossario') && $('#pan-glossario').classList.contains('aperto')) aggiornaGlossario(); return capi.size + (voci.length ? 1 : 0);
+}
+function htmlTavolePipeline() {
+  if (S.readonly || !S.backend || S.repoVuoto) return ''; const mancanti = tavolePipelineMancanti(); const voci = vociGlossarioMancanti();
+  return '<h4>Tavole della pipeline nel documento</h4><p class="nota-pannello">Le Schede Progetto alimentano il documento attraverso tavole generate (capitoli VI, VIII, XVI e XVIII) che si aggiornano da sole. ' + (mancanti.length ? 'Nel documento ne mancano ' + mancanti.length + ' su ' + TAVOLE_PIPELINE.length + (voci.length ? ', e nel glossario le voci sulla pipeline' : '') + ': il pulsante le inserisce nei capitoli e salva i capitoli interessati, per tutti i Soci.' : voci.length ? 'Sono tutte nel documento; mancano le due voci del glossario sulla pipeline, che il pulsante aggiunge.' : 'Sono tutte presenti nel documento; con «Modifica» si possono spostare o eliminare come ogni altro blocco.') + '</p>' + (mancanti.length || voci.length ? '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button class="btn" id="cfg-tavole-pl">Inserisci le tavole della pipeline nei capitoli</button></div>' : '');
+}
+function attivaTavolePipeline(c) { const b = $('#cfg-tavole-pl', c); if (!b) return; b.onclick = () => { const n = inserisciTavolePipeline(); if (n) { toast('Tavole della pipeline inserite in ' + n + (n === 1 ? ' capitolo' : ' capitoli') + ': il salvataggio è in corso'); costruisciImpostazioni(); } }; }
 function avviaProgetti() {
   const m = $('#progetti'); if (!m) return; $('#b-progetti').onclick = apriProgetti; $('#progetti-chiudi').onclick = chiudiProgetti; $('#pg-nuova', m).onclick = () => formProgetto(null); $('#pg-esporta', m).onclick = () => { toast('Preparazione del file Word…'); esportaProgetti(); };
   m.addEventListener('input', ev => { const F = filtroProgetti(); if (ev.target.id === 'pg-q') { F.q = ev.target.value; aggiornaListaProgetti(); } if (ev.target.id === 'pg-luogo') { F.luogo = ev.target.value; aggiornaListaProgetti(); } });
   m.addEventListener('change', ev => { const F = filtroProgetti(); const c = ev.target.closest('input[data-pgf]'); if (c) { const k = c.dataset.pgf; const cur = new Set(F[k]); if (c.checked) cur.add(c.value); else cur.delete(c.value); F[k] = [...cur]; aggiornaListaProgetti(); return; } if (ev.target.id === 'pg-ordine') { F.ordine = ev.target.value; aggiornaListaProgetti(); } });
   m.addEventListener('click', ev => { const b = ev.target.closest('button[data-pg], #pg-azzera'); if (!b) return; const F = filtroProgetti();
-    if (b.id === 'pg-azzera') { F.q = ''; F.luogo = ''; F.stato = []; F.practice = []; F.sinergie = []; F.referenti = []; disegnaProgetti(true); return; }
+    if (b.id === 'pg-azzera') { F.q = ''; F.luogo = ''; F.stato = []; F.practice = []; F.sinergie = []; F.referenti = []; F.linea = []; F.esercizio = []; disegnaProgetti(true); return; }
     const az = b.dataset.pg; if (az === 'modifica') { if (!puoScrivereProgetti()) return; formProgetto(b.dataset.id); return; }
     if (az === 'elimina') { const p = progettoDi(b.dataset.id); if (!p) return; if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); return; }
+    if (az === 'commessa') { commessaDaProgetto(b.dataset.id); return; }
+    if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
 }
 
@@ -3823,7 +4100,7 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
-  if (k === 'progetti') { if ($('#progetti') && !$('#progetti').hidden) disegnaProgetti(true); return true; }
+  if (k === 'progetti') { aggiornaPipeline(); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }

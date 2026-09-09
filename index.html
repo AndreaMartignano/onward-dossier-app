@@ -891,6 +891,23 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 @media (max-width: 1100px) { .px-layout { grid-template-columns: 1fr; } .px-leve { grid-template-columns: 1fr; } }
 @media (max-width: 700px) { .px-form-griglia, .px-riga { grid-template-columns: 1fr; } }
 
+/* ---- Definizione e modalità di utilizzo */
+.guida-slot { flex: 0 0 auto; }
+.mappe .guida-slot { padding: .55rem 1.4rem 0; background: var(--fondo); }
+.pannello .guida-slot { padding: .55rem 1rem 0; }
+.guida-uso { border: 1px solid var(--chip-param-bordo); border-left: 5px solid var(--chip-param-bordo); border-radius: 8px; background: color-mix(in srgb, var(--chip-param) 38%, var(--carta)); font-size: .84rem; line-height: 1.5; color: var(--inchiostro); }
+.guida-uso summary { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; padding: .45rem .8rem; cursor: pointer; list-style: none; }
+.guida-uso summary::-webkit-details-marker { display: none; }
+.guida-uso .guida-et { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; font-weight: bold; color: var(--inchiostro); }
+.guida-uso .guida-tit { font-weight: 600; color: var(--secondario); }
+.guida-uso .guida-cmd { margin-left: auto; font-size: .74rem; color: var(--accento); text-decoration: underline; }
+.guida-uso .guida-corpo { padding: 0 .8rem .55rem; max-width: 1100px; }
+.guida-uso .guida-corpo p { margin: 0 0 .35rem; }
+.guida-uso .guida-corpo p:last-child { margin-bottom: 0; }
+.pannello .guida-uso { font-size: .8rem; }
+.pannello .guida-uso .guida-corpo { max-width: none; }
+@media print { .guida-slot { display: none; } }
+
 </style>
 </head>
 <body>
@@ -914,38 +931,47 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 </div>
 <div class="mappe proiezioni" id="proiezioni" hidden>
   <div class="mappe-testa"><b>Proiezioni Strategiche</b><div class="mappe-azioni"><button class="btn piccolo" id="px-word">Esporta in Word</button><span class="px-stato"></span><span class="nota-pannello">Il banco del controllo. A sinistra la crescita sui tre esercizi: Prudente, Base e Sviluppo letti dal piano condiviso (Piano e scenari) e la linea reale, rilevata e proiettata. A destra il cruscotto: i mandati firmati mese per mese, il metodo di proiezione e una copia di prova del piano, che cambia solo questa pagina finché non si salva.</span></div><button class="btn piccolo" id="proiezioni-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="proiezioni"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe progetti" id="progetti" hidden>
   <div class="mappe-testa"><b>Schede Progetto</b><div class="mappe-azioni"><button class="btn piccolo primario" id="pg-nuova">Nuova scheda</button><button class="btn piccolo" id="pg-esporta" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><span class="nota-pannello">I progetti che ciascun Socio segue e porterà in Onward: consultabili da tutti, con ricerca libera e filtri per stato, Practice, sinergie, referente e luogo.</span></div><button class="btn piccolo" id="progetti-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="progetti"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe modifiche" id="modifiche" hidden>
   <div class="mappe-testa"><b>Accessi e modifiche</b><div class="mappe-azioni"><select class="ricerca mod-filtro" id="mod-nome"><option value="">Tutti i Soci</option></select><select class="ricerca mod-filtro" id="mod-tipo"><option value="tutti">Tutto</option><option value="accessi">Solo accessi e link</option><option value="modifica">Solo modifiche</option><option value="proposta">Solo proposte</option><option value="commento">Solo commenti</option><option value="avvio">Solo avvio del repository</option></select><button class="btn piccolo" id="mod-aggiorna">Aggiorna</button><span class="nota-pannello">Chi ha ricevuto il link, quando è entrato e che cosa ha salvato, con le proposte in attesa e i commenti a margine: il registro è letto dal repository condiviso, quindi è lo stesso per tutti.</span></div><button class="btn piccolo" id="modifiche-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="modifiche"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe riassunto" id="riassunto" hidden>
   <div class="mappe-testa"><b id="riassunto-tit">Sintesi</b><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="riassunto-struttura">Apri la Struttura di questa parte</button><span class="nota-pannello">La parte in una pagina di cifre, schemi e grafici, letti dal documento e dal modello: cambiano quando cambia il documento. Passando con il mouse si legge di più; un clic sui titoli porta al documento.</span></div><button class="btn piccolo" id="riassunto-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="riassunto"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe sintesi" id="sintesi" hidden>
   <div class="mappe-testa"><b id="sintesi-tit">Struttura</b><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="sintesi-doc">Apri la parte nel documento</button><span class="nota-pannello">Tavole lette dal testo, dalle tabelle e dal modello: cambiano quando cambia il documento. Un clic sui titoli porta al punto del documento; i termini economici e i nomi aprono le loro schede.</span></div><button class="btn piccolo" id="sintesi-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="sintesi"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe scenari" id="scenari" hidden>
   <div class="mappe-testa"><b>Piano e scenari</b><div class="mappe-azioni"><button class="btn piccolo" id="scenari-word">Esporta in Word</button><button class="btn piccolo" id="scenari-proiezioni" title="Il banco del controllo: dati reali, proiezione e prove senza toccare il piano">Verifica e prove: Proiezioni Strategiche</button><span class="nota-pannello">Il piano condiviso della Parte terza: i tre scenari del secondo esercizio, la traiettoria dei tre esercizi, il fabbisogno di avvio, la remunerazione dei Soci e il cruscotto, calcolati dalle ipotesi del modello e dai testi del documento. Ciò che si scrive qui vale per tutti i Soci e si salva da solo; per provare ipotesi senza cambiare il piano e per confrontarlo con i dati reali si usano le Proiezioni Strategiche.</span></div><button class="btn piccolo" id="scenari-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="scenari"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe soci" id="soci" hidden>
   <div class="mappe-testa"><b>Soci e struttura delle quote</b><div class="mappe-azioni"><button class="btn piccolo" id="soci-word">Esporta in Word</button><span class="nota-pannello">Le quote dei Soci della rete di partenza, le due categorie, l’ingresso di un finanziatore, l’utile e il valore: tutto legato alle ipotesi del modello e ai testi del documento. Le modifiche si salvano da sole.</span></div><button class="btn piccolo" id="soci-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="soci"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe commessa" id="commessa" hidden>
   <div class="mappe-testa"><b>Scheda di commessa</b><select class="ricerca cm-elenco" id="cm-elenco"></select><div class="mappe-azioni"><button class="btn piccolo" id="cm-nuova">Nuova</button><button class="btn piccolo primario" id="cm-salva">Salva</button><button class="btn piccolo pericolo" id="cm-elimina" hidden>Elimina</button><button class="btn piccolo" id="cm-word">Esporta in Word</button><span class="nota-pannello">Scegliere la tipologia, inserire i dati: la scheda calcola prezzo, ripartizione nei tre strati, margine per giornata senior e verifiche, con le regole e le ipotesi correnti del documento.</span></div><button class="btn piccolo" id="cm-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="commessa"></div>
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
 </div>
 <div class="mappe" id="mappe" hidden>
   <div class="mappe-testa"><b>Practices e Persone</b><div class="schede"><button data-vista="rete">Partnership</button><button data-vista="practice">Practice</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="rete"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="pagina">
@@ -963,11 +989,11 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
     <article class="doc" id="doc"></article>
   </main>
 </div>
-<aside class="pannello" id="pan-ipotesi"><header>Ipotesi del modello <button class="btn piccolo chiudi">Chiudi</button></header><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-storico"><header>Cronologia delle versioni <button class="btn piccolo chiudi">Chiudi</button></header><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-impostazioni"><header>Impostazioni e archivio <button class="btn piccolo chiudi">Chiudi</button></header><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-trova"><header>Trova e sostituisci <button class="btn piccolo chiudi">Chiudi</button></header><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-glossario"><header>Glossario economico <button class="btn piccolo chiudi">Chiudi</button></header><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-ipotesi"><header>Ipotesi del modello <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="ipotesi"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-storico"><header>Cronologia delle versioni <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="storico"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-impostazioni"><header>Impostazioni e archivio <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="impostazioni"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-trova"><header>Trova e sostituisci <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="trova"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-glossario"><header>Glossario economico <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="glossario"></div><div class="corpo"></div></aside>
 <div class="sfondo" id="sfondo"></div>
 <script id="seme" type="application/json">{"meta": {"titolo": "ONWARD STRATEGIC PARTNERS", "sottotitolo": "", "dossier": "Dossier Soci fondatori e Modello di business", "occhiello": "", "riservato": "Documento riservato", "luogo": "", "chiusura": ""}, "nota": [], "parti": [], "ipotesi": {"soci": 1, "gg_anno": 1, "q_prod": 1, "q_orig": 0, "q_gest": 0, "soci_dett": [], "util": [1, 1, 1], "tariffa_media": [1, 1, 1], "listino": {"junior": 0, "senior": 0, "director": 0, "partner": 0, "equity": 0}, "costo_opp": 0, "orig_min": 0, "orig_med": 0, "orig_max": 0, "exec_q": 0, "soc_q": 0, "diag_soc": 0, "diag_soc_min": 0, "diag_prezzo_gg": 0, "tk_diag": 0, "gg_diag": 0, "tk_diag_min": 0, "tk_diag_max": 0, "gg_diag_min": 0, "gg_diag_max": 0, "tk_ret": 0, "gg_ret": 0, "m_part": 0, "gg_dir_per_100k": 0, "m_fin": 0, "gg_fin": 0, "marg_pratica": 0, "pratiche_mese": 0, "tk_form": 0, "m_form": 0, "gg_form": 0, "conv": [0, 0, 0, 0, 0, 0], "gg_funnel": [0, 0, 0], "v_mand": 0, "v_ret_2anni": 0, "v_cross": 0, "p_mand": 0, "p_ret": 0, "p_cross": 0, "gg_cliente": 0, "costi_struttura": [{"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}], "q_utile": 0, "capitale": 0, "multiplo": 0, "tetto_B": 0, "coda_orig": 0, "soglia_conf": 0, "tetto_conc": 0, "jr_costo": 0, "jr_listino": 0, "jr_gg_prod": 0, "jr_mult": 0, "canale_quota": 0, "canale_piatt": 0, "gg_cassa": 0, "tar_proprio": 0, "quota_str_proprio": 0, "gg_indiff": 0, "scenari": {"Prudente": [0, 0, 0, 0, 0, 0], "Base": [0, 0, 0, 0, 0, 0], "Sviluppo": [0, 0, 0, 0, 0, 0]}}, "glossario": {"voci": []}, "rete": {"practice": [], "cerchi": {}, "soci": [], "advisor": [], "partner": [], "consulenti": [], "note": {}}, "commesse": {"commesse": []}, "quote": {}, "scenari": {}}</script>
 <script>
@@ -1195,7 +1221,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-09T05:20:56Z';
+window.ONWARD_BUILD = '2026-09-09T05:34:23Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2251,6 +2277,7 @@ function chiudiMappe() { const m = $('#mappe'); if (!m || m.hidden) return; m.hi
 function disegnaMappe() {
   const m = $('#mappe'); if (!m) return; const vista = S.mappaVista || 'rete';
   for (const b of $$('#mappe .schede button[data-vista]')) b.classList.toggle('attivo', b.dataset.vista === vista);
+  aggiornaGuidaMappe();
   const corpo = $('#mappe .mappe-corpo');
   corpo.innerHTML = vista === 'rete' ? svgRete() : boardPractice();
   const az = $('#mappe .mappe-azioni'); if (az) az.innerHTML = (S.mode === 'modifica' && !S.readonly ? '<button class="btn piccolo" id="mappe-nuovo">Aggiungi persona o società</button>' : '') + '<span class="nota-pannello">' + (vista === 'rete' ? 'Clic su una casella per aprire la scheda. Le linee continue collegano ogni advisor alla società partner da cui proviene; le etichette numerate indicano le Practice di riferimento (in evidenza chi guida una Practice).' : 'Per ciascuna Practice, chi la guida o la presidia tra i Soci, gli advisor e le società partner di riferimento. Clic su un nome per la scheda, sul titolo per la Practice.') + '</span>';
@@ -4255,6 +4282,79 @@ function avviaProiezioni() {
   m.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target.closest('.px-form') && ev.target.tagName === 'INPUT') { ev.preventDefault(); const X = statoPx(); X.form = Object.assign(X.form || { id: '' }, leggiFormPx()); registraPx(); } });
 }
 
+// ---- guide_mod
+// ================================================================ «Definizione e modalità di utilizzo»: il riquadro in testa a ogni pagina del menu
+// Tre domande per ogni pagina: a che cosa serve, come si usa, che cosa cambia altrove. Linguaggio piano: i Soci non sono tutti abituati a strumenti come questo.
+const GUIDE_USO = {
+  ipotesi: { tit: 'Ipotesi',
+    serve: 'Qui stanno tutti i numeri di partenza del modello: quanti Soci, quante giornate, le tariffe, i ticket delle linee di ricavo, i costi di struttura, i volumi dei tre scenari. Sono gli stessi numeri che nel documento compaiono evidenziati in giallo.',
+    usa: 'Si scrive la nuova cifra nella casella e si esce dalla casella (o si preme Invio). Non c’è un pulsante di salvataggio: il salvataggio è automatico e resta nella Cronologia. La tabella «Compagine e tempo» permette di indicare giornate e quote di tempo per ciascun Socio; il «?» accanto a ogni voce ne apre la definizione.',
+    effetti: 'Ogni cifra calcolata del documento, le tabelle, i grafici, la Sintesi, Piano e scenari e le Proiezioni si aggiornano subito, per tutti i Soci. È la pagina con più conseguenze: prima di cambiare un numero conviene provarlo nelle Proiezioni Strategiche (sezione «Ipotesi di prova»), dove le modifiche restano private finché non si salvano.' },
+  progetti: { tit: 'Schede Progetto',
+    serve: 'È il registro dei progetti che ciascun Socio sta seguendo e porterà in Onward: una scheda per progetto, con stato, valore stimato, Practice, sinergie e i «parametri di progetto» che dicono al modello come contarlo.',
+    usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto.',
+    effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
+  commessa: { tit: 'Scheda di commessa',
+    serve: 'È un foglio di calcolo per una singola commessa: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, esecuzione, margine societario), margine per giornata senior e verifiche.',
+    usa: 'Si sceglie la tipologia, si compilano le caselle e si legge il risultato a destra, che si aggiorna a ogni modifica. «Salva» conserva la scheda nell’elenco in alto, condiviso con i Soci; «Nuova» ne apre una vuota; «Esporta in Word» produce il documento.',
+    effetti: 'Nessuna sul documento e sul modello: la scheda legge le ipotesi correnti ma non le modifica. Le schede salvate restano nell’archivio condiviso, con la loro cronologia, e sono visibili a tutti i Soci.' },
+  scenari: { tit: 'Piano e scenari',
+    serve: 'È il piano condiviso della Parte terza: i tre scenari del secondo esercizio (Prudente, Base, Sviluppo), la traiettoria dei tre esercizi con costi e Soci per esercizio, il fabbisogno finanziario di avvio, la remunerazione dei Soci e il cruscotto con le soglie di allarme. Tutto è calcolato dalle ipotesi e dai testi del documento.',
+    usa: 'Le caselle gialle si compilano direttamente e si salvano da sole. Le cifre con il bordo tratteggiato sono ipotesi del documento: un clic le modifica lì. I pulsanti «per voce», «Valori propri» e «valore proprio» permettono di scrivere numeri specifici per un esercizio senza toccare le ipotesi generali.',
+    effetti: 'Ciò che si scrive qui vale per tutti i Soci. I volumi dei tre scenari sono ipotesi del documento e ne cambiano le cifre; la traiettoria, i costi per esercizio, le soglie e il fabbisogno si salvano nel piano e si riflettono nella Sintesi e nelle Proiezioni Strategiche. Per provare senza cambiare il piano si usano le Proiezioni Strategiche.' },
+  proiezioni: { tit: 'Proiezioni Strategiche',
+    serve: 'È il banco del controllo: mette a confronto la crescita reale della società con i tre scenari sui tre esercizi. A sinistra il grafico con Prudente, Base, Sviluppo e la linea reale (rilevata fino al mese corrente, proiettata oltre) e le tabelle per esercizio; a destra il cruscotto dei dati.',
+    usa: 'Nel registro a destra si annotano i fatti che si rilevano lavorando: i mandati firmati in ciascun mese, per linea di servizio, con il valore, e i costi effettivamente sostenuti. Si indica la data di avvio del primo esercizio e si sceglie il metodo di proiezione. Nella sezione «Ipotesi di prova» si possono cambiare i numeri del piano in copia, per vedere che cosa succederebbe.',
+    effetti: 'Le rilevazioni sono condivise con i Soci e non toccano le ipotesi. Le prove restano nel proprio browser e non cambiano nulla altrove, finché non si preme «Salva nelle ipotesi condivise»: solo allora i valori di prova entrano in Ipotesi e in Piano e scenari, per tutti.' },
+  rete: { tit: 'Practices e Persone: Partnership',
+    serve: 'È la mappa della rete di partenza: Soci, Advisor, Società partner e consulenti, con i legami tra advisor e società di provenienza e con le Practice che ciascuno presidia.',
+    usa: 'Un clic su una casella apre la scheda della persona o della società, con i collegamenti utili. In modalità Modifica si possono correggere le schede, cambiare la Practice di appartenenza e aggiungere persone o società con «Aggiungi persona o società».',
+    effetti: 'Ogni modifica alle schede aggiorna per tutti i Soci le tabelle del capitolo VIII § 6, le schede dell’Appendice C, la capacità per Practice del capitolo XIII, gli elenchi di partner e Soci nelle Schede Progetto e la struttura delle quote. Le modifiche restano nella Cronologia.' },
+  practice: { tit: 'Practices e Persone: Practice',
+    serve: 'È la stessa rete di partenza vista per Practice: per ciascuna delle cinque Practice, chi la guida, chi la presidia, quali advisor e quali società partner vi lavorano.',
+    usa: 'Un clic su un nome apre la scheda. In modalità Modifica si assegna o si cambia la Practice di una persona o di una società dalla sua scheda; una Practice senza Socio che la presidia resta segnalata come non apribile al mercato.',
+    effetti: 'Le stesse della vista Partnership: tabelle del capitolo VIII, Appendice C, capacità per Practice, elenchi nelle Schede Progetto, per tutti i Soci.' },
+  soci: { tit: 'Soci e struttura delle quote',
+    serve: 'È il modello della compagine: le quote di ciascun Socio nelle due categorie (A e B), il versato, l’eventuale finanziamento soci, l’utile atteso e il valore della quota, con il simulatore dell’ingresso di un nuovo socio finanziatore.',
+    usa: 'Le percentuali e gli importi si scrivono nelle caselle gialle e si salvano da soli; i controlli in fondo segnalano se le quote non sommano a cento o se il versato è sotto il minimo di legge. Il simulatore in basso confronta l’ingresso a valore economico, a valore nominale o misto.',
+    effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
+  sintesi: { tit: 'Sintesi Documento, Estesa',
+    serve: 'Presenta ciascuna delle quattro Parti del documento in tavole grafiche: testi, tabelle e cifre del modello riorganizzati per essere letti a colpo d’occhio.',
+    usa: 'Si sceglie la Parte con i pulsanti in alto; un clic sui titoli porta al punto corrispondente del documento; i termini economici e i nomi aprono le loro schede; «Leggi tutto» espande i testi lunghi.',
+    effetti: 'Nessuna: è una pagina di sola lettura, che si aggiorna da sola quando cambiano il documento, le ipotesi o il piano.' },
+  riassunto: { tit: 'Sintesi Documento, Sintetica',
+    serve: 'È la versione più breve della Sintesi: ogni Parte in una pagina di cifre, schemi e grafici, per chi vuole il quadro senza i testi.',
+    usa: 'Si sceglie la Parte con i pulsanti in alto; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; «Apri la Struttura di questa parte» passa alla Sintesi Estesa.',
+    effetti: 'Nessuna: è una pagina di sola lettura, aggiornata da sola a ogni modifica del documento, delle ipotesi o del piano.' },
+  modifiche: { tit: 'Modifiche',
+    serve: 'È il registro condiviso: chi ha ricevuto il link e quando è entrato, che cosa ha salvato ciascuno, i commenti a margine e, se il regime di approvazione è attivo, le proposte in attesa.',
+    usa: 'I filtri in alto restringono per Socio e per tipo di voce; «Cosa è cambiato» mostra le differenze di ogni salvataggio; gli approvatori esaminano le proposte da qui e le approvano o le respingono con una nota.',
+    effetti: 'Consultare il registro non cambia nulla. Approvare una proposta la scrive nel testo condiviso; respingerla la archivia; rimuovere un Socio dall’elenco degli accessi toglie solo la riga dal registro, non il suo permesso, che si revoca cancellando il token su GitHub.' },
+  glossario: { tit: 'Glossario economico',
+    serve: 'Raccoglie i termini economici delle Parti seconda, terza e quarta, con la definizione e i passaggi di calcolo alle ipotesi correnti.',
+    usa: 'Si cerca un termine o si scorre l’elenco; un clic evidenzia nel testo tutte le sue occorrenze e la barra permette di passare dall’una all’altra. In modalità Modifica, «Modifica voce» corregge definizione e forme con cui il termine è riconosciuto.',
+    effetti: 'Le definizioni sono condivise con i Soci e compaiono nelle finestre dei termini cliccabili e in coda al documento stampato. Le cifre dei calcoli seguono le ipotesi; modificare una voce non cambia il testo dei capitoli.' },
+  impostazioni: { tit: 'Impostazioni e archivio',
+    serve: 'Qui si indica il proprio nome, ci si collega all’archivio condiviso e si trovano gli strumenti riservati a chi amministra: i link personali per i Soci, il regime di approvazione, l’inserimento delle tavole della pipeline, l’aggiornamento della pagina dei Soci, l’importazione di dati e la scelta del tema chiaro o scuro.',
+    usa: 'Nome e token si scrivono una volta sola e restano nel proprio browser. Le altre sezioni si usano solo quando servono: ciascuna spiega il proprio effetto prima del pulsante.',
+    effetti: 'Il nome compare nella Cronologia accanto a ogni salvataggio. Attivare il regime di approvazione, inserire le tavole nei capitoli e aggiornare la pagina dei Soci valgono per tutti; «Azzera le modifiche locali» tocca solo questo browser, non l’archivio condiviso.' },
+  storico: { tit: 'Cronologia delle versioni',
+    serve: 'Mostra tutte le versioni salvate di ogni parte del dossier: capitoli, ipotesi, glossario, rete, quote, piano, schede, proiezioni, con autore e data.',
+    usa: 'Si sceglie la parte dal menu a tendina; «Confronta» mostra parola per parola che cosa è cambiato rispetto alla versione precedente; «Ripristina» riporta quella parte a una versione precedente.',
+    effetti: 'Confrontare non cambia nulla. Ripristinare crea una nuova versione condivisa con il contenuto ripristinato: nulla va perduto, perché anche la versione attuale resta nella cronologia.' },
+  trova: { tit: 'Trova e sostituisci',
+    serve: 'Cerca un testo in tutto il dossier e lo sostituisce dove si decide, capitolo per capitolo.',
+    usa: 'Si scrive il testo da cercare e quello con cui sostituirlo, si scorrono i risultati e si sceglie dove applicare la sostituzione; le sostituzioni predefinite coprono i casi ricorrenti.',
+    effetti: 'Ogni sostituzione applicata modifica il testo condiviso dei capitoli interessati, per tutti i Soci, e resta nella Cronologia da cui si può annullare.' }
+};
+function htmlGuidaUso(k) {
+  const g = GUIDE_USO[k]; if (!g) return ''; let chiusa = false; try { chiusa = localStorage.getItem('onward.guida.' + k) === 'chiusa'; } catch (e) {}
+  return '<details class="guida-uso" data-guida-k="' + esc(k) + '"' + (chiusa ? '' : ' open') + '><summary><span class="guida-et">Definizione e modalità di utilizzo</span><span class="guida-tit">' + esc(g.tit) + '</span><span class="guida-cmd">' + (chiusa ? 'apri' : 'chiudi') + '</span></summary><div class="guida-corpo"><p><b>A che cosa serve.</b> ' + esc(g.serve) + '</p><p><b>Come si usa.</b> ' + esc(g.usa) + '</p><p><b>Che cosa cambia altrove.</b> ' + esc(g.effetti) + '</p></div></details>';
+}
+function montaGuida(slot, k) { if (!slot) return; slot.innerHTML = htmlGuidaUso(k); const d = $('details', slot); if (d) d.addEventListener('toggle', () => { try { localStorage.setItem('onward.guida.' + k, d.open ? 'aperta' : 'chiusa'); } catch (e) {} const c = $('.guida-cmd', d); if (c) c.textContent = d.open ? 'chiudi' : 'apri'; }); }
+function avviaGuide() { for (const slot of $$('.guida-slot[data-guida]')) montaGuida(slot, slot.dataset.guida); }
+function aggiornaGuidaMappe() { const slot = $('#mappe .guida-slot'); if (slot) montaGuida(slot, (S.mappaVista || 'rete') === 'practice' ? 'practice' : 'rete'); }
+
 // ---- commenti_mod + proposte_mod
 // ================================================================ commenti a margine (contenuto/commenti.json)
 function commentiVuoti() { return { commenti: [] }; }
@@ -4478,7 +4578,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaGuide(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

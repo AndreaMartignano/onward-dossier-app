@@ -1221,7 +1221,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-09T05:48:16Z';
+window.ONWARD_BUILD = '2026-09-11T20:36:07Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3809,15 +3809,20 @@ function disegnaProgetti(tutto) {
   const nb = $('#pg-nuova', m); if (nb) nb.hidden = !puoScrivereProgetti();
 }
 function aggiornaListaProgetti() { const corpo = $('#progetti .mappe-corpo'); if (!corpo || !$('.pg-lista', corpo)) return; const l = progettiFiltrati(); $('.pg-lista', corpo).innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">Nessuna scheda corrisponde alla ricerca o ai filtri scelti.</div>'); }
+// nota sotto il campo «Probabilità di chiusura», in linguaggio piano; si aggiorna quando cambia lo stato della scheda
+function notaProbabilita(stato) {
+  const F = MODELLO.F; const k = MODELLO.PROB_STATO[stato] != null ? stato : 'suspect'; const prob = MODELLO.PROB_STATO[k];
+  return 'Quanto è probabile che il progetto si concretizzi. Con «Dallo stato della scheda» la percentuale segue lo stato scelto sopra: ora «' + esc(etichettaStato(k)) + '», quindi ' + F.pct(prob) + '. La scala è: Suspect 10%, Lead 25%, Prospect 50%, Customer e Promoter 100% (progetto già acquisito). Il valore stimato moltiplicato per questa percentuale dà il valore pesato, cioè quanto il progetto conta nel piano. Scegliere una percentuale solo se si ha una stima migliore di quella legata allo stato.';
+}
 function htmlParametriForm(p) {
   const F = MODELLO.F; const q = parametriDi(p); const anni = nomiEsercizi(); const P = S.P; const valore = Math.max(0, numeroIt(p.valore) || 0);
   const sel = (k, lab, voci, cur, nota) => '<label class="campo-testo">' + lab + '<select class="q" data-q="' + k + '">' + voci.map(([v, l]) => '<option value="' + esc(String(v)) + '"' + (String(v) === String(cur == null ? '' : cur) ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' + (nota ? '<span>' + nota + '</span>' : '') + '</label>';
   const linee = [['', 'Da indicare (conteggiata come «altro»)']].concat(MODELLO.LINEE_PIPELINE.filter(l => l[0] !== 'altro'), [['altro', 'Altro o da definire']]);
-  const ggAuto = MODELLO.giornateAuto(P, q.linea || 'altro', valore); const terziAuto = MODELLO.terziAuto(P, q.linea || 'altro'); const probAuto = MODELLO.PROB_STATO[p.stato] != null ? MODELLO.PROB_STATO[p.stato] : 0.1;
+  const ggAuto = MODELLO.giornateAuto(P, q.linea || 'altro', valore); const terziAuto = MODELLO.terziAuto(P, q.linea || 'altro');
   return '<div class="pop-tit">Parametri di progetto</div><p class="nota-pannello">Questi campi trasformano la scheda in un dato del piano: alimentano le tavole del documento (capitoli VI, VIII, XVI e XVIII), la colonna «Pipeline» di Piano e scenari e la Scheda di commessa. Dove si lascia «secondo la linea» o «dallo stato», il modello applica le proprie ipotesi: i valori automatici sono indicati sotto ciascun campo.</p>' +
     '<div class="fin-griglia pg-fgriglia">' +
     sel('linea', 'Linea di servizio *', linee, q.linea, 'La linea decide come il valore entra nel modello: numero di diagnosi, di mandati o di piani, oppure importo in euro per le linee a valore.') +
-    sel('probabilita', 'Probabilità di chiusura', OPZ_PROB, q.probabilita, 'Dallo stato: ' + F.pct(probAuto) + ' (suspect 10%, lead 25%, prospect 50%, customer e promoter 100%).') +
+    sel('probabilita', 'Probabilità di chiusura', OPZ_PROB, q.probabilita, '<span class="pg-nota-prob">' + notaProbabilita(p.stato) + '</span>') +
     sel('esercizio', 'Esercizio di avvio', anni.map((n, i) => [i, n]), q.esercizio === '' ? 0 : q.esercizio, 'L’esercizio in cui il progetto produce ricavi; i nomi sono quelli della traiettoria (vista Piano e scenari).') +
     sel('trimestre', 'Trimestre di avvio', OPZ_TRIMESTRE, q.trimestre) +
     sel('ricorrenza', 'Ricorrenza', OPZ_RICORRENZA, q.ricorrenza, 'Secondo la linea: i mandati continuativi si ripetono negli esercizi successivi, le altre linee no.') +
@@ -3857,7 +3862,7 @@ function formProgetto(id) {
     htmlParametriForm(p) +
     '<div class="azioni gl-azioni">' + (nuova ? '' : '<button class="btn piccolo pericolo" id="pg-elimina">Elimina la scheda</button>') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="pg-salva">Salva la scheda</button></div>';
   document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra; $('.f[data-f="titolo"]', fin).focus();
-  anteprimaParametri(fin); fin.addEventListener('input', () => anteprimaParametri(fin)); fin.addEventListener('change', ev => { anteprimaParametri(fin); if (ev.target.matches('.q[data-q="linea"]')) { const q = leggiParametriForm(fin); const valore = Math.max(0, numeroIt($('.f[data-f="valore"]', fin).value) || 0); const gg = $('.q[data-q="giornate"]', fin); if (gg) gg.placeholder = 'automatico: ' + MODELLO.F.num1(MODELLO.giornateAuto(S.P, q.linea || 'altro', valore)); } });
+  anteprimaParametri(fin); fin.addEventListener('input', () => anteprimaParametri(fin)); fin.addEventListener('change', ev => { anteprimaParametri(fin); if (ev.target.matches('.f[data-f="stato"]')) { const np = $('.pg-nota-prob', fin); if (np) np.innerHTML = notaProbabilita(ev.target.value); } if (ev.target.matches('.q[data-q="linea"]')) { const q = leggiParametriForm(fin); const valore = Math.max(0, numeroIt($('.f[data-f="valore"]', fin).value) || 0); const gg = $('.q[data-q="giornate"]', fin); if (gg) gg.placeholder = 'automatico: ' + MODELLO.F.num1(MODELLO.giornateAuto(S.P, q.linea || 'altro', valore)); } });
   const del = $('#pg-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); chiudiFinestra(); };
   $('#pg-salva', fin).onclick = () => {
     const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };

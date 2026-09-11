@@ -1222,7 +1222,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-11T20:46:11Z';
+window.ONWARD_BUILD = '2026-09-11T20:53:58Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3705,7 +3705,7 @@ const STATI_PROGETTO = [['idea', 'Idea'], ['suspect', 'Suspect'], ['lead', 'Lead
 const SCALA_STATI = 'Idea 0% (non c’è ancora un possibile cliente a cui proporla), Suspect 10%, Lead 25%, Prospect 50%, Customer e Promoter 100% (progetto già acquisito)';
 const ORDINI_PROGETTO = [['agg', 'Ultima modifica'], ['titolo', 'Titolo'], ['valore', 'Valore stimato (decrescente)'], ['pesato', 'Valore pesato (decrescente)'], ['stato', 'Stato (dall’idea al promoter)'], ['esercizio', 'Esercizio di avvio'], ['referente', 'Socio referente']];
 // ---- parametri di progetto: le tendine che alimentano il documento, il modello e gli scenari
-const OPZ_PROB = [['', 'Dallo stato della scheda'], [0.1, '10%'], [0.25, '25%'], [0.5, '50%'], [0.75, '75%'], [0.9, '90%'], [1, '100% (acquisito)']];
+const OPZ_PROB = [['', 'Dallo stato della scheda'], [0, '0% (idea: nessun possibile cliente ancora)'], [0.1, '10% (suspect)'], [0.25, '25% (lead)'], [0.5, '50% (prospect)'], [0.75, '75%'], [0.9, '90%'], [1, '100% (acquisito: customer o promoter)']];
 const OPZ_RICORRENZA = [['', 'Secondo la linea di servizio'], ['una_tantum', 'Una tantum (un solo esercizio)'], ['annuale', 'Ricorrente (si ripete negli esercizi successivi)']];
 const OPZ_TERZI = [['', 'Secondo la linea di servizio'], [0, '0% (tutto ricavo di Onward)'], [0.2, '20%'], [0.4, '40%'], [0.5, '50%'], [0.6, '60%'], [0.8, '80%']];
 const OPZ_ORIGINATION = [['', 'Da indicare (grado medio)'], ['segnalazione', 'Sola segnalazione (grado minimo)'], ['introduzione', 'Segnalazione e introduzione qualificata (grado medio)'], ['affiancamento', 'Affiancamento fino alla firma (grado massimo)']];

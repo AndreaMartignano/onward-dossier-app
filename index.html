@@ -343,7 +343,7 @@ a.lk { color: var(--accento); }
 .hm-col { display: flex; justify-content: center; align-items: center; padding: .3rem .5rem; border-left: 1px solid var(--filo); align-self: stretch; }
 .hm-b { border: 1px solid var(--filo); border-radius: 999px; padding: .32rem .9rem; font-size: .8rem; background: var(--carta); color: var(--inchiostro); cursor: pointer; white-space: nowrap; }
 .hm-sint .hm-b { border-color: var(--btn-rosso-bordo); background: var(--btn-rosso); }
-.hm-est .hm-b { border-color: var(--accento); color: var(--accento); }
+.hm-est .hm-b { border-color: var(--btn-blu-bordo); background: var(--btn-blu); color: var(--accento); }
 .hm-int .hm-b { border-color: var(--inchiostro); }
 .hm-b:hover { filter: brightness(.95); }
 .hm-b.hm-b2 { padding: .2rem .7rem; font-size: .74rem; opacity: .9; }
@@ -975,9 +975,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <span class="stato" id="stato">Avvio…</span>
   <div class="zoom" id="zoom" title="Dimensione del documento"><button data-z="-" title="Riduci">−</button><button data-z="0" id="zoom-val" title="Torna al 100%">100%</button><button data-z="+" title="Ingrandisci">+</button></div>
   <div class="spazio"></div>
-  <button class="btn home" id="b-home" title="La pagina iniziale: l’indice del documento per Parti e capitoli, nelle tre versioni">Home</button>
-  <div class="tendina" id="sintesi-menu"><button class="btn rosso" id="b-sintesi" aria-haspopup="true" aria-expanded="false" title="Le quattro Parti in una pagina (Sintetica) o in tavole (Estesa)">Sintesi Documento</button><div class="tendina-menu tendina-doppia" hidden><div class="tendina-gruppo"><div class="tendina-tit">Estesa</div><button data-vista="estesa" data-parte="0">Parte prima</button><button data-vista="estesa" data-parte="1">Parte seconda</button><button data-vista="estesa" data-parte="2">Parte terza</button><button data-vista="estesa" data-parte="3">Parte quarta</button></div><div class="tendina-gruppo"><div class="tendina-tit">Sintetica</div><button data-vista="sintetica" data-parte="0">Parte prima</button><button data-vista="sintetica" data-parte="1">Parte seconda</button><button data-vista="sintetica" data-parte="2">Parte terza</button><button data-vista="sintetica" data-parte="3">Parte quarta</button></div></div></div>
-  <button class="btn doc" id="b-documento" title="Il testo integrale del dossier, capitolo per capitolo, con sommario">Documento integrale</button>
+  <button class="btn home" id="b-home" title="La pagina iniziale: l’indice del documento per Parti e capitoli, nelle tre versioni (Sintesi, Estesa, Integrale)">Manifesto e Business Plan</button>
   <button class="btn ipotesi" id="b-ipotesi" title="Le ipotesi del modello: i valori in giallo del documento">Ipotesi</button>
   <button class="btn blu" id="b-progetti" title="I progetti che i Soci seguono e porteranno in Onward: schede consultabili da tutti, con ricerca e filtri">Schede Progetto</button>
   <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa e Piano e scenari (il piano condiviso della Parte terza)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button></div></div>
@@ -990,7 +988,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico">Modifiche</button>
 </div>
 <div class="mappe home" id="home" hidden>
-  <div class="mappe-testa"><b>Home</b><div class="mappe-azioni"><span class="nota-pannello">L’indice del documento per Parti e capitoli; a destra le tre versioni in cui leggerlo: Sintesi (una pagina), Estesa (tavole), Integrale (il testo). La piattaforma si apre sempre qui; «Chiudi» porta al documento integrale.</span></div><button class="btn piccolo" id="home-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Manifesto e Business Plan</b><div class="mappe-azioni"><span class="nota-pannello">L’indice del documento per Parti e capitoli; a destra le tre versioni in cui leggerlo: Sintesi (una pagina), Estesa (tavole), Integrale (il testo). La piattaforma si apre sempre qui; «Chiudi» porta al testo integrale.</span></div><button class="btn piccolo" id="home-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="home"></div>
   <div class="mappe-corpo"></div>
 </div>
@@ -1299,7 +1297,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T19:15:53Z';
+window.ONWARD_BUILD = '2026-09-12T19:34:55Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3304,10 +3302,12 @@ function disegnaSintesi() {
   aggiornaTok(corpo);
 }
 function avviaSintesi() {
-  const m = $('#sintesi'); if (!m) return; const tend = $('#sintesi-menu'); const menu = $('.tendina-menu', tend);
-  $('#b-sintesi').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-sintesi').setAttribute('aria-expanded', String(!menu.hidden)); };
-  document.addEventListener('click', e => { if (!e.target.closest('#sintesi-menu')) { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); } });
-  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); if (x.dataset.vista === 'sintetica') apriRiassunto(+x.dataset.parte); else apriSintesi(+x.dataset.parte); });
+  const m = $('#sintesi'); if (!m) return; const tend = $('#sintesi-menu'); const menu = tend ? $('.tendina-menu', tend) : null;
+  if (tend && menu) {
+    $('#b-sintesi').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-sintesi').setAttribute('aria-expanded', String(!menu.hidden)); };
+    document.addEventListener('click', e => { if (!e.target.closest('#sintesi-menu')) { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); } });
+    for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); if (x.dataset.vista === 'sintetica') apriRiassunto(+x.dataset.parte); else apriSintesi(+x.dataset.parte); });
+  }
   const bd = $('#b-documento'); if (bd) bd.onclick = apriDocumento;
   for (const x of $$('#sintesi .vista-sint button')) x.onclick = () => { if (x.dataset.sv === 'sintetica') apriRiassunto(S.sintesiParte || 0); };
   for (const x of $$('#riassunto .vista-sint button')) x.onclick = () => { if (x.dataset.sv === 'estesa') apriSintesi(S.riassuntoParte || 0); };
@@ -4509,17 +4509,17 @@ const GUIDE_USO = {
     serve: 'È il modello della compagine: le quote di ciascun Socio nelle due categorie (A e B), il versato, l’eventuale finanziamento soci, l’utile atteso e il valore della quota, con il simulatore dell’ingresso di un nuovo socio finanziatore.',
     usa: 'Le percentuali e gli importi si scrivono nelle caselle gialle e si salvano da soli; i controlli in fondo segnalano se le quote non sommano a cento o se il versato è sotto il minimo di legge. Il simulatore in basso confronta l’ingresso a valore economico, a valore nominale o misto.',
     effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
-  home: { tit: 'Home',
-    serve: 'È la pagina su cui la piattaforma si apre sempre: l’indice del documento per Parti e capitoli e, accanto, le tre versioni in cui leggerlo. Sintesi: la Parte in una pagina di cifre, schemi e grafici. Estesa: la Parte in tavole, capitolo per capitolo. Integrale: il testo completo.',
-    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Per tornare qui si usa «Home» nel menu; «Chiudi» porta al documento integrale.',
+  home: { tit: 'Manifesto e Business Plan',
+    serve: 'È la pagina su cui la piattaforma si apre sempre, l’unica voce del documento nel menu: l’indice del documento per Parti e capitoli e, accanto, le tre versioni in cui leggerlo. Sintesi: la Parte in una pagina di cifre, schemi e grafici. Estesa: la Parte in tavole, capitolo per capitolo. Integrale: il testo completo.',
+    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Per tornare qui si usa «Manifesto e Business Plan» nel menu; «Chiudi» porta al testo integrale.',
     effetti: 'Nessuna: è una pagina di sola lettura, che riflette la struttura del documento (Parti, capitoli e numerazione) e si aggiorna da sola quando la struttura cambia.' },
-  sintesi: { tit: 'Sintesi Documento, Estesa',
+  sintesi: { tit: 'Sintesi Estesa',
     serve: 'Presenta ciascuna delle quattro Parti del documento in tavole grafiche: testi, tabelle e cifre del modello riorganizzati per essere letti a colpo d’occhio.',
-    usa: 'Vi si arriva dalla Home o dal menu; l’interruttore Sintetica / Estesa in alto passa dall’una all’altra sulla stessa Parte. Si sceglie la Parte con i pulsanti in alto; un clic sui titoli porta al punto corrispondente del documento; i termini economici e i nomi aprono le loro schede; «Leggi tutto» espande i testi lunghi.',
+    usa: 'Vi si arriva dalla colonna «Estesa» della pagina Manifesto e Business Plan; l’interruttore Sintetica / Estesa in alto passa dall’una all’altra sulla stessa Parte. Si sceglie la Parte con i pulsanti in alto; un clic sui titoli porta al punto corrispondente del documento; i termini economici e i nomi aprono le loro schede; «Leggi tutto» espande i testi lunghi.',
     effetti: 'Nessuna: è una pagina di sola lettura, che si aggiorna da sola quando cambiano il documento, le ipotesi o il piano.' },
-  riassunto: { tit: 'Sintesi Documento, Sintetica',
+  riassunto: { tit: 'Sintesi (una pagina)',
     serve: 'È la versione più breve della Sintesi: ogni Parte in una pagina di cifre, schemi e grafici, per chi vuole il quadro senza i testi.',
-    usa: 'Vi si arriva dalla Home o dal menu. Si sceglie la Parte con i pulsanti in alto; l’interruttore Sintetica / Estesa passa alla versione in tavole; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; il testo completo si apre anche con «Documento integrale» nel menu.',
+    usa: 'Vi si arriva dalla colonna «Sintesi» della pagina Manifesto e Business Plan. Si sceglie la Parte con i pulsanti in alto; l’interruttore Sintetica / Estesa passa alla versione in tavole; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; «Chiudi» porta al testo integrale.',
     effetti: 'Nessuna: è una pagina di sola lettura, aggiornata da sola a ogni modifica del documento, delle ipotesi o del piano.' },
   modifiche: { tit: 'Modifiche',
     serve: 'È il registro condiviso: chi ha ricevuto il link e quando è entrato, che cosa ha salvato ciascuno, i commenti a margine e, se il regime di approvazione è attivo, le proposte in attesa.',

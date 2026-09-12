@@ -6,6 +6,9 @@
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
 <title>Onward Dossier vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
 <style>
 :root {
   --carta: #ffffff; --fondo: #f3f5f8; --inchiostro: #1c1f24; --secondario: #5a6270; --filo: #d8dce2; --lavaggio: #f3f5f8;
@@ -321,35 +324,110 @@ a.lk { color: var(--accento); }
 .barra .btn.viola { background: var(--btn-viola); border-color: var(--btn-viola-bordo); }
 .barra .btn.home { background: var(--accento); border-color: var(--accento); color: var(--accento-testo); font-weight: 600; }
 .barra .btn.home:hover { filter: brightness(1.08); }
-.hm-testa { max-width: 1100px; margin: 0 auto 1rem; }
-.hm-titolo { font-size: 1.35rem; font-weight: 700; letter-spacing: .01em; }
-.hm-titolo small { display: block; font-size: .92rem; font-weight: normal; color: var(--secondario); margin-top: .15rem; }
-.hm-lettura { font-size: .9rem; line-height: 1.55; color: var(--secondario); margin: .5rem 0 0; }
-.hm-griglia { max-width: 1100px; margin: 0 auto; border: 1px solid var(--filo); border-radius: 8px; overflow: hidden; background: var(--carta); }
-.hm-riga { display: grid; grid-template-columns: minmax(0, 1fr) 150px 150px 150px; align-items: center; border-top: 1px solid var(--filo); }
-.hm-riga.hm-intest { border-top: 0; background: var(--lavaggio); }
-.hm-intest .hm-voce { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--secondario); font-weight: 700; padding: .6rem 1rem; }
-.hm-intest .hm-col { display: block; font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: .55rem .5rem; text-align: center; border-left: 1px solid var(--filo); }
-.hm-intest .hm-col small { display: block; font-weight: normal; text-transform: none; letter-spacing: 0; color: var(--secondario); font-size: .72rem; }
-.hm-intest .hm-sint { color: var(--btn-rosso-bordo); } .hm-intest .hm-est { color: var(--accento); } .hm-intest .hm-int { color: var(--inchiostro); }
-.hm-voce { padding: .45rem 1rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .6rem; min-width: 0; }
-.hm-parte { background: color-mix(in srgb, var(--lavaggio) 60%, var(--carta)); }
-.hm-parte .hm-voce { padding: .7rem 1rem; }
-.hm-parte .hm-num { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accento); font-weight: 700; flex-basis: 100%; }
-.hm-parte .hm-tit { font-size: 1.02rem; font-weight: 700; }
-.hm-parte .hm-intro { flex-basis: 100%; font-size: .8rem; color: var(--secondario); line-height: 1.4; }
-.hm-cap .hm-num { font-weight: 600; color: var(--accento); min-width: 2.6rem; font-variant-numeric: tabular-nums; }
-.hm-cap .hm-tit { font-size: .9rem; }
-.hm-col { display: flex; justify-content: center; align-items: center; padding: .3rem .5rem; border-left: 1px solid var(--filo); align-self: stretch; }
-.hm-b { border: 1px solid var(--filo); border-radius: 999px; padding: .32rem .9rem; font-size: .8rem; background: var(--carta); color: var(--inchiostro); cursor: pointer; white-space: nowrap; }
-.hm-sint .hm-b { border-color: var(--btn-rosso-bordo); background: var(--btn-rosso); }
-.hm-est .hm-b { border-color: var(--btn-blu-bordo); background: var(--btn-blu); color: var(--accento); }
-.hm-int .hm-b { border-color: var(--inchiostro); }
-.hm-b:hover { filter: brightness(.95); }
-.hm-b.hm-b2 { padding: .2rem .7rem; font-size: .74rem; opacity: .9; }
-.hm-nd { font-size: .72rem; color: var(--secondario); }
-.hm-piede { max-width: 1100px; margin: 1rem auto 2rem; font-size: .78rem; color: var(--secondario); }
-@media (max-width: 900px) { .hm-riga { grid-template-columns: minmax(0, 1fr) 96px 96px 96px; } .hm-b { padding: .28rem .5rem; font-size: .72rem; } }
+/* ---- Manifesto e Business Plan: identità visiva Onward (dal sito onward-partners.netlify.app) */
+.mappe.home {
+  --hm-avorio: #F7F5F1; --hm-avorio-2: #FBFAF7; --hm-avorio-3: #EFEBE4; --hm-bianco: #FFFFFF; --hm-antracite: #26221E; --hm-antracite-2: #33302B;
+  --hm-grigio: #6E6A64; --hm-grigio-chiaro: #8C877F; --hm-arancio: #DE5400; --hm-arancio-scuro: #BE3C00; --hm-arancio-tenue: rgba(222, 84, 0, .10); --hm-arancio-media: rgba(238, 149, 82, .48);
+  --hm-bordo: #E4DFD6; --hm-bordo-2: #EBE7DF; --hm-ombra: 0 1px 2px rgba(38, 34, 30, .04), 0 8px 30px rgba(38, 34, 30, .06);
+  --hm-lk-word: #27201D; --hm-lk-pay: #5D534E; --hm-lk-c1: #EA6400; --hm-lk-c2: #EA6400; --hm-lk-c3: #DE5400;
+  --hm-outfit: Outfit, Arial, Helvetica, sans-serif; --hm-sans: "Source Sans 3", Arial, Helvetica, sans-serif;
+  background: var(--hm-avorio); color: var(--hm-antracite); font-family: var(--hm-sans);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mappe.home {
+  --hm-avorio: #1E1B18; --hm-avorio-2: #24201C; --hm-avorio-3: #2C2824; --hm-bianco: #26221E; --hm-antracite: #F7F5F1; --hm-antracite-2: #EDE8E0;
+  --hm-grigio: #C9C3B9; --hm-grigio-chiaro: #B3ACA8; --hm-arancio: #F4741E; --hm-arancio-scuro: #EA6400; --hm-arancio-tenue: rgba(244, 116, 30, .16); --hm-arancio-media: rgba(244, 116, 30, .42);
+  --hm-bordo: rgba(255, 255, 255, .10); --hm-bordo-2: rgba(255, 255, 255, .07); --hm-ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .35);
+  --hm-lk-word: #F7F5F1; --hm-lk-pay: #B3ACA8; --hm-lk-c1: #F4741E; --hm-lk-c2: #F4741E; --hm-lk-c3: #F4741E; } }
+:root[data-theme="dark"] .mappe.home {
+  --hm-avorio: #1E1B18; --hm-avorio-2: #24201C; --hm-avorio-3: #2C2824; --hm-bianco: #26221E; --hm-antracite: #F7F5F1; --hm-antracite-2: #EDE8E0;
+  --hm-grigio: #C9C3B9; --hm-grigio-chiaro: #B3ACA8; --hm-arancio: #F4741E; --hm-arancio-scuro: #EA6400; --hm-arancio-tenue: rgba(244, 116, 30, .16); --hm-arancio-media: rgba(244, 116, 30, .42);
+  --hm-bordo: rgba(255, 255, 255, .10); --hm-bordo-2: rgba(255, 255, 255, .07); --hm-ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .35);
+  --hm-lk-word: #F7F5F1; --hm-lk-pay: #B3ACA8; --hm-lk-c1: #F4741E; --hm-lk-c2: #F4741E; --hm-lk-c3: #F4741E; }
+.mappe.home .mappe-testa { background: var(--hm-avorio); border-bottom-color: var(--hm-bordo); }
+.mappe.home .mappe-testa > b { font-family: var(--hm-outfit); font-weight: 700; letter-spacing: -.02em; font-size: 1.05rem; color: var(--hm-antracite); }
+.mappe.home .mappe-testa .nota-pannello { color: var(--hm-grigio); }
+.mappe.home .mappe-testa .btn.piccolo { border-radius: 100px; border-color: var(--hm-bordo); background: var(--hm-bianco); color: var(--hm-antracite); font-family: var(--hm-outfit); font-weight: 600; }
+.mappe.home .mappe-corpo { padding: 0 1.4rem 2.5rem; }
+/* lockup Onward */
+.lockup-s { display: flex; flex-direction: column; gap: .1em; width: fit-content; font-size: var(--fs, 64px); font-family: Outfit, Arial, Helvetica, sans-serif; }
+.lockup-c { display: inline-flex; align-items: center; gap: .5em; font-size: var(--fs, 36px); font-family: Outfit, Arial, Helvetica, sans-serif; text-decoration: none; }
+.lk-mark { position: relative; display: flex; align-items: baseline; font-weight: 700; font-size: 1em; letter-spacing: -.02em; line-height: 1; color: var(--hm-lk-word, #27201D); }
+.lk-mark svg { display: block; flex: 0 0 auto; position: relative; top: .028em; }
+.lk-o { width: .915em; height: .553em; }
+.lk-o circle:nth-child(1) { fill: var(--hm-lk-c1, #EA6400); opacity: .38; } .lk-o circle:nth-child(2) { fill: var(--hm-lk-c2, #EA6400); opacity: .66; } .lk-o circle:nth-child(3) { fill: var(--hm-lk-c3, #DE5400); }
+.lk-just { display: flex; justify-content: space-between; padding: 0 .045em; font-weight: 300; font-size: .243em; color: var(--hm-lk-pay, #5D534E); line-height: 1; letter-spacing: 0; }
+.lk-just .g { width: .7em; }
+/* intestazione (hero) */
+.hm-hero { max-width: 1160px; margin: 0 auto; padding: 2.6rem 0 2.2rem; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .95fr); gap: 2.5rem 4rem; align-items: start; position: relative; }
+.hm-hero .hm-rete { position: absolute; right: -1rem; top: -.5rem; width: 46%; max-width: 560px; height: auto; pointer-events: none; opacity: .55; -webkit-mask-image: linear-gradient(to left, #000 45%, transparent); mask-image: linear-gradient(to left, #000 45%, transparent); }
+.hm-hero .hm-rete line { stroke: var(--hm-arancio); stroke-width: 1; opacity: .35; } .hm-hero .hm-rete circle { fill: var(--hm-arancio); opacity: .55; }
+.hm-hero-sx { position: relative; z-index: 1; min-width: 0; }
+.hm-hero-sx .lockup-s { margin-bottom: 1.9rem; }
+.hm-occhiello { font-family: var(--hm-outfit); font-size: .82rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--hm-arancio); display: block; margin-bottom: .7rem; }
+.hm-h1 { font-family: var(--hm-outfit); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 2.7rem); line-height: 1.08; letter-spacing: -.035em; color: var(--hm-antracite); margin: 0 0 .9rem; text-wrap: balance; }
+.hm-h1 .accent { color: var(--hm-arancio); }
+.hm-sotto { font-family: var(--hm-sans); font-size: 1.08rem; line-height: 1.55; color: var(--hm-grigio); max-width: 56ch; margin: 0; font-weight: 500; }
+.hm-meta { display: flex; gap: 2.4rem; flex-wrap: wrap; margin-top: 1.8rem; padding-top: 1.2rem; border-top: 1px solid var(--hm-bordo); }
+.hm-meta .item { display: flex; flex-direction: column; gap: .05rem; }
+.hm-meta .k { font-family: var(--hm-outfit); font-size: 1.7rem; font-weight: 700; letter-spacing: -.03em; color: var(--hm-antracite); line-height: 1.1; }
+.hm-meta .v { font-family: var(--hm-sans); font-size: .82rem; color: var(--hm-grigio); font-weight: 600; letter-spacing: .01em; }
+/* i tre modi di lettura */
+.hm-modi { position: relative; z-index: 1; background: var(--hm-bianco); border: 1px solid var(--hm-bordo); border-radius: 18px; padding: 1.5rem 1.6rem 1.2rem; box-shadow: var(--hm-ombra); }
+.hm-modi .hm-occhiello { margin-bottom: 1rem; }
+.hm-modo { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: .1rem .9rem; padding: .55rem 0 .8rem; position: relative; }
+.hm-modo + .hm-modo { border-top: 1px solid var(--hm-bordo-2); }
+.hm-modo .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--hm-arancio); margin-top: .3rem; justify-self: center; }
+.hm-modo.m1 .dot { opacity: .38; } .hm-modo.m2 .dot { opacity: .66; }
+.hm-modo .tag { grid-column: 2; font-family: var(--hm-outfit); font-size: .68rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--hm-grigio-chiaro); }
+.hm-modo .tit { grid-column: 2; font-family: var(--hm-outfit); font-weight: 700; font-size: 1.05rem; letter-spacing: -.02em; color: var(--hm-antracite); line-height: 1.2; }
+.hm-modo .des { grid-column: 2; font-family: var(--hm-sans); font-size: .9rem; color: var(--hm-grigio); line-height: 1.45; margin-top: .15rem; }
+/* indice */
+.hm-sezione { max-width: 1160px; margin: 0 auto .9rem; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.hm-h2 { font-family: var(--hm-outfit); font-weight: 700; font-size: 1.55rem; letter-spacing: -.03em; color: var(--hm-antracite); margin: .2rem 0 0; }
+.hm-sezione .hm-nota { font-family: var(--hm-sans); font-size: .88rem; color: var(--hm-grigio); }
+.hm-griglia { max-width: 1160px; margin: 0 auto; border: 1px solid var(--hm-bordo); border-radius: 18px; overflow: hidden; background: var(--hm-bianco); box-shadow: var(--hm-ombra); }
+.hm-riga { display: grid; grid-template-columns: minmax(0, 1fr) 150px 150px 150px; align-items: center; border-top: 1px solid var(--hm-bordo-2); }
+.hm-riga.hm-intest { border-top: 0; background: var(--hm-avorio-2); }
+.hm-intest .hm-voce { font-family: var(--hm-outfit); font-size: .68rem; text-transform: uppercase; letter-spacing: .14em; color: var(--hm-grigio-chiaro); font-weight: 500; padding: .75rem 1.4rem; }
+.hm-intest .hm-col { display: flex; flex-direction: column; align-items: center; gap: .15rem; font-family: var(--hm-outfit); font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .14em; color: var(--hm-antracite); padding: .65rem .5rem; text-align: center; border-left: 1px solid var(--hm-bordo-2); }
+.hm-intest .hm-col .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--hm-arancio); }
+.hm-intest .hm-sint .dot { opacity: .38; } .hm-intest .hm-est .dot { opacity: .66; }
+.hm-intest .hm-col small { display: block; font-family: var(--hm-sans); font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--hm-grigio-chiaro); font-size: .74rem; }
+.hm-voce { padding: .55rem 1.4rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .8rem; min-width: 0; }
+.hm-parte { background: var(--hm-avorio-2); }
+.hm-parte .hm-voce { padding: 1rem 1.4rem .95rem; }
+.hm-parte .hm-num { font-family: var(--hm-outfit); font-size: .72rem; text-transform: uppercase; letter-spacing: .16em; color: var(--hm-arancio); font-weight: 500; flex-basis: 100%; }
+.hm-parte .hm-tit { font-family: var(--hm-outfit); font-size: 1.22rem; font-weight: 700; letter-spacing: -.025em; color: var(--hm-antracite); line-height: 1.15; }
+.hm-parte .hm-intro { flex-basis: 100%; font-family: var(--hm-sans); font-size: .9rem; color: var(--hm-grigio); line-height: 1.45; max-width: 78ch; }
+.hm-cap:hover { background: var(--hm-avorio-2); }
+.hm-cap .hm-num { font-family: var(--hm-outfit); font-weight: 500; font-size: .78rem; letter-spacing: .12em; color: var(--hm-grigio-chiaro); min-width: 2.8rem; font-variant-numeric: tabular-nums; }
+.hm-cap .hm-tit { font-family: var(--hm-sans); font-size: .98rem; font-weight: 600; color: var(--hm-antracite); }
+.hm-col { display: flex; justify-content: center; align-items: center; padding: .3rem .5rem; border-left: 1px solid var(--hm-bordo-2); align-self: stretch; }
+.hm-b { font-family: var(--hm-outfit); font-weight: 600; border: 1px solid transparent; border-radius: 100px; padding: .38rem 1rem; font-size: .8rem; background: var(--hm-bianco); color: var(--hm-antracite); cursor: pointer; white-space: nowrap; transition: transform .2s, background .2s, color .2s, box-shadow .2s; }
+.hm-sint .hm-b { background: var(--hm-arancio-tenue); border-color: rgba(222, 84, 0, .32); }
+.hm-est .hm-b { background: var(--hm-arancio-media); border-color: rgba(222, 84, 0, .45); }
+.hm-int .hm-b { background: transparent; border-color: var(--hm-antracite); }
+.hm-b:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(38, 34, 30, .10); }
+.hm-sint .hm-b:hover { background: rgba(222, 84, 0, .18); } .hm-est .hm-b:hover { background: rgba(222, 84, 0, .40); } .hm-int .hm-b:hover { background: var(--hm-antracite); color: var(--hm-avorio); }
+.hm-b:focus-visible { outline: 2px solid var(--hm-arancio); outline-offset: 2px; }
+.hm-b.hm-b2 { padding: .24rem .8rem; font-size: .74rem; }
+.hm-nd { font-family: var(--hm-sans); font-size: .74rem; color: var(--hm-grigio-chiaro); }
+.hm-piede { max-width: 1160px; margin: 1.3rem auto 1rem; display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; justify-content: space-between; font-family: var(--hm-sans); font-size: .82rem; color: var(--hm-grigio); }
+.hm-piede .badge { display: inline-flex; align-items: center; gap: .55rem; font-family: var(--hm-outfit); font-weight: 600; color: var(--hm-antracite-2); }
+.hm-piede .badge .d { width: 8px; height: 8px; border-radius: 50%; background: var(--hm-arancio); }
+@media (max-width: 1000px) { .hm-hero { grid-template-columns: 1fr; gap: 1.6rem; } .hm-hero .hm-rete { display: none; } }
+@media (max-width: 900px) { .hm-riga { grid-template-columns: minmax(0, 1fr) 96px 96px 96px; } .hm-b { padding: .28rem .55rem; font-size: .72rem; } .hm-b.hm-b2 { padding: .2rem .5rem; font-size: .68rem; } .hm-intest .hm-col small { display: none; } }
+/* riquadro guida nella pagina Manifesto e Business Plan: stesso contenuto, veste della pagina */
+.mappe.home .guida-slot { background: var(--hm-avorio); padding: .9rem 1.4rem 0; }
+.mappe.home .guida-uso { max-width: 1160px; margin: 0 auto; border: 1px solid var(--hm-bordo); border-left: 4px solid var(--hm-arancio); border-radius: 12px; background: var(--hm-bianco); color: var(--hm-antracite); font-family: var(--hm-sans); font-size: .88rem; }
+.mappe.home .guida-uso .guida-et { font-family: var(--hm-outfit); font-weight: 500; letter-spacing: .14em; color: var(--hm-arancio); }
+.mappe.home .guida-uso .guida-tit { font-family: var(--hm-outfit); font-weight: 700; color: var(--hm-antracite); letter-spacing: -.01em; }
+.mappe.home .guida-uso .guida-cmd { color: var(--hm-grigio); font-family: var(--hm-outfit); font-weight: 600; text-decoration: none; }
+.mappe.home .guida-uso .guida-corpo { color: var(--hm-grigio); max-width: none; }
+.mappe.home .guida-uso .guida-corpo b { color: var(--hm-antracite); }
+/* marchio nella barra */
+.barra .marchio .lockup-c { --fs: 21px; vertical-align: middle; }
+.barra .marchio .lockup-c .lk-mark { color: var(--inchiostro); }
 .barra .btn.doc { background: var(--carta, #fff); border-color: var(--inchiostro); color: var(--inchiostro); font-weight: 600; }
 .barra .btn.doc:hover { filter: brightness(.96); }
 .mappe-testa .schede.vista-sint { margin-right: .4rem; }
@@ -970,7 +1048,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 </head>
 <body>
 <div class="barra">
-  <div class="marchio">ONWARD<small>Dossier Soci fondatori e Modello di business</small></div>
+  <div class="marchio"><span class="lockup-c" style="--fs:21px" role="img" aria-label="Onward Strategic Partners"><span class="lk-mark" aria-hidden="true"><svg class="lk-o" viewBox="-1 -3.5 124 75"><circle cx="34" cy="34" r="34"></circle><circle cx="59" cy="34" r="34"></circle><circle cx="84" cy="34" r="36.38"></circle></svg><span class="lk-word">nward</span></span></span><small>Dossier Soci fondatori e Modello di business</small></div>
   <div class="interruttore" id="modo"><button data-modo="lettura">Lettura</button><button data-modo="modifica">Modifica</button></div>
   <span class="stato" id="stato">Avvio…</span>
   <div class="zoom" id="zoom" title="Dimensione del documento"><button data-z="-" title="Riduci">−</button><button data-z="0" id="zoom-val" title="Torna al 100%">100%</button><button data-z="+" title="Ingrandisci">+</button></div>
@@ -988,7 +1066,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico">Modifiche</button>
 </div>
 <div class="mappe home" id="home" hidden>
-  <div class="mappe-testa"><b>Manifesto e Business Plan</b><div class="mappe-azioni"><span class="nota-pannello">L’indice del documento per Parti e capitoli; a destra le tre versioni in cui leggerlo: Sintesi (una pagina), Estesa (tavole), Integrale (il testo). La piattaforma si apre sempre qui; «Chiudi» porta al testo integrale.</span></div><button class="btn piccolo" id="home-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Manifesto e Business Plan</b><div class="mappe-azioni"><span class="nota-pannello">La piattaforma si apre sempre qui; «Chiudi» porta al testo integrale.</span></div><button class="btn piccolo" id="home-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="home"></div>
   <div class="mappe-corpo"></div>
 </div>
@@ -1297,7 +1375,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T19:41:59Z';
+window.ONWARD_BUILD = '2026-09-12T20:09:50Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -4026,7 +4104,7 @@ function calcolaPipeline() {
 }
 function aggiornaPipeline(opt) {
   opt = opt || {}; ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti();
-  if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto();
+  if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if ($('#home') && !$('#home').hidden && typeof disegnaHome === 'function') disegnaHome();
   if (opt.progetti !== false && $('#progetti') && !$('#progetti').hidden) disegnaProgetti(true);
 }
 function dopoModificaProgetti() { aggiornaPipeline(); }
@@ -4756,11 +4834,38 @@ document.addEventListener('click', ev => { const b = ev.target.closest('button[d
 function apriHome() { const m = $('#home'); if (!m) return; chiudiViste(); chiudiPopover(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaHome(); $('#home .mappe-corpo').scrollTop = 0; }
 function chiudiHome() { const m = $('#home'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function hmIntro(t) { const d = document.createElement('div'); d.innerHTML = renderTesto(String(t || '')); const s = (d.textContent || '').replace(/\s+/g, ' ').trim(); return s.length > 220 ? s.slice(0, 220).replace(/\s+\S*$/, '') + '…' : s; }
+const LK_SVG = '<svg class="lk-o" viewBox="-1 -3.5 124 75" aria-hidden="true"><circle cx="34" cy="34" r="34"></circle><circle cx="59" cy="34" r="34"></circle><circle cx="84" cy="34" r="36.38"></circle></svg>';
+function lockupHTML(fs, esteso) {
+  const marchio = '<span class="lk-mark" aria-hidden="true">' + LK_SVG + '<span class="lk-word">nward</span></span>';
+  if (!esteso) return '<span class="lockup-c" style="--fs:' + fs + '" role="img" aria-label="Onward Strategic Partners">' + marchio + '</span>';
+  const just = 'STRATEGIC PARTNERS'.split('').map(ch => ch === ' ' ? '<span class="g"></span>' : '<span>' + ch + '</span>').join('');
+  return '<div class="lockup-s" style="--fs:' + fs + '" role="img" aria-label="Onward Strategic Partners">' + marchio + '<span class="lk-just" aria-hidden="true">' + just + '</span></div>';
+}
+function reteHTML() {
+  // costellazione decorativa (nodi e segmenti), come nel sito
+  const P = [[40, 60], [130, 20], [220, 70], [300, 30], [380, 90], [460, 40], [520, 120], [90, 150], [180, 190], [270, 150], [350, 210], [430, 170], [500, 230], [140, 260], [240, 280], [330, 300], [410, 290], [480, 320], [60, 230], [560, 200]];
+  const L = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [0, 7], [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [2, 9], [4, 11], [7, 13], [13, 14], [14, 15], [15, 16], [16, 17], [9, 14], [11, 16], [6, 12], [12, 17], [18, 13], [18, 7], [19, 6], [19, 12], [1, 8], [3, 10]];
+  return '<svg class="hm-rete" viewBox="0 0 600 340" aria-hidden="true">' + L.map(([i, j]) => '<line x1="' + P[i][0] + '" y1="' + P[i][1] + '" x2="' + P[j][0] + '" y2="' + P[j][1] + '"></line>').join('') + P.map(([x, y], i) => '<circle cx="' + x + '" cy="' + y + '" r="' + (i % 4 === 0 ? 4.5 : i % 3 === 0 ? 3.2 : 2.4) + '"></circle>').join('') + '</svg>';
+}
 function disegnaHome() {
   const m = $('#home'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); if (!S.parti || !S.parti.length) { corpo.innerHTML = '<p class="nota-pannello">Il documento non è ancora caricato.</p>'; return; }
   const meta = S.meta || {}; const pl = S.ctx && S.ctx.pl; const F = MODELLO.F;
-  let h = '<div class="hm-testa"><div class="hm-titolo">' + esc(meta.titolo || 'Dossier') + (meta.sottotitolo ? '<small>' + esc(meta.sottotitolo) + '</small>' : '') + '</div><p class="hm-lettura">Il documento si legge in tre modi. <b>Sintesi</b>: ogni Parte in una pagina di cifre, schemi e grafici. <b>Estesa</b>: la Parte in tavole, capitolo per capitolo, con i testi e le tabelle riorganizzati. <b>Integrale</b>: il testo completo. Un clic sulla colonna scelta apre quella versione della Parte o del capitolo.</p></div>';
-  h += '<div class="hm-griglia"><div class="hm-riga hm-intest"><div class="hm-voce">Parti e capitoli</div><div class="hm-col hm-sint">Sintesi<small>una pagina</small></div><div class="hm-col hm-est">Estesa<small>in tavole</small></div><div class="hm-col hm-int">Integrale<small>il testo</small></div></div>';
+  const nCap = S.parti.filter(p => SI_PARTI.includes(p.id)).reduce((t, p) => t + (p.capitoli || []).length, 0); const nParti = S.parti.filter(p => SI_PARTI.includes(p.id)).length; const app = S.parti.find(p => !SI_PARTI.includes(p.id)); const nApp = app ? (app.capitoli || []).length : 0;
+  const ragione = String(meta.titolo || 'Onward Strategic Partners').replace(/\s+/g, ' ').trim(); const ragioneTc = ragione === ragione.toUpperCase() ? ragione.toLowerCase().replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase()) : ragione;
+  let h = '<div class="hm-hero"><div class="hm-hero-sx">' + lockupHTML('clamp(46px, 5.2vw, 68px)', true) +
+    '<span class="hm-occhiello">' + esc(meta.dossier || 'Dossier Soci fondatori e Modello di business') + '</span>' +
+    '<h1 class="hm-h1">Manifesto e <span class="accent">Business Plan</span></h1>' +
+    '<p class="hm-sotto">' + esc(meta.occhiello || 'La proposta, la sua economia, il piano e le decisioni') + '. ' + esc(ragioneTc + ' ' + (meta.sottotitolo || '')) + (meta.luogo ? ' · ' + esc(meta.luogo) : '') + '.</p>' +
+    '<div class="hm-meta"><div class="item"><span class="k">' + nParti + '</span><span class="v">Parti</span></div><div class="item"><span class="k">' + nCap + '</span><span class="v">capitoli</span></div>' + (nApp ? '<div class="item"><span class="k">' + nApp + '</span><span class="v">appendici</span></div>' : '') +
+    (pl && pl.attiva ? '<div class="item"><span class="k">' + pl.n_tutte + '</span><span class="v">schede progetto</span></div><div class="item"><span class="k">' + esc(F.eur(pl.liv.probabile.valore)) + '</span><span class="v">pipeline probabile</span></div>' : '') +
+    (S.versione ? '<div class="item"><span class="k">' + esc(String(S.versione)) + '</span><span class="v">versione</span></div>' : '') + '</div></div>' +
+    '<div class="hm-modi"><span class="hm-occhiello">Tre modi di leggere</span>' +
+    '<div class="hm-modo m1"><span class="dot"></span><span class="tag">Una pagina</span><span class="tit">Sintesi</span><span class="des">Ogni Parte in una pagina di cifre, schemi e grafici: il quadro senza i testi.</span></div>' +
+    '<div class="hm-modo m2"><span class="dot"></span><span class="tag">In tavole</span><span class="tit">Estesa</span><span class="des">La Parte in tavole, capitolo per capitolo, con i testi e le tabelle riorganizzati.</span></div>' +
+    '<div class="hm-modo m3"><span class="dot"></span><span class="tag">Il testo</span><span class="tit">Integrale</span><span class="des">Il documento completo, con il sommario a lato, dove si legge e si modifica.</span></div>' +
+    '</div></div>';
+  h += '<div class="hm-sezione"><h2 class="hm-h2">Parti e capitoli</h2><span class="hm-nota">Un clic sulla colonna scelta apre quella versione della Parte o del capitolo.</span></div>';
+  h += '<div class="hm-griglia"><div class="hm-riga hm-intest"><div class="hm-voce">Indice del documento</div><div class="hm-col hm-sint"><span class="dot"></span>Sintesi<small>una pagina</small></div><div class="hm-col hm-est"><span class="dot"></span>Estesa<small>in tavole</small></div><div class="hm-col hm-int"><span class="dot"></span>Integrale<small>il testo</small></div></div>';
   for (const p of S.parti) {
     const ip = SI_PARTI.indexOf(p.id); const tp = String(p.titolo || '').split('·'); const num = (tp[0] || '').trim(); const tit = (tp[1] || tp[0] || '').trim();
     h += '<div class="hm-riga hm-parte"><div class="hm-voce"><span class="hm-num">' + esc(num) + '</span><span class="hm-tit">' + esc(tit) + '</span>' + (p.intro ? '<span class="hm-intro">' + esc(hmIntro(p.intro)) + '</span>' : '') + '</div>' +
@@ -4775,7 +4880,7 @@ function disegnaHome() {
     }
   }
   h += '</div>';
-  h += '<div class="hm-piede"><span>' + (meta.dossier ? esc(meta.dossier) + ' · ' : '') + (S.versione ? 'versione ' + esc(String(S.versione)) + ' · ' : '') + (pl && pl.attiva ? pl.n_tutte + ' schede progetto, ' + F.eur(pl.liv.probabile.valore) + ' di pipeline probabile · ' : '') + 'Ipotesi, Schede Progetto, Piano e scenari e Proiezioni Strategiche sono nel menu in alto.</span></div>';
+  h += '<div class="hm-piede"><span class="badge"><span class="d"></span>' + esc(meta.riservato || 'Documento riservato') + ' ai Soci</span><span>Ipotesi, Schede Progetto, Strumenti, Proiezioni Strategiche e Practices e Persone sono nel menu in alto.</span></div>';
   corpo.innerHTML = h;
 }
 // Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);

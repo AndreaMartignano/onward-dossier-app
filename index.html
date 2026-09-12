@@ -1297,7 +1297,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T19:34:55Z';
+window.ONWARD_BUILD = '2026-09-12T19:41:59Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2062,7 +2062,7 @@ function apriPopoverTermine(anchor, id, pos) {
   $('#pop-evid', pop).onclick = () => { chiudiPopover(); evidenzia(id); };
   for (const a of $$('.pop-link', pop)) a.onclick = e => { e.preventDefault(); apriPopoverTermine(anchor, a.dataset.term, { left: pop.style.left, top: pop.style.top }); };
 }
-document.addEventListener('keydown', ev => { if (ev.key !== 'Escape') return; if ($('#popover')) chiudiPopover(); else if ($('#finestra')) chiudiFinestra(); else { chiudiViste(); } });
+document.addEventListener('keydown', ev => { if (ev.key !== 'Escape') return; if ($('#popover')) chiudiPopover(); else if ($('#finestra')) chiudiFinestra(); else if (typeof vistaAperta === 'function' && vistaAperta()) tornaAllaHome(); else { chiudiViste(); } });
 
 // pannello
 function apriGlossario(id) {
@@ -3639,7 +3639,7 @@ function avviaModifiche() {
     if (az === 'rimuovi') { const n = b.dataset.nome; if (!confirm('Togliere «' + n + '» dall’elenco dei link creati? L’accesso resta attivo finché il token esiste su GitHub.')) return; S.accessi.soci = (S.accessi.soci || []).filter(s => s.nome !== n); segna('accessi'); disegnaModifiche(false); return; }
     if (az === 'diff') { const v = b.closest('.mod-voce'); const c = S.mod.commits.find(x => x.sha === v.dataset.sha); if (!c) return; const slot = $('.diff-slot', v); if (slot.innerHTML) { slot.innerHTML = ''; b.textContent = 'Cosa è cambiato'; return; } b.disabled = true; b.textContent = 'Lettura…';
       try { const det = await dettaglioCommit(c); slot.innerHTML = det.length ? det.map(d => '<div class="diff"><div class="mod-file">' + esc(d.nome) + (d.key && d.key !== 'accessi' ? ' <button class="btn piccolo" data-mod="cronologia" data-key="' + esc(d.key) + '">Apri nella cronologia</button>' : '') + '</div>' + d.html + '</div>').join('') : '<div class="diff"><div class="p">Nessun file del dossier in questo salvataggio.</div></div>'; b.textContent = 'Nascondi'; } catch (e) { slot.innerHTML = '<div class="avviso errore">Dettaglio non disponibile: ' + esc(e.message) + '</div>'; b.textContent = 'Cosa è cambiato'; } b.disabled = false; return; }
-    if (az === 'cronologia') { chiudiModifiche(); apriCronologia(b.dataset.key); return; } });
+    if (az === 'cronologia') { tornaAllaHome(); apriCronologia(b.dataset.key); return; } });
 }
 // ================================================================ compagine: dettaglio per Socio (giornate e ripartizione del tempo)
 const CAMPI_SOCIO = [['gg', 'Giornate annue', 'num'], ['q_prod', 'Produzione', 'pct'], ['q_orig', 'Origination e sviluppo', 'pct'], ['q_gest', 'Gestione, metodo, formazione', 'pct']];
@@ -4511,7 +4511,7 @@ const GUIDE_USO = {
     effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
   home: { tit: 'Manifesto e Business Plan',
     serve: 'È la pagina su cui la piattaforma si apre sempre, l’unica voce del documento nel menu: l’indice del documento per Parti e capitoli e, accanto, le tre versioni in cui leggerlo. Sintesi: la Parte in una pagina di cifre, schemi e grafici. Estesa: la Parte in tavole, capitolo per capitolo. Integrale: il testo completo.',
-    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Per tornare qui si usa «Manifesto e Business Plan» nel menu; «Chiudi» porta al testo integrale.',
+    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Tutte le finestre della piattaforma (Practices e Persone, Strumenti, Schede Progetto, Proiezioni, le sintesi, Modifiche) tornano qui quando si chiudono; i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni) si aprono accanto alla pagina e, chiusi, lasciano quello che c’era sotto. Per tornare qui si usa anche «Manifesto e Business Plan» nel menu; «Chiudi» porta al testo integrale.',
     effetti: 'Nessuna: è una pagina di sola lettura, che riflette la struttura del documento (Parti, capitoli e numerazione) e si aggiorna da sola quando la struttura cambia.' },
   sintesi: { tit: 'Sintesi Estesa',
     serve: 'Presenta ciascuna delle quattro Parti del documento in tavole grafiche: testi, tabelle e cifre del modello riorganizzati per essere letti a colpo d’occhio.',
@@ -4519,7 +4519,7 @@ const GUIDE_USO = {
     effetti: 'Nessuna: è una pagina di sola lettura, che si aggiorna da sola quando cambiano il documento, le ipotesi o il piano.' },
   riassunto: { tit: 'Sintesi (una pagina)',
     serve: 'È la versione più breve della Sintesi: ogni Parte in una pagina di cifre, schemi e grafici, per chi vuole il quadro senza i testi.',
-    usa: 'Vi si arriva dalla colonna «Sintesi» della pagina Manifesto e Business Plan. Si sceglie la Parte con i pulsanti in alto; l’interruttore Sintetica / Estesa passa alla versione in tavole; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; «Chiudi» porta al testo integrale.',
+    usa: 'Vi si arriva dalla colonna «Sintesi» della pagina Manifesto e Business Plan. Si sceglie la Parte con i pulsanti in alto; l’interruttore Sintetica / Estesa passa alla versione in tavole; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; «Chiudi» riporta alla pagina Manifesto e Business Plan.',
     effetti: 'Nessuna: è una pagina di sola lettura, aggiornata da sola a ogni modifica del documento, delle ipotesi o del piano.' },
   modifiche: { tit: 'Modifiche',
     serve: 'È il registro condiviso: chi ha ricevuto il link e quando è entrato, che cosa ha salvato ciascuno, i commenti a margine e, se il regime di approvazione è attivo, le proposte in attesa.',
@@ -4778,6 +4778,14 @@ function disegnaHome() {
   h += '<div class="hm-piede"><span>' + (meta.dossier ? esc(meta.dossier) + ' · ' : '') + (S.versione ? 'versione ' + esc(String(S.versione)) + ' · ' : '') + (pl && pl.attiva ? pl.n_tutte + ' schede progetto, ' + F.eur(pl.liv.probabile.valore) + ' di pipeline probabile · ' : '') + 'Ipotesi, Schede Progetto, Piano e scenari e Proiezioni Strategiche sono nel menu in alto.</span></div>';
   corpo.innerHTML = h;
 }
+// Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);
+// i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni, Trova) si aprono accanto alla pagina e lasciano quello che c'era sotto.
+const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni'];
+function vistaAperta() { return VISTE_FINESTRA.some(s => { const m = $(s); return m && !m.hidden; }); }
+function tornaAllaHome() { const h = $('#home'); if (!h) { chiudiViste(); return; } if (h.hidden || vistaAperta()) apriHome(); }
+function avviaRitornoHome() {
+  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
+}
 function avviaHome() {
   const m = $('#home'); if (!m) return; const b = $('#b-home'); if (b) b.onclick = apriHome; $('#home-chiudi').onclick = () => { chiudiHome(); };
   m.addEventListener('click', ev => { const x = ev.target.closest('button[data-h]'); if (!x) return; const az = x.dataset.h;
@@ -4866,7 +4874,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaGuide(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

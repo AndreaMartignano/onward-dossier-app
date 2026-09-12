@@ -54,6 +54,8 @@ a { color: var(--accento); }
 @media (max-width: 1600px) { .barra { gap: .3rem; padding: .4rem .6rem; } .barra .stato { max-width: 130px; font-size: .74rem; } .barra .btn { padding: .28rem .36rem; font-size: .74rem; } .barra .interruttore button { padding: .28rem .45rem; font-size: .75rem; } .barra .zoom button { padding: .2rem .3rem; } }
 @media (max-width: 1480px) { .barra .stato { max-width: 110px; font-size: .7rem; } .barra .btn { padding: .26rem .3rem; font-size: .71rem; } .barra .zoom { display: none; } .barra .marchio { font-size: .82rem; } }
 @media (max-width: 1340px) { .barra { gap: .22rem; padding: .35rem .45rem; } .barra .stato { max-width: 96px; } .barra .btn { padding: .24rem .26rem; font-size: .68rem; } .barra .interruttore button { padding: .24rem .36rem; font-size: .7rem; } }
+@media (max-width: 1400px) { .barra .marchio { display: none; } .barra .stato { max-width: 90px; } }
+@media (max-width: 1300px) { .barra { gap: .18rem; padding: .3rem .35rem; } .barra .btn { padding: .22rem .22rem; font-size: .66rem; } .barra .stato { max-width: 80px; } }
 .btn { border: 1px solid var(--filo); background: var(--carta); color: var(--inchiostro); border-radius: 4px; padding: .38rem .7rem; font-size: .84rem; line-height: 1.2; white-space: nowrap; }
 .btn:hover { background: var(--lavaggio); }
 .btn.primario { background: var(--accento); color: var(--accento-testo); border-color: var(--accento); }
@@ -317,6 +319,11 @@ a.lk { color: var(--accento); }
 .barra .btn.blu { background: var(--btn-blu); border-color: var(--btn-blu-bordo); }
 .barra .btn.rosso { background: var(--btn-rosso); border-color: var(--btn-rosso-bordo); }
 .barra .btn.viola { background: var(--btn-viola); border-color: var(--btn-viola-bordo); }
+.barra .btn.doc { background: var(--carta, #fff); border-color: var(--inchiostro); color: var(--inchiostro); font-weight: 600; }
+.barra .btn.doc:hover { filter: brightness(.96); }
+.mappe-testa .schede.vista-sint { margin-right: .4rem; }
+.mappe-testa .schede.vista-sint button.attivo { font-weight: 700; }
+.tendina-gruppo.tendina-home { grid-column: 1 / -1; border-bottom: 1px solid var(--filo); padding-bottom: .3rem; margin-bottom: .3rem; }
 .barra .btn.arancio:hover, .barra .btn.verde:hover, .barra .btn.grigio:hover, .barra .btn.blu:hover, .barra .btn.rosso:hover, .barra .btn.viola:hover { filter: brightness(.96); }
 .tendina { position: relative; }
 .tendina-menu { position: absolute; right: 0; top: calc(100% + 4px); background: var(--carta); border: 1px solid var(--filo); border-radius: 6px; box-shadow: var(--ombra); min-width: 170px; z-index: 60; padding: .25rem; display: flex; flex-direction: column; }
@@ -718,7 +725,6 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .mod-file { font-weight: bold; margin-bottom: .3rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 .sem.mod-modifica { color: var(--accento); border-color: var(--accento); background: color-mix(in srgb, var(--accento) 10%, transparent); }
 .sem.mod-avvio { color: var(--secondario); border-color: var(--filo); background: var(--lavaggio); }
-@media (max-width: 1600px) { .barra .btn { padding: .3rem .45rem; } .barra .stato { max-width: 180px; } }
 
 /* Ipotesi: tabella per Socio */
 .pi-soci td { padding: .22rem .25rem; font-size: .76rem; vertical-align: middle; }
@@ -938,12 +944,13 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <span class="stato" id="stato">Avvio…</span>
   <div class="zoom" id="zoom" title="Dimensione del documento"><button data-z="-" title="Riduci">−</button><button data-z="0" id="zoom-val" title="Torna al 100%">100%</button><button data-z="+" title="Ingrandisci">+</button></div>
   <div class="spazio"></div>
+  <div class="tendina" id="sintesi-menu"><button class="btn rosso" id="b-sintesi" aria-haspopup="true" aria-expanded="false" title="La pagina iniziale: le quattro Parti in una pagina (Sintetica) o in tavole (Estesa)">Sintesi Documento</button><div class="tendina-menu tendina-doppia" hidden><div class="tendina-gruppo tendina-home"><button data-vista="home" title="Le due sintesi, come all’apertura">Pagina iniziale</button></div><div class="tendina-gruppo"><div class="tendina-tit">Estesa</div><button data-vista="estesa" data-parte="0">Parte prima</button><button data-vista="estesa" data-parte="1">Parte seconda</button><button data-vista="estesa" data-parte="2">Parte terza</button><button data-vista="estesa" data-parte="3">Parte quarta</button></div><div class="tendina-gruppo"><div class="tendina-tit">Sintetica</div><button data-vista="sintetica" data-parte="0">Parte prima</button><button data-vista="sintetica" data-parte="1">Parte seconda</button><button data-vista="sintetica" data-parte="2">Parte terza</button><button data-vista="sintetica" data-parte="3">Parte quarta</button></div></div></div>
+  <button class="btn doc" id="b-documento" title="Il testo integrale del dossier, capitolo per capitolo, con sommario">Documento integrale</button>
   <button class="btn ipotesi" id="b-ipotesi" title="Le ipotesi del modello: i valori in giallo del documento">Ipotesi</button>
   <button class="btn blu" id="b-progetti" title="I progetti che i Soci seguono e porteranno in Onward: schede consultabili da tutti, con ricerca e filtri">Schede Progetto</button>
   <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa e Piano e scenari (il piano condiviso della Parte terza)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button></div></div>
   <button class="btn viola" id="b-proiezioni" title="Cruscotto unificato: i tre scenari sui tre esercizi, i dati reali rilevati e la proiezione della crescita, con ipotesi di prova che non toccano il documento">Proiezioni Strategiche</button>
   <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Rete di partenza, Practice e struttura delle quote">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Partnership</button><button id="b-practice">Practice</button><button id="b-soci">Soci</button></div></div>
-  <div class="tendina" id="sintesi-menu"><button class="btn rosso" id="b-sintesi" aria-haspopup="true" aria-expanded="false" title="Le quattro Parti in tavole (Estesa) o in una pagina (Sintetica)">Sintesi Documento</button><div class="tendina-menu tendina-doppia" hidden><div class="tendina-gruppo"><div class="tendina-tit">Estesa</div><button data-vista="estesa" data-parte="0">Parte prima</button><button data-vista="estesa" data-parte="1">Parte seconda</button><button data-vista="estesa" data-parte="2">Parte terza</button><button data-vista="estesa" data-parte="3">Parte quarta</button></div><div class="tendina-gruppo"><div class="tendina-tit">Sintetica</div><button data-vista="sintetica" data-parte="0">Parte prima</button><button data-vista="sintetica" data-parte="1">Parte seconda</button><button data-vista="sintetica" data-parte="2">Parte terza</button><button data-vista="sintetica" data-parte="3">Parte quarta</button></div></div></div>
   <button class="btn grigio" id="b-glossario">Glossario</button>
   <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
   <button class="btn grigio" id="b-storico">Cronologia</button>
@@ -966,12 +973,12 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe riassunto" id="riassunto" hidden>
-  <div class="mappe-testa"><b id="riassunto-tit">Sintesi</b><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="riassunto-struttura">Apri la Struttura di questa parte</button><span class="nota-pannello">La parte in una pagina di cifre, schemi e grafici, letti dal documento e dal modello: cambiano quando cambia il documento. Passando con il mouse si legge di più; un clic sui titoli porta al documento.</span></div><button class="btn piccolo" id="riassunto-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b id="riassunto-tit">Sintesi</b><div class="schede vista-sint" title="Sintetica: la parte in una pagina; Estesa: la parte in tavole"><button data-sv="sintetica" class="attivo">Sintetica</button><button data-sv="estesa">Estesa</button></div><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="riassunto-struttura">Apri la Struttura di questa parte</button><span class="nota-pannello">La parte in una pagina di cifre, schemi e grafici, letti dal documento e dal modello: cambiano quando cambia il documento. Passando con il mouse si legge di più; un clic sui titoli porta al documento.</span></div><button class="btn piccolo" id="riassunto-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="riassunto"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe sintesi" id="sintesi" hidden>
-  <div class="mappe-testa"><b id="sintesi-tit">Struttura</b><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="sintesi-doc">Apri la parte nel documento</button><span class="nota-pannello">Tavole lette dal testo, dalle tabelle e dal modello: cambiano quando cambia il documento. Un clic sui titoli porta al punto del documento; i termini economici e i nomi aprono le loro schede.</span></div><button class="btn piccolo" id="sintesi-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b id="sintesi-tit">Struttura</b><div class="schede vista-sint" title="Sintetica: la parte in una pagina; Estesa: la parte in tavole"><button data-sv="sintetica">Sintetica</button><button data-sv="estesa" class="attivo">Estesa</button></div><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="sintesi-doc">Apri la parte nel documento</button><span class="nota-pannello">Tavole lette dal testo, dalle tabelle e dal modello: cambiano quando cambia il documento. Un clic sui titoli porta al punto del documento; i termini economici e i nomi aprono le loro schede.</span></div><button class="btn piccolo" id="sintesi-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="sintesi"></div>
   <div class="mappe-corpo"></div>
 </div>
@@ -1255,7 +1262,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T16:25:22Z';
+window.ONWARD_BUILD = '2026-09-12T17:00:23Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1934,11 +1941,11 @@ async function collega(mostra) {
       else if (n === 0) { S.readonly = false; stato('attesa', 'Repository vuoto: inizializzarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Il repository è raggiungibile ma non contiene ancora il dossier. Premere «Inizializza il repository con questo contenuto» per scrivere i file (una sola volta, da parte di chi lo crea).</div>'; }
       else if (mancanti.length) { stato('attesa', 'Repository incompleto: completarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Collegato al repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + ': contiene ' + n + ' file del dossier, ne mancano ' + mancanti.length + '. Premere «Completa il repository» per scrivere i file mancanti con il contenuto corrente di questo file.</div>'; }
       else { stato('ok', 'Collegato al repository (' + n + ' file)'); if (esito) esito.innerHTML = '<div class="avviso">Collegato: ' + n + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.</div>'; }
-      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL();
+      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL(); homeAllAvvio();
       if (n > 0 && S.backend.ultimoAlbero) for (const k of ['glossario', 'rete', 'commesse', 'quote', 'scenari']) if (!S.backend.ultimoAlbero[fileDi(k)]) segna(k); }
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
-  else { S.backend = new ArchivioLocale(); const n = await S.backend.carica(); for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); stato('ok', n ? 'Archivio locale: ' + n + ' file modificati in questo browser' : 'Contenuto incorporato (archivio locale)'); if (mostra && esito) esito.innerHTML = '<div class="avviso">Modalità di prova: le modifiche restano in questo browser.</div>'; }
+  else { S.backend = new ArchivioLocale(); const n = await S.backend.carica(); for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); homeAllAvvio(); renderDocumento(); costruisciPannelloIpotesi(); stato('ok', n ? 'Archivio locale: ' + n + ' file modificati in questo browser' : 'Contenuto incorporato (archivio locale)'); if (mostra && esito) esito.innerHTML = '<div class="avviso">Modalità di prova: le modifiche restano in questo browser.</div>'; }
   applicaModo();
 }
 function esportaJSON() { scarica('onward-dossier-contenuto.json', JSON.stringify({ meta: S.meta, nota: S.nota, parti: S.parti, ipotesi: S.P, glossario: { voci: S.glossario }, rete: S.rete, commesse: { commesse: S.commesse }, quote: S.quote, scenari: S.scenari, esportato: new Date().toISOString() }, null, 1), 'application/json'); }
@@ -3245,13 +3252,16 @@ function sintesiParte4() {
   return h;
 }
 // ---------------------------------------------------------------- vista
-function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
+function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; S.riassuntoParte = S.sintesiParte; S.homeVista = 'estesa'; try { localStorage.setItem('onward.home', 'estesa'); } catch (e) {} disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function chiudiViste() { chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); }
+// pagina iniziale: le due sintesi (Sintetica in una pagina, Estesa in tavole), con la parte vista per ultima; il documento integrale ha la sua voce di menu
+function apriHome() { if (!S.parti || !S.parti.length) return; if (S.homeVista === 'estesa') apriSintesi(S.sintesiParte || 0); else apriRiassunto(S.riassuntoParte || 0); }
+function apriDocumento() { chiudiViste(); chiudiPopover(); window.scrollTo({ top: 0, behavior: 'auto' }); const d = $('#doc'); if (d) d.setAttribute('tabindex', '-1'); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
   const tp = String(parte.titolo || '').split('·'); $('#sintesi-tit').innerHTML = '<span class="si-parte-num">' + esc(tp[0].trim()) + '</span>' + esc((tp[1] || '').trim());
-  for (const b of $$('#sintesi .schede button')) b.classList.toggle('attivo', +b.dataset.parte === i);
+  for (const b of $$('#sintesi .schede button[data-parte]')) b.classList.toggle('attivo', +b.dataset.parte === i);
   S.generando = true; let h = ''; try { h = [sintesiParte1, sintesiParte2, sintesiParte3, sintesiParte4][i](); } catch (e) { h = '<div class="avviso errore">Sintesi non disponibile: ' + esc(e.message) + '</div>'; console.error(e); } S.generando = false;
   const corpo = $('#sintesi .mappe-corpo'); corpo.innerHTML = (parte.intro ? '<p class="si-parte-intro">' + renderTesto(parte.intro) + '</p>' : '') + h;
   for (const c of $$('.si-clamp', corpo)) { const b = c.nextElementSibling; if (c.scrollHeight > c.clientHeight + 6) { if (b) b.hidden = false; } else { c.classList.add('libero'); } }
@@ -3261,8 +3271,11 @@ function avviaSintesi() {
   const m = $('#sintesi'); if (!m) return; const tend = $('#sintesi-menu'); const menu = $('.tendina-menu', tend);
   $('#b-sintesi').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-sintesi').setAttribute('aria-expanded', String(!menu.hidden)); };
   document.addEventListener('click', e => { if (!e.target.closest('#sintesi-menu')) { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); } });
-  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); if (x.dataset.vista === 'sintetica') apriRiassunto(+x.dataset.parte); else apriSintesi(+x.dataset.parte); });
-  for (const x of $$('#sintesi .schede button')) x.onclick = () => apriSintesi(+x.dataset.parte);
+  for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; $('#b-sintesi').setAttribute('aria-expanded', 'false'); if (x.dataset.vista === 'home') apriHome(); else if (x.dataset.vista === 'sintetica') apriRiassunto(+x.dataset.parte); else apriSintesi(+x.dataset.parte); });
+  const bd = $('#b-documento'); if (bd) bd.onclick = apriDocumento;
+  for (const x of $$('#sintesi .vista-sint button')) x.onclick = () => { if (x.dataset.sv === 'sintetica') apriRiassunto(S.sintesiParte || 0); };
+  for (const x of $$('#riassunto .vista-sint button')) x.onclick = () => { if (x.dataset.sv === 'estesa') apriSintesi(S.riassuntoParte || 0); };
+  for (const x of $$('#sintesi .schede button[data-parte]')) x.onclick = () => apriSintesi(+x.dataset.parte);
   $('#sintesi-chiudi').onclick = chiudiSintesi; $('#sintesi-doc').onclick = () => { const p = S.parti.find(pp => pp.id === SI_PARTI[S.sintesiParte || 0]); chiudiViste(); if (p) vaiA('parte-' + p.id, true); };
   m.addEventListener('click', ev => {
     const vai = ev.target.closest('[data-vai]'); if (vai) { chiudiViste(); vaiA(vai.dataset.vai, true); return; }
@@ -3461,18 +3474,18 @@ function riassuntoParte4() {
   return h;
 }
 // ---------------------------------------------------------------- vista
-function apriRiassunto(i) { const m = $('#riassunto'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.riassuntoParte = i == null ? (S.riassuntoParte || 0) : +i; disegnaRiassunto(); $('#riassunto .mappe-corpo').scrollTop = 0; }
+function apriRiassunto(i) { const m = $('#riassunto'); if (!m) return; chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.riassuntoParte = i == null ? (S.riassuntoParte || 0) : +i; S.sintesiParte = S.riassuntoParte; S.homeVista = 'sintetica'; try { localStorage.setItem('onward.home', 'sintetica'); } catch (e) {} disegnaRiassunto(); $('#riassunto .mappe-corpo').scrollTop = 0; }
 function chiudiRiassunto() { const m = $('#riassunto'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function disegnaRiassunto() {
   const m = $('#riassunto'); if (!m) return; const i = S.riassuntoParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
   const tp = String(parte.titolo || '').split('·'); $('#riassunto-tit').innerHTML = '<span class="si-parte-num">' + esc(tp[0].trim()) + '</span>' + esc((tp[1] || '').trim());
-  for (const b of $$('#riassunto .schede button')) b.classList.toggle('attivo', +b.dataset.parte === i);
+  for (const b of $$('#riassunto .schede button[data-parte]')) b.classList.toggle('attivo', +b.dataset.parte === i);
   S.generando = true; let h = ''; try { h = [riassuntoParte1, riassuntoParte2, riassuntoParte3, riassuntoParte4][i](); } catch (e) { h = '<div class="avviso errore">Sintesi non disponibile: ' + esc(e.message) + '</div>'; console.error(e); } S.generando = false;
   const corpo = $('#riassunto .mappe-corpo'); corpo.innerHTML = '<div class="rz-board" style="--parte:' + RZ_PARTE_COL[i] + '">' + h + '</div>'; aggiornaTok(corpo);
 }
 function avviaRiassunto() {
   const m = $('#riassunto'); if (!m) return;
-  for (const x of $$('#riassunto .schede button')) x.onclick = () => apriRiassunto(+x.dataset.parte);
+  for (const x of $$('#riassunto .schede button[data-parte]')) x.onclick = () => apriRiassunto(+x.dataset.parte);
   $('#riassunto-chiudi').onclick = chiudiRiassunto; $('#riassunto-struttura').onclick = () => { const i = S.riassuntoParte || 0; chiudiRiassunto(); apriSintesi(i); };
   m.addEventListener('click', ev => {
     const vai = ev.target.closest('[data-vai]'); if (vai) { chiudiViste(); vaiA(vai.dataset.vai, true); return; }
@@ -4462,11 +4475,11 @@ const GUIDE_USO = {
     effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
   sintesi: { tit: 'Sintesi Documento, Estesa',
     serve: 'Presenta ciascuna delle quattro Parti del documento in tavole grafiche: testi, tabelle e cifre del modello riorganizzati per essere letti a colpo d’occhio.',
-    usa: 'Si sceglie la Parte con i pulsanti in alto; un clic sui titoli porta al punto corrispondente del documento; i termini economici e i nomi aprono le loro schede; «Leggi tutto» espande i testi lunghi.',
+    usa: 'Con la Sintetica è la pagina iniziale della piattaforma; l’interruttore Sintetica / Estesa in alto passa dall’una all’altra sulla stessa Parte. Si sceglie la Parte con i pulsanti in alto; un clic sui titoli porta al punto corrispondente del documento; i termini economici e i nomi aprono le loro schede; «Leggi tutto» espande i testi lunghi.',
     effetti: 'Nessuna: è una pagina di sola lettura, che si aggiorna da sola quando cambiano il documento, le ipotesi o il piano.' },
   riassunto: { tit: 'Sintesi Documento, Sintetica',
     serve: 'È la versione più breve della Sintesi: ogni Parte in una pagina di cifre, schemi e grafici, per chi vuole il quadro senza i testi.',
-    usa: 'Si sceglie la Parte con i pulsanti in alto; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; «Apri la Struttura di questa parte» passa alla Sintesi Estesa.',
+    usa: 'È la pagina iniziale della piattaforma. Si sceglie la Parte con i pulsanti in alto; l’interruttore Sintetica / Estesa passa alla versione in tavole; passando con il mouse sui riquadri si legge di più; un clic sui titoli porta al documento; il testo completo si apre anche con «Documento integrale» nel menu.',
     effetti: 'Nessuna: è una pagina di sola lettura, aggiornata da sola a ogni modifica del documento, delle ipotesi o del piano.' },
   modifiche: { tit: 'Modifiche',
     serve: 'È il registro condiviso: chi ha ricevuto il link e quando è entrato, che cosa ha salvato ciascuno, i commenti a margine e, se il regime di approvazione è attivo, le proposte in attesa.',
@@ -4765,6 +4778,7 @@ function scartoBarre() { const b = $('.barra'); const f = $('#formato'); let h =
 function vaiA(id, senzaAnimazione) { const t = document.getElementById(id); if (!t) return; const y = t.getBoundingClientRect().top + window.scrollY - scartoBarre(); window.scrollTo({ top: Math.max(0, y), behavior: senzaAnimazione ? 'auto' : 'smooth' }); }
 document.addEventListener('click', ev => { const a = ev.target.closest('#sommario a[href^="#"]'); if (!a) return; ev.preventDefault(); const id = a.getAttribute('href').slice(1); vaiA(id); try { history.replaceState(null, '', '#' + id); } catch (e) {} for (const x of $$('#sommario a')) x.classList.toggle('attuale', x === a); });
 window.addEventListener('load', () => { if (location.hash) setTimeout(() => vaiA(location.hash.slice(1), true), 300); });
+function homeAllAvvio() { if (S.homeAperta) return; S.homeAperta = true; if (location.hash && location.hash.length > 1 && !/[?&]?t=/.test(location.hash)) return; try { S.homeVista = localStorage.getItem('onward.home') || 'sintetica'; } catch (e) { S.homeVista = 'sintetica'; } setTimeout(apriHome, 50); }
 function avvia() {
   try { const t = localStorage.getItem('onward.tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   $$('#modo button').forEach(b => b.onclick = () => { S.mode = b.dataset.modo; applicaModo(); aggiornaPannelloIpotesi(true); });

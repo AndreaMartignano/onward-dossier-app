@@ -1255,7 +1255,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T15:36:50Z';
+window.ONWARD_BUILD = '2026-09-12T16:25:22Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1934,7 +1934,7 @@ async function collega(mostra) {
       else if (n === 0) { S.readonly = false; stato('attesa', 'Repository vuoto: inizializzarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Il repository è raggiungibile ma non contiene ancora il dossier. Premere «Inizializza il repository con questo contenuto» per scrivere i file (una sola volta, da parte di chi lo crea).</div>'; }
       else if (mancanti.length) { stato('attesa', 'Repository incompleto: completarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Collegato al repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + ': contiene ' + n + ' file del dossier, ne mancano ' + mancanti.length + '. Premere «Completa il repository» per scrivere i file mancanti con il contenuto corrente di questo file.</div>'; }
       else { stato('ok', 'Collegato al repository (' + n + ' file)'); if (esito) esito.innerHTML = '<div class="avviso">Collegato: ' + n + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.</div>'; }
-      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche();
+      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL();
       if (n > 0 && S.backend.ultimoAlbero) for (const k of ['glossario', 'rete', 'commesse', 'quote', 'scenari']) if (!S.backend.ultimoAlbero[fileDi(k)]) segna(k); }
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
@@ -4699,46 +4699,64 @@ function attivaRegole(c) {
 document.addEventListener('click', ev => { const b = ev.target.closest('button[data-pr]'); if (!b) return; if (b.dataset.pr === 'apri') finestraEsame(b.dataset.id); });
 
 // ---- bonifica_mod
-// ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (una tantum, da chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
+// ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
 const RE_VL = /virtual ?land|\bfavro\b|\bbenatti\b/i;
+// riscrittura di un testo libero: prima le frasi note, poi le forme generiche; i nomi delle persone si tolgono e si ripuliscono i separatori
+function bonificaTestoVL(t) {
+  if (typeof t !== 'string' || !RE_VL.test(t)) return t; let s = t;
+  for (const x of BONIFICA_VL.celle) if (s === x[0]) return x[1];
+  if (s.includes(BONIFICA_VL.soci0[0])) s = s.split(BONIFICA_VL.soci0[0]).join(BONIFICA_VL.soci0[1]);
+  s = s.replace(/\*\*Partnership Onward[–-]Virtual Land\*\*/g, '**Progetto NIS2/GDPR per ALIS Academy**').replace(/Partnership Onward[–-]Virtual Land/g, 'progetto NIS2/GDPR per ALIS Academy');
+  s = s.replace(/accordo Onward[–-]Virtual Land/gi, 'accordo con il partner tecnico da individuare').replace(/Onward[–-]Virtual Land/g, 'Onward e il partner tecnico da individuare');
+  s = s.replace(/\(\s*Virtual Land\s*,\s*/g, '(').replace(/,\s*Virtual Land\s*\)/g, ')').replace(/,\s*Virtual Land\s*,/g, ',').replace(/;\s*Virtual Land\s*;/g, ';').replace(/\bdi Virtual Land\b/g, 'del partner tecnico da individuare').replace(/\be Virtual Land\b/g, 'e il partner tecnico da individuare');
+  s = s.replace(/Virtual ?Land/g, 'il partner tecnico da individuare');
+  s = s.replace(/\b(Gianluca\s+)?Favro\b/g, '').replace(/\b(Marco\s+)?Benatti\b/g, '');
+  for (let i = 0; i < 3; i++) { s = s.replace(/\(\s*[,;]\s*/g, '(').replace(/\s*[,;]\s*\)/g, ')').replace(/\(\s*\)/g, '').replace(/[,;]\s*(?=[,;])/g, '').replace(/\s+([,;.)])/g, '$1').replace(/([(;,])\s*(e|ed)\s+(?=[,;.)])/g, '$1').replace(/\b(con|di|da|a|per|tra|fra)\s*,?\s+(e|ed)\s+/g, '$1 ').replace(/\(\s*il partner tecnico da individuare\s*\)/g, '(partner tecnico da individuare)').replace(/\b(con|a|per|tra|fra)\s+del\s+/g, '$1 il ').replace(/\b(con|a|per|tra|fra)\s+della\s+/g, '$1 la ').replace(/\s+(e|ed)\s+(e|ed)\s+/g, ' e ').replace(/^\s*[,;]\s*/, '').replace(/\s*[,;]\s*$/, '').replace(/\s{2,}/g, ' ').replace(/ \./g, '.'); }
+  return s.trim();
+}
 function residuiVirtualLand() {
   const r = S.rete || {}; let rete = 0;
   rete += (r.partner || []).filter(p => p.id === 'virtual-land' || RE_VL.test(p.nome || '')).length;
   rete += (r.advisor || []).filter(a => a.societa === 'virtual-land' || a.id === 'favro' || a.id === 'benatti').length;
-  for (const s of r.soci || []) if (RE_VL.test(JSON.stringify(s))) rete++;
   const schede = (elencoProgetti() || []).filter(p => (p.sinergie || []).includes('virtual-land')).length;
-  let celle = 0; const altri = [];
-  for (const p of S.parti || []) for (const c of p.capitoli || []) for (const b of c.blocchi || []) {
-    if (b.t === 'tbl') { for (const row of b.rows || []) for (const cell of row) { if (BONIFICA_VL.celle.some(x => cell.text === x[0])) celle++; else if (RE_VL.test(cell.text || '')) altri.push({ dove: 'Capitolo ' + (S.numeri[c.id] || '') + ' ' + c.titolo, testo: cell.text }); } }
-    else if (b.t === 'box') { for (const t of b.paras || []) if (RE_VL.test(t)) altri.push({ dove: 'Capitolo ' + (S.numeri[c.id] || '') + ' ' + c.titolo, testo: t }); }
-    else if (RE_VL.test(b.text || '') || RE_VL.test(b.caption || '')) altri.push({ dove: 'Capitolo ' + (S.numeri[c.id] || '') + ' ' + c.titolo, testo: b.text || b.caption });
-  }
-  for (const v of S.glossario || []) if (RE_VL.test(JSON.stringify(v))) altri.push({ dove: 'Glossario: ' + v.termine, testo: v.definizione });
-  for (const k of ['titolo', 'sottotitolo', 'dossier', 'occhiello', 'riservato', 'luogo', 'chiusura']) if (S.meta && RE_VL.test(S.meta[k] || '')) altri.push({ dove: 'Frontespizio', testo: S.meta[k] });
-  return { rete, schede, celle, altri };
+  const testi = []; for (const f of campiTestoVL()) { const v = f.get(); if (typeof v === 'string' && RE_VL.test(v)) testi.push({ dove: f.dove, testo: v }); }
+  return { rete, schede, testi };
 }
-function bonificaVirtualLand() {
-  const r = S.rete || {}; const capi = new Set(); let rete = false, schede = false;
+// tutti i campi di testo del dossier: quelli di «Trova e sostituisci» più schede progetto, commesse e note delle proiezioni
+function campiTestoVL() {
+  const out = campiTesto().slice(); const add = (key, dove, obj, prop) => { if (obj && typeof obj[prop] === 'string') out.push({ key, dove, get: () => obj[prop], set: v => { obj[prop] = v; } }); };
+  for (const p of elencoProgetti() || []) for (const k of ['titolo', 'soggetti', 'luogo', 'descrizione']) add('progetti', 'Scheda Progetto: ' + (p.titolo || ''), p, k);
+  for (const p of elencoProgetti() || []) for (const k of ['linea']) if (p.parametri) add('progetti', 'Scheda Progetto: ' + (p.titolo || ''), p.parametri, k);
+  for (const c of S.commesse || []) for (const k of ['titolo', 'cliente', 'note']) add('commesse', 'Commessa: ' + (c.titolo || ''), c, k);
+  for (const x of (S.proiezioni && S.proiezioni.rilevazioni) || []) add('proiezioni', 'Proiezioni: rilevazione', x, 'note');
+  const R = S.rete || {}; for (const e of [].concat(R.soci || [], R.advisor || [], R.partner || [], R.consulenti || [])) add('rete', 'Rete: ' + (e.nome || ''), e, 'breve');
+  if (R.note) for (const k of Object.keys(R.note)) add('rete', 'Rete: note', R.note, k);
+  return out;
+}
+function bonificaVirtualLand(opt) {
+  opt = opt || {}; const r = S.rete || {}; const chiavi = new Set(); let rete = false, schede = false, testi = 0;
   const nP = (r.partner || []).length; r.partner = (r.partner || []).filter(p => p.id !== 'virtual-land' && !RE_VL.test(p.nome || '')); if (r.partner.length !== nP) rete = true;
   const nA = (r.advisor || []).length; r.advisor = (r.advisor || []).filter(a => !(a.societa === 'virtual-land' || a.id === 'favro' || a.id === 'benatti')); if (r.advisor.length !== nA) rete = true;
-  if (!(r.partner || []).some(p => p.id === BONIFICA_VL.placeholder.id)) { r.partner.push(clone(BONIFICA_VL.placeholder)); rete = true; }
-  for (const s of r.soci || []) for (const k of ['progetti', 'attivita', 'profilo', 'reti']) if (typeof s[k] === 'string' && s[k].includes(BONIFICA_VL.soci0[0])) { s[k] = s[k].split(BONIFICA_VL.soci0[0]).join(BONIFICA_VL.soci0[1]); rete = true; }
+  if (rete && !(r.partner || []).some(p => p.id === BONIFICA_VL.placeholder.id)) r.partner.push(clone(BONIFICA_VL.placeholder));
   for (const p of elencoProgetti() || []) if ((p.sinergie || []).includes('virtual-land')) { p.sinergie = p.sinergie.filter(x => x !== 'virtual-land'); schede = true; }
-  for (const p of S.parti || []) for (const c of p.capitoli || []) for (const b of c.blocchi || []) if (b.t === 'tbl') for (const row of b.rows || []) for (const cell of row) for (const x of BONIFICA_VL.celle) if (cell.text === x[0]) { cell.text = x[1]; capi.add(c.id); }
+  for (const f of campiTestoVL()) { const v = f.get(); if (typeof v !== 'string' || !RE_VL.test(v)) continue; const n = bonificaTestoVL(v); if (n !== v) { f.set(n); testi++; chiavi.add(f.key); } }
+  if (rete) chiavi.add('rete'); if (schede) chiavi.add('progetti');
+  if (!chiavi.size) return { rete, schede, testi, chiavi: [] };
   if (!S.msgExtra) S.msgExtra = {};
-  if (rete) { S.msgExtra.rete = 'Rete di partenza: tolti Virtual Land e i suoi advisor; aperta la posizione «Partner tecnico da individuare»'; segna('rete'); }
-  if (schede) { S.msgExtra.progetti = 'Schede Progetto: tolta la sinergia con Virtual Land'; segna('progetti'); }
-  for (const id of capi) { S.msgExtra['cap:' + id] = 'Capitolo ' + (S.numeri[id] || '') + ': tolti Virtual Land e i suoi advisor dalle tabelle della rete'; segna('cap:' + id); }
-  if (rete) aggiornaRete(); if (capi.size) renderDocumento(); if (schede) aggiornaPipeline();
-  return { rete, schede, capitoli: capi.size };
+  for (const k of chiavi) { S.msgExtra[k] = (k.startsWith('cap:') ? 'Capitolo ' + (S.numeri[k.slice(4)] || '') : k === 'rete' ? 'Rete di partenza' : k === 'progetti' ? 'Schede Progetto' : k === 'glossario' ? 'Glossario' : k === 'struttura' ? 'Struttura' : k === 'commesse' ? 'Commesse' : k === 'proiezioni' ? 'Proiezioni' : k) + ': tolti Virtual Land e i suoi advisor' + (k === 'rete' ? '; aperta la posizione «Partner tecnico da individuare»' : ''); segna(k); }
+  if (rete) aggiornaRete(); if ([...chiavi].some(k => k !== 'rete' && k !== 'progetti' && k !== 'commesse' && k !== 'proiezioni')) { renderDocumento(); if ($('#pan-glossario') && $('#pan-glossario').classList.contains('aperto')) aggiornaGlossario(); } if (schede || chiavi.has('progetti')) aggiornaPipeline();
+  return { rete, schede, testi, chiavi: [...chiavi] };
+}
+// al collegamento: se i dati condivisi contengono ancora Virtual Land, la rimozione è applicata subito da chi può scrivere (decisione del promotore del 12 settembre 2026); le versioni precedenti restano nella cronologia
+function bonificaAutomaticaVL() {
+  try { if (S.readonly || !S.backend || S.repoVuoto) return; const x = residuiVirtualLand(); if (!x.rete && !x.schede && !x.testi.length) return; const r = bonificaVirtualLand({ automatica: true }); if (r.chiavi.length) toast('Virtual Land e i suoi advisor tolti dal dossier (' + r.chiavi.length + (r.chiavi.length === 1 ? ' file' : ' file') + ', ' + r.testi + ' passaggi di testo): il salvataggio è in corso; al loro posto la posizione «Partner tecnico da individuare»'); } catch (e) { console.warn('bonifica Virtual Land', e); }
 }
 function htmlBonificaVL() {
-  if (S.readonly || !S.backend || S.repoVuoto) return ''; const x = residuiVirtualLand(); if (!x.rete && !x.schede && !x.celle && !x.altri.length) return '';
-  const auto = x.rete || x.schede || x.celle;
-  return '<h4>Rimozione di Virtual Land dal dossier</h4><p class="nota-pannello">Per decisione del promotore Virtual Land e i suoi advisor escono dal documento e dalla rete di partenza; i temi che coprivano (AI conversazionale a base narrativa, cyber security awareness per la NIS2, storytelling e change management) restano nel dossier, affidati a un partner tecnico da individuare, che compare come posizione aperta tra le società partner. ' + (auto ? 'Il pulsante toglie la società e gli advisor dalla rete (tabelle e schede dell’Appendice C si aggiornano da sole), corregge le tabelle della rete nel capitolo VIII, toglie la sinergia dalle Schede Progetto e salva per tutti i Soci.' : '') + (x.altri.length ? ' Restano ' + x.altri.length + (x.altri.length === 1 ? ' passaggio scritto a mano che cita' : ' passaggi scritti a mano che citano') + ' Virtual Land o i suoi advisor, da rivedere a mano o con «Trova e sostituisci»: ' + x.altri.slice(0, 6).map(a => '<i>' + esc(a.dove) + '</i> («' + esc(String(a.testo || '').slice(0, 90)) + '…»)').join('; ') + (x.altri.length > 6 ? '; …' : '') + '.' : '') + '</p>' + (auto ? '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button class="btn" id="cfg-bonifica-vl">Rimuovi Virtual Land e i suoi advisor</button></div>' : '');
+  if (S.readonly || !S.backend || S.repoVuoto) return ''; const x = residuiVirtualLand(); if (!x.rete && !x.schede && !x.testi.length) return '';
+  return '<h4>Rimozione di Virtual Land dal dossier</h4><p class="nota-pannello">Per decisione del promotore Virtual Land e i suoi advisor escono dal documento e dalla rete di partenza; i temi che coprivano (AI conversazionale a base narrativa, cyber security awareness per la NIS2, storytelling e change management) restano, affidati alla posizione aperta «Partner tecnico da individuare». La rimozione parte da sola al collegamento; se qualcosa è rimasto (per esempio testi arrivati da un altro Socio nel frattempo), il pulsante la ripete: ' + (x.rete ? x.rete + ' voci della rete; ' : '') + (x.schede ? x.schede + ' schede con la sinergia; ' : '') + (x.testi.length ? x.testi.length + (x.testi.length === 1 ? ' passaggio di testo (' : ' passaggi di testo (') + x.testi.slice(0, 5).map(a => '<i>' + esc(a.dove) + '</i>').join('; ') + (x.testi.length > 5 ? '; …' : '') + ')' : '') + '.</p><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button class="btn" id="cfg-bonifica-vl">Rimuovi Virtual Land e i suoi advisor</button></div>';
 }
-function attivaBonificaVL(c) { const b = $('#cfg-bonifica-vl', c); if (!b) return; b.onclick = () => { if (!confirm('Togliere Virtual Land e i suoi advisor dalla rete di partenza e dalle tabelle del capitolo VIII, aprendo la posizione «Partner tecnico da individuare»? Le versioni precedenti restano nella cronologia.')) return; const r = bonificaVirtualLand(); toast('Virtual Land rimossa: ' + (r.rete ? 'rete di partenza' : '') + (r.capitoli ? (r.rete ? ', ' : '') + 'capitolo VIII' : '') + (r.schede ? ', Schede Progetto' : '') + '; il salvataggio è in corso'); costruisciImpostazioni(); }; }
+function attivaBonificaVL(c) { const b = $('#cfg-bonifica-vl', c); if (!b) return; b.onclick = () => { const r = bonificaVirtualLand(); toast(r.chiavi.length ? 'Virtual Land rimossa da ' + r.chiavi.length + ' file (' + r.testi + ' passaggi di testo): il salvataggio è in corso' : 'Nessun riferimento a Virtual Land trovato'); costruisciImpostazioni(); }; }
 // ================================================================ scorrimento e avvio
 function evidenziaSommario() { const cur = capitoloVisibile() || 'nota'; for (const a of $$('#sommario a')) a.classList.toggle('attuale', a.getAttribute('href') === '#cap-' + cur); }
 document.addEventListener('scroll', debounce(evidenziaSommario, 120), { passive: true });

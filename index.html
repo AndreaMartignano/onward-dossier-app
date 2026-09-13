@@ -1619,7 +1619,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T21:58:40Z';
+window.ONWARD_BUILD = '2026-09-13T22:04:31Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2215,8 +2215,8 @@ class ArchivioGitHub {
   }
   // scrive un file binario; se GitHub risponde 409 o 422 (sha non più attuale) rilegge lo sha dai dati git e ripete, fino a tre tentativi
   async caricaFile(path, bytes, messaggio, shaNoto) {
-    let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-    const body = { message: messaggio, content: btoa(bin), branch: this.cfg.branch }; if (this.cfg.autore) body.author = body.committer = { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') };
+    let b64 = ''; for (let i = 0; i < bytes.length; i += 0xC000) b64 += btoa(String.fromCharCode.apply(null, bytes.subarray(i, i + 0xC000)));
+    const body = { message: messaggio, content: b64, branch: this.cfg.branch }; if (this.cfg.autore) body.author = body.committer = { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') };
     let sha = shaNoto; if (sha === undefined) { const cur = await this.api('/contents/' + ArchivioGitHub.enc(path) + '?ref=' + encodeURIComponent(this.cfg.branch)); sha = cur && cur.sha ? cur.sha : null; }
     for (let tentativo = 1; ; tentativo++) {
       if (sha) body.sha = sha; else delete body.sha;
@@ -4591,7 +4591,7 @@ const CARTELLE_DOCUMENTI = [
   ['offerte', 'Offerte', 'Le proposte inviate al cliente: offerte tecniche ed economiche, revisioni, lettere di accompagnamento.'],
   ['contratti', 'Contratti', 'Gli accordi firmati: contratto, ordini, accordi di riservatezza, integrazioni.']
 ];
-const LIMITE_DOCUMENTO = 25 * 1024 * 1024;
+const LIMITE_DOCUMENTO = 100 * 1024 * 1024; // limite di GitHub: blocca i file oltre 100 MiB
 const MIME_DOCUMENTI = { pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', txt: 'text/plain', md: 'text/markdown', csv: 'text/csv', json: 'application/json', html: 'text/html', htm: 'text/html', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls: 'application/vnd.ms-excel', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt: 'application/vnd.ms-powerpoint', pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation', zip: 'application/zip', odt: 'application/vnd.oasis.opendocument.text', ods: 'application/vnd.oasis.opendocument.spreadsheet', odp: 'application/vnd.oasis.opendocument.presentation', rtf: 'application/rtf', eml: 'message/rfc822', msg: 'application/vnd.ms-outlook' };
 const VISIBILI_DOCUMENTI = ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'txt', 'md', 'csv', 'json'];
 function estensioneDi(nome) { const m = /\.([a-z0-9]{1,6})$/i.exec(String(nome || '')); return m ? m[1].toLowerCase() : ''; }
@@ -4614,7 +4614,7 @@ function apriDocumentiProgetto(id) {
   const p = progettoDi(id); if (!p) return; chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-documenti', id: 'finestra' }); fin.dataset.id = id;
   const a = archivioDocumenti(); const scrive = !!a && puoScrivereProgetti();
   fin.innerHTML = '<div class="fin-testa"><b>Documenti di Progetto: ' + esc(p.titolo || 'Senza titolo') + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
-    (a ? '<p class="nota-pannello">I documenti sono custoditi nel repository riservato dei Soci (cartella <code>documenti/' + esc(id) + '/</code>) e sono visibili a tutti i Soci collegati. Ogni caricamento ed eliminazione resta nella cronologia del repository, attribuito a chi lo ha fatto. Dimensione massima per file: 25 MB.</p>' : '<div class="avviso">I Documenti di Progetto sono custoditi nel repository riservato dei Soci: per vederli e caricarli occorre collegare il repository dalle Impostazioni.</div>') +
+    (a ? '<p class="nota-pannello">I documenti sono custoditi nel repository riservato dei Soci (cartella <code>documenti/' + esc(id) + '/</code>) e sono visibili a tutti i Soci collegati. Ogni caricamento ed eliminazione resta nella cronologia del repository, attribuito a chi lo ha fatto. Dimensione massima per file: 100 MB (limite del repository GitHub); oltre i 50 MB il caricamento può richiedere qualche minuto.</p>' : '<div class="avviso">I Documenti di Progetto sono custoditi nel repository riservato dei Soci: per vederli e caricarli occorre collegare il repository dalle Impostazioni.</div>') +
     '<div class="dp-cartelle"></div><div class="dp-stato" hidden></div><input type="file" id="dp-file" multiple hidden>' +
     '<div class="azioni gl-azioni">' + (a ? '<button class="btn piccolo" id="dp-aggiorna">Aggiorna l’elenco</button>' : '') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Chiudi</button></div>';
   document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
@@ -4635,7 +4635,7 @@ function disegnaDocumentiProgetto(fin) {
 function statoDocumenti(fin, testo, errore) { const st = $('.dp-stato', fin); if (!st) return; st.hidden = !testo; st.textContent = testo || ''; st.classList.toggle('errore', !!errore); }
 async function caricaDocumentiProgetto(fin, slug, files) {
   const a = archivioDocumenti(); const id = fin.dataset.id; const p = progettoDi(id); if (!a || !p || !puoScrivereProgetti()) return; const nomeCartella = (CARTELLE_DOCUMENTI.find(c => c[0] === slug) || [])[1] || slug;
-  const grandi = files.filter(f => f.size > LIMITE_DOCUMENTO); if (grandi.length) { toast('File troppo grandi (oltre 25 MB): ' + grandi.map(f => f.name).join(', ')); files = files.filter(f => f.size <= LIMITE_DOCUMENTO); if (!files.length) return; }
+  const grandi = files.filter(f => f.size > LIMITE_DOCUMENTO); if (grandi.length) { toast('File troppo grandi (oltre 100 MB, limite del repository GitHub): ' + grandi.map(f => f.name).join(', ')); files = files.filter(f => f.size <= LIMITE_DOCUMENTO); if (!files.length) return; }
   const presenti = documentiProgetto(id)[slug]; const daCaricare = [];
   for (const f of files) { const nome = nomeFileSicuro(f.name); const gia = presenti.find(x => x.nome === nome); if (gia && !confirm('Nella cartella «' + nomeCartella + '» esiste già «' + nome + '». Sostituirlo con il file nuovo? La versione precedente resta nella cronologia del repository.')) continue; daCaricare.push({ f, nome, sha: gia ? gia.sha : null }); }
   if (!daCaricare.length) return;

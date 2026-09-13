@@ -368,10 +368,6 @@ a.lk { color: var(--accento); }
 .hm-h1 { font-family: var(--hm-outfit); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 2.7rem); line-height: 1.08; letter-spacing: -.035em; color: var(--hm-antracite); margin: 0 0 .9rem; text-wrap: balance; }
 .hm-h1 .accent { color: var(--hm-arancio); }
 .hm-sotto { font-family: var(--hm-sans); font-size: 1.08rem; line-height: 1.55; color: var(--hm-grigio); max-width: 56ch; margin: 0; font-weight: 500; }
-.hm-meta { display: flex; gap: 2.4rem; flex-wrap: wrap; margin-top: 1.8rem; padding-top: 1.2rem; border-top: 1px solid var(--hm-bordo); }
-.hm-meta .item { display: flex; flex-direction: column; gap: .05rem; }
-.hm-meta .k { font-family: var(--hm-outfit); font-size: 1.7rem; font-weight: 700; letter-spacing: -.03em; color: var(--hm-antracite); line-height: 1.1; }
-.hm-meta .v { font-family: var(--hm-sans); font-size: .82rem; color: var(--hm-grigio); font-weight: 600; letter-spacing: .01em; }
 /* i tre modi di lettura */
 .hm-modi { position: relative; z-index: 1; background: var(--hm-bianco); border: 1px solid var(--hm-bordo); border-radius: 18px; padding: 1.5rem 1.6rem 1.2rem; box-shadow: var(--hm-ombra); }
 .hm-modi .hm-occhiello { margin-bottom: 1rem; }
@@ -1048,7 +1044,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 /* ================================================================ veste Onward per tutta la piattaforma (caratteri, forme, toni); il marchio resta solo nella barra e nella pagina Manifesto e Business Plan */
 html { font-size: 16px; }
 body { font-family: var(--font-testo); }
-h1, h2, h3, h4, h1.cap, .blk.h2 .txt, .blk.h3 .txt, .blk.rete .gen.h2 .txt, .frontespizio .t1, .frontespizio .t2, .frontespizio .t3, .divisore, .titolo-parte, .mappe-testa > b, .pannello header, .q-testa h3, .si-testa h3, .pg-testa h3, .si-hero-tit, .rz-hero-tit, .rz-frase.grande, .cm-kpi b, .rz-num > b, .si-pr-num, .rz-pr-num, .si-scen-num b, .si-ind-val b, .pop-tit, .gl-tit, .sommario .parte-tit, .hm-meta .k { font-family: var(--font-titoli); letter-spacing: -.015em; }
+h1, h2, h3, h4, h1.cap, .blk.h2 .txt, .blk.h3 .txt, .blk.rete .gen.h2 .txt, .frontespizio .t1, .frontespizio .t2, .frontespizio .t3, .divisore, .titolo-parte, .mappe-testa > b, .pannello header, .q-testa h3, .si-testa h3, .pg-testa h3, .si-hero-tit, .rz-hero-tit, .rz-frase.grande, .cm-kpi b, .rz-num > b, .si-pr-num, .rz-pr-num, .si-scen-num b, .si-ind-val b, .pop-tit, .gl-tit, .sommario .parte-tit { font-family: var(--font-titoli); letter-spacing: -.015em; }
 .blk.h3 .txt { font-style: normal; font-weight: 600; }
 h1.cap { font-weight: 700; letter-spacing: -.02em; border-bottom-color: var(--filo); }
 h1.cap .num { color: var(--accento); font-weight: 500; }
@@ -1087,6 +1083,11 @@ a { color: var(--accento-scuro); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .barra { background: rgba(26, 23, 20, .94); } }
 :root[data-theme="dark"] .barra { background: rgba(26, 23, 20, .94); }
 .interruttore button.attivo { background: var(--inchiostro); color: var(--carta); }
+.pi-soci .pi-somma.pi-errore { background: color-mix(in srgb, var(--errore) 12%, var(--carta)); }
+.pi-avviso { margin: .4rem 0 .6rem; padding: .5rem .7rem; border-left: 3px solid var(--errore); background: color-mix(in srgb, var(--errore) 8%, var(--carta)); color: var(--inchiostro); font-size: .82rem; border-radius: 0 8px 8px 0; }
+.pi-legenda { margin: .6rem 0 .8rem; font-size: .8rem; color: var(--secondario); display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .25rem .7rem; }
+.pi-legenda dt { font-family: var(--font-titoli); font-weight: 600; color: var(--inchiostro); }
+.pi-legenda dd { margin: 0; }
 
 </style>
 </head>
@@ -1419,7 +1420,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T07:26:14Z';
+window.ONWARD_BUILD = '2026-09-13T08:21:03Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3780,14 +3781,19 @@ function disegnaTabellaSoci(forza) {
   h += '<div class="tabella-wrap"><table class="tab pi-soci"><colgroup><col style="width:28%"><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:14%"></colgroup><tr class="intestazione"><td>Socio</td><td>Giornate annue</td><td title="Quota di tempo alla produzione">Prod. %</td><td title="Quota di tempo a origination e sviluppo">Orig. %</td><td title="Quota di tempo a gestione, metodo, formazione">Gest. %</td><td>Somma</td><td>Giornate vendibili</td></tr>';
   rows.forEach((s, i) => { h += '<tr data-riga="' + i + '"><td><input type="text" class="pi-nome" data-socio="' + i + '" data-campo="nome" value="' + esc(s.nome || '') + '"' + (ro ? ' disabled' : '') + '></td>' + CAMPI_SOCIO.map(([k, l, f]) => '<td><input class="pi-inp" data-socio="' + i + '" data-campo="' + k + '" data-fmt="' + f + '" inputmode="decimal" value="' + esc(fmtCampoSocio(f, s[k] || 0)) + '"' + (ro ? ' disabled' : '') + '></td>').join('') + '<td class="pi-somma"></td><td class="pi-vend"></td></tr>'; });
   h += '<tr class="pi-tot"><td>Media; totale</td><td class="pi-m-gg"></td><td class="pi-m-prod"></td><td class="pi-m-orig"></td><td class="pi-m-gest"></td><td></td><td class="pi-cap"></td></tr></table></div>';
+  h += '<div class="pi-avviso" hidden></div>';
+  h += '<dl class="pi-legenda"><dt>Giornate annue</dt><dd>le giornate lavorative che il Socio dedica a Onward in un anno.</dd><dt>Prod. %</dt><dd>la quota di quel tempo destinata alla produzione, cioè al lavoro fatturabile ai clienti.</dd><dt>Orig. %</dt><dd>la quota destinata a origination e sviluppo: relazioni, proposte, vendita.</dd><dt>Gest. %</dt><dd>la quota destinata a gestione, metodo e formazione.</dd><dt>Somma</dt><dd>le tre quote descrivono come si divide il tempo del Socio e devono dare 100%; se la somma è diversa, la casella diventa rossa e il tempo non assegnato (o assegnato due volte) rende incoerenti le cifre di quel Socio.</dd><dt>Giornate vendibili</dt><dd>giornate annue × Prod. %: le giornate che il Socio può vendere ai clienti. La loro somma, nell’ultima riga, è la capacità complessiva della società; le altre celle dell’ultima riga sono le medie delle colonne.</dd></dl>';
   h += '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button type="button" class="btn piccolo" id="pi-nomi-rete"' + (ro ? ' disabled' : '') + '>Nomi dalla rete di partenza</button><button type="button" class="btn piccolo" id="pi-pareggia"' + (ro ? ' disabled' : '') + '>Rendi uguali tutti i Soci</button></div>';
   box.innerHTML = h; aggiornaCalcoliTabellaSoci();
+  box.addEventListener('input', e => { const inp = e.target.closest('.pi-inp'); if (!inp) return; const tr = inp.closest('tr'); const leggi = k => { const x = $('.pi-inp[data-campo="' + k + '"]', tr); const n = parseFloat(String(x.value).replace(/\./g, '').replace(',', '.').replace('%', '')); return Number.isFinite(n) ? n : 0; }; const somma = leggi('q_prod') + leggi('q_orig') + leggi('q_gest'); const ok = Math.abs(somma - 100) < 0.5; const c = $('.pi-somma', tr); c.textContent = MODELLO.F.pct(somma / 100) + (ok ? '' : (somma < 100 ? ' (manca ' + MODELLO.F.pct((100 - somma) / 100) + ')' : ' (eccede di ' + MODELLO.F.pct((somma - 100) / 100) + ')')); c.className = 'pi-somma' + (ok ? '' : ' pi-errore'); $('.pi-vend', tr).textContent = MODELLO.F.num(leggi('gg') * leggi('q_prod') / 100); });
   $('#pi-nomi-rete', box).onclick = () => { const nomi = nomiSociRete(); (S.P.soci_dett || []).forEach((s, i) => { if (nomi[i]) { s.nome = nomi[i].nome; s.id = nomi[i].id; } }); segna('ipotesi'); aggiornaCalcolati(); disegnaTabellaSoci(true); };
   $('#pi-pareggia', box).onclick = () => { if (!confirm('Assegnare a tutti i Soci le stesse giornate e le stesse quote di tempo (i valori medi correnti)?')) return; const m = MODELLO.medieSoci(S.P.soci_dett || [], S.P); for (const s of (S.P.soci_dett || [])) { s.gg = m.gg; s.q_prod = m.q_prod; s.q_orig = m.q_orig; s.q_gest = m.q_gest; } sincronizzaSoci(); segna('ipotesi'); aggiornaCalcolati(); disegnaTabellaSoci(true); };
 }
 function aggiornaCalcoliTabellaSoci() {
   const box = $('#pi-soci'); if (!box) return; const F = MODELLO.F; const D = (S.ctx && S.ctx.r && S.ctx.r.soci_dett) || []; let cap = 0;
-  for (const tr of $$('tr[data-riga]', box)) { const s = D[+tr.dataset.riga]; if (!s) continue; const somma = s.somma_quote; const ok = Math.abs(somma - 1) < 0.005; const c = $('.pi-somma', tr); c.textContent = F.pct(somma); c.className = 'pi-somma' + (ok ? '' : ' pi-errore'); c.title = ok ? '' : 'Le tre quote dovrebbero sommare al 100%'; $('.pi-vend', tr).textContent = F.num(s.gg_vend); cap += s.gg_vend; }
+  const fuori = [];
+  for (const tr of $$('tr[data-riga]', box)) { const s = D[+tr.dataset.riga]; if (!s) continue; const somma = s.somma_quote; const ok = Math.abs(somma - 1) < 0.005; const c = $('.pi-somma', tr); c.textContent = F.pct(somma) + (ok ? '' : (somma < 1 ? ' (manca ' + F.pct(1 - somma) + ')' : ' (eccede di ' + F.pct(somma - 1) + ')')); c.className = 'pi-somma' + (ok ? '' : ' pi-errore'); c.title = ok ? '' : 'Le tre quote devono sommare al 100%'; $('.pi-vend', tr).textContent = F.num(s.gg_vend); cap += s.gg_vend; if (!ok) fuori.push(s.nome + ' (' + F.pct(somma) + ')'); }
+  const av = $('.pi-avviso', box); if (av) { av.hidden = !fuori.length; av.textContent = fuori.length ? 'Quote da correggere: ' + fuori.join(', ') + '. Le tre quote di tempo devono sommare al 100%: finché non tornano, le giornate vendibili e i compensi di questi Soci non sono coerenti con il resto del modello.' : ''; }
   const m = MODELLO.medieSoci(S.P.soci_dett || [], S.P); const set = (sel, v) => { const e = $(sel, box); if (e) e.textContent = v; };
   set('.pi-m-gg', F.num(m.gg)); set('.pi-m-prod', F.pct(m.q_prod)); set('.pi-m-orig', F.pct(m.q_orig)); set('.pi-m-gest', F.pct(m.q_gest)); set('.pi-cap', F.num(cap));
 }
@@ -4893,17 +4899,14 @@ function reteHTML() {
 }
 function disegnaHome() {
   const m = $('#home'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); if (!S.parti || !S.parti.length) { corpo.innerHTML = '<p class="nota-pannello">Il documento non è ancora caricato.</p>'; return; }
-  const meta = S.meta || {}; const pl = S.ctx && S.ctx.pl; const F = MODELLO.F;
-  const nCap = S.parti.filter(p => SI_PARTI.includes(p.id)).reduce((t, p) => t + (p.capitoli || []).length, 0); const nParti = S.parti.filter(p => SI_PARTI.includes(p.id)).length; const app = S.parti.find(p => !SI_PARTI.includes(p.id)); const nApp = app ? (app.capitoli || []).length : 0;
+  const meta = S.meta || {};
   const ragione = String(meta.titolo || 'Onward Strategic Partners').replace(/\s+/g, ' ').trim(); const ragioneTc = ragione === ragione.toUpperCase() ? ragione.toLowerCase().replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase()) : ragione;
   let h = '<div class="hm-hero"><div class="hm-hero-sx">' + lockupHTML('clamp(46px, 5.2vw, 68px)', true) +
     '<span class="hm-occhiello">' + esc(meta.dossier || 'Dossier Soci fondatori e Modello di business') + '</span>' +
     '<h1 class="hm-h1">Manifesto e <span class="accent">Business Plan</span></h1>' +
     '<p class="hm-sotto">' + esc(meta.occhiello || 'La proposta, la sua economia, il piano e le decisioni') + '. ' + esc(ragioneTc + ' ' + (meta.sottotitolo || '')) + (meta.luogo ? ' · ' + esc(meta.luogo) : '') + '.</p>' +
-    '<div class="hm-meta"><div class="item"><span class="k">' + nParti + '</span><span class="v">Parti</span></div><div class="item"><span class="k">' + nCap + '</span><span class="v">capitoli</span></div>' + (nApp ? '<div class="item"><span class="k">' + nApp + '</span><span class="v">appendici</span></div>' : '') +
-    (pl && pl.attiva ? '<div class="item"><span class="k">' + pl.n_tutte + '</span><span class="v">schede progetto</span></div><div class="item"><span class="k">' + esc(F.eur(pl.liv.probabile.valore)) + '</span><span class="v">pipeline probabile</span></div>' : '') +
-    (S.versione ? '<div class="item"><span class="k">' + esc(String(S.versione)) + '</span><span class="v">versione</span></div>' : '') + '</div></div>' +
-    '<div class="hm-modi"><span class="hm-occhiello">Tre modi di leggere</span>' +
+    '</div>' +
+    '<div class="hm-modi"><span class="hm-occhiello">Tre modi di leggere il documento</span>' +
     '<div class="hm-modo m1"><span class="dot"></span><span class="tag">Una pagina</span><span class="tit">Sintesi</span><span class="des">Ogni Parte in una pagina di cifre, schemi e grafici: il quadro senza i testi.</span></div>' +
     '<div class="hm-modo m2"><span class="dot"></span><span class="tag">In tavole</span><span class="tit">Estesa</span><span class="des">La Parte in tavole, capitolo per capitolo, con i testi e le tabelle riorganizzati.</span></div>' +
     '<div class="hm-modo m3"><span class="dot"></span><span class="tag">Il testo</span><span class="tit">Integrale</span><span class="des">Il documento completo, con il sommario a lato, dove si legge e si modifica.</span></div>' +

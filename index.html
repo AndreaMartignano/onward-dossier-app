@@ -15,6 +15,7 @@
   --accento: #DE5400; --accento-testo: #ffffff; --accento-scuro: #BE3C00; --chip: #F3EFE8; --chip-bordo: #D9D2C7; --chip-param: #fff0a6; --chip-param-bordo: #d9b93a;
   --ok: #2e7d4f; --attesa: #a26a12; --errore: #b23a3a; --selezione: #FBE6D9; --ombra: 0 1px 2px rgba(38, 34, 30, .05), 0 8px 28px rgba(38, 34, 30, .10);
   --termine-filo: #B3ACA8; --evid: #EDE8E0; --evid-forte: #D9D2C7;
+  --pg-acq: #BE3C00; --pg-prob: #DE5400; --pg-poss: #F2B58A; --pg-poss-testo: #C4611A; --pg-promoter: #6a3d9a; --pg-soc: #5D534E;
   --pr1: #3d6aa5; --pr2: #4f8a5b; --pr3: #b57a2a; --pr4: #8a4f7d; --pr5: #5f6b7a; --pr-testo: #ffffff;
   --btn-arancio: #FBE3CF; --btn-arancio-bordo: #E9B48C; --btn-verde: #E3EFE0; --btn-verde-bordo: #A7C9A6; --btn-grigio: #EFECE6; --btn-grigio-bordo: #D6D0C6; --btn-blu: #E2E8F0; --btn-blu-bordo: #A9B8CC; --btn-rosso: #F7DDD8; --btn-rosso-bordo: #E0A39C; --btn-viola: #ECE4F1; --btn-viola-bordo: #BFA9D3;
   --font-testo: "Source Sans 3", Arial, Helvetica, "Liberation Sans", sans-serif; --font-titoli: Outfit, Arial, Helvetica, sans-serif;
@@ -25,6 +26,7 @@
     --accento: #F4741E; --accento-testo: #1A1714; --accento-scuro: #F58A45; --chip: #33302B; --chip-bordo: #4A453E; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
     --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #4A2A14; --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .45);
     --termine-filo: #6E6A64; --evid: #3D3833; --evid-forte: #57514A;
+    --pg-acq: #F58A45; --pg-prob: #DE5400; --pg-poss: #7A4A2A; --pg-poss-testo: #F2B58A; --pg-promoter: #b48ad6; --pg-soc: #9C938B;
     --pr1: #7ea6dd; --pr2: #7fbf8b; --pr3: #d9a55a; --pr4: #c48ab8; --pr5: #a5b1c0; --pr-testo: #0f1a2b;
     --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #33302B; --btn-grigio-bordo: #57514A; --btn-blu: #2A3442; --btn-blu-bordo: #5F7A9C; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c7ab0;
   }
@@ -34,6 +36,7 @@
   --accento: #F4741E; --accento-testo: #1A1714; --accento-scuro: #F58A45; --chip: #33302B; --chip-bordo: #4A453E; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
   --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #4A2A14; --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .45);
   --termine-filo: #6E6A64; --evid: #3D3833; --evid-forte: #57514A;
+  --pg-acq: #F58A45; --pg-prob: #DE5400; --pg-poss: #7A4A2A; --pg-poss-testo: #F2B58A; --pg-promoter: #b48ad6; --pg-soc: #9C938B;
   --pr1: #7ea6dd; --pr2: #7fbf8b; --pr3: #d9a55a; --pr4: #c48ab8; --pr5: #a5b1c0; --pr-testo: #0f1a2b;
   --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #33302B; --btn-grigio-bordo: #57514A; --btn-blu: #2A3442; --btn-blu-bordo: #5F7A9C; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c7ab0;
 }
@@ -907,8 +910,6 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pg-opt small { margin-left: auto; color: var(--secondario); font-size: .7rem; }
 .pg-multi { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .1rem .8rem; margin: .2rem 0 .5rem; }
 .pg-lista { display: flex; flex-direction: column; gap: .8rem; }
-.pg-riepilogo { font-size: .84rem; color: var(--secondario); display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; padding: .2rem .2rem .1rem; }
-.pg-riepilogo b { color: var(--inchiostro); }
 .pg-card { background: var(--carta); border: 1px solid var(--filo); border-radius: 8px; padding: .8rem 1rem .6rem; }
 .pg-testa { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .3rem; }
 .pg-testa h3 { margin: 0; font-size: 1.02rem; flex: 1 1 auto; min-width: 0; }
@@ -934,6 +935,87 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .sem.pg-promoter { color: #6a3d9a; border-color: #6a3d9a; background: color-mix(in srgb, #6a3d9a 10%, transparent); }
 .finestra-progetto { width: min(960px, 96vw); }
 .finestra-progetto textarea { min-height: 9rem; }
+/* cruscotto delle Schede Progetto: riquadri di sintesi, livelli di certezza, per stato, per linea, pipeline per esercizio */
+.pg-cruscotto { display: flex; flex-direction: column; gap: .6rem; padding-bottom: .7rem; border-bottom: 1px solid var(--filo); margin-bottom: .1rem; }
+.pg-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .55rem; }
+.pg-tile { position: relative; background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; padding: .55rem .8rem .55rem; min-width: 0; }
+.pg-tile > span { display: block; font-family: var(--font-titoli); font-weight: 500; font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; color: var(--secondario); line-height: 1.25; }
+.pg-tile > b { display: block; font-family: var(--font-titoli); font-weight: 600; font-size: 1.4rem; line-height: 1.2; margin: .15rem 0 .12rem; font-variant-numeric: tabular-nums; color: var(--inchiostro); letter-spacing: -.01em; }
+.pg-tile > small { display: block; font-size: .72rem; color: var(--secondario); line-height: 1.3; }
+.pg-tile.pg-liv-acquisito > b { color: var(--pg-acq); }
+.pg-tile.pg-liv-probabile > b { color: var(--pg-prob); }
+.pg-tile.pg-liv-possibile > b { color: var(--pg-poss-testo); }
+.pg-tile.pg-idee > b { color: var(--secondario); }
+.pg-tile.pg-larga { grid-column: auto; }
+.pg-tile .pg-barra { height: 14px; margin-top: .35rem; }
+.pg-tile .pg-legenda { margin-top: .4rem; font-size: .72rem; gap: .2rem .8rem; }
+.pg-legenda em { font-style: normal; color: var(--secondario); }
+.pg-rip { display: grid; grid-template-columns: 11px minmax(0, 1fr) auto; gap: .18rem .45rem; align-items: center; margin-top: .45rem; font-size: .74rem; color: var(--inchiostro); line-height: 1.25; }
+.pg-rip > i { width: 11px; height: 11px; border-radius: 3px; }
+.pg-rip > i.pg-s-idee { border: 1px solid var(--chip-bordo); box-sizing: border-box; }
+.pg-rip > b { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.pg-rip > span em { font-style: normal; color: var(--secondario); }
+.pg-rip .pg-rip-sotto { grid-column: 2 / -1; font-style: normal; color: var(--secondario); font-size: .7rem; margin-top: -.1rem; }
+.pg-r-orig { background: var(--pg-acq); } .pg-r-sp { background: var(--pg-prob); } .pg-r-adv { background: #EE9552; } .pg-r-cons { background: var(--pg-poss); } .pg-r-soc { background: var(--pg-soc); }
+.pg-exec { grid-column: 1 / -1; }
+.pg-exec-campi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin-top: .2rem; }
+.pg-exec-campi label { display: block; font-size: .72rem; color: var(--secondario); font-weight: normal; }
+.pg-exec-campi label > span { display: block; margin-bottom: .1rem; }
+.pg-exec-campi input { width: 100%; box-sizing: border-box; }
+.pg-conti .pg-ris small { display: block; font-size: .68rem; color: var(--secondario); font-weight: normal; }
+.pg-tile.adottato { border-color: var(--accento); box-shadow: inset 0 0 0 1px var(--accento); }
+.pg-tile .pg-adottato { display: block; font-style: normal; font-family: var(--font-titoli); font-weight: 500; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accento); margin-top: .3rem; }
+.pg-grafici { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; align-items: stretch; }
+@media (min-width: 1900px) { .pg-grafici { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pg-box { background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; padding: .6rem .85rem .7rem; min-width: 0; }
+.pg-box > .pg-gtit { margin-bottom: .5rem; }
+.pg-box > .pg-gtit small { display: block; font-family: var(--font-testo); text-transform: none; letter-spacing: 0; font-size: .72rem; color: var(--secondario); font-weight: 400; margin-top: .15rem; line-height: 1.3; }
+.pg-barra { display: flex; height: 20px; border-radius: 6px; overflow: hidden; background: var(--lavaggio); gap: 2px; }
+.pg-seg { display: block; height: 100%; min-width: 3px; }
+.pg-s-acq { background: var(--pg-acq); } .pg-s-prob { background: var(--pg-prob); } .pg-s-poss { background: var(--pg-poss); }
+.pg-s-idee { background: repeating-linear-gradient(135deg, var(--chip-bordo) 0 3px, transparent 3px 7px); }
+.pg-legenda { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin-top: .5rem; font-size: .75rem; color: var(--secondario); line-height: 1.3; }
+.pg-legenda span { display: inline-flex; align-items: center; gap: .4rem; }
+.pg-legenda i { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.pg-legenda i.pg-s-idee { border: 1px solid var(--chip-bordo); }
+.pg-legenda b { color: var(--inchiostro); font-weight: 600; font-variant-numeric: tabular-nums; }
+.pg-righe { display: flex; flex-direction: column; gap: .32rem; }
+.pg-riga { display: grid; grid-template-columns: minmax(110px, 42%) minmax(0, 1fr) auto; gap: .55rem; align-items: center; width: 100%; background: none; border: 0; padding: .1rem 0; font: inherit; font-size: .78rem; color: var(--inchiostro); text-align: left; cursor: pointer; border-radius: 4px; }
+.pg-riga:hover .pg-riga-et, .pg-riga:hover .pg-riga-val { color: var(--accento); }
+.pg-riga.attivo .pg-riga-et { font-weight: 700; color: var(--accento); }
+.pg-riga-et { display: inline-flex; align-items: center; gap: .4rem; min-width: 0; line-height: 1.2; }
+.pg-riga-et > span { display: block; min-width: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pg-punto { width: 9px; height: 9px; border-radius: 50%; flex: none; border: 1px solid transparent; box-sizing: border-box; }
+.pg-riga-bar { display: block; height: 10px; background: var(--lavaggio); border-radius: 4px; overflow: hidden; }
+.pg-fill { display: block; height: 100%; border-radius: 4px; background: var(--accento); min-width: 2px; }
+.pg-punto.pg-idea, .pg-fill.pg-idea { background: transparent; border: 1px dashed var(--secondario); }
+.pg-punto.pg-suspect, .pg-fill.pg-suspect { background: var(--termine-filo); }
+.pg-punto.pg-lead, .pg-fill.pg-lead { background: var(--accento); }
+.pg-punto.pg-prospect, .pg-fill.pg-prospect { background: var(--attesa); }
+.pg-punto.pg-customer, .pg-fill.pg-customer { background: var(--ok); }
+.pg-punto.pg-promoter, .pg-fill.pg-promoter { background: var(--pg-promoter); }
+.pg-riga-val { font-variant-numeric: tabular-nums; color: var(--secondario); white-space: nowrap; }
+.pg-riga.pg-fisso { cursor: default; }
+.pg-punto.pr1, .pg-fill.pr1, .pg-punto.pr2, .pg-fill.pr2, .pg-punto.pr3, .pg-fill.pr3, .pg-punto.pr4, .pg-fill.pr4, .pg-punto.pr5, .pg-fill.pr5, .pg-punto.pr0, .pg-fill.pr0 { background: var(--pr); }
+.pg-attenzione { color: var(--errore); font-weight: 600; }
+.pg-riga-attenzione .pg-ris { color: var(--errore); }
+.pg-riga.pg-zero { cursor: default; color: var(--secondario); }
+.pg-riga.pg-zero .pg-riga-val { font-style: italic; }
+.pg-riga.pg-zero .pg-punto { opacity: .5; }
+.pg-riga.pg-zero:hover .pg-riga-et, .pg-riga.pg-zero:hover .pg-riga-val { color: var(--secondario); }
+.pg-anni { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .8rem; }
+.pg-anno { min-width: 0; }
+.pg-anno-nome { display: block; font-family: var(--font-titoli); font-weight: 600; font-size: .84rem; color: var(--inchiostro); }
+.pg-anno > b { display: block; font-family: var(--font-titoli); font-weight: 600; font-size: 1.2rem; font-variant-numeric: tabular-nums; margin: .05rem 0; color: var(--inchiostro); }
+.pg-anno > small { display: block; font-size: .72rem; color: var(--secondario); line-height: 1.3; }
+.pg-anno > small b { color: var(--inchiostro); font-weight: 600; }
+.pg-cop { position: relative; height: 12px; background: var(--lavaggio); border-radius: 4px; margin: .4rem 0 .3rem; overflow: hidden; }
+.pg-cop i { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; display: block; }
+.pg-cop-poss { background: var(--pg-poss); } .pg-cop-prob { background: var(--pg-prob); } .pg-cop-acq { background: var(--pg-acq); }
+.pg-cop::after { content: ''; position: absolute; right: 0; top: 0; width: 2px; height: 100%; background: var(--inchiostro); opacity: .45; }
+.pg-azioni-riga { margin-top: .55rem; }
+@media (max-width: 1340px) { .pg-kpi { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } .pg-tile.pg-larga { grid-column: span 2; } .pg-grafici { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pg-grafici > .pg-box:last-child:nth-child(odd) { grid-column: 1 / -1; } }
+@media (max-width: 760px) { .pg-kpi { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } .pg-grafici { grid-template-columns: 1fr; } }
 @media (max-width: 1000px) { .pg-layout { grid-template-columns: 1fr; } .pg-filtri { position: static; max-height: none; } }
 /* ---- parametri di progetto e pipeline */
 .modifica .blk.rete.progetti::before { content: "Generato dalle Schede Progetto: si modifica dalle schede"; }
@@ -971,9 +1053,6 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pg-anteprima { margin: .3rem 0 .6rem; padding: .5rem .7rem; border-radius: 6px; background: var(--lavaggio); border: 1px solid var(--filo); font-size: .82rem; line-height: 1.45; }
 .pg-anteprima .pg-gtit { display: block; }
 .pg-anteprima b { color: var(--accento); }
-.pg-pipeline { display: flex; flex-wrap: wrap; gap: .3rem 1rem; align-items: center; font-size: .78rem; color: var(--secondario); padding: .25rem .2rem .35rem; border-bottom: 1px solid var(--filo); margin-bottom: .2rem; }
-.pg-pipeline .pg-gtit { margin: 0; width: 100%; }
-.pg-pl-anno b { color: var(--inchiostro); }
 .s-pipeline { border-color: var(--accento); color: var(--accento); font-weight: 600; }
 .q-pipeline .s-tab small { display: block; font-size: .68rem; color: var(--secondario); font-weight: normal; }
 @media (max-width: 900px) { .pg-fgriglia { grid-template-columns: 1fr 1fr; } }
@@ -1423,7 +1502,16 @@ const MODELLO = (() => {
     const es = Math.min(nA - 1, Math.max(0, vuoto(q.esercizio) ? 0 : Math.round(num(q.esercizio, 0)))); const ric = q.ricorrenza ? q.ricorrenza === 'annuale' : linea === 'ret';
     const gg = !vuoto(q.giornate) ? Math.max(0, num(q.giornate, 0)) : giornateAuto(p, linea, valore); const terzi = !vuoto(q.terzi) ? Math.max(0, Math.min(1, num(q.terzi, 0))) : terziAuto(p, linea);
     const netto = valore * (1 - terzi); const grado = ORIGINATION_GRADO[q.origination] ? num(p[ORIGINATION_GRADO[q.origination]], 0) : num(p.orig_med, 0);
-    return { id: pr.id, titolo: pr.titolo || '', stato, livello, rango, linea, esercizio: es, ricorrente: ric, valore, netto, terzi, gg, grado, origination: valore * grado, practice: pr.practice || [], sinergie: pr.sinergie || [], referente: pr.referente || '', canale: q.canale || '', settore: q.settore || '', cliente: q.cliente || '', esecutore: q.esecutore || '', trimestre: q.trimestre || '', gg_auto: vuoto(q.giornate), terzi_auto: vuoto(q.terzi) };
+    // ripartizione del ricavo netto: origination (grado sul totale della commessa), esecuzione per figura, margine societario
+    const qs = k => vuoto(q[k]) ? null : Math.max(0, num(q[k], 0)) / 100; let sp = qs('exec_sp'), adv = qs('exec_adv'), cons = qs('exec_cons'); const split_auto = sp === null && adv === null && cons === null;
+    if (split_auto) { if (q.esecutore === 'interno') { sp = 0; adv = 0; cons = 1; } else { sp = 1; adv = 0; cons = 0; } }
+    else { sp = sp || 0; adv = adv || 0; cons = cons || 0; const tot = sp + adv + cons; if (tot > 0) { sp /= tot; adv /= tot; cons /= tot; } else { sp = 1; adv = 0; cons = 0; } }
+    const orig_r = Math.min(netto, valore * grado); let soc, ex;
+    if (linea === 'part') { const resid = Math.max(0, netto - orig_r); ex = resid * 0.25; soc = resid - ex; }
+    else if (linea === 'fin' || linea === 'form') { ex = 0; soc = Math.max(0, netto - orig_r); }
+    else { const ms = linea === 'diag' ? num(p.diag_soc, 0) : num(p.soc_q, 0); soc = Math.min(netto * ms, Math.max(0, netto - orig_r)); ex = Math.max(0, netto - orig_r - soc); }
+    const rip = { terzi: valore - netto, orig: orig_r, exec: ex, soc, exec_sp: ex * sp, exec_adv: ex * adv, exec_cons: ex * cons, split: { sp, adv, cons }, split_auto, quota_soc: netto ? soc / netto : 0 };
+    return { id: pr.id, rip, titolo: pr.titolo || '', stato, livello, rango, linea, esercizio: es, ricorrente: ric, valore, netto, terzi, gg, grado, origination: valore * grado, practice: pr.practice || [], sinergie: pr.sinergie || [], referente: pr.referente || '', canale: q.canale || '', settore: q.settore || '', cliente: q.cliente || '', esecutore: q.esecutore || '', trimestre: q.trimestre || '', gg_auto: vuoto(q.giornate), terzi_auto: vuoto(q.terzi) };
   }
   function pipeline(progetti, p, opt) {
     opt = opt || {}; const nomiAnni = opt.anni || ['Primo esercizio', 'Secondo esercizio', 'Terzo esercizio']; const nA = nomiAnni.length; const base = RANGO_LIVELLO[opt.livello] ? opt.livello : 'probabile';
@@ -1477,7 +1565,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T14:17:14Z';
+window.ONWARD_BUILD = '2026-09-13T17:14:35Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -4102,11 +4190,12 @@ const OPZ_CLIENTE = [['', 'Da indicare'], ['pmi', 'Piccola o media impresa'], ['
 const OPZ_SETTORE = [['', 'Da indicare'], ['manifatturiero', 'Manifatturiero e industria'], ['servizi', 'Servizi alle imprese'], ['costruzioni', 'Costruzioni e immobiliare'], ['energia', 'Energia e ambiente'], ['agroalimentare', 'Agroalimentare'], ['sanita', 'Sanità e farmaceutico'], ['finanza', 'Finanza e assicurazioni'], ['digitale', 'ICT e digitale'], ['commercio', 'Commercio e distribuzione'], ['turismo', 'Turismo e cultura'], ['pa', 'Pubblica amministrazione'], ['altro', 'Altro']];
 const OPZ_CANALE = [['', 'Da indicare'], ['socio', 'Relazione diretta del Socio'], ['partner', 'Società partner'], ['advisor', 'Advisor'], ['rete', 'Rete associativa o istituzionale'], ['bancario', 'Canale bancario e finanziario'], ['evento', 'Eventi e comunicazione'], ['cliente', 'Segnalazione di un cliente'], ['altro', 'Altro']];
 const OPZ_TRIMESTRE = [['', 'Da indicare'], ['T1', 'Primo trimestre'], ['T2', 'Secondo trimestre'], ['T3', 'Terzo trimestre'], ['T4', 'Quarto trimestre']];
-const CAMPI_PARAM = ['linea', 'esercizio', 'trimestre', 'ricorrenza', 'giornate', 'terzi', 'origination', 'esecutore', 'cliente', 'settore', 'canale'];
+const CAMPI_PARAM = ['linea', 'esercizio', 'trimestre', 'ricorrenza', 'giornate', 'terzi', 'origination', 'esecutore', 'exec_sp', 'exec_adv', 'exec_cons', 'cliente', 'settore', 'canale'];
+const FIGURE_ESECUZIONE = [['exec_sp', 'sp', 'Strategic Partner'], ['exec_adv', 'adv', 'Advisor'], ['exec_cons', 'cons', 'Consultant']];
 function etichettaOpz(lista, v) { const x = lista.find(o => String(o[0]) === String(v == null ? '' : v)); return x ? x[1] : String(v == null ? '' : v); }
 function etichettaLinea(k) { const x = MODELLO.LINEE_PIPELINE.find(l => l[0] === k); return x ? x[1] : 'Da indicare'; }
 function nomiEsercizi() { const n = S.scenari && S.scenari.anni && Array.isArray(S.scenari.anni.nomi) ? S.scenari.anni.nomi.filter(Boolean) : []; return n.length ? n : ['Primo esercizio', 'Secondo esercizio', 'Terzo esercizio']; }
-function parametriDi(p) { return Object.assign({ linea: '', esercizio: '', trimestre: '', ricorrenza: '', giornate: '', terzi: '', origination: '', esecutore: '', cliente: '', settore: '', canale: '' }, p && p.parametri || {}); }
+function parametriDi(p) { return Object.assign({ linea: '', esercizio: '', trimestre: '', ricorrenza: '', giornate: '', terzi: '', origination: '', esecutore: '', exec_sp: '', exec_adv: '', exec_cons: '', cliente: '', settore: '', canale: '' }, p && p.parametri || {}); }
 function derivataDi(p) { return MODELLO.schedaDerivata(p, S.P, nomiEsercizi().length); }
 function pipelineCorrente() { return (S.ctx && S.ctx.pl) || calcolaPipeline(); }
 function progettiVuoti() { return { progetti: [] }; }
@@ -4120,7 +4209,7 @@ function nomePractice(id) { const p = practiceElenco().find(x => x.id === id); r
 function nomePartner(id) { const p = ((S.rete && S.rete.partner) || []).find(x => x.id === id); return p ? p.nome : id; }
 function puoScrivereProgetti() { return !S.readonly && !!S.backend; }
 function normTesto(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
-function numeroIt(v) { if (v === null || v === undefined || v === '') return null; if (typeof v === 'number') return isFinite(v) ? v : null; const s = String(v).replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isFinite(n) ? n : null; }
+function numeroIt(v) { if (v === null || v === undefined || v === '') return null; if (typeof v === 'number') return isFinite(v) ? v : null; let s = String(v).replace(/[€\s]/g, ''); if (/^-?\d+\.\d{1,2}$/.test(s)) s = s.replace('.', ','); s = s.replace(/\./g, '').replace(',', '.'); const n = parseFloat(s); return isFinite(n) ? n : null; }
 function filtroProgetti() { if (!S.prog) S.prog = { q: '', stato: [], practice: [], sinergie: [], referenti: [], linea: [], esercizio: [], luogo: '', ordine: 'agg', espansi: new Set() }; if (!S.prog.linea) S.prog.linea = []; if (!S.prog.esercizio) S.prog.esercizio = []; return S.prog; }
 function testoRicercaProgetto(p) { const q = parametriDi(p); return normTesto([p.titolo, p.soggetti, p.luogo, p.descrizione, p.referente, p.autore, etichettaStato(p.stato), etichettaLivello(livelloDiStato(p.stato)), (p.practice || []).map(nomePractice).join(' '), (p.sinergie || []).map(nomePartner).join(' '), q.linea ? etichettaLinea(q.linea) : '', etichettaOpz(OPZ_CLIENTE, q.cliente), etichettaOpz(OPZ_SETTORE, q.settore), etichettaOpz(OPZ_CANALE, q.canale), q.esercizio !== '' ? (nomiEsercizi()[+q.esercizio] || '') : ''].join(' \n ')); }
 function progettiFiltrati() {
@@ -4159,13 +4248,16 @@ function spiegaTerziProgetto(d) {
   const chi = d.linea === 'part' ? 'al partner tecnico' : d.linea === 'fin' ? 'alla struttura della finanza agevolata' : d.linea === 'form' ? 'all’ente di formazione' : 'a terzi';
   return chi + (d.terzi_auto ? ', dalla linea' : ', indicata nella scheda');
 }
+// giornate senior implausibili rispetto al valore (di solito un importo scritto nel campo delle giornate, o un decimale con il punto letto come migliaia)
+function giornateAnomale(d) { if (!d || !(d.gg > 0) || d.gg_auto) return false; const tar = Number(S.P && S.P.tariffa_media && S.P.tariffa_media[1]) || 1300; return d.gg > 1000 || (d.valore > 0 && d.gg * tar > 4 * d.valore); }
+function avvisoGiornate(d, q) { if (!giornateAnomale(d)) return ''; const F = MODELLO.F; const auto = MODELLO.giornateAuto(S.P, d.linea, d.valore); const fg = x => Number.isInteger(x) ? F.num(x) : F.num1(x); return 'Attenzione: le giornate senior indicate (' + fg(d.gg) + ') sono molte rispetto al valore stimato; forse nel campo «Giornate senior stimate» è finito un importo. Lasciando il campo vuoto il modello le calcola da solo (' + fg(Math.round(auto * 10) / 10) + ').'; }
 function letturaProgetto(p, d) {
   const F = MODELLO.F; const anni = nomiEsercizi(); const q = parametriDi(p); const es = (anni[d.esercizio] || '').toLowerCase() + (q.trimestre ? ', ' + etichettaOpz(OPZ_TRIMESTRE, q.trimestre).toLowerCase() : '');
   if (!d.valore) return 'Manca il valore stimato: la scheda conta nel numero di progetti e nelle giornate, non nei ricavi. Con il valore, qui compare quanto il progetto porta al piano.';
   if (!d.livello) return 'È un’idea, senza ancora un possibile cliente: resta nel registro con ' + F.eur(d.valore) + ' di valore stimato, ma non entra nel piano. Quando c’è un cliente possibile si porta lo stato a Suspect.';
   const chi = d.linea === 'part' ? 'al partner tecnico' : d.linea === 'fin' ? 'alla struttura della finanza agevolata' : d.linea === 'form' ? 'all’ente di formazione' : 'a terzi';
   const liv = d.livello === 'acquisito' ? 'È già acquisito: conta a ogni livello di lettura della pipeline.' : d.livello === 'probabile' ? 'È un prospect: conta nella pipeline letta al livello Probabile e Possibile, non tra gli acquisiti.' : 'È un ' + etichettaStato(d.stato).toLowerCase() + ': conta nella pipeline solo al livello Possibile.';
-  return 'Se si chiude vale ' + F.eur(d.valore) + (d.terzi ? ', di cui ' + F.eur(d.netto) + ' restano a Onward e ' + F.eur(d.valore - d.netto) + ' vanno ' + chi : ', tutti ricavi di Onward') + '; impegna ' + F.num1(d.gg) + ' giornate senior nel ' + es + (d.ricorrente ? ', poi ogni esercizio' : '') + '. ' + liv + ' A chi lo ha originato spettano ' + F.eur(d.origination) + ' alla chiusura (' + F.pct(d.grado) + ' del totale).';
+  return 'Se si chiude vale ' + F.eur(d.valore) + (d.terzi ? ', di cui ' + F.eur(d.netto) + ' restano a Onward e ' + F.eur(d.valore - d.netto) + ' vanno ' + chi : ', tutti ricavi di Onward') + '; impegna ' + F.num1(d.gg) + ' giornate senior nel ' + es + (d.ricorrente ? ', poi ogni esercizio' : '') + '. ' + liv + ' A chi lo ha originato spettano ' + F.eur(d.origination) + ' alla chiusura (' + F.pct(d.grado) + ' del totale)' + (d.rip && d.netto ? '; del ricavo netto, ' + F.eur(d.rip.exec) + ' remunerano l’esecuzione (' + testoSplit(d) + ') e ' + F.eur(d.rip.soc) + ' restano alla società.' : '.') + (giornateAnomale(d) ? ' ' + avvisoGiornate(d, q) : '');
 }
 function htmlContiProgetto(p, d) {
   const F = MODELLO.F; const q = parametriDi(p);
@@ -4176,10 +4268,15 @@ function htmlContiProgetto(p, d) {
   h += riga('Livello nel piano', d.livello ? 'dallo stato «' + esc(etichettaStato(d.stato)) + '»: ' + esc(descrLivello(d.livello)) : 'dallo stato «Idea»: senza un cliente possibile non entra nel piano', d.livello ? esc(etichettaLivello(d.livello)) : 'Fuori dal piano', d.livello ? 'pg-chiave' : '');
   h += riga('Quota a terzi', esc(spiegaTerziProgetto(d)), F.pct(d.terzi));
   h += riga('Ricavo netto', F.eur(d.valore) + ' × (100% − ' + F.pct(d.terzi) + '): la parte che resta a Onward', F.eur(d.netto), 'pg-chiave');
-  h += riga('Giornate senior', esc(spiegaGiornateProgetto(d, q)), F.num1(d.gg));
+  h += riga('Giornate senior', esc(spiegaGiornateProgetto(d, q)) + (giornateAnomale(d) ? ' <b class="pg-attenzione">da verificare</b>' : ''), F.num1(d.gg), giornateAnomale(d) ? 'pg-riga-attenzione' : '');
   h += riga('Origination', 'grado ' + F.pct(d.grado) + ' (' + (q.origination ? esc(etichettaOpz(OPZ_ORIGINATION, q.origination).replace(/\s*\(.*\)$/, '').toLowerCase()) : 'grado medio, da indicare nella scheda') + ') × ' + F.eur(d.valore) + ' di totale della commessa', F.eur(d.origination), 'pg-chiave');
+  const R = d.rip || {}; const P = S.P;
+  h += riga('Margine societario', esc(spiegaMargineProgetto(d)), F.eur(R.soc || 0));
+  h += riga('Esecuzione', 'ricavo netto − origination − margine societario, a chi eroga le giornate; per figura ' + esc(testoSplit(d)) + (R.split_auto ? ' (secondo «Chi esegue»)' : ' (quote indicate nella scheda)'), F.eur(R.exec || 0) + (R.exec ? '<small>' + esc(FIGURE_ESECUZIONE.map(([, k, nome]) => R['exec_' + k] > 0 ? nome + ' ' + F.eur(R['exec_' + k]) : '').filter(Boolean).join('; ')) + '</small>' : ''), 'pg-chiave');
   return h + '</table>';
 }
+function testoSplit(d) { const sp = d.rip && d.rip.split || { sp: 1, adv: 0, cons: 0 }; const F = MODELLO.F; return FIGURE_ESECUZIONE.map(([, k, nome]) => nome + ' ' + F.pct(sp[k] || 0)).join(', '); }
+function spiegaMargineProgetto(d) { const F = MODELLO.F; const P = S.P; if (d.linea === 'part') return '75% di ciò che resta del margine tecnico dopo l’origination (regola dei progetti con partner tecnico: la regia ha fino al 25% del residuo)'; if (d.linea === 'fin' || d.linea === 'form') return 'tutto il ricavo netto dopo l’origination: per queste linee il modello non prevede compensi di esecuzione ai Soci'; if (d.linea === 'diag') return F.pct(P.diag_soc) + ' del ricavo netto (margine ridotto sulla diagnosi di ingresso)'; return F.pct(P.soc_q) + ' del ricavo netto (margine societario ordinario)'; }
 function htmlParametriScheda(p) {
   const F = MODELLO.F; const q = parametriDi(p); const d = derivataDi(p); const anni = nomiEsercizi();
   const kv = (et, val, cls) => '<div class="pg-kv' + (cls ? ' ' + cls : '') + '"><span>' + esc(et) + '</span><b>' + val + '</b></div>';
@@ -4218,12 +4315,53 @@ function htmlFiltriProgetti() {
     '<button class="btn piccolo" id="pg-azzera">Azzera ricerca e filtri</button></div>';
 }
 function htmlRiepilogoProgetti(l) {
-  const F = MODELLO.F; const tot = elencoProgetti().length; const D = l.map(derivataDi); const val = D.reduce((a, d) => a + d.valore, 0);
-  const livv = k => D.filter(d => d.rango > 0 && d.rango <= MODELLO.RANGO_LIVELLO[k]).reduce((a, d) => a + d.valore, 0); const idee = D.filter(d => !d.livello);
-  const perStato = STATI_PROGETTO.map(([v, lab]) => { const n = l.filter(p => p.stato === v).length; return n ? '<span class="sem pg-stato pg-' + v + '">' + esc(lab) + ' ' + n + '</span>' : ''; }).join('');
-  const pl = pipelineCorrente(); const anni = nomiEsercizi(); const lb = livelloPipeline();
-  return '<div class="pg-riepilogo"><b>' + l.length + (l.length === 1 ? ' scheda' : ' schede') + '</b>' + (l.length !== tot ? ' su ' + tot : '') + ' · valore stimato ' + F.eur(val) + ' · acquisito ' + F.eur(livv('acquisito')) + ' · <b>probabile ' + F.eur(livv('probabile')) + '</b> · possibile ' + F.eur(livv('possibile')) + (idee.length ? ' · idee fuori dal piano ' + F.eur(idee.reduce((a, d) => a + d.valore, 0)) : '') + (perStato ? ' · ' + perStato : '') + '</div>' +
-    (pl.attiva ? '<div class="pg-pipeline"><span class="pg-gtit">Pipeline per esercizio (tutte le schede, livello adottato: ' + esc(etichettaLivello(lb).toLowerCase()) + ')</span>' + pl.anni.map(a => '<span class="pg-pl-anno"><b>' + esc(anni[a.i] || a.nome) + '</b> ' + a.n + (a.n === 1 ? ' scheda' : ' schede') + ' · ' + F.eur(a.valore) + (a.rt ? ' · ' + F.pct(a.copertura) + ' dei ricavi della traiettoria (' + F.eur(a.ricavi_traiettoria) + '; da ' + F.pct(a.liv.acquisito.copertura) + ' acquisito a ' + F.pct(a.liv.possibile.copertura) + ' possibile)' : '') + '</span>').join('') + '<button class="btn piccolo" data-pg="scenari">Apri Piano e scenari</button></div>' : '');
+  const F = MODELLO.F; const tot = elencoProgetti().length; if (!tot) return ''; const FL = filtroProgetti(); const D = l.map(derivataDi);
+  const somma = (a, k) => a.reduce((s, d) => s + (d[k] || 0), 0); const nSch = n => n + (n === 1 ? ' scheda' : ' schede');
+  const val = somma(D, 'valore'); const netto = somma(D, 'netto'); const idee = D.filter(d => !d.livello); const vIdee = somma(idee, 'valore');
+  const RP = { terzi: 0, orig: 0, exec: 0, soc: 0, exec_sp: 0, exec_adv: 0, exec_cons: 0 }; for (const d of D) if (d.rip) for (const k of Object.keys(RP)) RP[k] += d.rip[k] || 0;
+  const L = {}; for (const [k] of LIVELLI_PG) { const x = D.filter(d => d.rango > 0 && d.rango <= MODELLO.RANGO_LIVELLO[k]); L[k] = { n: x.length, valore: somma(x, 'valore') }; }
+  const lb = livelloPipeline(); const pl = pipelineCorrente(); const anni = nomiEsercizi(); const filtrate = l.length !== tot;
+  // riquadri di sintesi
+  const tile = (cls, et, big, sub, adottato) => '<div class="pg-tile' + (cls ? ' ' + cls : '') + (adottato ? ' adottato' : '') + '"><span>' + et + '</span><b>' + big + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + (adottato ? '<i class="pg-adottato">livello adottato dal piano</i>' : '') + '</div>';
+  const segR = (cls, v, tit) => v > 0 && val > 0 ? '<i class="pg-seg ' + cls + '" style="width:' + (v / val * 100).toFixed(2) + '%" title="' + esc(tit) + '"></i>' : '';
+  const tileRipartizione = () => '<div class="pg-tile pg-larga"><span>Valore stimato (fatturato)</span><b>' + F.eur(val) + '</b>' +
+    '<div class="pg-barra pg-barra-rip">' + segR('pg-r-orig', RP.orig, 'Origination: ' + F.eur(RP.orig)) + segR('pg-r-sp', RP.exec_sp, 'Esecuzione, Strategic Partner: ' + F.eur(RP.exec_sp)) + segR('pg-r-adv', RP.exec_adv, 'Esecuzione, Advisor: ' + F.eur(RP.exec_adv)) + segR('pg-r-cons', RP.exec_cons, 'Esecuzione, Consultant: ' + F.eur(RP.exec_cons)) + segR('pg-r-soc', RP.soc, 'Margine societario: ' + F.eur(RP.soc)) + segR('pg-s-idee', RP.terzi, 'A terzi: ' + F.eur(RP.terzi)) + '</div>' +
+    '<div class="pg-rip"><i class="pg-r-orig"></i><span>Origination</span><b>' + F.eur(RP.orig) + '</b><i class="pg-r-sp"></i><span>Esecuzione</span><b>' + F.eur(RP.exec) + '</b>' + (RP.exec ? '<em class="pg-rip-sotto">Strategic Partner ' + F.eur(RP.exec_sp) + '; Advisor ' + F.eur(RP.exec_adv) + '; Consultant ' + F.eur(RP.exec_cons) + '</em>' : '') + '<i class="pg-r-soc"></i><span>Margine societario</span><b>' + F.eur(RP.soc) + '</b>' + (RP.terzi > 0 ? '<i class="pg-s-idee"></i><span>A terzi <em>(ricavo netto ' + F.eur(netto) + ')</em></span><b>' + F.eur(RP.terzi) + '</b>' : '') + '</div></div>';
+  let h = '<section class="pg-riepilogo pg-cruscotto"><div class="pg-kpi" style="grid-template-columns: 1fr 2.4fr 1fr 1fr 1fr' + (idee.length ? ' 1fr' : '') + '">' +
+    tile('', filtrate ? 'Schede filtrate' : 'Schede', String(l.length), filtrate ? 'su ' + nSch(tot) + ' registrate' : (idee.length ? 'di cui ' + (idee.length === 1 ? '1 idea' : idee.length + ' idee') + ' fuori dal piano' : 'tutte con un cliente individuato')) +
+    tileRipartizione(val, netto, RP) +
+    tile('pg-liv-acquisito', 'Acquisito', F.eur(L.acquisito.valore), nSch(L.acquisito.n) + ': customer e promoter', lb === 'acquisito') +
+    tile('pg-liv-probabile', 'Probabile', F.eur(L.probabile.valore), nSch(L.probabile.n) + ': acquisite più prospect', lb === 'probabile') +
+    tile('pg-liv-possibile', 'Possibile', F.eur(L.possibile.valore), nSch(L.possibile.n) + ': più lead e suspect', lb === 'possibile') +
+    (idee.length ? tile('pg-idee', 'Idee fuori dal piano', F.eur(vIdee), nSch(idee.length) + ' senza un cliente individuato') : '') + '</div>';
+  // livelli di certezza: barra cumulativa
+  const base = val || 1; const seg = (cls, v, tit) => v > 0 ? '<i class="pg-seg ' + cls + '" style="width:' + (v / base * 100).toFixed(2) + '%" title="' + esc(tit) + '"></i>' : '';
+  const dProsp = L.probabile.valore - L.acquisito.valore, dLead = L.possibile.valore - L.probabile.valore;
+  h += '<div class="pg-grafici"><div class="pg-box"><div class="pg-gtit">Livelli di certezza <small>cumulativi: ogni scheda conta per intero nel livello del suo stato</small></div>' +
+    '<div class="pg-barra">' + seg('pg-s-acq', L.acquisito.valore, 'Acquisito: ' + F.eur(L.acquisito.valore)) + seg('pg-s-prob', dProsp, 'Prospect: ' + F.eur(dProsp)) + seg('pg-s-poss', dLead, 'Lead e suspect: ' + F.eur(dLead)) + seg('pg-s-idee', vIdee, 'Idee fuori dal piano: ' + F.eur(vIdee)) + '</div>' +
+    '<div class="pg-legenda"><span><i class="pg-s-acq"></i>Acquisito <b>' + F.eur(L.acquisito.valore) + '</b></span><span><i class="pg-s-prob"></i>Prospect ' + F.eur(dProsp) + ', probabile <b>' + F.eur(L.probabile.valore) + '</b></span><span><i class="pg-s-poss"></i>Lead e suspect ' + F.eur(dLead) + ', possibile <b>' + F.eur(L.possibile.valore) + '</b></span>' + (idee.length ? '<span><i class="pg-s-idee"></i>Idee fuori dal piano ' + F.eur(vIdee) + '</span>' : '') + '</div></div>';
+  // per stato e per linea di servizio: righe con barra, clic per filtrare
+  const senza = k => { const prima = FL[k]; FL[k] = []; try { return progettiFiltrati().map(derivataDi); } finally { FL[k] = prima; } };
+  // righe con barra: voci = [valore, etichetta, sempreVisibile, classeColore, filtrabile]; la voce appartiene alla scheda secondo la chiave k
+  const appartiene = (d, k, v) => k === 'stato' ? d.stato === v : k === 'linea' ? d.linea === v : k === 'practice' ? (v === '' ? !(d.practice || []).length : (d.practice || []).includes(v)) : false;
+  const righe = (k, voci) => { const Dk = senza(k); const dati = voci.map(([v, lab, fissa, cls, filtrabile]) => { const x = Dk.filter(d => appartiene(d, k, v)); return { v, lab, n: x.length, s: somma(x, 'valore'), fissa: fissa !== false, cls: cls || '', filtrabile: filtrabile !== false }; }).filter(r => r.n || r.fissa); const mx = Math.max.apply(null, dati.map(r => r.s).concat([1]));
+    const et = r => '<span class="pg-riga-et">' + (r.cls ? '<i class="pg-punto ' + r.cls + '"></i>' : '') + '<span>' + esc(r.lab) + '</span></span>';
+    return '<div class="pg-righe">' + dati.map(r => !r.n ? '<div class="pg-riga pg-zero" title="Nessuna scheda con questa voce">' + et(r) + '<span class="pg-riga-bar"></span><span class="pg-riga-val">nessuna scheda</span></div>'
+      : '<' + (r.filtrabile ? 'button type="button"' : 'div') + ' class="pg-riga' + (r.filtrabile && FL[k].includes(String(r.v)) ? ' attivo' : '') + (r.filtrabile ? '' : ' pg-fisso') + '"' + (r.filtrabile ? ' data-pg="filtra" data-k="' + k + '" data-v="' + esc(r.v) + '" title="Mostra solo queste schede (un secondo clic toglie il filtro)"' : '') + '>' + et(r) + '<span class="pg-riga-bar"><i class="pg-fill ' + r.cls + '" style="width:' + (r.s / mx * 100).toFixed(1) + '%"></i></span><span class="pg-riga-val">' + r.n + ' · ' + F.eur(r.s) + '</span></' + (r.filtrabile ? 'button' : 'div') + '>').join('') + '</div>'; };
+  h += '<div class="pg-box"><div class="pg-gtit">Per stato <small>i sei stati della relazione, con numero di schede e valore stimato; un clic sulla riga filtra l’elenco</small></div>' + righe('stato', STATI_PROGETTO.map(([v, l]) => [v, l, true, 'pg-' + v])) + '</div>';
+  h += '<div class="pg-box"><div class="pg-gtit">Per linea di servizio <small>le sei linee del modello, con numero di schede e valore stimato; un clic sulla riga filtra l’elenco</small></div>' + righe('linea', MODELLO.LINEE_PIPELINE.map(([v, l]) => [v, l, v !== 'altro'])) + '</div>';
+  const PRC = typeof PR_COL === 'object' ? PR_COL : {}; const vociPr = practiceElenco().map(p => [p.id, p.num + ' ' + p.nome, true, PRC[p.id] || 'pr0']).concat([['', 'Senza Practice indicata', false, 'pr0', false]]);
+  h += '<div class="pg-box"><div class="pg-gtit">Per Practice di riferimento <small>numero di schede e valore stimato; una scheda con più Practice conta in ciascuna; un clic sulla riga filtra l’elenco</small></div>' + righe('practice', vociPr) + '</div></div>';
+  // pipeline per esercizio, sulla traiettoria del piano
+  if (pl.attiva) {
+    h += '<div class="pg-box pg-pipeline"><div class="pg-gtit">Pipeline per esercizio <small>tutte le schede registrate; livello adottato dal piano: ' + esc(etichettaLivello(lb).toLowerCase()) + '; la barra misura la copertura dei ricavi previsti dalla traiettoria</small></div><div class="pg-anni">' +
+      pl.anni.map(a => { const nome = anni[a.i] || a.nome; let bar = '';
+        if (a.rt) { const c = k => a.liv[k].copertura || 0; const w = v => Math.min(100, v * 100).toFixed(1) + '%';
+          bar = '<div class="pg-cop" title="Ricavi della traiettoria: ' + esc(F.eur(a.ricavi_traiettoria)) + '"><i class="pg-cop-poss" style="width:' + w(c('possibile')) + '"></i><i class="pg-cop-prob" style="width:' + w(c('probabile')) + '"></i><i class="pg-cop-acq" style="width:' + w(c('acquisito')) + '"></i></div><small><b>' + F.pct(a.copertura) + '</b> dei ricavi della traiettoria (' + F.eur(a.ricavi_traiettoria) + '); da ' + F.pct(c('acquisito')) + ' acquisito a ' + F.pct(c('possibile')) + ' possibile' + (c('possibile') > 1 ? '; la pipeline supera la traiettoria' : '') + '</small>'; }
+        return '<div class="pg-anno"><span class="pg-anno-nome">' + esc(nome) + '</span><b>' + F.eur(a.valore) + '</b><small>' + nSch(a.n) + ' al livello ' + esc(etichettaLivello(lb).toLowerCase()) + (a.n_tutte !== a.n ? '; ' + a.n_tutte + ' in totale nell’esercizio' : '') + '</small>' + bar + '</div>'; }).join('') +
+      '</div><div class="pg-azioni-riga"><button class="btn piccolo" data-pg="scenari">Apri Piano e scenari</button></div></div>';
+  }
+  return h + '</section>';
 }
 function disegnaProgetti(tutto) {
   const m = $('#progetti'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); const F = filtroProgetti();
@@ -4254,11 +4392,13 @@ function htmlParametriForm(p) {
     '<label class="campo-testo">Giornate senior stimate<input class="q" data-q="giornate" inputmode="decimal" placeholder="automatico: ' + esc(F.num1(ggAuto)) + '" value="' + (q.giornate === '' || q.giornate == null ? '' : esc(String(q.giornate).replace('.', ','))) + '"><span>Vuoto = automatico dalla linea e dal valore (' + esc(F.num1(ggAuto)) + ' giornate con le ipotesi correnti). Contano per il tetto di capacità.</span></label>' +
     sel('terzi', 'Quota del valore che transita a terzi', OPZ_TERZI, q.terzi, 'Secondo la linea: ' + F.pct(terziAuto) + ' (partner tecnico, ente di formazione, struttura della finanza agevolata).') +
     sel('origination', 'Grado di origination del Socio referente', OPZ_ORIGINATION, q.origination, 'Determina l’origination: ' + F.pct(P.orig_min) + ', ' + F.pct(P.orig_med) + ' o ' + F.pct(P.orig_max) + ' del totale della commessa (il valore stimato, compresa la parte che transita a terzi); nel piano conta per intero, al livello di certezza della scheda.') +
-    sel('esecutore', 'Chi esegue', OPZ_ESECUTORE, q.esecutore) + sel('cliente', 'Tipo di cliente', OPZ_CLIENTE, q.cliente) + sel('settore', 'Settore', OPZ_SETTORE, q.settore) + sel('canale', 'Canale di provenienza', OPZ_CANALE, q.canale, 'Alimenta la tavola dei canali del capitolo VI.') +
+    sel('esecutore', 'Chi esegue', OPZ_ESECUTORE, q.esecutore, 'Decide anche la ripartizione automatica della quota di esecuzione: Soci, partner o misto agli Strategic Partner; risorse interne ai Consultant.') +
+    '<div class="campo-testo pg-exec">Quota di esecuzione per figura (%)<div class="pg-exec-campi">' + FIGURE_ESECUZIONE.map(([k, , nome]) => '<label><span>' + nome + '</span><input class="q" data-q="' + k + '" inputmode="decimal" placeholder="auto" value="' + (q[k] === '' || q[k] == null ? '' : esc(String(q[k]).replace('.', ','))) + '"></label>').join('') + '</div><span>Vuoto = secondo «Chi esegue». Ripartisce tra le figure la quota di esecuzione del ricavo netto (chi eroga le giornate); se la somma non è 100 viene riproporzionata.</span></div>' +
+    sel('cliente', 'Tipo di cliente', OPZ_CLIENTE, q.cliente) + sel('settore', 'Settore', OPZ_SETTORE, q.settore) + sel('canale', 'Canale di provenienza', OPZ_CANALE, q.canale, 'Alimenta la tavola dei canali del capitolo VI.') +
     '</div><div class="pg-anteprima" id="pg-anteprima"></div>';
 }
 function leggiParametriForm(fin) {
-  const q = {}; for (const k of CAMPI_PARAM) { const x = $('.q[data-q="' + k + '"]', fin); if (!x) { q[k] = ''; continue; } let v = x.value; if (k === 'giornate') { v = v.trim(); q[k] = v === '' ? '' : (numeroIt(v) == null ? '' : numeroIt(v)); } else if (k === 'terzi') q[k] = v === '' ? '' : Number(v); else if (k === 'esercizio') q[k] = v === '' ? '' : Number(v); else q[k] = v; }
+  const q = {}; for (const k of CAMPI_PARAM) { const x = $('.q[data-q="' + k + '"]', fin); if (!x) { q[k] = ''; continue; } let v = x.value; if (k === 'giornate' || k === 'exec_sp' || k === 'exec_adv' || k === 'exec_cons') { v = v.trim(); q[k] = v === '' ? '' : (numeroIt(v) == null ? '' : numeroIt(v)); } else if (k === 'terzi') q[k] = v === '' ? '' : Number(v); else if (k === 'esercizio') q[k] = v === '' ? '' : Number(v); else q[k] = v; }
   return q;
 }
 function anteprimaParametri(fin) {
@@ -4514,6 +4654,7 @@ function avviaProgetti() {
     if (b.id === 'pg-azzera') { F.q = ''; F.luogo = ''; F.stato = []; F.practice = []; F.sinergie = []; F.referenti = []; F.linea = []; F.esercizio = []; disegnaProgetti(true); return; }
     const az = b.dataset.pg; if (az === 'modifica') { if (!puoScrivereProgetti()) return; formProgetto(b.dataset.id); return; }
     if (az === 'elimina') { const p = progettoDi(b.dataset.id); if (!p) return; if (!confirm('Eliminare la scheda «' + (p.titolo || '') + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaProgetto(p.id); return; }
+    if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaProgetti(); return; }
     if (az === 'commessa') { commessaDaProgetto(b.dataset.id); return; }
     if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
@@ -4795,7 +4936,7 @@ const GUIDE_USO = {
     effetti: 'Ogni cifra calcolata del documento, le tabelle, i grafici, la Sintesi, Piano e scenari e le Proiezioni si aggiornano subito, per tutti i Soci. È la pagina con più conseguenze: prima di cambiare un numero conviene provarlo nelle Proiezioni Strategiche (sezione «Ipotesi di prova»), dove le modifiche restano private finché non si salvano.' },
   progetti: { tit: 'Schede Progetto',
     serve: 'È il registro dei progetti che ciascun Socio sta seguendo e porterà in Onward: una scheda per progetto, con stato, valore stimato, Practice, sinergie e i «parametri di progetto» che dicono al modello come contarlo.',
-    usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Lo stato dice a che punto è il progetto: «Idea» quando non c’è ancora un possibile cliente a cui proporlo (resta nel registro ma non entra nel piano), poi Suspect, Lead, Prospect, Customer e Promoter man mano che la relazione avanza. Ogni scheda conta per intero: lo stato decide il livello di certezza a cui la pipeline la include (acquisito, probabile, possibile), non una quota del suo valore. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto.',
+    usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Lo stato dice a che punto è il progetto: «Idea» quando non c’è ancora un possibile cliente a cui proporlo (resta nel registro ma non entra nel piano), poi Suspect, Lead, Prospect, Customer e Promoter man mano che la relazione avanza. Ogni scheda conta per intero: lo stato decide il livello di certezza a cui la pipeline la include (acquisito, probabile, possibile), non una quota del suo valore. In alto il cruscotto riassume le schede in forma grafica: numero, valore con la ripartizione tra origination, esecuzione per figura e margine societario, livelli di certezza (con il livello adottato dal piano), distribuzione per stato, per linea di servizio e per Practice di riferimento (un clic sulla riga filtra l’elenco) e pipeline per esercizio con la copertura della traiettoria. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto.',
     effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
   commessa: { tit: 'Scheda di commessa',
     serve: 'È un foglio di calcolo per una singola commessa: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, esecuzione, margine societario), margine per giornata senior e verifiche.',

@@ -1089,6 +1089,13 @@ a { color: var(--accento-scuro); }
 .pi-soci .pi-col:hover { color: var(--accento); border-bottom-color: var(--accento); }
 /* il pannello delle Ipotesi è più largo del 30% (728 px) per la tabella dei Soci */
 #pan-ipotesi { --pan-w-mio: 728px; }
+.tok.media { cursor: pointer; border-bottom: 1px dotted var(--termine-filo); }
+.tok.media:hover { border-bottom-color: var(--accento); }
+.campo output.calcolato { display: block; width: 100%; padding: .3rem .45rem; text-align: right; font-variant-numeric: tabular-nums; color: var(--secondario); border: 1px dashed var(--filo); border-radius: 8px; background: var(--lavaggio); }
+/* titoli di sezione dei pannelli e degli strumenti: occhielli in arancio, peso medio (non grassetto) */
+.pannello h4, .pg-gtit, .pg-param-tit, .q-livelli-et, .px-tit2, .px-form-tit, .cm-lh, .board-et { color: var(--accento); font-weight: 500; font-size: .8rem; letter-spacing: .14em; }
+.pannello h4 { margin: 1.4rem 0 .5rem; }
+.pannello h4 .gl-aiuto { margin-left: .35rem; }
 
 </style>
 </head>
@@ -1421,7 +1428,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T08:46:59Z';
+window.ONWARD_BUILD = '2026-09-13T10:17:40Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1478,6 +1485,8 @@ function setPath(obj, path, v) {
   o[parts[parts.length - 1]] = v;
 }
 const isParam = expr => /^P\.[\w.\[\]]+$/.test(expr);
+// le quattro medie della compagine derivano dalla tabella dei Soci e non si modificano direttamente
+const MEDIE_SOCI = ['P.gg_anno', 'P.q_prod', 'P.q_orig', 'P.q_gest']; const isMediaSoci = expr => MEDIE_SOCI.includes(expr);
 
 // ================================================================ numerazione e struttura
 function numera() {
@@ -1514,9 +1523,9 @@ function tokHtml(fmt, expr) {
     const num = S.numeri[expr] || '?';
     return '<span class="tok cap" contenteditable="false" data-fmt="cap" data-expr="' + esc(expr) + '" title="Rimando al capitolo: si aggiorna con la numerazione">' + esc(num) + '</span>';
   }
-  const v = valuta(expr); const par = isParam(expr);
+  const v = valuta(expr); const media = isMediaSoci(expr); const par = isParam(expr) && !media;
   const txt = Number.isFinite(v) ? MODELLO.formatta(fmt, v) : '…';
-  return '<span class="tok' + (par ? ' param' : '') + (Number.isFinite(v) ? '' : ' errore') + '" contenteditable="false" data-fmt="' + esc(fmt) + '" data-expr="' + esc(expr) + '" title="' + esc(par ? 'Ipotesi: ' + descrizioneParam(expr) + ' (clic per modificare)' : 'Valore calcolato: ' + expr) + '">' + esc(txt) + '</span>';
+  return '<span class="tok' + (par ? ' param' : media ? ' media' : '') + (Number.isFinite(v) ? '' : ' errore') + '" contenteditable="false" data-fmt="' + esc(fmt) + '" data-expr="' + esc(expr) + '" title="' + esc(par ? 'Ipotesi: ' + descrizioneParam(expr) + ' (clic per modificare)' : media ? descrizioneParam(expr) + ': media calcolata dalla tabella dei Soci (clic per aprirla)' : 'Valore calcolato: ' + expr) + '">' + esc(txt) + '</span>';
 }
 function aggiornaTok(root) {
   for (const sp of $$('.tok', root || document)) {
@@ -1821,9 +1830,16 @@ function salvaBlocco(info) { segna(info.file); }
 
 // parametri: clic sul chip
 document.addEventListener('click', ev => {
+  const med = ev.target.closest('.tok.media'); if (med) { ev.preventDefault(); apriPopoverMedia(med); return; }
   const chip = ev.target.closest('.tok.param'); if (!chip || S.readonly) return;
   ev.preventDefault(); apriPopoverParam(chip);
 });
+function apriTabellaSoci() { chiudiPopover(); if (!$('#pan-ipotesi').classList.contains('aperto')) apriPannello('pan-ipotesi'); const t = $('#pi-soci'); if (t) setTimeout(() => t.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60); }
+function apriPopoverMedia(chip) {
+  const expr = chip.dataset.expr; const n = (S.P.soci_dett || []).length;
+  apriPopoverNota(chip, descrizioneParam(expr), 'Media calcolata dalla tabella «Compagine e tempo» del pannello Ipotesi' + (n ? ' (' + n + ' Soci)' : '') + ': non si modifica direttamente, cambiano i valori dei singoli Soci.');
+  const pop = $('#popover'); if (pop && !S.readonly) { const b = el('div', { class: 'azioni' }); b.innerHTML = '<button class="btn piccolo primario" id="pop-tab">Apri la tabella dei Soci</button>'; pop.appendChild(b); $('#pop-tab', pop).onclick = apriTabellaSoci; }
+}
 function apriPopoverParam(chip) {
   chiudiPopover(); const expr = chip.dataset.expr; const fmt = fmtParam(expr); const v = getPath(S.P, expr);
   const pop = el('div', { class: 'popover', id: 'popover' });
@@ -1838,7 +1854,7 @@ function apriPopoverParam(chip) {
   const gl = $('.pop-gl', pop); if (gl) gl.onclick = e => { e.preventDefault(); apriPopoverTermine(chip, gl.dataset.term, { left: pop.style.left, top: pop.style.top, fisso }); };
 }
 function chiudiPopover() { const p = $('#popover'); if (p) p.remove(); }
-document.addEventListener('mousedown', ev => { if ($('#popover') && !ev.target.closest('#popover') && !ev.target.closest('.tok.param') && !ev.target.closest('.termine')) chiudiPopover(); });
+document.addEventListener('mousedown', ev => { if ($('#popover') && !ev.target.closest('#popover') && !ev.target.closest('.tok.param') && !ev.target.closest('.tok.media') && !ev.target.closest('.pi-col') && !ev.target.closest('.termine')) chiudiPopover(); });
 
 // selettore di valori da inserire nel testo
 function apriSelettoreValori(w, onScelta) {
@@ -1871,7 +1887,7 @@ function inserisciToken(w, fmt, expr) {
 // ================================================================ pannello Ipotesi
 function costruisciPannelloIpotesi() {
   const c = $('#pan-ipotesi .corpo'); let h = '<p class="nota-pannello">Ogni valore modificato ricalcola subito conto economico, capacità, reddito del Socio, scenari, grafici e cifre nel testo. Percentuali in %, importi in euro.</p>';
-  for (const [g, voci] of SCHEMA) { h += '<h4>' + renderTesto(g) + '</h4>'; for (const [p, l, f] of voci) { const vid = voceParam(p); h += '<div class="campo"><label>' + renderTesto(l) + (vid ? ' <button type="button" class="gl-aiuto" data-term="' + esc(vid) + '" title="Che cos’è: definizione e calcolo dal glossario">?</button>' : '') + '<small>' + esc(p) + '</small></label><input data-path="' + esc(p) + '" data-fmt="' + f + '"></div>'; if (p === 'P.q_gest') h += '<div id="pi-soci"></div>'; } }
+  for (const [g, voci] of SCHEMA) { h += '<h4>' + renderTesto(g) + '</h4>'; for (const [p, l, f] of voci) { const vid = voceParam(p); const media = isMediaSoci(p); h += '<div class="campo' + (media ? ' campo-media' : '') + '"><label>' + renderTesto(l) + (vid ? ' <button type="button" class="gl-aiuto" data-term="' + esc(vid) + '" title="Che cos’è: definizione e calcolo dal glossario">?</button>' : '') + '<small>' + esc(p) + (media ? ' · dalla tabella dei Soci' : '') + '</small></label>' + (media ? '<output class="calcolato" data-path="' + esc(p) + '" data-fmt="' + f + '" title="Media calcolata dalla tabella dei Soci: non si modifica direttamente"></output>' : '<input data-path="' + esc(p) + '" data-fmt="' + f + '">') + '</div>'; if (p === 'P.q_gest') h += '<div id="pi-soci"></div>'; } }
   h += '<h4>' + renderTesto('Costi di struttura') + ' (secondo esercizio) <button type="button" class="gl-aiuto" data-term="costi-struttura" title="Che cos’è">?</button></h4>';
   S.P.costi_struttura.forEach((v, i) => { h += '<div class="campo"><label><input type="text" data-nome="' + i + '" value="' + esc(v.nome) + '" style="text-align:left"></label><input data-path="P.costi_struttura[' + i + '].valore" data-fmt="eur"></div>'; });
   h += '<h4>' + renderTesto('Volumi per scenario') + ' (secondo esercizio) <button type="button" class="gl-aiuto" data-term="scenari" title="Che cos’è">?</button></h4><div class="griglia-scenari"><div></div><div class="colonna">Prudente</div><div class="colonna">Base</div><div class="colonna">Sviluppo</div>';
@@ -1890,6 +1906,7 @@ function costruisciPannelloIpotesi() {
 }
 function aggiornaPannelloIpotesi(forza) {
   for (const inp of $$('#pan-ipotesi input[data-path]')) { if (!forza && document.activeElement === inp) continue; const v = getPath(S.P, inp.dataset.path); const f = inp.dataset.fmt; inp.value = v == null ? '' : f === 'pct' ? String(Math.round(v * 10000) / 100).replace('.', ',') : f === 'dec' ? String(v).replace('.', ',') : MODELLO.F.num(v); inp.disabled = S.readonly; }
+  for (const o of $$('#pan-ipotesi output.calcolato[data-path]')) { const v = getPath(S.P, o.dataset.path); const f = o.dataset.fmt; o.textContent = v == null ? '' : f === 'pct' ? String(Math.round(v * 10000) / 100).replace('.', ',') + '%' : MODELLO.F.num(v); }
   disegnaTabellaSoci(forza);
 }
 
@@ -3802,7 +3819,7 @@ function fmtCampoSocio(f, v) { return f === 'pct' ? String(Math.round(v * 10000)
 function disegnaTabellaSoci(forza) {
   const box = $('#pi-soci'); if (!box) return; const rows = S.P.soci_dett || []; const ro = S.readonly;
   if (!forza && box.contains(document.activeElement)) { aggiornaCalcoliTabellaSoci(); return; }
-  let h = '<p class="nota-pannello">Per ciascun Socio: giornate lavorative annue dedicate a Onward e ripartizione del tempo tra produzione, origination e sviluppo, gestione. Le tre quote devono sommare al 100%. Le medie qui sopra derivano da questa tabella; modificando una media, il valore si applica a tutti i Soci.</p>';
+  let h = '<p class="nota-pannello">Per ciascun Socio: giornate lavorative annue dedicate a Onward e ripartizione del tempo tra produzione, origination e sviluppo, gestione. Le tre quote devono sommare al 100%. Le medie qui sopra derivano da questa tabella e non si modificano direttamente: si cambiano i valori dei singoli Soci.</p>';
   h += '<div class="tabella-wrap"><table class="tab pi-soci"><colgroup><col style="width:28%"><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:14%"></colgroup><tr class="intestazione"><td>Socio</td>' + [['gg', 'Giornate annue'], ['q_prod', 'Prod. %'], ['q_orig', 'Orig. %'], ['q_gest', 'Gest. %'], ['somma', 'Somma'], ['vend', 'Giornate vendibili']].map(([k, l]) => '<td><button type="button" class="pi-col" data-nota="' + k + '" title="Che cos’è: clic per la spiegazione">' + l + '</button></td>').join('') + '</tr>';
   rows.forEach((s, i) => { h += '<tr data-riga="' + i + '"><td><input type="text" class="pi-nome" data-socio="' + i + '" data-campo="nome" value="' + esc(s.nome || '') + '"' + (ro ? ' disabled' : '') + '></td>' + CAMPI_SOCIO.map(([k, l, f]) => '<td><input class="pi-inp" data-socio="' + i + '" data-campo="' + k + '" data-fmt="' + f + '" inputmode="decimal" value="' + esc(fmtCampoSocio(f, s[k] || 0)) + '"' + (ro ? ' disabled' : '') + '></td>').join('') + '<td class="pi-somma"></td><td class="pi-vend"></td></tr>'; });
   h += '<tr class="pi-tot"><td>Media; totale</td><td class="pi-m-gg"></td><td class="pi-m-prod"></td><td class="pi-m-orig"></td><td class="pi-m-gest"></td><td></td><td class="pi-cap"></td></tr></table></div>';
@@ -4631,7 +4648,7 @@ function avviaProiezioni() {
 const GUIDE_USO = {
   ipotesi: { tit: 'Ipotesi',
     serve: 'Qui stanno tutti i numeri di partenza del modello: quanti Soci, quante giornate, le tariffe, i ticket delle linee di ricavo, i costi di struttura, i volumi dei tre scenari. Sono gli stessi numeri che nel documento compaiono evidenziati in giallo.',
-    usa: 'Si scrive la nuova cifra nella casella e si esce dalla casella (o si preme Invio). Non c’è un pulsante di salvataggio: il salvataggio è automatico e resta nella Cronologia. La tabella «Compagine e tempo» permette di indicare giornate e quote di tempo per ciascun Socio; il «?» accanto a ogni voce ne apre la definizione.',
+    usa: 'Si scrive la nuova cifra nella casella e si esce dalla casella (o si preme Invio). Non c’è un pulsante di salvataggio: il salvataggio è automatico e resta nella Cronologia. La tabella «Compagine e tempo» permette di indicare giornate e quote di tempo per ciascun Socio; le quattro medie sopra la tabella sono calcolate da essa e non si modificano direttamente; il «?» accanto a ogni voce ne apre la definizione.',
     effetti: 'Ogni cifra calcolata del documento, le tabelle, i grafici, la Sintesi, Piano e scenari e le Proiezioni si aggiornano subito, per tutti i Soci. È la pagina con più conseguenze: prima di cambiare un numero conviene provarlo nelle Proiezioni Strategiche (sezione «Ipotesi di prova»), dove le modifiche restano private finché non si salvano.' },
   progetti: { tit: 'Schede Progetto',
     serve: 'È il registro dei progetti che ciascun Socio sta seguendo e porterà in Onward: una scheda per progetto, con stato, valore stimato, Practice, sinergie e i «parametri di progetto» che dicono al modello come contarlo.',

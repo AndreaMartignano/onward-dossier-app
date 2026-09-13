@@ -92,7 +92,7 @@ a { color: var(--accento); }
 .principale { padding: 2rem 2.4rem 6rem; }
 .doc { max-width: 86ch; margin: 0 auto; background: var(--carta); padding: 3rem 3.2rem 4rem; border: 1px solid var(--filo); }
 /* con un pannello aperto il documento resta visibile: si stringe e, sugli schermi medi, cede lo spazio del sommario */
-@media (min-width: 1001px) { body.con-pannello .principale { padding-right: calc(560px + 1.2rem); } }
+@media (min-width: 1001px) { body.con-pannello .principale { padding-right: calc(var(--pan-w, 560px) + 1.2rem); } }
 @media (min-width: 1001px) and (max-width: 1560px) { body.con-pannello .pagina { grid-template-columns: minmax(0, 1fr); } body.con-pannello .sommario { display: none; } }
 @media (max-width: 1000px) {
   .pagina { grid-template-columns: 1fr; }
@@ -185,7 +185,7 @@ section.capitolo, .blk.h2, .blk.h3, .divisore, [id^=scheda-] { scroll-margin-top
 .gl-strumenti { display: flex; gap: .4rem; margin: .4rem 0; flex-wrap: wrap; }
 .gl-voce.in-modifica textarea { width: 100%; font: inherit; font-size: .84rem; padding: .4rem .5rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); margin-top: .2rem; }
 .evid-barra { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); }
-body.con-pannello .evid-barra { left: calc((100vw - 560px) / 2); }
+body.con-pannello .evid-barra { left: calc((100vw - var(--pan-w, 560px)) / 2); }
 .evid-barra { z-index: 38; display: flex; gap: .4rem; align-items: center; background: var(--carta); border: 1px solid var(--filo); box-shadow: var(--ombra); border-radius: 20px; padding: .35rem .7rem; font-size: .8rem; max-width: calc(100vw - 24px); flex-wrap: wrap; justify-content: center; }
 .evid-barra .evid-t { font-weight: bold; }
 .evid-barra .evid-pos { color: var(--secondario); }
@@ -753,7 +753,7 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .popover .codice { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .72rem; color: var(--secondario); word-break: break-all; margin-bottom: .4rem; }
 
 /* pannelli laterali */
-.pannello { position: fixed; top: var(--barra-h, 52px); right: 0; bottom: 0; width: min(560px, 100vw); background: var(--carta); border-left: 1px solid var(--filo); box-shadow: var(--ombra); z-index: 47; display: none; flex-direction: column; }
+.pannello { position: fixed; top: var(--barra-h, 52px); right: 0; bottom: 0; width: min(var(--pan-w-mio, 560px), 100vw); background: var(--carta); border-left: 1px solid var(--filo); box-shadow: var(--ombra); z-index: 47; display: none; flex-direction: column; }
 .pannello.aperto { display: flex; }
 .pannello header { display: flex; align-items: center; justify-content: space-between; padding: .7rem 1rem; border-bottom: 1px solid var(--filo); font-weight: bold; }
 .pannello .corpo { overflow-y: auto; padding: .8rem 1rem 2rem; font-size: .86rem; }
@@ -1085,9 +1085,10 @@ a { color: var(--accento-scuro); }
 .interruttore button.attivo { background: var(--inchiostro); color: var(--carta); }
 .pi-soci .pi-somma.pi-errore { background: color-mix(in srgb, var(--errore) 12%, var(--carta)); }
 .pi-avviso { margin: .4rem 0 .6rem; padding: .5rem .7rem; border-left: 3px solid var(--errore); background: color-mix(in srgb, var(--errore) 8%, var(--carta)); color: var(--inchiostro); font-size: .82rem; border-radius: 0 8px 8px 0; }
-.pi-legenda { margin: .6rem 0 .8rem; font-size: .8rem; color: var(--secondario); display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .25rem .7rem; }
-.pi-legenda dt { font-family: var(--font-titoli); font-weight: 600; color: var(--inchiostro); }
-.pi-legenda dd { margin: 0; }
+.pi-soci .pi-col { background: none; border: 0; padding: 0; font: inherit; color: inherit; border-bottom: 1px dotted var(--termine-filo); cursor: pointer; text-align: left; line-height: 1.25; }
+.pi-soci .pi-col:hover { color: var(--accento); border-bottom-color: var(--accento); }
+/* il pannello delle Ipotesi è più largo del 30% (728 px) per la tabella dei Soci */
+#pan-ipotesi { --pan-w-mio: 728px; }
 
 </style>
 </head>
@@ -1420,7 +1421,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T08:21:03Z';
+window.ONWARD_BUILD = '2026-09-13T08:46:59Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -1878,7 +1879,7 @@ function costruisciPannelloIpotesi() {
   labs.forEach((l, i) => { h += '<div>' + esc(l) + '</div>'; for (const sc of ['Prudente', 'Base', 'Sviluppo']) h += '<input data-path="P.scenari.' + sc + '[' + i + ']" data-fmt="' + (i >= 2 && i <= 4 ? 'eur' : 'num') + '">'; });
   h += '</div><div style="margin-top:1rem"><button class="btn" id="ipotesi-reset">Ripristina le ipotesi di default</button></div>';
   c.innerHTML = h; aggiornaPannelloIpotesi(true);
-  c.addEventListener('click', e => { const b = e.target.closest('.gl-aiuto'); if (!b) return; e.preventDefault(); apriPopoverTermine(b, b.dataset.term); });
+  c.addEventListener('click', e => { const n = e.target.closest('.pi-col'); if (n) { e.preventDefault(); const L = LEGENDA_SOCI[n.dataset.nota]; if (L) apriPopoverNota(n, L[0], L[1], { term: L[2] }); return; } const b = e.target.closest('.gl-aiuto'); if (!b) return; e.preventDefault(); apriPopoverTermine(b, b.dataset.term); });
   c.addEventListener('change', e => { const inp = e.target;
     if (inp.dataset.socio != null) { const s = (S.P.soci_dett || [])[+inp.dataset.socio]; if (!s) return; if (inp.dataset.campo === 'nome') { s.nome = inp.value.trim() || s.nome; } else { let n = parseFloat(String(inp.value).replace(/\./g, '').replace(',', '.').replace('%', '')); if (!Number.isFinite(n) || n < 0) { disegnaTabellaSoci(true); return; } if (inp.dataset.fmt === 'pct') n = n / 100; s[inp.dataset.campo] = n; } sincronizzaSoci(); segna('ipotesi'); aggiornaCalcolati(); return; }
     if (!inp.dataset.path && inp.dataset.nome == null) return;
@@ -2066,8 +2067,9 @@ function diffParole(a, b) {
 }
 
 // ================================================================ pannelli, impostazioni, esportazioni
-function apriPannello(id) { for (const p of $$('.pannello')) p.classList.toggle('aperto', p.id === id && !p.classList.contains('aperto')); document.body.classList.toggle('con-pannello', !!$('.pannello.aperto')); }
-function chiudiPannelli() { for (const p of $$('.pannello')) p.classList.remove('aperto'); document.body.classList.remove('con-pannello'); }
+function larghezzaPannello() { const p = $('.pannello.aperto'); document.body.style.setProperty('--pan-w', p && p.id === 'pan-ipotesi' ? '728px' : '560px'); }
+function apriPannello(id) { for (const p of $$('.pannello')) p.classList.toggle('aperto', p.id === id && !p.classList.contains('aperto')); document.body.classList.toggle('con-pannello', !!$('.pannello.aperto')); larghezzaPannello(); }
+function chiudiPannelli() { for (const p of $$('.pannello')) p.classList.remove('aperto'); document.body.classList.remove('con-pannello'); larghezzaPannello(); }
 function costruisciImpostazioni() {
   const c = $('#pan-impostazioni .corpo'); const cfg = S.cfg || {};
   const G = window.ONWARD_GUSCIO;
@@ -2100,7 +2102,7 @@ async function collega(mostra) {
       else if (n === 0) { S.readonly = false; stato('attesa', 'Repository vuoto: inizializzarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Il repository è raggiungibile ma non contiene ancora il dossier. Premere «Inizializza il repository con questo contenuto» per scrivere i file (una sola volta, da parte di chi lo crea).</div>'; }
       else if (mancanti.length) { stato('attesa', 'Repository incompleto: completarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Collegato al repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + ': contiene ' + n + ' file del dossier, ne mancano ' + mancanti.length + '. Premere «Completa il repository» per scrivere i file mancanti con il contenuto corrente di questo file.</div>'; }
       else { stato('ok', 'Collegato al repository (' + n + ' file)'); if (esito) esito.innerHTML = '<div class="avviso">Collegato: ' + n + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.</div>'; }
-      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL(); homeAllAvvio();
+      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL(); completaIntroParti(); homeAllAvvio();
       if (n > 0 && S.backend.ultimoAlbero) for (const k of ['glossario', 'rete', 'commesse', 'quote', 'scenari']) if (!S.backend.ultimoAlbero[fileDi(k)]) segna(k); }
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
@@ -2185,6 +2187,29 @@ function apriPopoverTermine(anchor, id, pos) {
   $('#pop-evid', pop).onclick = () => { chiudiPopover(); evidenzia(id); };
   for (const a of $$('.pop-link', pop)) a.onclick = e => { e.preventDefault(); apriPopoverTermine(anchor, a.dataset.term, { left: pop.style.left, top: pop.style.top }); };
 }
+// finestra di spiegazione (stessa veste del popover dei termini) con testo proprio e, se indicato, il rimando al glossario
+function apriPopoverNota(anchor, titolo, testo, opt) {
+  opt = opt || {}; chiudiPopover();
+  const pop = el('div', { class: 'popover termine-pop', id: 'popover' });
+  const v = opt.term && typeof voceDi === 'function' ? voceDi(opt.term) : null;
+  pop.innerHTML = '<div class="pop-testa"><b>' + esc(titolo) + '</b><button class="btn piccolo" id="pop-chiudi" title="Chiudi">Chiudi</button></div><div class="pop-def">' + renderTesto(testo || '') + '</div>' + (v ? '<div class="azioni"><button class="btn piccolo primario" id="pop-gloss">Apri nel glossario: ' + esc(v.termine) + '</button></div>' : '');
+  const fisso = !!(anchor && anchor.closest && anchor.closest('.mappe, .pannello, .finestra')); if (fisso) pop.classList.add('fissa-pos'); const sx = fisso ? 0 : window.scrollX, sy = fisso ? 0 : window.scrollY;
+  document.body.appendChild(pop);
+  const r = anchor.getBoundingClientRect(); const w = pop.offsetWidth, h = pop.offsetHeight;
+  let left = r.left + sx; if (r.left + w > window.innerWidth - 12) left = Math.max(12, window.innerWidth - w - 12) + sx;
+  let top = r.bottom + sy + 6; if (r.bottom + h + 12 > window.innerHeight && r.top - h - 12 > 0) top = r.top + sy - h - 6;
+  pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  $('#pop-chiudi', pop).onclick = chiudiPopover;
+  const g = $('#pop-gloss', pop); if (g) g.onclick = () => { chiudiPopover(); apriGlossario(opt.term); };
+}
+const LEGENDA_SOCI = {
+  gg: ['Giornate annue', 'Le giornate lavorative che il Socio dedica a Onward in un anno (per un Socio a tempo pieno, di norma 220).'],
+  q_prod: ['Quota di tempo alla produzione', 'La parte di quelle giornate destinata alla produzione, cioè al lavoro fatturabile ai clienti. Moltiplicata per le giornate annue dà le giornate vendibili.', 'giornate-vendibili'],
+  q_orig: ['Quota di tempo a origination e sviluppo', 'La parte destinata ad aprire relazioni, qualificare i contatti, preparare le proposte e vendere: non è fatturata, è l’investimento del modello.', 'giornate-sviluppo'],
+  q_gest: ['Quota di tempo a gestione, metodo e formazione', 'La parte destinata alla conduzione della società, al metodo e alla formazione: non è fatturata.'],
+  somma: ['Somma delle tre quote', 'Le tre quote descrivono come si divide il tempo del Socio e devono dare 100%. Se la somma è diversa, la casella diventa rossa e indica quanto manca o quanto eccede: il tempo non assegnato (o assegnato due volte) rende incoerenti le giornate vendibili e i compensi di quel Socio.'],
+  vend: ['Giornate vendibili', 'Giornate annue × quota alla produzione: le giornate che il Socio può vendere ai clienti nell’anno. Il totale nell’ultima riga è la capacità complessiva della società; le altre celle dell’ultima riga sono le medie delle colonne.', 'giornate-vendibili']
+};
 document.addEventListener('keydown', ev => { if (ev.key !== 'Escape') return; if ($('#popover')) chiudiPopover(); else if ($('#finestra')) chiudiFinestra(); else if (typeof vistaAperta === 'function' && vistaAperta()) tornaAllaHome(); else { chiudiViste(); } });
 
 // pannello
@@ -3778,11 +3803,10 @@ function disegnaTabellaSoci(forza) {
   const box = $('#pi-soci'); if (!box) return; const rows = S.P.soci_dett || []; const ro = S.readonly;
   if (!forza && box.contains(document.activeElement)) { aggiornaCalcoliTabellaSoci(); return; }
   let h = '<p class="nota-pannello">Per ciascun Socio: giornate lavorative annue dedicate a Onward e ripartizione del tempo tra produzione, origination e sviluppo, gestione. Le tre quote devono sommare al 100%. Le medie qui sopra derivano da questa tabella; modificando una media, il valore si applica a tutti i Soci.</p>';
-  h += '<div class="tabella-wrap"><table class="tab pi-soci"><colgroup><col style="width:28%"><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:14%"></colgroup><tr class="intestazione"><td>Socio</td><td>Giornate annue</td><td title="Quota di tempo alla produzione">Prod. %</td><td title="Quota di tempo a origination e sviluppo">Orig. %</td><td title="Quota di tempo a gestione, metodo, formazione">Gest. %</td><td>Somma</td><td>Giornate vendibili</td></tr>';
+  h += '<div class="tabella-wrap"><table class="tab pi-soci"><colgroup><col style="width:28%"><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11%"><col style="width:12%"><col style="width:14%"></colgroup><tr class="intestazione"><td>Socio</td>' + [['gg', 'Giornate annue'], ['q_prod', 'Prod. %'], ['q_orig', 'Orig. %'], ['q_gest', 'Gest. %'], ['somma', 'Somma'], ['vend', 'Giornate vendibili']].map(([k, l]) => '<td><button type="button" class="pi-col" data-nota="' + k + '" title="Che cos’è: clic per la spiegazione">' + l + '</button></td>').join('') + '</tr>';
   rows.forEach((s, i) => { h += '<tr data-riga="' + i + '"><td><input type="text" class="pi-nome" data-socio="' + i + '" data-campo="nome" value="' + esc(s.nome || '') + '"' + (ro ? ' disabled' : '') + '></td>' + CAMPI_SOCIO.map(([k, l, f]) => '<td><input class="pi-inp" data-socio="' + i + '" data-campo="' + k + '" data-fmt="' + f + '" inputmode="decimal" value="' + esc(fmtCampoSocio(f, s[k] || 0)) + '"' + (ro ? ' disabled' : '') + '></td>').join('') + '<td class="pi-somma"></td><td class="pi-vend"></td></tr>'; });
   h += '<tr class="pi-tot"><td>Media; totale</td><td class="pi-m-gg"></td><td class="pi-m-prod"></td><td class="pi-m-orig"></td><td class="pi-m-gest"></td><td></td><td class="pi-cap"></td></tr></table></div>';
   h += '<div class="pi-avviso" hidden></div>';
-  h += '<dl class="pi-legenda"><dt>Giornate annue</dt><dd>le giornate lavorative che il Socio dedica a Onward in un anno.</dd><dt>Prod. %</dt><dd>la quota di quel tempo destinata alla produzione, cioè al lavoro fatturabile ai clienti.</dd><dt>Orig. %</dt><dd>la quota destinata a origination e sviluppo: relazioni, proposte, vendita.</dd><dt>Gest. %</dt><dd>la quota destinata a gestione, metodo e formazione.</dd><dt>Somma</dt><dd>le tre quote descrivono come si divide il tempo del Socio e devono dare 100%; se la somma è diversa, la casella diventa rossa e il tempo non assegnato (o assegnato due volte) rende incoerenti le cifre di quel Socio.</dd><dt>Giornate vendibili</dt><dd>giornate annue × Prod. %: le giornate che il Socio può vendere ai clienti. La loro somma, nell’ultima riga, è la capacità complessiva della società; le altre celle dell’ultima riga sono le medie delle colonne.</dd></dl>';
   h += '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0 .8rem"><button type="button" class="btn piccolo" id="pi-nomi-rete"' + (ro ? ' disabled' : '') + '>Nomi dalla rete di partenza</button><button type="button" class="btn piccolo" id="pi-pareggia"' + (ro ? ' disabled' : '') + '>Rendi uguali tutti i Soci</button></div>';
   box.innerHTML = h; aggiornaCalcoliTabellaSoci();
   box.addEventListener('input', e => { const inp = e.target.closest('.pi-inp'); if (!inp) return; const tr = inp.closest('tr'); const leggi = k => { const x = $('.pi-inp[data-campo="' + k + '"]', tr); const n = parseFloat(String(x.value).replace(/\./g, '').replace(',', '.').replace('%', '')); return Number.isFinite(n) ? n : 0; }; const somma = leggi('q_prod') + leggi('q_orig') + leggi('q_gest'); const ok = Math.abs(somma - 100) < 0.5; const c = $('.pi-somma', tr); c.textContent = MODELLO.F.pct(somma / 100) + (ok ? '' : (somma < 100 ? ' (manca ' + MODELLO.F.pct((100 - somma) / 100) + ')' : ' (eccede di ' + MODELLO.F.pct((somma - 100) / 100) + ')')); c.className = 'pi-somma' + (ok ? '' : ' pi-errore'); $('.pi-vend', tr).textContent = MODELLO.F.num(leggi('gg') * leggi('q_prod') / 100); });
@@ -5012,6 +5036,11 @@ function scartoBarre() { const b = $('.barra'); const f = $('#formato'); let h =
 function vaiA(id, senzaAnimazione) { const t = document.getElementById(id); if (!t) return; const y = t.getBoundingClientRect().top + window.scrollY - scartoBarre(); window.scrollTo({ top: Math.max(0, y), behavior: senzaAnimazione ? 'auto' : 'smooth' }); }
 document.addEventListener('click', ev => { const a = ev.target.closest('#sommario a[href^="#"]'); if (!a) return; ev.preventDefault(); const id = a.getAttribute('href').slice(1); vaiA(id); try { history.replaceState(null, '', '#' + id); } catch (e) {} for (const x of $$('#sommario a')) x.classList.toggle('attuale', x === a); });
 window.addEventListener('load', () => { if (location.hash) setTimeout(() => vaiA(location.hash.slice(1), true), 300); });
+const INTRO_PARTI_STANDARD = { 'parte-prima': "Che cosa è Onward, per chi e perché ora: i destinatari del documento, la proposta in sintesi, il Manifesto in otto movimenti, le cinque Practice, il mercato e il posizionamento, la strategia di accesso, lo schema con il partner tecnico e l’assetto societario." };
+// se una Parte non ha l'introduzione (repository impiantati prima di questa versione), la completa con il testo standard e la salva per tutti
+function completaIntroParti() {
+  try { if (S.readonly || !S.backend || S.repoVuoto) return; let n = 0; for (const p of S.parti || []) { const t = INTRO_PARTI_STANDARD[p.id]; if (t && !String(p.intro || '').trim()) { p.intro = t; n++; } } if (n) { segna('struttura'); renderDocumento(); toast('Introduzione della Parte prima aggiunta: il salvataggio è in corso'); } } catch (e) { console.warn(e); }
+}
 function homeAllAvvio() { if (S.homeAperta) return; S.homeAperta = true; if (location.hash && location.hash.length > 1 && !/[?&]?t=/.test(location.hash)) return; setTimeout(apriHome, 50); }
 function avvia() {
   try { const t = localStorage.getItem('onward.tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}

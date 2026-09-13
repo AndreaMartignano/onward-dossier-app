@@ -11,30 +11,31 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap">
 <style>
 :root {
-  --carta: #ffffff; --fondo: #f3f5f8; --inchiostro: #1c1f24; --secondario: #5a6270; --filo: #d8dce2; --lavaggio: #f3f5f8;
-  --accento: #2b4c7e; --accento-testo: #ffffff; --chip: #e9eff7; --chip-bordo: #c9d6e8; --chip-param: #fff0a6; --chip-param-bordo: #d9b93a;
-  --ok: #2e7d4f; --attesa: #a26a12; --errore: #b23a3a; --selezione: #dbe6f5; --ombra: 0 8px 28px rgba(20, 30, 50, .14);
-  --termine-filo: #8e9bb0; --evid: #dedede; --evid-forte: #bcbcbc;
+  --carta: #ffffff; --fondo: #F7F5F1; --inchiostro: #26221E; --secondario: #6E6A64; --filo: #E4DFD6; --lavaggio: #F3EFE8;
+  --accento: #DE5400; --accento-testo: #ffffff; --accento-scuro: #BE3C00; --chip: #F3EFE8; --chip-bordo: #D9D2C7; --chip-param: #fff0a6; --chip-param-bordo: #d9b93a;
+  --ok: #2e7d4f; --attesa: #a26a12; --errore: #b23a3a; --selezione: #FBE6D9; --ombra: 0 1px 2px rgba(38, 34, 30, .05), 0 8px 28px rgba(38, 34, 30, .10);
+  --termine-filo: #B3ACA8; --evid: #EDE8E0; --evid-forte: #D9D2C7;
   --pr1: #3d6aa5; --pr2: #4f8a5b; --pr3: #b57a2a; --pr4: #8a4f7d; --pr5: #5f6b7a; --pr-testo: #ffffff;
-  --btn-arancio: #ffe0c2; --btn-arancio-bordo: #e6b98a; --btn-verde: #dff3e0; --btn-verde-bordo: #9ed1a5; --btn-grigio: #eceef1; --btn-grigio-bordo: #d0d5db; --btn-blu: #dbe8f8; --btn-blu-bordo: #9dbce3; --btn-rosso: #f9d9d7; --btn-rosso-bordo: #e29c98; --btn-viola: #e8dff5; --btn-viola-bordo: #b9a3dc;
+  --btn-arancio: #FBE3CF; --btn-arancio-bordo: #E9B48C; --btn-verde: #E3EFE0; --btn-verde-bordo: #A7C9A6; --btn-grigio: #EFECE6; --btn-grigio-bordo: #D6D0C6; --btn-blu: #E2E8F0; --btn-blu-bordo: #A9B8CC; --btn-rosso: #F7DDD8; --btn-rosso-bordo: #E0A39C; --btn-viola: #ECE4F1; --btn-viola-bordo: #BFA9D3;
+  --font-testo: "Source Sans 3", Arial, Helvetica, "Liberation Sans", sans-serif; --font-titoli: Outfit, Arial, Helvetica, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --carta: #171a1f; --fondo: #101215; --inchiostro: #e4e7eb; --secondario: #9aa3b0; --filo: #2c323b; --lavaggio: #1e2228;
-    --accento: #8fb2e3; --accento-testo: #0f1a2b; --chip: #23304a; --chip-bordo: #34486b; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
-    --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #263650; --ombra: 0 8px 28px rgba(0, 0, 0, .5);
-    --termine-filo: #5f6d84; --evid: #454a52; --evid-forte: #6a707a;
+    --carta: #26221E; --fondo: #1A1714; --inchiostro: #F3EEE7; --secondario: #B3ACA8; --filo: #3B3530; --lavaggio: #2C2824;
+    --accento: #F4741E; --accento-testo: #1A1714; --accento-scuro: #F58A45; --chip: #33302B; --chip-bordo: #4A453E; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
+    --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #4A2A14; --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .45);
+    --termine-filo: #6E6A64; --evid: #3D3833; --evid-forte: #57514A;
     --pr1: #7ea6dd; --pr2: #7fbf8b; --pr3: #d9a55a; --pr4: #c48ab8; --pr5: #a5b1c0; --pr-testo: #0f1a2b;
-    --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #2a2f36; --btn-grigio-bordo: #4a525c; --btn-blu: #1f3350; --btn-blu-bordo: #4f7ab5; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c74bf;
+    --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #33302B; --btn-grigio-bordo: #57514A; --btn-blu: #2A3442; --btn-blu-bordo: #5F7A9C; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c7ab0;
   }
 }
 :root[data-theme="dark"] {
-  --carta: #171a1f; --fondo: #101215; --inchiostro: #e4e7eb; --secondario: #9aa3b0; --filo: #2c323b; --lavaggio: #1e2228;
-  --accento: #8fb2e3; --accento-testo: #0f1a2b; --chip: #23304a; --chip-bordo: #34486b; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
-  --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #263650; --ombra: 0 8px 28px rgba(0, 0, 0, .5);
-    --termine-filo: #5f6d84; --evid: #454a52; --evid-forte: #6a707a;
-    --pr1: #7ea6dd; --pr2: #7fbf8b; --pr3: #d9a55a; --pr4: #c48ab8; --pr5: #a5b1c0; --pr-testo: #0f1a2b;
-    --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #2a2f36; --btn-grigio-bordo: #4a525c; --btn-blu: #1f3350; --btn-blu-bordo: #4f7ab5; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c74bf;
+  --carta: #26221E; --fondo: #1A1714; --inchiostro: #F3EEE7; --secondario: #B3ACA8; --filo: #3B3530; --lavaggio: #2C2824;
+  --accento: #F4741E; --accento-testo: #1A1714; --accento-scuro: #F58A45; --chip: #33302B; --chip-bordo: #4A453E; --chip-param: #5c4c12; --chip-param-bordo: #d9b93a;
+  --ok: #6fc190; --attesa: #e0b15a; --errore: #e57f7f; --selezione: #4A2A14; --ombra: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 30px rgba(0, 0, 0, .45);
+  --termine-filo: #6E6A64; --evid: #3D3833; --evid-forte: #57514A;
+  --pr1: #7ea6dd; --pr2: #7fbf8b; --pr3: #d9a55a; --pr4: #c48ab8; --pr5: #a5b1c0; --pr-testo: #0f1a2b;
+  --btn-arancio: #5a3a1c; --btn-arancio-bordo: #c98a4b; --btn-verde: #1f4a2a; --btn-verde-bordo: #5f9c6b; --btn-grigio: #33302B; --btn-grigio-bordo: #57514A; --btn-blu: #2A3442; --btn-blu-bordo: #5F7A9C; --btn-rosso: #5a2626; --btn-rosso-bordo: #b85c5a; --btn-viola: #3a2d55; --btn-viola-bordo: #8c7ab0;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -51,14 +52,14 @@ a { color: var(--accento); }
 .barra .marchio { font-weight: bold; letter-spacing: .04em; font-size: .9rem; margin-right: .2rem; white-space: nowrap; }
 .barra .btn { padding: .32rem .55rem; font-size: .8rem; }
 .barra .stato { max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
-.barra .marchio small { display: block; font-weight: normal; letter-spacing: 0; color: var(--secondario); font-size: .72rem; }
+.barra .marchio small { display: none; }
 .barra .spazio { flex: 1; }
-@media (max-width: 1800px) { .barra .marchio small { display: none; } .barra .stato { max-width: 170px; } .barra { gap: .35rem; } .barra .btn { padding: .3rem .45rem; font-size: .77rem; } }
-@media (max-width: 1600px) { .barra { gap: .3rem; padding: .4rem .6rem; } .barra .stato { max-width: 130px; font-size: .74rem; } .barra .btn { padding: .28rem .36rem; font-size: .74rem; } .barra .interruttore button { padding: .28rem .45rem; font-size: .75rem; } .barra .zoom button { padding: .2rem .3rem; } }
-@media (max-width: 1480px) { .barra .stato { max-width: 110px; font-size: .7rem; } .barra .btn { padding: .26rem .3rem; font-size: .71rem; } .barra .zoom { display: none; } .barra .marchio { font-size: .82rem; } }
-@media (max-width: 1340px) { .barra { gap: .22rem; padding: .35rem .45rem; } .barra .stato { max-width: 96px; } .barra .btn { padding: .24rem .26rem; font-size: .68rem; } .barra .interruttore button { padding: .24rem .36rem; font-size: .7rem; } }
-@media (max-width: 1400px) { .barra .marchio { display: none; } .barra .stato { max-width: 90px; } }
-@media (max-width: 1300px) { .barra { gap: .18rem; padding: .3rem .35rem; } .barra .btn { padding: .22rem .22rem; font-size: .66rem; } .barra .stato { max-width: 80px; } }
+@media (max-width: 1920px) { .barra .stato { max-width: 170px; } .barra { gap: .35rem; } .barra .btn { padding: .3rem .45rem; font-size: .77rem; } }
+@media (max-width: 1760px) { .barra { gap: .3rem; padding: .4rem .6rem; } .barra .stato { max-width: 130px; font-size: .74rem; } .barra .btn { padding: .28rem .36rem; font-size: .74rem; } .barra .interruttore button { padding: .28rem .45rem; font-size: .75rem; } .barra .zoom button { padding: .2rem .3rem; } }
+@media (max-width: 1580px) { .barra .stato { max-width: 110px; font-size: .7rem; } .barra .btn { padding: .26rem .3rem; font-size: .71rem; } .barra .zoom { display: none; } .barra .marchio { font-size: .82rem; } }
+@media (max-width: 1430px) { .barra { gap: .22rem; padding: .35rem .45rem; } .barra .stato { max-width: 96px; } .barra .btn { padding: .24rem .26rem; font-size: .68rem; } .barra .interruttore button { padding: .24rem .36rem; font-size: .7rem; } }
+@media (max-width: 1500px) { .barra .marchio { display: none; } .barra .stato { max-width: 90px; } }
+@media (max-width: 1390px) { .barra { gap: .18rem; padding: .3rem .35rem; } .barra .btn { padding: .22rem .22rem; font-size: .66rem; } .barra .stato { max-width: 80px; } }
 .btn { border: 1px solid var(--filo); background: var(--carta); color: var(--inchiostro); border-radius: 4px; padding: .38rem .7rem; font-size: .84rem; line-height: 1.2; white-space: nowrap; }
 .btn:hover { background: var(--lavaggio); }
 .btn.primario { background: var(--accento); color: var(--accento-testo); border-color: var(--accento); }
@@ -1044,6 +1045,49 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pannello .guida-uso .guida-corpo { max-width: none; }
 @media print { .guida-slot { display: none; } }
 
+/* ================================================================ veste Onward per tutta la piattaforma (caratteri, forme, toni); il marchio resta solo nella barra e nella pagina Manifesto e Business Plan */
+html { font-size: 16px; }
+body { font-family: var(--font-testo); }
+h1, h2, h3, h4, h1.cap, .blk.h2 .txt, .blk.h3 .txt, .blk.rete .gen.h2 .txt, .frontespizio .t1, .frontespizio .t2, .frontespizio .t3, .divisore, .titolo-parte, .mappe-testa > b, .pannello header, .q-testa h3, .si-testa h3, .pg-testa h3, .si-hero-tit, .rz-hero-tit, .rz-frase.grande, .cm-kpi b, .rz-num > b, .si-pr-num, .rz-pr-num, .si-scen-num b, .si-ind-val b, .pop-tit, .gl-tit, .sommario .parte-tit, .hm-meta .k { font-family: var(--font-titoli); letter-spacing: -.015em; }
+.blk.h3 .txt { font-style: normal; font-weight: 600; }
+h1.cap { font-weight: 700; letter-spacing: -.02em; border-bottom-color: var(--filo); }
+h1.cap .num { color: var(--accento); font-weight: 500; }
+.divisore { letter-spacing: .12em; font-weight: 500; color: var(--accento); background: transparent; border: 0; border-top: 1px solid var(--filo); border-bottom: 1px solid var(--filo); }
+.frontespizio .t1 { letter-spacing: .16em; font-weight: 500; color: var(--accento); }
+.frontespizio .t3 { letter-spacing: .04em; }
+.sommario .parte-num, .mappa-rete .colonna, .board-et, .formato .formato-et, .cm-lh, .cm-kpi > span, #sintesi-tit .si-parte-num, #riassunto-tit .si-parte-num, .si-occhiello, .si-et, .si-h3, .si-arena-legenda, .si-fase-per, .rz-tit, .rz-num > span, .rz-ip span, .rz-fase > span, .pannello h4, .diff .b, .mod-giorno, .tr-dove, .tendina-tit, .pg-gtit, .pg-param-tit, .pg-kv > span, .pg-conti tr.pg-conti-testa td, .q-livelli-et, .px-tit2, .px-form-tit, .guida-uso .guida-et { font-family: var(--font-titoli); font-weight: 500; letter-spacing: .12em; }
+table.tab tr.intestazione td, table.tab td.etichetta, .q-tab th, .s-tab th, .px-tab tr.intestazione td { font-family: var(--font-titoli); font-weight: 600; letter-spacing: -.005em; }
+.btn, .interruttore button, .mappe-testa .schede button, .hm-b { font-family: var(--font-titoli); font-weight: 600; letter-spacing: 0; }
+.btn { border-radius: 100px; }
+.interruttore { border-radius: 100px; }
+.interruttore button { padding-left: .9rem; padding-right: .9rem; }
+.stato { font-family: var(--font-titoli); font-weight: 500; }
+.tendina-menu { border-radius: 12px; }
+.tendina-menu button { border-radius: 8px; }
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea, .ricerca, .q-inp, .s-inp { border-radius: 8px; }
+.barra { background: rgba(247, 245, 241, .94); backdrop-filter: saturate(160%) blur(10px); -webkit-backdrop-filter: saturate(160%) blur(10px); }
+.barra .btn.home { box-shadow: 0 4px 14px rgba(222, 84, 0, .22); }
+.barra .btn.home:hover { filter: none; background: var(--accento-scuro); border-color: var(--accento-scuro); }
+.doc { border-radius: 14px; box-shadow: var(--ombra); border-color: var(--filo); }
+.sommario { background: transparent; border-right-color: var(--filo); }
+.sommario a { border-radius: 8px; }
+.sommario a.parte { border-radius: 0; }
+a { color: var(--accento-scuro); }
+.mappe { background: var(--fondo); }
+.pannello { border-left-color: var(--filo); }
+.toast { border-radius: 100px; font-family: var(--font-titoli); font-weight: 500; }
+.chip, .sem { font-family: var(--font-titoli); font-weight: 500; letter-spacing: .01em; }
+.mappe-testa .schede { border-radius: 100px; }
+.guida-slot .guida-uso, .pannello .guida-uso { border: 1px solid var(--filo); border-left: 4px solid var(--accento); border-radius: 12px; background: var(--carta); color: var(--inchiostro); font-size: .86rem; }
+.guida-uso .guida-et { color: var(--accento); }
+.guida-uso .guida-tit { font-family: var(--font-titoli); font-weight: 700; color: var(--inchiostro); letter-spacing: -.01em; }
+.guida-uso .guida-cmd { color: var(--secondario); font-family: var(--font-titoli); font-weight: 600; text-decoration: none; }
+.guida-uso .guida-corpo { color: var(--secondario); }
+.guida-uso .guida-corpo b { color: var(--inchiostro); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .barra { background: rgba(26, 23, 20, .94); } }
+:root[data-theme="dark"] .barra { background: rgba(26, 23, 20, .94); }
+.interruttore button.attivo { background: var(--inchiostro); color: var(--carta); }
+
 </style>
 </head>
 <body>
@@ -1375,7 +1419,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-12T20:09:50Z';
+window.ONWARD_BUILD = '2026-09-13T07:26:14Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';

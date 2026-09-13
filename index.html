@@ -1009,6 +1009,13 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .pg-punto.pg-promoter, .pg-fill.pg-promoter { background: var(--pg-promoter); }
 .pg-riga-val { font-variant-numeric: tabular-nums; color: var(--secondario); white-space: nowrap; }
 .pg-riga.pg-fisso { cursor: default; }
+/* colonne delle Practice: presentazione e servizi offerti */
+.board-sotto { margin: .1rem 0 .55rem; font-size: .78rem; line-height: 1.35; color: var(--secondario); }
+.board-servizi ul { list-style: none; margin: .1rem 0 .2rem; padding: 0; }
+.board-servizi li { position: relative; padding-left: .85rem; font-size: .8rem; line-height: 1.3; margin: .12rem 0; }
+.board-servizi li::before { content: ''; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; border-radius: 50%; background: var(--pr, var(--accento)); }
+.board-servizi .board-mod { margin-top: .35rem; }
+.pop-servizi li { margin: .1rem 0; }
 .pg-nota { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-align: left; border-bottom: 1px dotted var(--termine-filo); line-height: inherit; }
 .pg-nota:hover { color: var(--accento); border-bottom-color: var(--accento); }
 .pg-gtit .pg-nota { border-bottom-color: color-mix(in srgb, var(--accento) 45%, transparent); }
@@ -1220,9 +1227,9 @@ a { color: var(--accento-scuro); }
   <button class="btn home" id="b-home" title="La pagina iniziale: l’indice del documento per Parti e capitoli, nelle tre versioni (Sintesi, Estesa, Integrale)">Manifesto e Business Plan</button>
   <button class="btn ipotesi" id="b-ipotesi" title="Le ipotesi del modello: i valori in giallo del documento">Ipotesi</button>
   <button class="btn blu" id="b-progetti" title="I progetti che i Soci seguono e porteranno in Onward: schede consultabili da tutti, con ricerca e filtri">Schede Progetto</button>
-  <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa e Piano e scenari (il piano condiviso della Parte terza)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button></div></div>
+  <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa, Piano e scenari (il piano condiviso della Parte terza) e Soci (struttura delle quote)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button><button id="b-soci">Soci</button></div></div>
   <button class="btn viola" id="b-proiezioni" title="Cruscotto unificato: i tre scenari sui tre esercizi, i dati reali rilevati e la proiezione della crescita, con ipotesi di prova che non toccano il documento">Proiezioni Strategiche</button>
-  <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Rete di partenza, Practice e struttura delle quote">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Partnership</button><button id="b-practice">Practice</button><button id="b-soci">Soci</button></div></div>
+  <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Soci e Società Partner (la rete di partenza) e Practices e Servizi">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Soci e Società Partner</button><button id="b-practice">Practices e Servizi</button></div></div>
   <button class="btn grigio" id="b-glossario">Glossario</button>
   <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
   <button class="btn grigio" id="b-storico">Cronologia</button>
@@ -1275,7 +1282,7 @@ a { color: var(--accento-scuro); }
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
 </div>
 <div class="mappe" id="mappe" hidden>
-  <div class="mappe-testa"><b>Practices e Persone</b><div class="schede"><button data-vista="rete">Partnership</button><button data-vista="practice">Practice</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Practices e Persone</b><div class="schede"><button data-vista="rete">Soci e Società Partner</button><button data-vista="practice">Practices e Servizi</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="rete"></div>
   <div class="mappe-corpo"></div>
 </div>
@@ -1588,7 +1595,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T19:49:51Z';
+window.ONWARD_BUILD = '2026-09-13T20:51:25Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2326,7 +2333,7 @@ async function collega(mostra) {
       else if (n === 0) { S.readonly = false; stato('attesa', 'Repository vuoto: inizializzarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Il repository è raggiungibile ma non contiene ancora il dossier. Premere «Inizializza il repository con questo contenuto» per scrivere i file (una sola volta, da parte di chi lo crea).</div>'; }
       else if (mancanti.length) { stato('attesa', 'Repository incompleto: completarlo dalle impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Collegato al repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + ': contiene ' + n + ' file del dossier, ne mancano ' + mancanti.length + '. Premere «Completa il repository» per scrivere i file mancanti con il contenuto corrente di questo file.</div>'; }
       else { stato('ok', 'Collegato al repository (' + n + ' file)'); if (esito) esito.innerHTML = '<div class="avviso">Collegato: ' + n + ' file letti dal repository ' + esc(S.cfg.owner + '/' + S.cfg.repo) + '.</div>'; }
-      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL(); completaIntroParti(); homeAllAvvio();
+      for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); renderDocumento(); costruisciPannelloIpotesi(); pollTimer = setInterval(controllaNovita, window.ONWARD_POLL_MS || 60000); if (!S.readonly && !mancanti.length) registraAccesso(); if (!S.readonly && !mancanti.length) caricaBozzaLocale(); aggiornaBannerProposta(); aggiornaBadgeModifiche(); if (!S.readonly && !mancanti.length) bonificaAutomaticaVL(); completaIntroParti(); completaServiziPractice(); homeAllAvvio();
       if (n > 0 && S.backend.ultimoAlbero) for (const k of ['glossario', 'rete', 'commesse', 'quote', 'scenari']) if (!S.backend.ultimoAlbero[fileDi(k)]) segna(k); }
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
@@ -2651,6 +2658,20 @@ function renderRete(b) {
   if (S.mode === 'modifica' && !S.readonly) attrezza(w, b);
   return w;
 }
+function modificaServiziPractice(pid) {
+  const p = (S.rete.practice || []).find(x => x.id === pid); if (!p || S.readonly) return; chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente', id: 'finestra' });
+  fin.innerHTML = '<div class="pop-testa"><b>Practice ' + esc(p.num) + ' · ' + esc(p.nome) + ': servizi offerti</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div><p class="nota-pannello">Un servizio per riga, nell’ordine in cui compaiono nella colonna della Practice; l’elenco è quello del sito onward-partners.netlify.app e si può adeguare. La frase di presentazione compare sotto il titolo della Practice.</p>' +
+    '<label class="campo-testo">Presentazione<textarea class="f" data-f="sottotitolo" rows="3">' + esc(sottotitoloPractice(p)) + '</textarea></label><label class="campo-testo">Servizi offerti (uno per riga)<textarea class="f" data-f="servizi" rows="9">' + esc(serviziPractice(p).join('\n')) + '</textarea></label>' +
+    '<div class="azioni gl-azioni"><button class="btn piccolo" id="fin-standard">Ripristina l’elenco del sito</button><span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="fin-salva">Salva</button></div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto');
+  $('#fin-chiudi', fin).onclick = chiudiFinestra; $('#fin-annulla', fin).onclick = chiudiFinestra;
+  $('#fin-standard', fin).onclick = () => { const st = SERVIZI_PRACTICE_STANDARD[p.id]; if (!st) return; $('.f[data-f="sottotitolo"]', fin).value = st.sottotitolo; $('.f[data-f="servizi"]', fin).value = st.servizi.join('\n'); };
+  $('#fin-salva', fin).onclick = () => { p.sottotitolo = $('.f[data-f="sottotitolo"]', fin).value.trim(); p.servizi = $('.f[data-f="servizi"]', fin).value.split('\n').map(x => x.trim()).filter(Boolean); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.rete = 'Practice ' + p.num + ': aggiornati i servizi offerti'; segna('rete'); chiudiFinestra(); aggiornaRete(); toast('Servizi della Practice ' + p.num + ' aggiornati: il salvataggio è in corso'); };
+}
+// al collegamento: le Practice senza l’elenco dei servizi lo ricevono dal sito (chi può scrivere lo salva per tutti)
+function completaServiziPractice() {
+  try { if (S.readonly || !S.backend || S.repoVuoto) return; let n = 0; for (const p of (S.rete && S.rete.practice) || []) { const st = SERVIZI_PRACTICE_STANDARD[p.id]; if (!st) continue; if (!Array.isArray(p.servizi) || !p.servizi.length) { p.servizi = st.servizi.slice(); n++; } if (!(typeof p.sottotitolo === 'string' && p.sottotitolo.trim())) { p.sottotitolo = st.sottotitolo; n++; } } if (n) { if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.rete = 'Practice: aggiunti i servizi offerti (dal sito)'; segna('rete'); aggiornaRete(); toast('Servizi offerti delle Practice aggiunti dal sito: il salvataggio è in corso'); } } catch (e) { console.warn(e); }
+}
 function aggiornaRete() {
   ricalcola(); costruisciRegexTermini(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto();
   for (const w of $$('.blk.rete')) { const info = blocco(w.dataset.id); if (info) w.replaceWith(renderBlocco(info.b)); }
@@ -2716,8 +2737,9 @@ function apriPractice(pid, anchor) {
   html += '<div class="sc-riga">' + renderTesto('Capacità attribuita: {{pct:N.practice.' + p.id + '.quota}} della capacità, {{num:(N.practice.' + p.id + '.quota * r.capacita)}} giornate senior; ricavo generabile dal tempo dei Soci {{eur:(N.practice.' + p.id + '.quota * r.capacita * P.util[1] * P.tariffa_media[1])}} (capitolo {{cap:capacita-cliente-e-leve}}, § 1)') + '</div>';
   if (d.perimetro) html += '<div class="pop-tit">Perimetro</div><div class="pop-def">' + renderTesto(d.perimetro) + '</div>';
   if (d.cliente) html += '<div class="pop-tit">Cliente di riferimento</div><div class="pop-def">' + renderTesto(d.cliente) + '</div>';
+  const servP = serviziPractice(p); if (servP.length) html += '<div class="pop-tit">Servizi offerti</div><ul class="pop-calc pop-servizi">' + servP.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
   if (d.aree.length) html += '<div class="pop-tit">Aree di servizio</div><ul class="pop-calc">' + d.aree.map(a => '<li><b>' + renderTesto(a.nome) + '.</b> ' + renderTesto(a.testo) + '</li>').join('') + '</ul>';
-  html += '<div class="azioni"><button class="btn piccolo" data-vai="' + (d.capIV ? 'cap-' + d.capIV.id : '') + '">Capitolo ' + esc(S.numeri[d.capIV ? d.capIV.id : ''] || 'IV') + '</button><button class="btn piccolo" data-vai="' + (d.capA ? 'cap-' + d.capA.id : '') + '">Appendice ' + esc(S.numeri[d.capA ? d.capA.id : ''] || 'A') + '</button><button class="btn piccolo" id="pop-mappa">Mappa delle Practice</button></div>';
+  html += '<div class="azioni"><button class="btn piccolo" data-vai="' + (d.capIV ? 'cap-' + d.capIV.id : '') + '">Capitolo ' + esc(S.numeri[d.capIV ? d.capIV.id : ''] || 'IV') + '</button><button class="btn piccolo" data-vai="' + (d.capA ? 'cap-' + d.capA.id : '') + '">Appendice ' + esc(S.numeri[d.capA ? d.capA.id : ''] || 'A') + '</button><button class="btn piccolo" id="pop-mappa">Practices e Servizi</button></div>';
   const pop = popFisso(html, rect);
   $('#pop-chiudi', pop).onclick = chiudiPopover;
   for (const b of $$('button[data-vai]', pop)) b.onclick = () => { chiudiPopover(); chiudiViste(); vaiA(b.dataset.vai); };
@@ -2725,6 +2747,7 @@ function apriPractice(pid, anchor) {
 }
 // clic sui collegamenti delle finestre, sui nomi nel testo e sui nodi delle mappe
 document.addEventListener('click', ev => {
+  const bs = ev.target.closest('[data-pr-servizi]'); if (bs) { ev.preventDefault(); modificaServiziPractice(bs.dataset.prServizi); return; }
   const a = ev.target.closest('a.lk[data-ente], a.lk[data-pr], .termine[data-ente], .nodo[data-ente], .nodo[data-pr], .chip[data-ente], .board-testa[data-pr]');
   if (!a) return;
   if (a.classList.contains('termine') && a.closest('[contenteditable="true"]')) return;
@@ -2783,12 +2806,18 @@ function svgRete() {
   h += '<div class="legenda-mappa">' + (R.practice || []).map(p => '<span class="lm ' + PR_COL[p.id] + '"><i></i>' + esc(p.num + ' ' + p.nome) + '</span>').join('') + '<span class="lm"><i class="guida"></i>guida della Practice</span></div>';
   return h;
 }
+// servizi offerti per Practice (dal sito onward-partners.netlify.app, settembre 2026): completano le schede della rete che ne sono prive e si modificano dalla pagina «Soci e Società Partner»
+const SERVIZI_PRACTICE_STANDARD = {"p01": {"sottotitolo": "La regia di ogni progetto: legge l’impresa in profondità, definisce la direzione, orchestra le Practice verticali e difende nel tempo il valore generato.", "servizi": ["Strategic Assessment & Readiness", "Ambition & Alignment", "Transformation Office", "The Mover", "Organization & Capability Building", "Project management d’impresa", "Value Realization"]}, "p02": {"sottotitolo": "Il capitale giusto, al momento giusto, alle condizioni giuste: prepariamo l’impresa, strutturiamo l’operazione, restiamo fino al closing. E oltre.", "servizi": ["Strutturazione del capitale e del debito", "Finanza agevolata & Incentivi", "Capital markets", "Apertura del capitale", "Riorganizzazioni straordinarie", "Crisi e rinegoziazione del debito"]}, "p03": {"sottotitolo": "La trasformazione non è digitalizzare l’esistente: è ripensare il modello operativo alla luce di ciò che dati e algoritmi rendono possibile.", "servizi": ["Futureproof Innovation", "Sostenibilità e impatto", "Governance del dato", "Modello operativo e processi", "Intelligenza Artificiale Applicata", "Sistemi informativi"]}, "p04": {"sottotitolo": "La protezione che funziona non si vede: sicurezza, rischio e conformità governati come un unico sistema a difesa dell’impresa intera.", "servizi": ["Enterprise risk assessment", "Cybersecurity & Data Protection", "Business continuity e crisi", "Supply chain e terze parti", "Compliance e controlli", "Intelligence e persone chiave"]}, "p05": {"sottotitolo": "La reputazione è un patrimonio misurabile: si costruisce con comportamenti coerenti quando le cose vanno bene, per reggere quando serve.", "servizi": ["Strategia reputazionale", "Media relations", "Public affairs e advocacy", "Leadership di pensiero", "Comunicazione finanziaria", "Crisis Communication & Risk Reputation"]}};
+function serviziPractice(p) { if (!p) return []; if (Array.isArray(p.servizi) && p.servizi.length) return p.servizi; const st = SERVIZI_PRACTICE_STANDARD[p.id]; return st ? st.servizi : []; }
+function sottotitoloPractice(p) { if (!p) return ''; if (typeof p.sottotitolo === 'string' && p.sottotitolo.trim()) return p.sottotitolo; const st = SERVIZI_PRACTICE_STANDARD[p.id]; return st ? st.sottotitolo : ''; }
 function boardPractice() {
   const R = S.rete; let h = '<div class="board">';
   for (const p of (R.practice || [])) {
     const m = membriPractice(p.id);
     const chips = (l, tipo) => l.length ? l.map(x => '<button class="chip ' + tipo + (x.ruolo === 'guida' ? ' guida' : '') + '" data-ente="' + esc(x.e.id) + '">' + esc(x.e.breve || x.e.nome) + (x.ruolo && x.ruolo !== 'riferimento' ? '<small>' + esc(x.ruolo) + '</small>' : '') + '</button>').join('') : '<span class="vuoto">nessuno</span>';
-    h += '<div class="board-col ' + PR_COL[p.id] + '"><button class="board-testa" data-pr="' + esc(p.id) + '"><b>' + esc(p.num) + '</b> ' + esc(p.nome) + '</button>' +
+    const serv = serviziPractice(p); const sotto = sottotitoloPractice(p);
+    h += '<div class="board-col ' + PR_COL[p.id] + '"><button class="board-testa" data-pr="' + esc(p.id) + '"><b>' + esc(p.num) + '</b> ' + esc(p.nome) + '</button>' + (sotto ? '<p class="board-sotto">' + esc(sotto) + '</p>' : '') +
+      '<div class="board-gruppo board-servizi"><span class="board-et">Servizi</span>' + (serv.length ? '<ul>' + serv.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '<span class="vuoto">da indicare</span>') + (S.mode === 'modifica' && !S.readonly ? '<button type="button" class="btn piccolo board-mod" data-pr-servizi="' + esc(p.id) + '">Modifica i servizi</button>' : '') + '</div>' +
       '<div class="board-gruppo"><span class="board-et">Soci</span>' + chips(m.soci, 'socio') + '</div><div class="board-gruppo"><span class="board-et">Advisor</span>' + chips(m.advisor, 'advisor') + '</div><div class="board-gruppo"><span class="board-et">Società partner</span>' + chips(m.partner, 'partner') + '</div>' + (m.consulenti.length ? '<div class="board-gruppo"><span class="board-et">Consulenti</span>' + chips(m.consulenti, 'consulente') + '</div>' : '') + '</div>';
   }
   h += '</div>';
@@ -5029,14 +5058,14 @@ const GUIDE_USO = {
     serve: 'È il banco del controllo: mette a confronto la crescita reale della società con i tre scenari sui tre esercizi. A sinistra il grafico con Prudente, Base, Sviluppo e la linea reale (rilevata fino al mese corrente, proiettata oltre) e le tabelle per esercizio; a destra il cruscotto dei dati.',
     usa: 'Nel registro a destra si annotano i fatti che si rilevano lavorando: i mandati firmati in ciascun mese, per linea di servizio, con il valore, e i costi effettivamente sostenuti. Si indica la data di avvio del primo esercizio e si sceglie il metodo di proiezione. Nella sezione «Ipotesi di prova» si possono cambiare i numeri del piano in copia, per vedere che cosa succederebbe.',
     effetti: 'Le rilevazioni sono condivise con i Soci e non toccano le ipotesi. Le prove restano nel proprio browser e non cambiano nulla altrove, finché non si preme «Salva nelle ipotesi condivise»: solo allora i valori di prova entrano in Ipotesi e in Piano e scenari, per tutti.' },
-  rete: { tit: 'Practices e Persone: Partnership',
+  rete: { tit: 'Practices e Persone: Soci e Società Partner',
     serve: 'È la mappa della rete di partenza: Soci, Advisor, Società partner e consulenti, con i legami tra advisor e società di provenienza e con le Practice che ciascuno presidia.',
     usa: 'Un clic su una casella apre la scheda della persona o della società, con i collegamenti utili. In modalità Modifica si possono correggere le schede, cambiare la Practice di appartenenza e aggiungere persone o società con «Aggiungi persona o società».',
     effetti: 'Ogni modifica alle schede aggiorna per tutti i Soci le tabelle del capitolo VIII § 6, le schede dell’Appendice C, la capacità per Practice del capitolo XIII, gli elenchi di partner e Soci nelle Schede Progetto e la struttura delle quote. Le modifiche restano nella Cronologia.' },
-  practice: { tit: 'Practices e Persone: Practice',
-    serve: 'È la stessa rete di partenza vista per Practice: per ciascuna delle cinque Practice, chi la guida, chi la presidia, quali advisor e quali società partner vi lavorano.',
-    usa: 'Un clic su un nome apre la scheda. In modalità Modifica si assegna o si cambia la Practice di una persona o di una società dalla sua scheda; una Practice senza Socio che la presidia resta segnalata come non apribile al mercato.',
-    effetti: 'Le stesse della vista Partnership: tabelle del capitolo VIII, Appendice C, capacità per Practice, elenchi nelle Schede Progetto, per tutti i Soci.' },
+  practice: { tit: 'Practices e Persone: Practices e Servizi',
+    serve: 'È la stessa rete di partenza vista per Practice: per ciascuna delle cinque Practice, la presentazione e i servizi offerti (quelli del sito di Onward), chi la guida, chi la presidia tra i Soci, quali advisor e quali società partner vi lavorano.',
+    usa: 'Un clic su un nome apre la scheda, sul titolo la scheda della Practice. In modalità Modifica si assegna o si cambia la Practice di una persona o di una società dalla sua scheda e «Modifica i servizi» adegua presentazione ed elenco dei servizi (un servizio per riga; «Ripristina l’elenco del sito» li riporta a quelli del sito); una Practice senza Socio che la presidia resta segnalata come non apribile al mercato.',
+    effetti: 'Le stesse della vista Soci e Società Partner: tabelle del capitolo VIII, Appendice C, capacità per Practice, elenchi nelle Schede Progetto, per tutti i Soci.' },
   soci: { tit: 'Soci e struttura delle quote',
     serve: 'È il modello della compagine: le quote di ciascun Socio nelle due categorie (A e B), il versato, l’eventuale finanziamento soci, l’utile atteso e il valore della quota, con il simulatore dell’ingresso di un nuovo socio finanziatore.',
     usa: 'Le percentuali e gli importi si scrivono nelle caselle gialle e si salvano da soli; i controlli in fondo segnalano se le quote non sommano a cento o se il versato è sotto il minimo di legge. Il simulatore in basso confronta l’ingresso a valore economico, a valore nominale o misto.',

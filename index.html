@@ -935,6 +935,25 @@ h1.cap .txt[contenteditable="true"] { display: inline; }
 .sem.pg-promoter { color: #6a3d9a; border-color: #6a3d9a; background: color-mix(in srgb, #6a3d9a 10%, transparent); }
 .finestra-progetto { width: min(960px, 96vw); }
 .finestra-progetto textarea { min-height: 9rem; }
+/* Documenti di Progetto: archivio di file per scheda, in quattro cartelle */
+.finestra-documenti { width: min(960px, 96vw); }
+.finestra-documenti code { font-size: .78rem; background: var(--lavaggio); padding: .05rem .3rem; border-radius: 3px; }
+.dp-cartelle { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: .3rem; }
+.dp-cartella { border: 1px solid var(--filo); border-radius: 8px; padding: .6rem .8rem .7rem; background: var(--carta); min-width: 0; display: flex; flex-direction: column; }
+.dp-testa { display: flex; align-items: center; gap: .5rem; }
+.dp-testa h4 { margin: 0; font-family: var(--font-titoli); font-weight: 600; font-size: .92rem; }
+.dp-testa .spazio { flex: 1; }
+.dp-conta { font-size: .7rem; color: var(--secondario); font-family: var(--font-titoli); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.dp-descr { margin: .25rem 0 .5rem; font-size: .76rem; color: var(--secondario); line-height: 1.4; }
+.dp-lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--filo); }
+.dp-lista li { display: flex; align-items: center; gap: .5rem; padding: .35rem 0; border-bottom: 1px solid var(--filo); font-size: .82rem; min-width: 0; }
+.dp-nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dp-dim { color: var(--secondario); font-size: .72rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dp-az { display: flex; gap: .25rem; flex-shrink: 0; }
+.dp-vuota { font-size: .78rem; color: var(--secondario); font-style: italic; padding: .3rem 0 0; border-top: 1px solid var(--filo); }
+.dp-stato { margin-top: .6rem; font-size: .8rem; color: var(--secondario); }
+.dp-stato.errore { color: var(--errore); }
+@media (max-width: 760px) { .dp-cartelle { grid-template-columns: 1fr; } .dp-lista li { flex-wrap: wrap; } .dp-nome { flex-basis: 100%; } }
 /* cruscotto delle Schede Progetto: riquadri di sintesi, livelli di certezza, per stato, per linea, pipeline per esercizio */
 .pg-cruscotto { display: flex; flex-direction: column; gap: .6rem; padding-bottom: .7rem; border-bottom: 1px solid var(--filo); margin-bottom: .1rem; }
 .pg-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .55rem; }
@@ -1600,7 +1619,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T21:14:52Z';
+window.ONWARD_BUILD = '2026-09-13T21:58:40Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2181,20 +2200,27 @@ class ArchivioGitHub {
   constructor(cfg) { this.nome = 'github'; this.cfg = cfg; this.sha = {}; this.base = (cfg.api || 'https://api.github.com') + '/repos/' + cfg.owner + '/' + cfg.repo; this.ultimoAlbero = null; }
   hdr(extra) { return Object.assign({ Authorization: 'Bearer ' + this.cfg.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, extra || {}); }
   async api(path, opt) { const res = await fetch(this.base + path, Object.assign({ cache: 'no-store', headers: this.hdr(opt && opt.json ? { 'Content-Type': 'application/json' } : {}) }, opt || {}, opt && opt.json ? { body: JSON.stringify(opt.json) } : {})); if (res.status === 404) return null; if (!res.ok) { const t = await res.text(); const e = new Error('GitHub ' + res.status + ': ' + t.slice(0, 200)); e.status = res.status; throw e; } return res.status === 204 ? {} : res.json(); }
-  async albero() { let t = null; try { t = await this.api('/git/trees/' + encodeURIComponent(this.cfg.branch) + '?recursive=1'); } catch (e) { if (e.status === 409) t = null; else throw e; } if (!t) { this.ultimoAlbero = {}; this.altri = {}; return {}; } const m = {}; this.altri = {}; for (const e of t.tree) { if (e.type !== 'blob') continue; if (e.path.startsWith('contenuto/')) m[e.path] = e.sha; else this.altri[e.path] = e.sha; } this.ultimoAlbero = m; return m; }
+  async albero() { let t = null; try { t = await this.api('/git/trees/' + encodeURIComponent(this.cfg.branch) + '?recursive=1'); } catch (e) { if (e.status === 409) t = null; else throw e; } if (!t) { this.ultimoAlbero = {}; this.altri = {}; this.altriDim = {}; return {}; } const m = {}; this.altri = {}; this.altriDim = {}; for (const e of t.tree) { if (e.type !== 'blob') continue; if (e.path.startsWith('contenuto/')) m[e.path] = e.sha; else { this.altri[e.path] = e.sha; this.altriDim[e.path] = e.size || 0; } } this.ultimoAlbero = m; return m; }
+  // percorso con i segmenti codificati per l'URL dell'API (nomi di file con spazi o accenti)
+  static enc(path) { return String(path).split('/').map(encodeURIComponent).join('/'); }
+  autoreCommit() { return this.cfg.autore ? { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') } : null; }
+  // elimina un file (documenti di progetto); resta nella cronologia del repository
+  async eliminaFile(path, sha, messaggio) { const body = { message: messaggio, sha, branch: this.cfg.branch }; const a = this.autoreCommit(); if (a) body.author = body.committer = a; await this.api('/contents/' + ArchivioGitHub.enc(path), { method: 'DELETE', json: body }); if (this.altri) { delete this.altri[path]; if (this.altriDim) delete this.altriDim[path]; } return true; }
+  // legge un file binario dal suo sha (fino a 100 MB)
+  async leggiBlob(sha) { const r = await this.api('/git/blobs/' + sha); if (!r || !r.content) return null; const bin = atob(String(r.content).replace(/\n/g, '')); const out = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out; }
   // sha attuale di un file letto dai dati git (ref, commit, albero), che non risentono della cache dell'API contents; in mancanza, dall'API contents senza cache
   async shaAttuale(path) {
     try { const ref = await this.api('/git/ref/heads/' + encodeURIComponent(this.cfg.branch)); const c = ref && ref.object && ref.object.sha ? await this.api('/git/commits/' + ref.object.sha) : null; const t = c && c.tree && c.tree.sha ? await this.api('/git/trees/' + c.tree.sha + '?recursive=1') : null; if (t && t.tree) { const e = t.tree.find(x => x.path === path && x.type === 'blob'); return e ? e.sha : null; } } catch (e) {}
-    const cur = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); return cur && cur.sha ? cur.sha : null;
+    const cur = await this.api('/contents/' + ArchivioGitHub.enc(path) + '?ref=' + encodeURIComponent(this.cfg.branch)); return cur && cur.sha ? cur.sha : null;
   }
   // scrive un file binario; se GitHub risponde 409 o 422 (sha non più attuale) rilegge lo sha dai dati git e ripete, fino a tre tentativi
   async caricaFile(path, bytes, messaggio, shaNoto) {
     let bin = ''; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
     const body = { message: messaggio, content: btoa(bin), branch: this.cfg.branch }; if (this.cfg.autore) body.author = body.committer = { name: this.cfg.autore, email: this.cfg.email || (this.cfg.autore.replace(/\s+/g, '.').toLowerCase() + '@onward.local') };
-    let sha = shaNoto; if (sha === undefined) { const cur = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); sha = cur && cur.sha ? cur.sha : null; }
+    let sha = shaNoto; if (sha === undefined) { const cur = await this.api('/contents/' + ArchivioGitHub.enc(path) + '?ref=' + encodeURIComponent(this.cfg.branch)); sha = cur && cur.sha ? cur.sha : null; }
     for (let tentativo = 1; ; tentativo++) {
       if (sha) body.sha = sha; else delete body.sha;
-      try { const r = await this.api('/contents/' + path, { method: 'PUT', json: body }); if (this.altri) this.altri[path] = r.content.sha; return { sha: r.content.sha, tentativi: tentativo }; }
+      try { const r = await this.api('/contents/' + ArchivioGitHub.enc(path), { method: 'PUT', json: body }); if (this.altri) { this.altri[path] = r.content.sha; if (!this.altriDim) this.altriDim = {}; this.altriDim[path] = bytes.length; } return { sha: r.content.sha, tentativi: tentativo }; }
       catch (e) { if ((e.status === 409 || e.status === 422) && tentativo < 3) { await new Promise(res => setTimeout(res, 1500 * tentativo)); let nuovo = null; try { nuovo = await this.shaAttuale(path); } catch (e2) {} if (nuovo === sha && tentativo >= 2) throw e; sha = nuovo; continue; } throw e; }
     }
   }
@@ -4372,7 +4398,7 @@ function htmlSchedaProgetto(p) {
     '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
     (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
     htmlParametriScheda(p) +
-    '<div class="pg-piede"><span>' + esc('Inserita da ' + (p.autore || '') + ' il ' + dataIt(p.creato)) + (p.agg && p.agg !== p.creato ? esc('; aggiornata da ' + (p.aggDa || p.autore || '') + ' il ' + dataIt(p.agg)) : '') + '</span><span class="pg-azioni"><button class="btn piccolo" data-pg="commessa" data-id="' + esc(p.id) + '" title="Apre la Scheda di commessa precompilata con i dati di questo progetto">Scheda di commessa</button>' + (puoScrivereProgetti() ? '<button class="btn piccolo" data-pg="modifica" data-id="' + esc(p.id) + '">Modifica</button><button class="btn piccolo pericolo" data-pg="elimina" data-id="' + esc(p.id) + '">Elimina</button>' : '') + '</span></div></article>';
+    '<div class="pg-piede"><span>' + esc('Inserita da ' + (p.autore || '') + ' il ' + dataIt(p.creato)) + (p.agg && p.agg !== p.creato ? esc('; aggiornata da ' + (p.aggDa || p.autore || '') + ' il ' + dataIt(p.agg)) : '') + '</span><span class="pg-azioni"><button class="btn piccolo" data-pg="commessa" data-id="' + esc(p.id) + '" title="Apre la Scheda di commessa precompilata con i dati di questo progetto">Scheda di commessa</button>' + htmlBottoneDocumenti(p) + (puoScrivereProgetti() ? '<button class="btn piccolo" data-pg="modifica" data-id="' + esc(p.id) + '">Modifica</button><button class="btn piccolo pericolo" data-pg="elimina" data-id="' + esc(p.id) + '">Elimina</button>' : '') + '</span></div></article>';
 }
 function htmlFiltriProgetti() {
   const F = filtroProgetti(); const tutti = elencoProgetti(); const anni = nomiEsercizi();
@@ -4558,6 +4584,83 @@ function formProgetto(id) {
   };
 }
 function eliminaProgetto(id) { const l = elencoProgetti(); const i = l.findIndex(p => p.id === id); if (i < 0) return; const t = l[i].titolo || ''; l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.progetti = 'Scheda progetto «' + t.slice(0, 60) + '» eliminata'; segna('progetti'); dopoModificaProgetti(); }
+// ================================================================ Documenti di Progetto: archivio di file per ogni scheda, nel repository dei Soci (documenti/<id scheda>/<cartella>/<file>)
+const CARTELLE_DOCUMENTI = [
+  ['profilo-cliente', 'Profilo Cliente', 'Chi è il cliente: presentazione, organigramma, bilanci, note di contesto e degli incontri.'],
+  ['documenti-progettuali', 'Documenti progettuali', 'Il lavoro sul progetto: analisi, note metodologiche, piani di lavoro, presentazioni, verbali.'],
+  ['offerte', 'Offerte', 'Le proposte inviate al cliente: offerte tecniche ed economiche, revisioni, lettere di accompagnamento.'],
+  ['contratti', 'Contratti', 'Gli accordi firmati: contratto, ordini, accordi di riservatezza, integrazioni.']
+];
+const LIMITE_DOCUMENTO = 25 * 1024 * 1024;
+const MIME_DOCUMENTI = { pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', txt: 'text/plain', md: 'text/markdown', csv: 'text/csv', json: 'application/json', html: 'text/html', htm: 'text/html', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls: 'application/vnd.ms-excel', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', ppt: 'application/vnd.ms-powerpoint', pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation', zip: 'application/zip', odt: 'application/vnd.oasis.opendocument.text', ods: 'application/vnd.oasis.opendocument.spreadsheet', odp: 'application/vnd.oasis.opendocument.presentation', rtf: 'application/rtf', eml: 'message/rfc822', msg: 'application/vnd.ms-outlook' };
+const VISIBILI_DOCUMENTI = ['pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'txt', 'md', 'csv', 'json'];
+function estensioneDi(nome) { const m = /\.([a-z0-9]{1,6})$/i.exec(String(nome || '')); return m ? m[1].toLowerCase() : ''; }
+function mimeDi(nome) { return MIME_DOCUMENTI[estensioneDi(nome)] || 'application/octet-stream'; }
+function nomeFileSicuro(nome) { let n = String(nome || '').normalize('NFC').replace(/[\/\\:*?"<>|#%&+;{}\[\]^~`]/g, '_').replace(/[\x00-\x1f\x7f]/g, '').replace(/\s+/g, ' ').trim().replace(/^\.+/, ''); if (n.length > 120) { const e = estensioneDi(n); n = n.slice(0, 120 - (e ? e.length + 1 : 0)).trim() + (e ? '.' + e : ''); } return n || 'documento'; }
+function dimensioneIt(b) { b = +b || 0; if (b < 1024) return b + ' B'; if (b < 1024 * 1024) return MODELLO.F.num1(b / 1024) + ' KB'; return MODELLO.F.num1(b / (1024 * 1024)) + ' MB'; }
+function archivioDocumenti() { return S.backend && S.backend.nome === 'github' ? S.backend : null; }
+function cartellaDocumenti(id, slug) { return 'documenti/' + id + '/' + slug + '/'; }
+// elenco dei documenti di una scheda, per cartella, letto dall'albero del repository (già caricato e aggiornato a ogni controllo delle novità)
+function documentiProgetto(id) {
+  const out = {}; for (const [slug] of CARTELLE_DOCUMENTI) out[slug] = [];
+  const a = archivioDocumenti(); if (!a || !a.altri) return out; const dim = a.altriDim || {};
+  for (const path of Object.keys(a.altri)) { for (const [slug] of CARTELLE_DOCUMENTI) { const pre = cartellaDocumenti(id, slug); if (path.startsWith(pre) && !path.slice(pre.length).includes('/')) out[slug].push({ nome: path.slice(pre.length), path, sha: a.altri[path], dim: dim[path] || 0 }); } }
+  for (const slug of Object.keys(out)) out[slug].sort((x, y) => x.nome.localeCompare(y.nome, 'it'));
+  return out;
+}
+function contaDocumenti(id) { const d = documentiProgetto(id); return Object.values(d).reduce((a, l) => a + l.length, 0); }
+function htmlBottoneDocumenti(p) { const n = archivioDocumenti() ? contaDocumenti(p.id) : 0; return '<button class="btn piccolo" data-pg="documenti" data-id="' + esc(p.id) + '" title="Apre l’archivio dei documenti di questo progetto: Profilo Cliente, Documenti progettuali, Offerte, Contratti">Documenti di Progetto' + (n ? ' (' + n + ')' : '') + '</button>'; }
+function apriDocumentiProgetto(id) {
+  const p = progettoDi(id); if (!p) return; chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-documenti', id: 'finestra' }); fin.dataset.id = id;
+  const a = archivioDocumenti(); const scrive = !!a && puoScrivereProgetti();
+  fin.innerHTML = '<div class="fin-testa"><b>Documenti di Progetto: ' + esc(p.titolo || 'Senza titolo') + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    (a ? '<p class="nota-pannello">I documenti sono custoditi nel repository riservato dei Soci (cartella <code>documenti/' + esc(id) + '/</code>) e sono visibili a tutti i Soci collegati. Ogni caricamento ed eliminazione resta nella cronologia del repository, attribuito a chi lo ha fatto. Dimensione massima per file: 25 MB.</p>' : '<div class="avviso">I Documenti di Progetto sono custoditi nel repository riservato dei Soci: per vederli e caricarli occorre collegare il repository dalle Impostazioni.</div>') +
+    '<div class="dp-cartelle"></div><div class="dp-stato" hidden></div><input type="file" id="dp-file" multiple hidden>' +
+    '<div class="azioni gl-azioni">' + (a ? '<button class="btn piccolo" id="dp-aggiorna">Aggiorna l’elenco</button>' : '') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Chiudi</button></div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+  disegnaDocumentiProgetto(fin);
+  const agg = $('#dp-aggiorna', fin); if (agg) agg.onclick = async () => { agg.disabled = true; try { await a.albero(); disegnaDocumentiProgetto(fin); aggiornaListaProgetti(); } catch (e) { toast('Aggiornamento non riuscito: ' + e.message); } agg.disabled = false; };
+  const inp = $('#dp-file', fin); inp.onchange = () => { const files = Array.from(inp.files || []); const slug = fin.dataset.cartella; inp.value = ''; if (files.length && slug) caricaDocumentiProgetto(fin, slug, files); };
+  fin.addEventListener('click', ev => { const b = ev.target.closest('button[data-dp]'); if (!b) return; const az = b.dataset.dp; const slug = b.dataset.cartella;
+    if (az === 'carica') { if (!scrive) return; fin.dataset.cartella = slug; inp.click(); return; }
+    const voce = documentiProgetto(id)[slug].find(x => x.path === b.dataset.path); if (!voce) return;
+    if (az === 'apri') apriDocumentoProgetto(voce, false); else if (az === 'scarica') apriDocumentoProgetto(voce, true); else if (az === 'elimina') eliminaDocumentoProgetto(fin, slug, voce); });
+}
+function disegnaDocumentiProgetto(fin) {
+  const id = fin.dataset.id; const box = $('.dp-cartelle', fin); if (!box) return; const a = archivioDocumenti(); const scrive = !!a && puoScrivereProgetti(); const d = documentiProgetto(id);
+  box.innerHTML = CARTELLE_DOCUMENTI.map(([slug, nome, descr]) => { const l = d[slug] || [];
+    return '<section class="dp-cartella" data-cartella="' + slug + '"><div class="dp-testa"><h4>' + esc(nome) + '</h4><span class="dp-conta">' + (l.length ? l.length + ' file' : 'vuota') + '</span><span class="spazio"></span>' + (scrive ? '<button class="btn piccolo primario" data-dp="carica" data-cartella="' + slug + '">Carica file</button>' : '') + '</div><p class="dp-descr">' + esc(descr) + '</p>' +
+      (l.length ? '<ul class="dp-lista">' + l.map(x => '<li><span class="dp-nome" title="' + esc(x.nome) + '">' + esc(x.nome) + '</span><span class="dp-dim">' + esc(dimensioneIt(x.dim)) + '</span><span class="dp-az">' + (VISIBILI_DOCUMENTI.includes(estensioneDi(x.nome)) ? '<button class="btn piccolo" data-dp="apri" data-cartella="' + slug + '" data-path="' + esc(x.path) + '">Apri</button>' : '') + '<button class="btn piccolo" data-dp="scarica" data-cartella="' + slug + '" data-path="' + esc(x.path) + '">Scarica</button>' + (scrive ? '<button class="btn piccolo pericolo" data-dp="elimina" data-cartella="' + slug + '" data-path="' + esc(x.path) + '">Elimina</button>' : '') + '</span></li>').join('') + '</ul>' : (a ? '<div class="dp-vuota">Nessun documento' + (scrive ? ': premere «Carica file» per aggiungerne uno o più.' : '.') + '</div>' : '')) + '</section>'; }).join('');
+}
+function statoDocumenti(fin, testo, errore) { const st = $('.dp-stato', fin); if (!st) return; st.hidden = !testo; st.textContent = testo || ''; st.classList.toggle('errore', !!errore); }
+async function caricaDocumentiProgetto(fin, slug, files) {
+  const a = archivioDocumenti(); const id = fin.dataset.id; const p = progettoDi(id); if (!a || !p || !puoScrivereProgetti()) return; const nomeCartella = (CARTELLE_DOCUMENTI.find(c => c[0] === slug) || [])[1] || slug;
+  const grandi = files.filter(f => f.size > LIMITE_DOCUMENTO); if (grandi.length) { toast('File troppo grandi (oltre 25 MB): ' + grandi.map(f => f.name).join(', ')); files = files.filter(f => f.size <= LIMITE_DOCUMENTO); if (!files.length) return; }
+  const presenti = documentiProgetto(id)[slug]; const daCaricare = [];
+  for (const f of files) { const nome = nomeFileSicuro(f.name); const gia = presenti.find(x => x.nome === nome); if (gia && !confirm('Nella cartella «' + nomeCartella + '» esiste già «' + nome + '». Sostituirlo con il file nuovo? La versione precedente resta nella cronologia del repository.')) continue; daCaricare.push({ f, nome, sha: gia ? gia.sha : null }); }
+  if (!daCaricare.length) return;
+  for (const b of $$('button', fin)) b.disabled = true; let n = 0; const errori = [];
+  for (let i = 0; i < daCaricare.length; i++) { const { f, nome, sha } = daCaricare[i]; statoDocumenti(fin, 'Caricamento di «' + nome + '» (' + (i + 1) + ' di ' + daCaricare.length + ')…');
+    try { const bytes = new Uint8Array(await f.arrayBuffer()); await a.caricaFile(cartellaDocumenti(id, slug) + nome, bytes, 'Documenti di Progetto «' + String(p.titolo || '').slice(0, 60) + '»: ' + (sha ? 'sostituito' : 'caricato') + ' ' + nome + ' in ' + nomeCartella, sha); n++; }
+    catch (e) { errori.push(nome + ' (' + (e.message || e) + ')'); } }
+  for (const b of $$('button', fin)) b.disabled = false; statoDocumenti(fin, errori.length ? 'Non caricati: ' + errori.join('; ') : '', true);
+  disegnaDocumentiProgetto(fin); aggiornaListaProgetti(); if (n) toast(n === 1 ? 'Documento caricato nel repository dei Soci' : n + ' documenti caricati nel repository dei Soci');
+}
+async function apriDocumentoProgetto(voce, scarica) {
+  const a = archivioDocumenti(); if (!a) return; const vis = !scarica && VISIBILI_DOCUMENTI.includes(estensioneDi(voce.nome)); const w = vis ? window.open('', '_blank') : null; if (w) { try { w.document.title = voce.nome; w.document.body.innerHTML = '<p style="font-family:sans-serif;color:#555">Apertura di «' + esc(voce.nome) + '» dal repository dei Soci…</p>'; } catch (e) {} }
+  try { const bytes = await a.leggiBlob(voce.sha); if (!bytes) throw new Error('file non trovato nel repository'); const url = URL.createObjectURL(new Blob([bytes], { type: mimeDi(voce.nome) }));
+    if (w) w.location.href = url; else { const l = el('a', { href: url, download: voce.nome }); document.body.appendChild(l); l.click(); l.remove(); }
+    setTimeout(() => URL.revokeObjectURL(url), 120000); S.ultimoDocumentoAperto = { nome: voce.nome, dim: bytes.length };
+  } catch (e) { if (w) { try { w.close(); } catch (e2) {} } toast('Apertura non riuscita: ' + (e.message || e)); }
+}
+async function eliminaDocumentoProgetto(fin, slug, voce) {
+  const a = archivioDocumenti(); const id = fin.dataset.id; const p = progettoDi(id); if (!a || !p || !puoScrivereProgetti()) return; const nomeCartella = (CARTELLE_DOCUMENTI.find(c => c[0] === slug) || [])[1] || slug;
+  if (!confirm('Eliminare «' + voce.nome + '» dalla cartella «' + nomeCartella + '»? Il file resta nella cronologia del repository.')) return;
+  for (const b of $$('button', fin)) b.disabled = true; statoDocumenti(fin, 'Eliminazione di «' + voce.nome + '»…');
+  try { await a.eliminaFile(voce.path, voce.sha, 'Documenti di Progetto «' + String(p.titolo || '').slice(0, 60) + '»: eliminato ' + voce.nome + ' da ' + nomeCartella); statoDocumenti(fin, ''); toast('Documento eliminato'); }
+  catch (e) { statoDocumenti(fin, 'Eliminazione non riuscita: ' + (e.message || e), true); }
+  for (const b of $$('button', fin)) b.disabled = false; disegnaDocumentiProgetto(fin); aggiornaListaProgetti();
+}
 function fondiProgetti(remoto) {
   const R = Object.assign(progettiVuoti(), remoto || {}), M = S.progetti || progettiVuoti(); const out = new Map();
   for (const p of (R.progetti || []).concat(M.progetti || [])) { const cur = out.get(p.id); if (!cur || (Date.parse(p.agg || p.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(p.id, clone(p)); }
@@ -4773,6 +4876,7 @@ function avviaProgetti() {
     if (az === 'dettaglio-rip') { F.dettaglioRip = !F.dettaglioRip; aggiornaListaProgetti(); return; }
     if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaProgetti(); return; }
     if (az === 'commessa') { commessaDaProgetto(b.dataset.id); return; }
+    if (az === 'documenti') { apriDocumentiProgetto(b.dataset.id); return; }
     if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
 }
@@ -5053,7 +5157,7 @@ const GUIDE_USO = {
     effetti: 'Ogni cifra calcolata del documento, le tabelle, i grafici, la Sintesi, Piano e scenari e le Proiezioni si aggiornano subito, per tutti i Soci. È la pagina con più conseguenze: prima di cambiare un numero conviene provarlo nelle Proiezioni Strategiche (sezione «Ipotesi di prova»), dove le modifiche restano private finché non si salvano.' },
   progetti: { tit: 'Schede Progetto',
     serve: 'È il registro dei progetti che ciascun Socio sta seguendo e porterà in Onward: una scheda per progetto, con stato, valore stimato, Practice, sinergie e i «parametri di progetto» che dicono al modello come contarlo.',
-    usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Lo stato dice a che punto è il progetto: «Idea» quando non c’è ancora un possibile cliente a cui proporlo (resta nel registro ma non entra nel piano), poi Suspect, Lead, Prospect, Customer e Promoter man mano che la relazione avanza. Ogni scheda conta per intero: lo stato decide il livello di certezza a cui la pipeline la include (acquisito, probabile, possibile), non una quota del suo valore. In alto il cruscotto riassume le schede in forma grafica: numero, valore con la ripartizione tra Origination, Execution Soci per figura interna, Margine societario ed Execution Terzi (Società Partner e Advisor), livelli di certezza (con il livello adottato dal piano), distribuzione per stato, per linea di servizio e per Practice di riferimento (un clic sulla riga filtra l’elenco) e pipeline per esercizio con la copertura della traiettoria; un clic su ogni titolo del cruscotto apre la spiegazione. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto.',
+    usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Lo stato dice a che punto è il progetto: «Idea» quando non c’è ancora un possibile cliente a cui proporlo (resta nel registro ma non entra nel piano), poi Suspect, Lead, Prospect, Customer e Promoter man mano che la relazione avanza. Ogni scheda conta per intero: lo stato decide il livello di certezza a cui la pipeline la include (acquisito, probabile, possibile), non una quota del suo valore. In alto il cruscotto riassume le schede in forma grafica: numero, valore con la ripartizione tra Origination, Execution Soci per figura interna, Margine societario ed Execution Terzi (Società Partner e Advisor), livelli di certezza (con il livello adottato dal piano), distribuzione per stato, per linea di servizio e per Practice di riferimento (un clic sulla riga filtra l’elenco) e pipeline per esercizio con la copertura della traiettoria; un clic su ogni titolo del cruscotto apre la spiegazione. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto; «Documenti di Progetto» apre l’archivio dei file della scheda, in quattro cartelle (Profilo Cliente, Documenti progettuali, Offerte, Contratti), custodito nel repository dei Soci.',
     effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
   commessa: { tit: 'Scheda di commessa',
     serve: 'È un foglio di calcolo per una singola commessa: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
@@ -5119,6 +5223,7 @@ function htmlGuidaUso(k) {
 function montaGuida(slot, k) { if (!slot) return; slot.innerHTML = htmlGuidaUso(k); const d = $('details', slot); if (d) d.addEventListener('toggle', () => { try { localStorage.setItem('onward.guida.' + k, d.open ? 'aperta' : 'chiusa'); } catch (e) {} const c = $('.guida-cmd', d); if (c) c.textContent = d.open ? 'chiudi' : 'apri'; }); }
 function avviaGuide() { for (const slot of $$('.guida-slot[data-guida]')) montaGuida(slot, slot.dataset.guida); }
 function aggiornaGuidaMappe() { const slot = $('#mappe .guida-slot'); if (slot) montaGuida(slot, (S.mappaVista || 'rete') === 'practice' ? 'practice' : 'rete'); }
+
 // ---- commenti_mod + proposte_mod
 // ================================================================ commenti a margine (contenuto/commenti.json)
 function commentiVuoti() { return { commenti: [] }; }

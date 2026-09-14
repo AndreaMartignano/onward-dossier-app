@@ -57,11 +57,11 @@ a { color: var(--accento); }
 .barra .stato { max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
 .barra .marchio small { display: none; }
 .barra .spazio { flex: 1; }
-@media (max-width: 1920px) { .barra .stato { max-width: 170px; } .barra { gap: .35rem; } .barra .btn { padding: .3rem .45rem; font-size: .77rem; } }
-@media (max-width: 1760px) { .barra { gap: .3rem; padding: .4rem .6rem; } .barra .stato { max-width: 130px; font-size: .74rem; } .barra .btn { padding: .28rem .36rem; font-size: .74rem; } .barra .interruttore button { padding: .28rem .45rem; font-size: .75rem; } .barra .zoom button { padding: .2rem .3rem; } }
-@media (max-width: 1580px) { .barra .stato { max-width: 110px; font-size: .7rem; } .barra .btn { padding: .26rem .3rem; font-size: .71rem; } .barra .zoom { display: none; } .barra .marchio { font-size: .82rem; } }
+@media (max-width: 2080px) { .barra .stato { max-width: 170px; } .barra { gap: .35rem; } .barra .btn { padding: .3rem .45rem; font-size: .77rem; } }
+@media (max-width: 1880px) { .barra { gap: .3rem; padding: .4rem .6rem; } .barra .stato { max-width: 130px; font-size: .74rem; } .barra .btn { padding: .28rem .36rem; font-size: .74rem; } .barra .interruttore button { padding: .28rem .45rem; font-size: .75rem; } .barra .zoom button { padding: .2rem .3rem; } }
+@media (max-width: 1700px) { .barra .stato { max-width: 110px; font-size: .7rem; } .barra .btn { padding: .26rem .3rem; font-size: .71rem; } .barra .zoom { display: none; } .barra .marchio { font-size: .82rem; } }
 @media (max-width: 1430px) { .barra { gap: .22rem; padding: .35rem .45rem; } .barra .stato { max-width: 96px; } .barra .btn { padding: .24rem .26rem; font-size: .68rem; } .barra .interruttore button { padding: .24rem .36rem; font-size: .7rem; } }
-@media (max-width: 1500px) { .barra .marchio { display: none; } .barra .stato { max-width: 90px; } }
+@media (max-width: 1520px) { .barra .marchio { display: none; } .barra .stato { max-width: 90px; } }
 @media (max-width: 1390px) { .barra { gap: .18rem; padding: .3rem .35rem; } .barra .btn { padding: .22rem .22rem; font-size: .66rem; } .barra .stato { max-width: 80px; } }
 .btn { border: 1px solid var(--filo); background: var(--carta); color: var(--inchiostro); border-radius: 4px; padding: .38rem .7rem; font-size: .84rem; line-height: 1.2; white-space: nowrap; }
 .btn:hover { background: var(--lavaggio); }
@@ -1234,6 +1234,56 @@ a { color: var(--accento-scuro); }
 .pi-soci .pi-sel { width: 100%; font: inherit; font-size: .76rem; padding: .22rem .25rem; border: 1px solid var(--filo); border-radius: 6px; background: var(--carta); color: var(--inchiostro); }
 .pi-soci .pi-m-fig { font-size: .74rem; color: var(--secondario); font-weight: normal; }
 
+/* ---- Database relazionale (contatti_mod) */
+.contatti .mappe-corpo { max-width: 1700px; margin: 0 auto; width: 100%; }
+.ct-layout { grid-template-columns: 250px minmax(0, 1fr); }
+.ct-lista { display: flex; flex-direction: column; gap: .8rem; min-width: 0; }
+.ct-cruscotto { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: .6rem; align-items: stretch; }
+.ct-tot, .ct-kpis { background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; padding: .55rem .9rem; min-width: 0; }
+.ct-tot { min-width: 130px; }
+.ct-tot > span, .ct-kpi-et { display: block; font-family: var(--font-titoli); font-weight: 500; font-size: .66rem; text-transform: uppercase; letter-spacing: .1em; color: var(--secondario); line-height: 1.25; }
+.ct-kpi-et { display: flex; align-items: center; gap: .3rem; }
+.ct-tot > b { display: block; font-family: var(--font-titoli); font-weight: 600; font-size: 1.4rem; line-height: 1.2; margin: .15rem 0 .1rem; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.ct-tot > small { display: block; font-size: .72rem; color: var(--secondario); line-height: 1.3; }
+.ct-fermi > b { color: var(--attesa); }
+.ct-kpi-riga { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .3rem; }
+.ct-kpi { display: inline-flex; flex-direction: column; align-items: center; gap: .02rem; border: 1px solid var(--filo); background: var(--fondo); border-radius: 10px; padding: .28rem .7rem; font: inherit; color: var(--inchiostro); cursor: pointer; min-width: 5.4rem; }
+.ct-kpi > span { font-size: .7rem; color: var(--secondario); }
+.ct-kpi > b { font-family: var(--font-titoli); font-weight: 600; font-size: 1.1rem; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.ct-kpi:hover { background: var(--lavaggio); }
+.ct-kpi.attivo { border-color: var(--accento); box-shadow: 0 0 0 2px var(--selezione); background: var(--carta); }
+.ct-kpi.pg-idea > b, .ct-kpi.pg-suspect > b { color: var(--secondario); } .ct-kpi.pg-lead > b { color: var(--accento); } .ct-kpi.pg-prospect > b { color: var(--attesa); } .ct-kpi.pg-customer > b { color: var(--ok); } .ct-kpi.pg-promoter > b { color: var(--pg-promoter); }
+.ct-tabella-wrap { overflow-x: auto; background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; }
+table.ct-tab { table-layout: auto; font-size: .8rem; min-width: 1240px; }
+.ct-tab thead td { position: sticky; top: 0; z-index: 1; white-space: normal; line-height: 1.25; font-family: var(--font-titoli); font-weight: 500; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--secondario); }
+.ct-tab td { vertical-align: middle; border-left: 0; border-right: 0; overflow-wrap: normal; }
+.ct-tab td:nth-child(3) { min-width: 150px; } .ct-tab td:nth-child(4) { min-width: 86px; } .ct-tab td:nth-child(5) { min-width: 130px; } .ct-tab td:nth-child(6) { min-width: 160px; } .ct-tab td:nth-child(7) { min-width: 150px; } .ct-tab td:nth-child(10), .ct-tab td:nth-child(11) { min-width: 96px; }
+.ct-tab .pg-chip { white-space: nowrap; }
+.ct-tab tbody tr:hover td { background: var(--lavaggio); }
+.ct-nome { min-width: 170px; }
+.ct-apri { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--inchiostro); cursor: pointer; text-align: left; }
+.ct-apri:hover { color: var(--accento-scuro); text-decoration: underline; }
+.ct-nome small { display: block; color: var(--secondario); font-size: .72rem; }
+.ct-recapiti { font-size: .76rem; white-space: nowrap; line-height: 1.5; }
+.ct-recapiti a { color: var(--accento-scuro); text-decoration: none; }
+.ct-recapiti a:hover { text-decoration: underline; }
+.ct-pr .pg-chip { margin: .05rem .15rem .05rem 0; }
+.ct-temi { max-width: 220px; min-width: 150px; font-size: .76rem; color: var(--secondario); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ct-data { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ct-data small { display: block; font-size: .68rem; color: var(--attesa); }
+.ct-azioni { white-space: nowrap; text-align: right; }
+.ct-lnk { background: none; border: 0; padding: 0; font: inherit; font-size: inherit; color: var(--accento-scuro); cursor: pointer; text-align: left; text-decoration: underline dotted; }
+.ct-lnk:hover { text-decoration: underline; }
+.ct-status { text-transform: none; }
+.finestra-contatto { width: min(960px, 96vw); }
+.finestra-contatto .campo-testo > span { display: block; font-size: .72rem; color: var(--secondario); margin-top: .15rem; }
+.finestra-contatto .ct-settore-slot { display: block; }
+.finestra-contatto input[type="date"] { min-height: 2.05rem; }
+.finestra-contatto .ct-storia { margin: .6rem 0 0; }
+.pg-card.ct-evid { outline: 2px solid var(--accento); outline-offset: 3px; }
+@media (max-width: 1100px) { .ct-cruscotto { grid-template-columns: 1fr 1fr; } .ct-layout { grid-template-columns: 1fr; } .ct-filtri { position: static; max-height: none; } }
+/* la barra resta su una riga fino a 1200 px anche con la voce «Database relazionale» */
+@media (max-width: 1250px) { .barra { gap: .14rem; padding: .3rem .3rem; } .barra .btn { padding: .2rem .18rem; font-size: .63rem; } .barra .stato { max-width: 64px; font-size: .64rem; } .barra .interruttore button { padding: .2rem .3rem; font-size: .66rem; } }
 </style>
 </head>
 <body>
@@ -1249,6 +1299,7 @@ a { color: var(--accento-scuro); }
   <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa, Piano e scenari (il piano condiviso della Parte terza) e Soci (struttura delle quote)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button><button id="b-soci">Soci</button></div></div>
   <button class="btn viola" id="b-proiezioni" title="Cruscotto unificato: i tre scenari sui tre esercizi, i dati reali rilevati e la proiezione della crescita, con ipotesi di prova che non toccano il documento">Proiezioni Strategiche</button>
   <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Soci e Società Partner (la rete di partenza) e Practices e Servizi">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Soci e Società Partner</button><button id="b-practice">Practices e Servizi</button></div></div>
+  <button class="btn verde" id="b-contatti" title="Il database relazionale dei Soci: i contatti della rete con ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata">Database relazionale</button>
   <button class="btn grigio" id="b-glossario">Glossario</button>
   <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
   <button class="btn grigio" id="b-storico">Cronologia</button>
@@ -1268,6 +1319,11 @@ a { color: var(--accento-scuro); }
 <div class="mappe progetti" id="progetti" hidden>
   <div class="mappe-testa"><b>Schede Progetto</b><div class="mappe-azioni"><button class="btn piccolo primario" id="pg-nuova">Nuova scheda</button><button class="btn piccolo" id="pg-esporta" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><span class="nota-pannello">I progetti che ciascun Socio segue e porterà in Onward: consultabili da tutti, con ricerca libera e filtri per stato, Practice, sinergie, referente e luogo.</span></div><button class="btn piccolo" id="progetti-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="progetti"></div>
+  <div class="mappe-corpo"></div>
+</div>
+<div class="mappe contatti" id="contatti" hidden>
+  <div class="mappe-testa"><b>Database relazionale</b><div class="mappe-azioni"><button class="btn piccolo primario" id="ct-nuovo">Nuovo contatto</button><button class="btn piccolo" id="ct-word" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><button class="btn piccolo" id="ct-csv" title="Esporta l’elenco corrente (filtrato) in CSV, apribile con Excel">Esporta (CSV)</button><span class="nota-pannello">I contatti della rete dei Soci, condivisi con tutti: ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.</span></div><button class="btn piccolo" id="contatti-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="contatti"></div>
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe modifiche" id="modifiche" hidden>
@@ -1619,7 +1675,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-13T22:04:31Z';
+window.ONWARD_BUILD = '2026-09-14T00:07:46Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2149,7 +2205,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -2164,6 +2220,7 @@ function datiDi(key) {
   if (key === 'proposte') return S.proposte || proposteVuote();
   if (key === 'progetti') return S.progetti || progettiVuoti();
   if (key === 'proiezioni') return S.proiezioni || proiezioniVuote();
+  if (key === 'contatti') return S.contatti || contattiVuoti();
   if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
 }
@@ -2181,10 +2238,11 @@ function applicaDati(key, d) {
   if (key.startsWith('prop:')) { if (!S.proposteDett) S.proposteDett = {}; S.proposteDett[key.slice(5)] = d; return; }
   if (key === 'progetti') { S.progetti = Object.assign(progettiVuoti(), d || {}); if (!Array.isArray(S.progetti.progetti)) S.progetti.progetti = []; return; }
   if (key === 'proiezioni') { S.proiezioni = Object.assign(proiezioniVuote(), d || {}); if (!Array.isArray(S.proiezioni.rilevazioni)) S.proiezioni.rilevazioni = []; return; }
+  if (key === 'contatti') { S.contatti = Object.assign(contattiVuoti(), d || {}); if (!Array.isArray(S.contatti.contatti)) S.contatti.contatti = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
-const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni'];
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
@@ -2225,7 +2283,7 @@ class ArchivioGitHub {
     }
   }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -2254,7 +2312,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -2268,6 +2326,7 @@ async function fondi(k) {
   if (k === 'proposte') { fondiProposte(remoto); return; }
   if (k === 'progetti') { fondiProgetti(remoto); return; }
   if (k === 'proiezioni') { fondiProiezioni(remoto); return; }
+  if (k === 'contatti') { fondiContatti(remoto); return; }
   if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
@@ -2284,7 +2343,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -2313,6 +2372,7 @@ function diffVersioni(key, vecchia) {
   if (key === 'scenari') return diffScenari(vecchia);
   if (key === 'progetti') return diffDue('progetti', vecchia, datiDi('progetti'));
   if (key === 'proiezioni') return diffDue('proiezioni', vecchia, datiDi('proiezioni'));
+  if (key === 'contatti') return diffDue('contatti', vecchia, datiDi('contatti'));
   const vb = key === 'struttura' ? (vecchia.nota || []) : (vecchia.blocchi || []); const cb = key === 'struttura' ? S.nota : capitolo(key.slice(4)).c.blocchi;
   const vm = new Map(vb.map(b => [b.id, b])); const cm = new Map(cb.map(b => [b.id, b])); let h = ''; let n = 0;
   for (const b of cb) { const o = vm.get(b.id); const tn = testoBlocco(b), to = testoBlocco(o); if (!o) { h += '<div class="b">Blocco aggiunto</div><div class="p"><ins>' + esc(tn) + '</ins></div>'; n++; } else if (to !== tn) { h += '<div class="b">Blocco modificato</div><div class="p">' + diffParole(to, tn) + '</div>'; n++; } }
@@ -3723,7 +3783,7 @@ function sintesiParte4() {
 // ---------------------------------------------------------------- vista
 function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; S.riassuntoParte = S.sintesiParte; S.homeVista = 'estesa'; try { localStorage.setItem('onward.home', 'estesa'); } catch (e) {} disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); }
+function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); }
 function apriDocumento() { chiudiViste(); chiudiPopover(); window.scrollTo({ top: 0, behavior: 'auto' }); const d = $('#doc'); if (d) d.setAttribute('tabindex', '-1'); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
@@ -3969,7 +4029,7 @@ function avviaRiassunto() {
 function accessiVuoti() { return { soci: [], accessi: [] }; }
 function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -4006,6 +4066,7 @@ function diffDue(key, vecchia, nuova) {
     if (key === 'rete') return [].concat(d.soci || [], d.advisor || [], d.partner || [], d.consulenti || []).map(e => ({ id: e.id, nome: e.nome || '', tx: [e.nome, e.qualifica || '', e.sede || '', e.societa || '', (e.practice || []).map(p => p.id + ':' + p.ruolo).join(' '), e.sintesi || '', e.presidio || '', e.ambito || '', e.profilo || '', e.attivita || '', e.reti || '', e.progetti || '', e.da_completare || ''].join('\n') }));
     if (key === 'commesse') return (d.commesse || []).map(c => ({ id: c.id, nome: c.titolo || '', tx: JSON.stringify(c, null, 1) }));
     if (key === 'proiezioni') return [{ id: 'imp', nome: 'Impostazioni', tx: ['Avvio: ' + (d.avvio || ''), 'Mese corrente: ' + (d.corrente || 'automatico'), 'Metodo: ' + (d.metodo || ''), 'Riferimento: ' + (d.riferimento || ''), 'Profilo: ' + (d.profilo || '')].join('\n') }].concat((d.rilevazioni || []).map(r => ({ id: r.id, nome: etMesePx(num(r.mese), true) + ' · ' + nomeLineaPx(r.linea), tx: ['Mandati: ' + num(r.n), 'Valore: ' + num(r.valore), 'Giornate: ' + (r.gg == null ? '' : r.gg), 'Note: ' + (r.note || '')].join('\n') })));
+    if (key === 'contatti') return (d.contatti || []).map(c => ({ id: c.id, nome: nomeContatto(c), tx: ['Nome: ' + (c.nome || ''), 'Cognome: ' + (c.cognome || ''), 'Ente: ' + etichettaEnte(c.ente), 'Mail: ' + (c.mail || ''), 'Cellulare: ' + (c.cellulare || ''), 'Luogo: ' + (c.luogo || ''), 'Settore: ' + etichettaSettoreContatto(c.settore), 'Temi di interesse: ' + (c.temi || ''), 'Socio di riferimento: ' + (c.socio || ''), 'Practices: ' + (c.practice || []).map(nomePractice).join('; '), 'Scheda Progetto: ' + titoloProgettoContatto(c.progetto), 'Status: ' + etichettaStatusContatto(c.status), 'Riporto: ' + (c.riporto || ''), 'Primo contatto: ' + dataBreve(c.primo), 'Ultimo contatto: ' + dataBreve(c.ultimo)].join('\n') }));
     if (key === 'progetti') return (d.progetti || []).map(p => ({ id: p.id, nome: p.titolo || '', tx: ['Titolo: ' + (p.titolo || ''), 'Soggetti: ' + (p.soggetti || ''), 'Luogo: ' + (p.luogo || ''), 'Stato: ' + etichettaStato(p.stato), 'Referente: ' + (p.referente || ''), 'Practice: ' + (p.practice || []).map(nomePractice).join('; '), 'Sinergie: ' + (p.sinergie || []).map(nomePartner).join('; '), 'Valore: ' + (numeroIt(p.valore) !== null ? MODELLO.F.eur(numeroIt(p.valore)) : ''), 'Descrizione: ' + (p.descrizione || '')].join('\n') }));
     if (key === 'struttura') return [{ id: 'meta', nome: 'Frontespizio', tx: Object.values(d.meta || {}).join('\n') }].concat((d.nota || []).map(b => ({ id: b.id, nome: 'Nota di lettura', tx: testoBlocco(b) })), (d.parti || []).map(p => ({ id: 'parte:' + p.id, nome: 'Parte e titoli dei capitoli', tx: [p.titolo, p.intro || ''].concat((p.capitoli || []).map(c => c.titolo)).join('\n') })));
     if (key.startsWith('cap:')) return [{ id: 'titolo', nome: 'Titolo', tx: d.titolo || '' }].concat((d.blocchi || []).map(b => ({ id: b.id, nome: '', tx: testoBlocco(b) })));
@@ -4394,7 +4455,7 @@ function htmlSchedaProgetto(p) {
   const F = MODELLO.F; const v = numeroIt(p.valore); const esp = filtroProgetti().espansi.has(p.id); const descr = String(p.descrizione || '').trim();
   const lunga = descr.length > 420 || descr.split('\n').length > 6;
   return '<article class="pg-card" data-id="' + esc(p.id) + '"><div class="pg-testa"><h3>' + esc(p.titolo || 'Senza titolo') + '</h3><span class="sem pg-stato pg-' + esc(p.stato || 'suspect') + '">' + esc(etichettaStato(p.stato)) + '</span>' + (v !== null ? '<span class="pg-valore" title="Valore stimato">' + F.eur(v) + '</span>' : '<span class="pg-valore pg-muto">valore da stimare</span>') + '</div>' +
-    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + '</div>' +
+    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + htmlContattiScheda(p) + '</div>' +
     '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
     (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
     htmlParametriScheda(p) +
@@ -4687,7 +4748,7 @@ function aggiornaPipeline(opt) {
   if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if ($('#home') && !$('#home').hidden && typeof disegnaHome === 'function') disegnaHome();
   if (opt.progetti !== false && $('#progetti') && !$('#progetti').hidden) disegnaProgetti(true);
 }
-function dopoModificaProgetti() { aggiornaPipeline(); }
+function dopoModificaProgetti() { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); }
 function aggiornaBlocchiProgetti() { for (const w of $$('.blk[data-t="progetti"]')) { const info = blocco(w.dataset.id); if (info) w.replaceWith(renderBlocco(info.b)); } }
 function commessaDaProgetto(id) {
   const p = progettoDi(id); if (!p) return; const d = derivataDi(p); const P = S.P; const q = parametriDi(p);
@@ -4877,6 +4938,7 @@ function avviaProgetti() {
     if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaProgetti(); return; }
     if (az === 'commessa') { commessaDaProgetto(b.dataset.id); return; }
     if (az === 'documenti') { apriDocumentiProgetto(b.dataset.id); return; }
+    if (az === 'contatti') { apriContattiProgetto(b.dataset.id); return; }
     if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
 }
@@ -5159,6 +5221,10 @@ const GUIDE_USO = {
     serve: 'È il registro dei progetti che ciascun Socio sta seguendo e porterà in Onward: una scheda per progetto, con stato, valore stimato, Practice, sinergie e i «parametri di progetto» che dicono al modello come contarlo.',
     usa: '«Nuova scheda» apre il modulo; si compilano i campi, in fondo i parametri di progetto (almeno la linea di servizio e il valore), e si salva. Lo stato dice a che punto è il progetto: «Idea» quando non c’è ancora un possibile cliente a cui proporlo (resta nel registro ma non entra nel piano), poi Suspect, Lead, Prospect, Customer e Promoter man mano che la relazione avanza. Ogni scheda conta per intero: lo stato decide il livello di certezza a cui la pipeline la include (acquisito, probabile, possibile), non una quota del suo valore. In alto il cruscotto riassume le schede in forma grafica: numero, valore con la ripartizione tra Origination, Execution Soci per figura interna, Margine societario ed Execution Terzi (Società Partner e Advisor), livelli di certezza (con il livello adottato dal piano), distribuzione per stato, per linea di servizio e per Practice di riferimento (un clic sulla riga filtra l’elenco) e pipeline per esercizio con la copertura della traiettoria; un clic su ogni titolo del cruscotto apre la spiegazione. Le schede si cercano e si filtrano dalla colonna di sinistra; ogni Socio può modificare o eliminare qualsiasi scheda; «Scheda di commessa» apre il foglio di calcolo già compilato con i dati del progetto; «Documenti di Progetto» apre l’archivio dei file della scheda, in quattro cartelle (Profilo Cliente, Documenti progettuali, Offerte, Contratti), custodito nel repository dei Soci.',
     effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
+  contatti: { tit: 'Database relazionale',
+    serve: 'È la rubrica condivisa della rete dei Soci: una scheda per ogni persona con cui Onward ha o vuole avere una relazione, con l’ente di appartenenza (azienda, PA, associazione, privato), il settore, i temi di interesse, lo status della relazione, il Socio e le Practices di riferimento, la Scheda Progetto a cui il contatto è collegato, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.',
+    usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
+    effetti: 'I contatti non entrano nel documento né nel modello: sono un registro di lavoro, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il database filtrato sui suoi contatti.' },
   commessa: { tit: 'Scheda di commessa',
     serve: 'È un foglio di calcolo per una singola commessa: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
     usa: 'Si sceglie la tipologia, si compilano le caselle e si legge il risultato a destra, che si aggiorna a ogni modifica. «Salva» conserva la scheda nell’elenco in alto, condiviso con i Soci; «Nuova» ne apre una vuota; «Esporta in Word» produce il documento.',
@@ -5313,7 +5379,7 @@ function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x
 function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
 function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
 function inRegime() { return regimeAttivo() && !isApprovatore(); }
-function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni'].includes(k) && !String(k).startsWith('prop:'); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti'].includes(k) && !String(k).startsWith('prop:'); }
 function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
 function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
 function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
@@ -5407,8 +5473,9 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
-  if (k === 'progetti') { aggiornaPipeline(); return true; }
+  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); return true; }
   if (k === 'proiezioni') { if ($('#proiezioni') && !$('#proiezioni').hidden) disegnaProiezioni(true); return true; }
+  if (k === 'contatti') { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }
@@ -5479,11 +5546,11 @@ function disegnaHome() {
 }
 // Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);
 // i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni, Trova) si aprono accanto alla pagina e lasciano quello che c'era sotto.
-const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni'];
+const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti'];
 function vistaAperta() { return VISTE_FINESTRA.some(s => { const m = $(s); return m && !m.hidden; }); }
 function tornaAllaHome() { const h = $('#home'); if (!h) { chiudiViste(); return; } if (h.hidden || vistaAperta()) apriHome(); }
 function avviaRitornoHome() {
-  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
+  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
 }
 function avviaHome() {
   const m = $('#home'); if (!m) return; const b = $('#b-home'); if (b) b.onclick = apriHome; $('#home-chiudi').onclick = () => { chiudiHome(); };
@@ -5491,6 +5558,205 @@ function avviaHome() {
     if (az === 'int') { chiudiViste(); vaiA(x.dataset.vai, true); return; }
     if (az === 'sint') { apriRiassunto(+x.dataset.parte); return; }
     if (az === 'est') { apriSintesi(+x.dataset.parte); if (x.dataset.cap) { const sez = $('#sintesi .mappe-corpo [data-cap="' + CSS.escape(x.dataset.cap) + '"]'); if (sez) setTimeout(() => sez.scrollIntoView({ block: 'start', behavior: 'auto' }), 30); } return; } });
+}
+// ---- contatti_mod
+// ================================================================ Database relazionale: i contatti della rete dei Soci (contenuto/contatti.json)
+const OPZ_ENTE = [['azienda', 'Azienda'], ['pa', 'PA'], ['associazione', 'Associazione'], ['privato', 'Privato']];
+const STATUS_CONTATTO = [['idea', 'Idea'], ['suspect', 'Suspect'], ['lead', 'Lead'], ['prospect', 'Prospect'], ['customer', 'Customer'], ['promoter', 'Promoter']];
+// settori per tipologia di ente: il menù a tendina li mostra tutti, raggruppati, con il gruppo dell’ente scelto per primo
+const SETTORI_CONTATTO = [
+  ['azienda', 'Aziende e imprese', [['az-agro', 'Agroalimentare e bevande'], ['az-aero', 'Aerospazio e difesa'], ['az-ambiente', 'Ambiente, rifiuti ed economia circolare'], ['az-arredo', 'Arredo, design e legno'], ['az-auto', 'Automotive e mobilità'], ['az-chimica', 'Chimica, farmaceutica e biotecnologie'], ['az-commercio', 'Commercio, distribuzione e retail'], ['az-costruzioni', 'Costruzioni, infrastrutture e immobiliare'], ['az-energia', 'Energia, utilities e rinnovabili'], ['az-finanza', 'Banche, finanza e assicurazioni'], ['az-ict', 'ICT, software e digitale'], ['az-logistica', 'Logistica, trasporti e spedizioni'], ['az-manifattura', 'Manifatturiero, meccanica e metallurgia'], ['az-media', 'Media, comunicazione ed editoria'], ['az-moda', 'Moda, tessile e lusso'], ['az-nautica', 'Nautica e cantieristica'], ['az-sanita', 'Sanità privata e servizi alla persona'], ['az-servizi', 'Servizi professionali e consulenza'], ['az-tlc', 'Telecomunicazioni'], ['az-turismo', 'Turismo, ristorazione e ospitalità'], ['az-cultura', 'Cultura, intrattenimento e sport'], ['az-ricerca', 'Ricerca e sviluppo, laboratori'], ['az-altro', 'Altro settore privato']]],
+  ['pa', 'Pubblica amministrazione', [['pa-centrale', 'Amministrazione centrale e ministeri'], ['pa-regione', 'Regione'], ['pa-provincia', 'Provincia o città metropolitana'], ['pa-comune', 'Comune e unione di comuni'], ['pa-sanita', 'Sanità pubblica (ASL, aziende ospedaliere, IRCCS)'], ['pa-universita', 'Università ed enti pubblici di ricerca'], ['pa-scuola', 'Scuola e istruzione'], ['pa-camera', 'Camera di commercio'], ['pa-agenzia', 'Agenzie, autorità indipendenti ed enti strumentali'], ['pa-partecipata', 'Società partecipate e in house'], ['pa-previdenza', 'Enti previdenziali e assistenziali'], ['pa-difesa', 'Forze dell’ordine, difesa e protezione civile'], ['pa-giustizia', 'Giustizia e tribunali'], ['pa-europa', 'Istituzioni europee e internazionali'], ['pa-altro', 'Altro ente pubblico']]],
+  ['associazione', 'Associazioni e corpi intermedi', [['as-categoria', 'Associazione di categoria e datoriale'], ['as-sindacato', 'Sindacato e rappresentanza dei lavoratori'], ['as-ordine', 'Ordine e collegio professionale'], ['as-fondazione', 'Fondazione (bancaria, d’impresa, di comunità)'], ['as-terzo', 'Terzo settore, volontariato e cooperazione sociale'], ['as-consorzio', 'Consorzio, rete d’impresa e cooperativa'], ['as-distretto', 'Distretto, cluster e polo tecnologico'], ['as-formazione', 'Ente di formazione e fondo interprofessionale'], ['as-culturale', 'Associazione culturale, sportiva e ricreativa'], ['as-religiosa', 'Organizzazione religiosa'], ['as-studi', 'Think tank, centro studi e osservatorio'], ['as-club', 'Club e network di imprenditori e manager'], ['as-altro', 'Altra associazione']]],
+  ['privato', 'Persone e privati', [['pv-imprenditore', 'Imprenditore e famiglia imprenditoriale'], ['pv-manager', 'Manager e dirigente'], ['pv-professionista', 'Libero professionista (commercialista, avvocato, notaio, consulente)'], ['pv-investitore', 'Investitore, business angel e family office'], ['pv-accademico', 'Accademico e ricercatore'], ['pv-giornalista', 'Giornalista, autore e opinion leader'], ['pv-politico', 'Politico e amministratore pubblico'], ['pv-studente', 'Studente e giovane talento'], ['pv-altro', 'Altro privato']]]
+];
+function settoriContatto() { return SETTORI_CONTATTO.flatMap(g => g[2].map(([k, l]) => [k, l, g[0], g[1]])); }
+function etichettaSettoreContatto(k) { const x = settoriContatto().find(s => s[0] === k); return x ? x[1] : (k || ''); }
+function etichettaEnte(k) { return etichettaOpz(OPZ_ENTE, k); }
+function etichettaStatusContatto(k) { const x = STATUS_CONTATTO.find(s => s[0] === k); return x ? x[1] : (k || ''); }
+function contattiVuoti() { return { contatti: [] }; }
+function elencoContatti() { if (!S.contatti) S.contatti = contattiVuoti(); if (!Array.isArray(S.contatti.contatti)) S.contatti.contatti = []; return S.contatti.contatti; }
+function contattoDi(id) { return elencoContatti().find(c => c.id === id) || null; }
+function nomeContatto(c) { return [c.nome, c.cognome].map(x => String(x || '').trim()).filter(Boolean).join(' ') || 'Senza nome'; }
+function puoScrivereContatti() { return !S.readonly && !!S.backend; }
+function dataBreve(iso) { if (!iso) return ''; const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? m[3] + '/' + m[2] + '/' + m[1] : String(iso); }
+function giorniDa(iso) { if (!iso) return null; const t = Date.parse(iso); if (!isFinite(t)) return null; return Math.floor((Date.now() - t) / 86400000); }
+function titoloProgettoContatto(id) { const p = id ? progettoDi(id) : null; return p ? (p.titolo || 'Senza titolo') : ''; }
+function contattiDiProgetto(id) { return elencoContatti().filter(c => c.progetto === id); }
+function filtroContatti() { if (!S.ctt) S.ctt = { q: '', ente: [], status: [], socio: [], practice: [], progetto: [], settore: '', ordine: 'cognome' }; return S.ctt; }
+const ORDINI_CONTATTO = [['cognome', 'Cognome e nome'], ['ultimo', 'Ultimo contatto (dal più recente)'], ['ultimo_vecchio', 'Ultimo contatto (dal più lontano)'], ['primo', 'Primo contatto (dal più recente)'], ['status', 'Status (dall’idea al promoter)'], ['ente', 'Ente'], ['agg', 'Ultima modifica']];
+function testoRicercaContatto(c) { return normTesto([c.nome, c.cognome, etichettaEnte(c.ente), c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join(' '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, c.autore].join(' \n ')); }
+function contattiFiltrati() {
+  const F = filtroContatti(); const q = normTesto(F.q).trim(); const parole = q ? q.split(/\s+/) : [];
+  const l = elencoContatti().filter(c => {
+    if (F.ente.length && !F.ente.includes(c.ente || '')) return false;
+    if (F.status.length && !F.status.includes(c.status || '')) return false;
+    if (F.socio.length && !F.socio.includes(c.socio || '')) return false;
+    if (F.practice.length && !(c.practice || []).some(x => F.practice.includes(x))) return false;
+    if (F.progetto.length && !F.progetto.includes(c.progetto || '')) return false;
+    if (F.settore && (c.settore || '') !== F.settore) return false;
+    if (parole.length) { const t = testoRicercaContatto(c); if (!parole.every(w => t.includes(w))) return false; }
+    return true;
+  });
+  const ordSt = Object.fromEntries(STATUS_CONTATTO.map((s, i) => [s[0], i])); const ordEnte = Object.fromEntries(OPZ_ENTE.map((s, i) => [s[0], i]));
+  const nome = (a, b) => String(a.cognome || '').localeCompare(String(b.cognome || ''), 'it') || String(a.nome || '').localeCompare(String(b.nome || ''), 'it');
+  const dt = (x, k) => Date.parse(x[k] || '') || 0;
+  const cmp = { cognome: nome, ultimo: (a, b) => dt(b, 'ultimo') - dt(a, 'ultimo') || nome(a, b), ultimo_vecchio: (a, b) => (dt(a, 'ultimo') || 9e15) - (dt(b, 'ultimo') || 9e15) || nome(a, b), primo: (a, b) => dt(b, 'primo') - dt(a, 'primo') || nome(a, b), status: (a, b) => (ordSt[a.status] ?? 99) - (ordSt[b.status] ?? 99) || nome(a, b), ente: (a, b) => (ordEnte[a.ente] ?? 99) - (ordEnte[b.ente] ?? 99) || nome(a, b), agg: (a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0) };
+  l.sort(cmp[F.ordine] || cmp.cognome); return l;
+}
+function apriContatti() { const m = $('#contatti'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaContatti(true); }
+function chiudiContatti() { const m = $('#contatti'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function apriContattiProgetto(id) { const F = filtroContatti(); F.q = ''; F.ente = []; F.status = []; F.socio = []; F.practice = []; F.settore = ''; F.progetto = id ? [id] : []; apriContatti(); }
+function htmlStatusContatto(s) { return '<span class="sem pg-stato ct-status pg-' + esc(s || 'idea') + '">' + esc(etichettaStatusContatto(s || 'idea')) + '</span>'; }
+function htmlCruscottoContatti(l) {
+  const tutti = elencoContatti(); const F = filtroContatti(); const conta = (lista, f) => lista.filter(f).length;
+  const stati = STATUS_CONTATTO.map(([k, lab]) => '<button class="ct-kpi pg-' + k + (F.status.includes(k) ? ' attivo' : '') + '" data-ct="filtra" data-k="status" data-v="' + k + '" title="Filtra per status ' + esc(lab) + '"><span>' + esc(lab) + '</span><b>' + conta(tutti, c => (c.status || 'idea') === k) + '</b></button>').join('');
+  const enti = OPZ_ENTE.map(([k, lab]) => '<button class="ct-kpi ct-ente' + (F.ente.includes(k) ? ' attivo' : '') + '" data-ct="filtra" data-k="ente" data-v="' + k + '" title="Filtra per ente ' + esc(lab) + '"><span>' + esc(lab) + '</span><b>' + conta(tutti, c => (c.ente || '') === k) + '</b></button>').join('');
+  const fermi = conta(tutti, c => { const g = giorniDa(c.ultimo); return g !== null && g > 90; }); const senzaData = conta(tutti, c => !c.ultimo);
+  return '<div class="ct-cruscotto"><div class="ct-tot"><span>Contatti</span><b>' + tutti.length + '</b><small>' + (l.length !== tutti.length ? l.length + ' in elenco con i filtri correnti' : 'tutti in elenco') + '</small></div>' +
+    '<div class="ct-kpis"><div class="ct-kpi-et">Per status <button class="pg-nota gl-aiuto" data-ct="nota" data-n="status" title="Che cosa significa">?</button></div><div class="ct-kpi-riga">' + stati + '</div></div>' +
+    '<div class="ct-kpis"><div class="ct-kpi-et">Per ente</div><div class="ct-kpi-riga">' + enti + '</div></div>' +
+    '<div class="ct-tot ct-fermi"><span>Da risentire</span><b>' + fermi + '</b><small>ultimo contatto da più di 90 giorni' + (senzaData ? '; ' + senzaData + ' senza data' : '') + '</small></div></div>';
+}
+function htmlFiltriContatti() {
+  const F = filtroContatti(); const tutti = elencoContatti(); const conta = f => tutti.filter(f).length;
+  const gruppo = (tit, nome, voci, sel) => '<div class="pg-gruppo"><div class="pg-gtit">' + esc(tit) + '</div>' + (voci.length ? voci.map(([v, l, n]) => '<label class="pg-opt"><input type="checkbox" data-ctf="' + nome + '" value="' + esc(v) + '"' + (sel.includes(String(v)) ? ' checked' : '') + '> <span>' + esc(l) + '</span>' + (n !== undefined ? '<small>' + n + '</small>' : '') + '</label>').join('') : '<div class="pg-muto">nessuna voce</div>') + '</div>';
+  const soci = [...new Set(tutti.map(c => c.socio).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it')).map(n => [n, n, conta(c => c.socio === n)]);
+  const pr = practiceElenco().map(p => [p.id, p.num + ' ' + p.nome, conta(c => (c.practice || []).includes(p.id))]);
+  const prog = [...new Set(tutti.map(c => c.progetto).filter(Boolean))].map(id => [id, titoloProgettoContatto(id) || 'Scheda non più presente', conta(c => c.progetto === id)]).sort((a, b) => a[1].localeCompare(b[1], 'it'));
+  const settori = '<select id="ct-settore"><option value="">Tutti i settori</option>' + SETTORI_CONTATTO.map(g => '<optgroup label="' + esc(g[1]) + '">' + g[2].map(([k, l]) => { const n = conta(c => c.settore === k); return n ? '<option value="' + k + '"' + (F.settore === k ? ' selected' : '') + '>' + esc(l) + ' (' + n + ')</option>' : ''; }).join('') + '</optgroup>').join('') + '</select>';
+  return '<div class="pg-filtri ct-filtri"><label class="pg-cerca">Ricerca libera<input type="search" id="ct-q" value="' + esc(F.q) + '" placeholder="nome, ente, mail, tema, luogo…"></label>' +
+    '<label class="pg-cerca">Ordina per<select id="ct-ordine">' + ORDINI_CONTATTO.map(([v, l]) => '<option value="' + v + '"' + (F.ordine === v ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select></label>' +
+    '<label class="pg-cerca">Settore' + settori + '</label>' +
+    gruppo('Ente', 'ente', OPZ_ENTE.map(([v, l]) => [v, l, conta(c => (c.ente || '') === v)]), F.ente) +
+    gruppo('Status', 'status', STATUS_CONTATTO.map(([v, l]) => [v, l, conta(c => (c.status || 'idea') === v)]), F.status) +
+    gruppo('Socio di riferimento', 'socio', soci, F.socio) +
+    gruppo('Practices di riferimento', 'practice', pr, F.practice) +
+    gruppo('Scheda Progetto collegata', 'progetto', prog, F.progetto) +
+    '<button class="btn piccolo" id="ct-azzera">Azzera ricerca e filtri</button></div>';
+}
+function htmlRigaContatto(c) {
+  const F = filtroContatti(); const g = giorniDa(c.ultimo); const fermo = g !== null && g > 90;
+  const recapiti = [c.mail ? '<a class="lk" href="mailto:' + esc(c.mail) + '">' + esc(c.mail) + '</a>' : '', c.cellulare ? '<a class="lk" href="tel:' + esc(String(c.cellulare).replace(/\s+/g, '')) + '">' + esc(c.cellulare) + '</a>' : ''].filter(Boolean).join('<br>');
+  const temi = String(c.temi || '').trim(); const riporto = String(c.riporto || '').trim();
+  const prog = c.progetto ? (progettoDi(c.progetto) ? '<button class="ct-lnk" data-ct="progetto" data-id="' + esc(c.progetto) + '" title="Apre le Schede Progetto sulla scheda collegata">' + esc(titoloProgettoContatto(c.progetto)) + '</button>' : '<span class="pg-muto" title="La scheda collegata non è più presente">scheda non più presente</span>') : '';
+  return '<tr data-id="' + esc(c.id) + '"' + (fermo ? ' class="ct-fermo"' : '') + '><td class="ct-nome"><button class="ct-apri" data-ct="apri" data-id="' + esc(c.id) + '" title="Apre la scheda del contatto">' + esc(nomeContatto(c)) + '</button>' + (c.ente || c.luogo ? '<small>' + esc([etichettaEnte(c.ente), c.luogo].filter(Boolean).join(' · ')) + '</small>' : '') + '</td>' +
+    '<td class="ct-recapiti">' + (recapiti || '<span class="pg-muto">—</span>') + '</td>' +
+    '<td>' + esc(etichettaSettoreContatto(c.settore)) + '</td>' +
+    '<td>' + htmlStatusContatto(c.status) + '</td>' +
+    '<td>' + esc(c.socio || '') + '</td>' +
+    '<td class="ct-pr">' + (c.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + '</td>' +
+    '<td>' + prog + '</td>' +
+    '<td class="ct-temi" title="' + esc(temi) + '">' + esc(temi) + '</td>' +
+    '<td class="ct-temi" title="' + esc(riporto) + '">' + esc(riporto) + '</td>' +
+    '<td class="ct-data">' + esc(dataBreve(c.primo)) + '</td>' +
+    '<td class="ct-data">' + esc(dataBreve(c.ultimo)) + (fermo ? '<small>' + g + ' giorni fa</small>' : '') + '</td>' +
+    '<td class="ct-azioni">' + (puoScrivereContatti() ? '<button class="btn piccolo" data-ct="modifica" data-id="' + esc(c.id) + '">Modifica</button>' : '<button class="btn piccolo" data-ct="apri" data-id="' + esc(c.id) + '">Apri</button>') + '</td></tr>';
+}
+function htmlTabellaContatti(l) {
+  if (!l.length) return '<div class="avviso">' + (elencoContatti().length ? 'Nessun contatto corrisponde alla ricerca o ai filtri scelti.' : 'Nessun contatto finora. Con «Nuovo contatto» ciascun Socio registra le persone della propria rete: ente, settore, temi di interesse, status della relazione, chi ce lo ha presentato e le date del primo e dell’ultimo contatto. Il database è condiviso con tutti i Soci.') + '</div>';
+  return '<div class="ct-tabella-wrap"><table class="tab ct-tab"><thead><tr class="intestazione"><td>Contatto</td><td>Recapiti</td><td>Settore</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Temi di interesse</td><td>Riporto</td><td>Primo contatto</td><td>Ultimo contatto</td><td></td></tr></thead><tbody>' + l.map(htmlRigaContatto).join('') + '</tbody></table></div>';
+}
+function disegnaContatti(tutto) {
+  const m = $('#contatti'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
+  if (tutto || !$('.ct-layout', corpo)) corpo.innerHTML = '<div class="pg-layout ct-layout">' + htmlFiltriContatti() + '<div class="ct-lista"></div></div>';
+  else { const nf = el('div'); nf.innerHTML = htmlFiltriContatti(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'ct-q'; const pos = focusQ ? attivo.selectionStart : null; $('.ct-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#ct-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
+  const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l);
+  const nb = $('#ct-nuovo', m); if (nb) nb.hidden = !puoScrivereContatti();
+}
+function aggiornaListaContatti() { const corpo = $('#contatti .mappe-corpo'); if (!corpo || !$('.ct-lista', corpo)) return; const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l); }
+function aggiornaContattiSeAperti() { if ($('#contatti') && !$('#contatti').hidden) disegnaContatti(); }
+function dopoModificaContatti() { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); }
+// tendina delle Schede Progetto nel modulo del contatto: costruita ogni volta dall’elenco corrente, e aggiornata se l’elenco cambia mentre il modulo è aperto
+function opzioniProgettiContatto(cur) {
+  const l = elencoProgetti().slice().sort((a, b) => String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'));
+  let h = '<option value="">Nessuna scheda collegata</option>' + l.map(p => '<option value="' + esc(p.id) + '"' + (p.id === cur ? ' selected' : '') + '>' + esc(p.titolo || 'Senza titolo') + ' (' + esc(etichettaStato(p.stato)) + (p.referente ? ', ' + esc(p.referente) : '') + ')</option>').join('');
+  if (cur && !l.some(p => p.id === cur)) h += '<option value="' + esc(cur) + '" selected>Scheda non più presente</option>';
+  return h;
+}
+function aggiornaTendinaProgettiContatto() { const sel = $('#finestra.finestra-contatto select[data-f="progetto"]'); if (!sel) return; const cur = sel.value; sel.innerHTML = opzioniProgettiContatto(cur); const n = $('.ct-prog-nota', sel.closest('label')); if (n) n.textContent = notaProgettiContatto(); }
+function notaProgettiContatto() { const n = elencoProgetti().length; return n ? 'La tendina elenca ' + (n === 1 ? 'la sola Scheda Progetto presente' : 'le ' + n + ' Schede Progetto presenti') + ' (titolo, stato, Socio referente) e si aggiorna da sola quando se ne inserisce una nuova.' : 'Non ci sono ancora Schede Progetto: la tendina si popola da sola quando se ne inserisce una.'; }
+function htmlSettoriSelect(cur, ente) {
+  const gruppi = SETTORI_CONTATTO.slice().sort((a, b) => (a[0] === ente ? -1 : b[0] === ente ? 1 : 0));
+  return '<select class="f" data-f="settore"><option value="">Da indicare</option>' + gruppi.map(g => '<optgroup label="' + esc(g[1]) + (g[0] === ente ? ' (per l’ente scelto)' : '') + '">' + g[2].map(([k, l]) => '<option value="' + k + '"' + (k === cur ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</optgroup>').join('') + '</select>';
+}
+function formContatto(id) {
+  const c0 = id ? contattoDi(id) : null; const nuovo = !c0; const c = c0 ? clone(c0) : { id: '', nome: '', cognome: '', ente: '', mail: '', cellulare: '', luogo: '', settore: '', temi: '', socio: S.autore || '', practice: [], progetto: '', status: 'idea', riporto: '', primo: '', ultimo: '' };
+  const scrivi = puoScrivereContatti();
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-contatto', id: 'finestra' });
+  const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+  const campo = (k, lab, ph, tipo) => '<label class="campo-testo">' + lab + '<input class="f" data-f="' + k + '" type="' + (tipo || 'text') + '" value="' + esc(c[k] || '') + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + (tipo === 'email' ? ' autocomplete="off"' : '') + '></label>';
+  const soci = nomiSociProgetti(); if (c.socio && !soci.includes(c.socio)) soci.push(c.socio);
+  fin.innerHTML = '<div class="fin-testa"><b>' + (nuovo ? 'Nuovo contatto' : (scrivi ? 'Modifica il contatto: ' : 'Contatto: ') + esc(nomeContatto(c))) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    '<p class="nota-pannello">Il contatto è condiviso con tutti i Soci e ogni salvataggio resta nella cronologia. I campi con * sono obbligatori.</p>' +
+    '<div class="fin-griglia">' + campo('nome', 'Nome *', 'es. Maria') + campo('cognome', 'Cognome *', 'es. Rossi') +
+    '<label class="campo-testo">Ente *<select class="f" data-f="ente">' + opt('', c.ente || '', 'Da indicare') + OPZ_ENTE.map(([k, l]) => opt(k, c.ente || '', l)).join('') + '</select></label>' +
+    '<label class="campo-testo">Settore<span class="ct-settore-slot">' + htmlSettoriSelect(c.settore || '', c.ente || '') + '</span><span>L’elenco copre tutte le tipologie di ente; il gruppo dell’ente scelto compare per primo.</span></label>' +
+    campo('mail', 'Mail', 'es. maria.rossi@esempio.it', 'email') + campo('cellulare', 'Cellulare', 'es. +39 333 1234567', 'tel') +
+    campo('luogo', 'Luogo', 'es. Milano; Napoli; Lugano') +
+    '<label class="campo-testo">Status *<select class="f" data-f="status">' + STATUS_CONTATTO.map(([k, l]) => opt(k, c.status || 'idea', l)).join('') + '</select><span>Idea: nessuna relazione ancora avviata; Suspect: contatto possibile; Lead: contatto avviato; Prospect: interesse concreto; Customer: cliente; Promoter: cliente che presenta Onward ad altri.</span></label>' +
+    '<label class="campo-testo">Socio di riferimento<select class="f" data-f="socio">' + opt('', c.socio || '', 'non indicato') + soci.map(n => opt(n, c.socio || '', n)).join('') + '</select></label>' +
+    campo('riporto', 'Riporto (chi ce lo ha presentato)', 'es. presentato da Paolo Barberis a un convegno ALIS') +
+    campo('primo', 'Data primo contatto', '', 'date') + campo('ultimo', 'Data ultimo contatto', '', 'date') + '</div>' +
+    '<div class="pop-tit">Practices di riferimento (una o più)</div><div class="pg-multi">' + practiceElenco().map(x => '<label class="pg-opt"><input type="checkbox" data-m="practice" value="' + esc(x.id) + '"' + ((c.practice || []).includes(x.id) ? ' checked' : '') + '> <span>' + esc(x.num + ' ' + x.nome) + '</span></label>').join('') + '</div>' +
+    '<label class="campo-testo">Scheda Progetto collegata<select class="f" data-f="progetto">' + opzioniProgettiContatto(c.progetto || '') + '</select><span class="ct-prog-nota">' + esc(notaProgettiContatto()) + '</span></label>' +
+    '<label class="campo-testo" style="margin-top:.6rem">Temi di interesse<textarea class="f" data-f="temi" rows="4" placeholder="Argomenti, esigenze, servizi di Onward che potrebbero interessare, note sulla relazione">' + esc(c.temi || '') + '</textarea></label>' +
+    (nuovo ? '' : '<p class="nota-pannello ct-storia">' + esc('Inserito da ' + (c.autore || '') + ' il ' + dataIt(c.creato)) + (c.agg && c.agg !== c.creato ? esc('; aggiornato da ' + (c.aggDa || c.autore || '') + ' il ' + dataIt(c.agg)) : '') + '</p>') +
+    '<div class="azioni gl-azioni">' + (nuovo || !scrivi ? '' : '<button class="btn piccolo pericolo" id="ct-elimina">Elimina il contatto</button>') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">' + (scrivi ? 'Annulla' : 'Chiudi') + '</button>' + (scrivi ? '<button class="btn piccolo primario" id="ct-salva">Salva il contatto</button>' : '') + '</div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+  if (!scrivi) { for (const x of $$('input, select, textarea', fin)) x.disabled = true; } else $('.f[data-f="nome"]', fin).focus();
+  fin.addEventListener('change', ev => { if (ev.target.matches('.f[data-f="ente"]')) { const cur = $('.f[data-f="settore"]', fin).value; $('.ct-settore-slot', fin).innerHTML = htmlSettoriSelect(cur, ev.target.value); } if (ev.target.matches('.f[data-f="ultimo"]')) { const p = $('.f[data-f="primo"]', fin); if (p && !p.value) p.value = ev.target.value; } });
+  const del = $('#ct-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare il contatto «' + nomeContatto(c) + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaContatto(c.id); chiudiFinestra(); };
+  const salva = $('#ct-salva', fin); if (salva) salva.onclick = () => {
+    const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };
+    if (!f('nome') || !f('cognome')) { toast('Indicare nome e cognome del contatto'); $('.f[data-f="' + (f('nome') ? 'cognome' : 'nome') + '"]', fin).focus(); return; }
+    if (!f('ente')) { toast('Indicare la tipologia di ente'); $('.f[data-f="ente"]', fin).focus(); return; }
+    const mail = f('mail'); if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { toast('L’indirizzo mail non sembra valido'); $('.f[data-f="mail"]', fin).focus(); return; }
+    const primo = f('primo'), ultimo = f('ultimo'); if (primo && ultimo && ultimo < primo) { toast('La data dell’ultimo contatto non può precedere quella del primo'); $('.f[data-f="ultimo"]', fin).focus(); return; }
+    const ora = new Date().toISOString(); const n = nuovo ? { id: uid('ct'), autore: S.autore || 'anonimo', creato: ora } : c0;
+    for (const k of ['nome', 'cognome', 'ente', 'mail', 'cellulare', 'luogo', 'settore', 'temi', 'socio', 'progetto', 'status', 'riporto', 'primo', 'ultimo']) n[k] = f(k);
+    n.practice = $$('input[data-m="practice"]:checked', fin).map(x => x.value); n.agg = ora; n.aggDa = S.autore || 'anonimo';
+    if (nuovo) elencoContatti().push(n);
+    if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.contatti = 'Contatto «' + nomeContatto(n).slice(0, 60) + '» ' + (nuovo ? 'inserito' : 'aggiornato'); segna('contatti');
+    chiudiFinestra(); dopoModificaContatti(); toast(nuovo ? 'Contatto inserito nel database relazionale, visibile a tutti i Soci' : 'Contatto aggiornato');
+  };
+}
+function eliminaContatto(id) { const l = elencoContatti(); const i = l.findIndex(c => c.id === id); if (i < 0) return; const t = nomeContatto(l[i]); l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.contatti = 'Contatto «' + t.slice(0, 60) + '» eliminato'; segna('contatti'); dopoModificaContatti(); }
+function fondiContatti(remoto) {
+  const R = Object.assign(contattiVuoti(), remoto || {}), M = S.contatti || contattiVuoti(); const out = new Map();
+  for (const c of (R.contatti || []).concat(M.contatti || [])) { const cur = out.get(c.id); if (!cur || (Date.parse(c.agg || c.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(c.id, clone(c)); }
+  const base = (S.base && S.base.contatti && S.base.contatti.contatti) || []; const miei = new Set((M.contatti || []).map(c => c.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
+  S.contatti = { contatti: [...out.values()] };
+}
+const LEGENDA_CONTATTI = { status: ['Status della relazione', 'Lo status dice a che punto è la relazione con il contatto, con la stessa scala delle Schede Progetto: Idea (persona o ente che si vorrebbe raggiungere, senza relazione avviata), Suspect (contatto possibile, non ancora qualificato), Lead (contatto avviato e interessato a conoscere Onward), Prospect (interesse concreto su un tema o un servizio), Customer (cliente con un mandato in corso o concluso), Promoter (cliente soddisfatto che presenta Onward ad altri). Un clic su uno status filtra l’elenco.'] };
+function apriNotaContatti(btn) { const v = LEGENDA_CONTATTI[btn.dataset.n]; if (!v) return; apriPopoverNota(btn, v[0], v[1]); }
+function esportaContattiCSV() {
+  const l = contattiFiltrati(); const cella = v => { const s = String(v == null ? '' : v); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const testa = ['Nome', 'Cognome', 'Ente', 'Mail', 'Cellulare', 'Luogo', 'Settore', 'Temi di interesse', 'Socio di riferimento', 'Practices di riferimento', 'Scheda Progetto', 'Status', 'Riporto', 'Data primo contatto', 'Data ultimo contatto', 'Inserito da', 'Inserito il', 'Aggiornato da', 'Aggiornato il'];
+  const righe = l.map(c => [c.nome, c.cognome, etichettaEnte(c.ente), c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join('; '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, dataBreve(c.primo), dataBreve(c.ultimo), c.autore, c.creato ? dataIt(c.creato) : '', c.aggDa, c.agg ? dataIt(c.agg) : ''].map(cella).join(';'));
+  scarica('Onward_Database_relazionale.csv', '﻿' + [testa.join(';')].concat(righe).join('\r\n'), 'text/csv;charset=utf-8');
+}
+function esportaContatti() {
+  const l = contattiFiltrati(); const F = filtroContatti(); const filtrato = F.q || F.ente.length || F.status.length || F.socio.length || F.practice.length || F.progetto.length || F.settore;
+  let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Database relazionale</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt} table{border-collapse:collapse;width:100%;font-size:9pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:3pt 4pt;vertical-align:top} tr.i td{background:#e9eff7;font-weight:bold} td.e{width:28%;background:#f3f5f8} p{margin:0 0 6pt}</style></head><body>';
+  h += '<h1>Onward · Database relazionale</h1><p>' + l.length + (l.length === 1 ? ' contatto' : ' contatti') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + (filtrato ? '; elenco filtrato secondo la ricerca corrente' : '') + '. Per status: ' + STATUS_CONTATTO.map(([k, lab]) => lab + ' ' + l.filter(c => (c.status || 'idea') === k).length).join(', ') + '.</p>';
+  h += '<table><tr class="i"><td>Contatto</td><td>Ente</td><td>Settore</td><td>Luogo</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Ultimo contatto</td></tr>' + l.map(c => '<tr><td>' + esc(nomeContatto(c)) + '</td><td>' + esc(etichettaEnte(c.ente)) + '</td><td>' + esc(etichettaSettoreContatto(c.settore)) + '</td><td>' + esc(c.luogo || '') + '</td><td>' + esc(etichettaStatusContatto(c.status)) + '</td><td>' + esc(c.socio || '') + '</td><td>' + esc((c.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc(titoloProgettoContatto(c.progetto)) + '</td><td>' + esc(dataBreve(c.ultimo)) + '</td></tr>').join('') + '</table>';
+  for (const c of l) { const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(nomeContatto(c)) + '</h2><table>' + riga('Ente', esc(etichettaEnte(c.ente))) + riga('Settore', esc(etichettaSettoreContatto(c.settore))) + riga('Mail', esc(c.mail)) + riga('Cellulare', esc(c.cellulare)) + riga('Luogo', esc(c.luogo)) + riga('Status', esc(etichettaStatusContatto(c.status))) + riga('Socio di riferimento', esc(c.socio)) + riga('Practices di riferimento', esc((c.practice || []).map(nomePractice).join('; '))) + riga('Scheda Progetto collegata', esc(titoloProgettoContatto(c.progetto))) + riga('Temi di interesse', esc(c.temi || '').replace(/\n/g, '<br>')) + riga('Riporto', esc(c.riporto)) + riga('Data primo contatto', esc(dataBreve(c.primo))) + riga('Data ultimo contatto', esc(dataBreve(c.ultimo))) + riga('Inserito', esc((c.autore || '') + ', ' + dataIt(c.creato))) + (c.agg && c.agg !== c.creato ? riga('Aggiornato', esc((c.aggDa || '') + ', ' + dataIt(c.agg))) : '') + '</table>'; }
+  scarica('Onward_Database_relazionale.doc', h + '</body></html>', 'application/msword');
+}
+// contatti collegati a una Scheda Progetto: riga nella scheda, con apertura del database filtrato
+function htmlContattiScheda(p) { const l = contattiDiProgetto(p.id); if (!l.length) return ''; return '<span><b>Contatti</b> <button class="ct-lnk" data-pg="contatti" data-id="' + esc(p.id) + '" title="Apre il Database relazionale sui contatti collegati a questa scheda">' + l.slice(0, 3).map(nomeContatto).map(esc).join(', ') + (l.length > 3 ? ' e altri ' + (l.length - 3) : '') + '</button></span>'; }
+function avviaContatti() {
+  const m = $('#contatti'); if (!m) return; const b = $('#b-contatti'); if (b) b.onclick = apriContatti; $('#contatti-chiudi').onclick = chiudiContatti;
+  $('#ct-nuovo', m).onclick = () => formContatto(null); $('#ct-word', m).onclick = () => { toast('Preparazione del file Word…'); esportaContatti(); }; $('#ct-csv', m).onclick = esportaContattiCSV;
+  m.addEventListener('input', ev => { if (ev.target.id === 'ct-q') { filtroContatti().q = ev.target.value; aggiornaListaContatti(); } });
+  m.addEventListener('change', ev => { const F = filtroContatti(); const c = ev.target.closest('input[data-ctf]'); if (c) { const k = c.dataset.ctf; const cur = new Set(F[k]); if (c.checked) cur.add(c.value); else cur.delete(c.value); F[k] = [...cur]; aggiornaListaContatti(); return; } if (ev.target.id === 'ct-ordine') { F.ordine = ev.target.value; aggiornaListaContatti(); } if (ev.target.id === 'ct-settore') { F.settore = ev.target.value; aggiornaListaContatti(); } });
+  m.addEventListener('click', ev => { const b = ev.target.closest('button[data-ct], #ct-azzera'); if (!b) return; const F = filtroContatti();
+    if (b.id === 'ct-azzera') { F.q = ''; F.ente = []; F.status = []; F.socio = []; F.practice = []; F.progetto = []; F.settore = ''; disegnaContatti(true); return; }
+    const az = b.dataset.ct; if (az === 'apri' || az === 'modifica') { formContatto(b.dataset.id); return; }
+    if (az === 'nota') { ev.preventDefault(); apriNotaContatti(b); return; }
+    if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaContatti(); return; }
+    if (az === 'progetto') { const p = progettoDi(b.dataset.id); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; } });
 }
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
@@ -5578,7 +5844,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

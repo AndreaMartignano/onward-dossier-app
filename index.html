@@ -1287,79 +1287,256 @@ table.ct-tab { table-layout: auto; font-size: .8rem; min-width: 1240px; }
 /* percentuale anche sui segmenti stretti della barra di ripartizione */
 .pg-seg > span.pg-pc-stretto { font-size: .56rem; letter-spacing: -.02em; }
 .pg-seg.pg-t-soc > span.pg-pc-stretto, .pg-seg.pg-t-adv > span.pg-pc-stretto { padding: 0 .15rem; }
+
+/* ---- Proposta A: la barra a quattro aree (Documento, Modello economico, Progetti e rete, Servizio), le tendine descrittive e la riga di posizione */
+:root { --area-doc: #DE5400; --area-mod: #C79A12; --area-pro: #4A6C99; --area-ser: #6E6A64; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --area-doc: #F4741E; --area-mod: #F0C21A; --area-pro: #8FB0DD; --area-ser: #B3ACA8; } }
+:root[data-theme="dark"] { --area-doc: #F4741E; --area-mod: #F0C21A; --area-pro: #8FB0DD; --area-ser: #B3ACA8; }
+.area-doc { --area: var(--area-doc); } .area-mod { --area: var(--area-mod); } .area-pro { --area: var(--area-pro); } .area-ser { --area: var(--area-ser); } .area-too { --area: var(--area-too); } .area-amm { --area: var(--area-amm); }
+.a-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--area, var(--secondario)); flex: 0 0 auto; }
+.barra { gap: .6rem; }
+.barra button.marchio { border: 0; background: none; padding: .1rem .3rem; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: .55rem; }
+.barra button.marchio:hover { background: var(--lavaggio); }
+.barra button.marchio small { display: inline; font-family: var(--font-titoli); font-weight: 500; font-size: .74rem; color: var(--secondario); letter-spacing: .01em; white-space: nowrap; }
+.barra .aree { display: flex; align-items: center; gap: .15rem; margin-left: .4rem; }
+.barra .tendina.area > .btn.area { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid transparent; background: transparent; padding: .38rem .7rem; font-size: .88rem; font-weight: 600; border-radius: 100px; color: var(--inchiostro); }
+.barra .tendina.area > .btn.area:hover { background: var(--lavaggio); }
+.barra .tendina.area[aria-expanded="true"] > .btn.area, .barra .tendina.area > .btn.area[aria-expanded="true"] { background: var(--lavaggio); border-color: var(--filo); }
+.barra .tendina.area.attiva > .btn.area { background: var(--lavaggio); box-shadow: inset 0 -2px 0 var(--area); }
+.barra .tendina.area .tendina-menu { left: 0; right: auto; width: min(640px, calc(100vw - 24px)); padding: .7rem .6rem .6rem; border-radius: 14px; gap: .5rem; }
+.barra .tendina.area .tm-testa { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: 0 .5rem .55rem; border-bottom: 1px solid var(--filo); }
+.barra .tendina.area .tm-testa b { font-family: var(--font-titoli); font-size: 1.02rem; font-weight: 700; letter-spacing: -.01em; }
+.barra .tendina.area .tm-testa span { flex-basis: 100%; font-size: .82rem; color: var(--secondario); }
+.barra .tendina.area .tm-voci { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .15rem; }
+.barra .tendina.area .area-doc .tm-voci, #area-doc .tm-voci { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.barra .tendina.area .tm-voci > button, .barra .tendina.area .tm-gruppo { display: flex; flex-direction: column; align-items: flex-start; gap: .18rem; text-align: left; padding: .5rem .6rem; border-radius: 10px; border: 0; background: none; font: inherit; color: var(--inchiostro); cursor: pointer; min-width: 0; }
+.barra .tendina.area .tm-voci > button:hover { background: var(--lavaggio); }
+.barra .tendina.area .tm-voci b { font-family: var(--font-titoli); font-weight: 600; font-size: .9rem; letter-spacing: -.005em; }
+.barra .tendina.area .tm-voci small { font-size: .78rem; color: var(--secondario); line-height: 1.35; white-space: normal; }
+.barra .tendina.area .tm-gruppo { cursor: default; }
+.barra .tendina.area .tm-azioni { display: flex; gap: .3rem; flex-wrap: wrap; margin: .15rem 0 .1rem; }
+.barra .tendina.area .tm-azioni .btn { padding: .2rem .55rem; font-size: .74rem; }
+.eff { display: inline-flex; align-items: center; height: 18px; padding: 0 .5rem; border-radius: 100px; font-family: var(--font-titoli); font-style: normal; font-size: .62rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; margin-top: .1rem; }
+.eff-tutti { background: var(--btn-arancio); color: var(--accento-scuro); } .eff-lettura { background: var(--btn-grigio); color: var(--secondario); } .eff-privato { background: var(--btn-blu); color: var(--pr1); } .eff-file { background: var(--btn-verde); color: var(--ok); }
+.pos-area { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--font-titoli); font-weight: 500; font-size: .8rem; color: var(--secondario); white-space: nowrap; margin-right: -.3rem; }
+.pos-area .pos-sep { color: var(--termine-filo); font-size: .95rem; }
+.pannello header .pos-area { margin-right: .3rem; }
+.pannello header { justify-content: flex-start; gap: .4rem; }
+.pannello header .btn.chiudi { margin-left: auto; }
+@media (max-width: 1250px) { .barra { gap: .3rem; } .barra button.marchio small { display: none; } .barra .tendina.area > .btn.area { padding: .3rem .5rem; font-size: .8rem; } .barra .tendina.area .tm-voci { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .barra .aree { flex-wrap: wrap; } .barra .stato { max-width: 120px; } }
+/* la mappa della piattaforma nella pagina iniziale */
+.hm-mappa { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .9rem; align-items: start; }
+.hm-area { background: var(--hm-bianco); border: 1px solid var(--hm-bordo); border-radius: 18px; padding: 1rem .55rem .55rem; box-shadow: var(--hm-ombra); min-width: 0; }
+.hm-area-testa { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; padding: 0 .6rem .65rem; border-bottom: 1px solid var(--hm-bordo-2); margin-bottom: .3rem; }
+.hm-area-testa b { font-family: var(--hm-outfit); font-weight: 700; font-size: 1.08rem; letter-spacing: -.02em; color: var(--hm-antracite); }
+.hm-area-testa span { flex-basis: 100%; font-family: var(--hm-sans); font-size: .84rem; color: var(--hm-grigio); line-height: 1.4; }
+.hm-area .tm-voci { display: flex; flex-direction: column; gap: .1rem; }
+.hm-area .tm-voci > button, .hm-area .tm-gruppo { display: flex; flex-direction: column; align-items: flex-start; gap: .2rem; text-align: left; padding: .55rem .6rem; border-radius: 12px; border: 0; background: none; font: inherit; color: var(--hm-antracite); cursor: pointer; min-width: 0; width: 100%; }
+.hm-area .tm-voci > button:hover { background: var(--hm-avorio-2); }
+.hm-area .tm-voci b { font-family: var(--hm-outfit); font-weight: 600; font-size: .95rem; letter-spacing: -.01em; }
+.hm-area .tm-voci small { font-family: var(--hm-sans); font-size: .84rem; color: var(--hm-grigio); line-height: 1.4; }
+.hm-area .tm-gruppo { cursor: default; }
+.hm-area .tm-azioni { display: flex; gap: .3rem; flex-wrap: wrap; margin: .2rem 0 .1rem; }
+.hm-area .tm-azioni .btn { padding: .2rem .6rem; font-size: .76rem; border-radius: 100px; border-color: var(--hm-bordo); background: var(--hm-bianco); }
+.hm-legenda { max-width: 1160px; margin: .7rem auto 1.8rem; display: flex; align-items: center; gap: .5rem 1rem; flex-wrap: wrap; font-family: var(--hm-sans); font-size: .8rem; color: var(--hm-grigio); }
+.hm-leg-et { font-family: var(--hm-outfit); font-size: .68rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--hm-grigio-chiaro); }
+.hm-leg-voce { display: inline-flex; align-items: center; gap: .4rem; }
+@media (max-width: 1100px) { .hm-mappa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .hm-mappa { grid-template-columns: 1fr; } }
+/* la riga della guida: chiusa, dice che cosa contiene */
+.guida-uso .guida-sotto { font-size: .78rem; color: var(--secondario); }
+.guida-uso[open] .guida-sotto { display: none; }
+.mappe.home .guida-uso .guida-sotto { color: var(--hm-grigio); }
+/* con quattro voci la barra ha spazio: lo stato torna leggibile */
+.barra .aree ~ .stato, .barra .stato { max-width: 240px; }
+@media (max-width: 1250px) { .barra .stato { max-width: 150px; } }
+@media (max-width: 900px) { .barra .stato { max-width: 110px; } }
+.barra .tendina.area .tm-azioni .btn { border: 1px solid var(--filo); background: var(--carta); border-radius: 100px; }
+.barra .tendina.area .tm-azioni .btn:hover { background: var(--lavaggio); }
+.a-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.25rem; height: 1.25rem; padding: 0 .35rem; border-radius: 100px; background: var(--accento); color: var(--accento-testo); font-size: .68rem; font-weight: 700; line-height: 1; }
+/* pagina iniziale a due colonne: a sinistra la mappa della piattaforma, a destra intestazione e indice */
+.hm-layout { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 1.8rem; max-width: 1540px; margin: 0 auto; align-items: start; }
+.hm-colonna { position: sticky; top: .9rem; max-height: calc(100vh - var(--barra-h, 52px) - 130px); overflow: auto; padding: .9rem .2rem 1rem 0; scrollbar-width: thin; }
+.hm-col-testa { display: flex; flex-direction: column; gap: .3rem; padding: 0 .2rem .8rem; }
+.hm-col-testa .hm-h2 { font-size: 1.25rem; }
+.hm-col-testa .hm-nota { font-family: var(--hm-sans); font-size: .82rem; color: var(--hm-grigio); line-height: 1.4; }
+.hm-colonna .hm-mappa { grid-template-columns: 1fr; gap: .8rem; max-width: none; }
+.hm-colonna .hm-legenda { flex-direction: column; align-items: flex-start; gap: .4rem; margin: .9rem 0 .4rem; padding: 0 .2rem; }
+.hm-principale { min-width: 0; }
+.hm-principale .hm-hero { padding-top: 2rem; }
+@media (max-width: 1100px) { .hm-layout { grid-template-columns: 1fr; } .hm-colonna { position: static; max-height: none; order: 2; padding-top: 0; } .hm-principale { order: 1; } .hm-colonna .hm-mappa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .hm-colonna .hm-mappa { grid-template-columns: 1fr; } }
+.mappe.home .guida-uso { max-width: 1540px; }
+/* ---- pulsanti delle aree: pastello pieno a riposo, vivido quando si è in una pagina dell'area; nessun contorno di altro colore; la linea in cima alla pagina prende il colore vivido */
+:root { --area-doc: #DE5400; --area-mod: #F4C400; --area-pro: #6F9BD8; --area-ser: #A19B93; }
+.area-doc { --area-pastello: #F8C6A0; --area-vivido: var(--area-doc); --area-testo-vivido: #26221E; }
+.area-mod { --area-pastello: #FBE27E; --area-vivido: var(--area-mod); --area-testo-vivido: #26221E; }
+.area-pro { --area-pastello: #BDD2F0; --area-vivido: var(--area-pro); --area-testo-vivido: #26221E; }
+.area-ser { --area-pastello: #D8D3CB; --area-vivido: var(--area-ser); --area-testo-vivido: #26221E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --area-doc: #F4741E; --area-mod: #F0C21A; --area-pro: #8FB0DD; --area-ser: #B3ACA8; }
+  :root:not([data-theme="light"]) .area-doc { --area-pastello: #7A3E1C; --area-testo-vivido: #26221E; } :root:not([data-theme="light"]) .area-mod { --area-pastello: #6E5A12; --area-testo-vivido: #26221E; } :root:not([data-theme="light"]) .area-pro { --area-pastello: #2F4360; --area-testo-vivido: #26221E; } :root:not([data-theme="light"]) .area-ser { --area-pastello: #4A453E; --area-testo-vivido: #26221E; } }
+:root[data-theme="dark"] { --area-doc: #F4741E; --area-mod: #F0C21A; --area-pro: #8FB0DD; --area-ser: #B3ACA8; }
+:root[data-theme="dark"] .area-doc { --area-pastello: #7A3E1C; --area-testo-vivido: #26221E; } :root[data-theme="dark"] .area-mod { --area-pastello: #6E5A12; --area-testo-vivido: #26221E; } :root[data-theme="dark"] .area-pro { --area-pastello: #2F4360; --area-testo-vivido: #26221E; } :root[data-theme="dark"] .area-ser { --area-pastello: #4A453E; --area-testo-vivido: #26221E; }
+.barra .tendina.area > .btn.area { background: var(--area-pastello); color: color-mix(in srgb, var(--inchiostro) 60%, var(--area-pastello)); border: 1px solid var(--area-pastello); padding: .34rem .85rem; font-size: .86rem; font-weight: 700; gap: 0; box-shadow: none; transition: background .15s, color .15s; }
+.barra .tendina.area > .btn.area .a-dot { display: none; }
+.barra .tendina.area > .btn.area:hover { background: var(--area-pastello); border-color: var(--area-pastello); color: var(--inchiostro); filter: brightness(.95); }
+.barra .tendina.area > .btn.area[aria-expanded="true"] { background: var(--area-pastello); border-color: var(--area-pastello); box-shadow: none; filter: brightness(.93); }
+.barra .tendina.area.attiva > .btn.area, .barra .tendina.area.attiva > .btn.area:hover, .barra .tendina.area.attiva > .btn.area[aria-expanded="true"] { background: var(--area-vivido); border-color: var(--area-vivido); color: var(--area-testo-vivido); box-shadow: none; filter: none; }
+.barra { border-bottom: 3px solid var(--filo); transition: border-color .2s; }
+.barra.area-corrente-doc { border-bottom-color: var(--area-doc); } .barra.area-corrente-mod { border-bottom-color: var(--area-mod); } .barra.area-corrente-pro { border-bottom-color: var(--area-pro); } .barra.area-corrente-ser { border-bottom-color: var(--area-ser); }
+.mappe[data-area="doc"] > .mappe-testa, .pannello[data-area="doc"] > header { box-shadow: inset 0 3px 0 var(--area-doc); }
+.mappe[data-area="mod"] > .mappe-testa, .pannello[data-area="mod"] > header { box-shadow: inset 0 3px 0 var(--area-mod); }
+.mappe[data-area="pro"] > .mappe-testa, .pannello[data-area="pro"] > header { box-shadow: inset 0 3px 0 var(--area-pro); }
+.mappe[data-area="ser"] > .mappe-testa, .pannello[data-area="ser"] > header { box-shadow: inset 0 3px 0 var(--area-ser); }
+
+/* ---- due aree in più: Tools (verde) e Amministrazione (lilla), tra Progetti e rete e Servizio; stessa logica di pastello e vivido */
+:root { --area-too: #8CC97A; --area-amm: #B8A4E3; }
+.area-too { --area-pastello: #D2EAC7; --area-vivido: var(--area-too); --area-testo-vivido: #26221E; }
+.area-amm { --area-pastello: #DFD6F2; --area-vivido: var(--area-amm); --area-testo-vivido: #26221E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --area-too: #9DD68A; --area-amm: #C6B5EA; }
+  :root:not([data-theme="light"]) .area-too { --area-pastello: #2F4A29; --area-testo-vivido: #26221E; } :root:not([data-theme="light"]) .area-amm { --area-pastello: #42375F; --area-testo-vivido: #26221E; } }
+:root[data-theme="dark"] { --area-too: #9DD68A; --area-amm: #C6B5EA; }
+:root[data-theme="dark"] .area-too { --area-pastello: #2F4A29; --area-testo-vivido: #26221E; } :root[data-theme="dark"] .area-amm { --area-pastello: #42375F; --area-testo-vivido: #26221E; }
+.barra.area-corrente-too { border-bottom-color: var(--area-too); } .barra.area-corrente-amm { border-bottom-color: var(--area-amm); }
+.mappe[data-area="too"] > .mappe-testa, .pannello[data-area="too"] > header { box-shadow: inset 0 3px 0 var(--area-too); }
+.mappe[data-area="amm"] > .mappe-testa, .pannello[data-area="amm"] > header { box-shadow: inset 0 3px 0 var(--area-amm); }
+.hm-mappa { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hm-colonna .hm-mappa { grid-template-columns: 1fr; }
+@media (max-width: 1100px) { .hm-colonna .hm-mappa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .hm-colonna .hm-mappa { grid-template-columns: 1fr; } }
+@media (max-width: 1400px) { .barra .tendina.area > .btn.area { padding: .32rem .6rem; font-size: .8rem; } .barra button.marchio small { display: none; } }
+/* Format Incarico: le linee di servizio per cui i format saranno predisposti */
+.fi-intro { max-width: 1100px; margin: 0 auto 1rem; }
+.fi-elenco { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; }
+.fi-card { background: var(--carta); border: 1px dashed var(--filo); border-radius: 10px; padding: .8rem .9rem; display: flex; flex-direction: column; gap: .3rem; min-width: 0; }
+.fi-card b { font-family: var(--font-titoli); font-weight: 600; font-size: .95rem; }
+.fi-card small { font-size: .78rem; color: var(--secondario); line-height: 1.4; }
+.fi-stato { align-self: flex-start; margin-top: .3rem; font-family: var(--font-titoli); font-size: .64rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--secondario); border: 1px solid var(--filo); border-radius: 100px; padding: .1rem .5rem; }
+@media (max-width: 900px) { .fi-elenco { grid-template-columns: 1fr; } }
+/* Spese dei Soci: cruscotto, tabella con importi allineati a destra, modulo con imponibile, IVA e totale */
+.sp-cruscotto { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto; }
+.sp-cruscotto .ct-tot > small + small { margin-top: .15rem; }
+.sp-kpi > b { font-size: .95rem; }
+.sp-kpi > small { font-size: .66rem; color: var(--secondario); }
+table.sp-tab { table-layout: fixed; width: 100%; min-width: 1100px; }
+.sp-tab td:nth-child(n) { min-width: 0; max-width: none; }
+.sp-tab td:nth-child(1), .sp-tab td:nth-child(10) { white-space: nowrap; } .sp-tab td:nth-child(2) { overflow-wrap: anywhere; } .sp-tab td.sp-descr { white-space: normal; overflow: visible; text-overflow: clip; }
+.sp-tab td.ct-azioni .btn { padding: .15rem .5rem; font-size: .74rem; }
+.sp-tab td.sp-num, .sp-tab thead td.sp-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sp-tab td.sp-totale { font-weight: 600; }
+.sp-tab tr.sp-senza td.sp-giust-cella .sp-manca { color: var(--attesa); font-style: italic; }
+.sp-tab tfoot td { border-top: 2px solid var(--filo); font-weight: 600; background: var(--fondo); }
+.sp-tipo small { display: block; color: var(--secondario); font-size: .7rem; }
+.sp-gestione { font-weight: 600; color: var(--inchiostro); }
+.sp-giust { display: inline-flex; flex-direction: column; gap: .05rem; max-width: 200px; }
+.sp-giust .ct-lnk { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+.sp-giust small { font-size: .68rem; color: var(--secondario); }
+.sp-periodo { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+.finestra-spesa .sp-larga { grid-column: 1 / -1; }
+.sp-importi { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 1rem; }
+.sp-importi input.sp-importo { text-align: right; font-variant-numeric: tabular-nums; }
+.sp-totale-out { display: block; padding: .35rem .5rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--fondo); text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; font-size: .9rem; color: var(--inchiostro); }
+.sp-aliquote { display: flex; align-items: center; flex-wrap: wrap; gap: .25rem; margin-top: .3rem; }
+.sp-aliquote .sp-aliq-et { flex-basis: 100%; }
+.sp-aliquote .btn { padding: .1rem .45rem; font-size: .72rem; }
+.sp-giustificativo { display: flex; flex-direction: column; gap: .35rem; }
+.sp-giustificativo .sp-et { font-size: .8rem; color: var(--secondario); }
+.sp-giust-cur { display: flex; align-items: center; gap: .5rem; font-size: .84rem; }
+.finestra-spesa input[type="file"] { border: 1px dashed var(--filo); padding: .5rem; border-radius: 6px; background: var(--fondo); }
+@media (max-width: 760px) { .sp-importi { grid-template-columns: 1fr; } .sp-cruscotto { grid-template-columns: 1fr; } }
+/* con sei aree le tendine delle ultime tre si aprono verso sinistra, così restano dentro lo schermo */
+#area-too .tendina-menu, #area-amm .tendina-menu, #area-ser .tendina-menu { left: auto; right: 0; }
 </style>
 </head>
 <body>
 <div class="barra">
-  <div class="marchio"><span class="lockup-c" style="--fs:21px" role="img" aria-label="Onward Strategic Partners"><span class="lk-mark" aria-hidden="true"><svg class="lk-o" viewBox="-1 -3.5 124 75"><circle cx="34" cy="34" r="34"></circle><circle cx="59" cy="34" r="34"></circle><circle cx="84" cy="34" r="36.38"></circle></svg><span class="lk-word">nward</span></span></span><small>Dossier Soci fondatori e Modello di business</small></div>
+    <button type="button" class="marchio" id="b-marchio" title="Pagina iniziale: Manifesto e Business Plan"><span class="lockup-c" style="--fs:21px" role="img" aria-label="Onward Strategic Partners"><span class="lk-mark" aria-hidden="true"><svg class="lk-o" viewBox="-1 -3.5 124 75"><circle cx="34" cy="34" r="34"></circle><circle cx="59" cy="34" r="34"></circle><circle cx="84" cy="34" r="36.38"></circle></svg><span class="lk-word">nward</span></span></span><small>Dossier Soci fondatori e Modello di business</small></button>
+  <nav class="aree" aria-label="Aree della piattaforma">
+    <div class="tendina area area-doc" id="area-doc" data-area="doc"><button type="button" class="btn area" id="b-area-doc" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Documento</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Documento</b><span>Il testo del Manifesto e Business Plan e il suo glossario.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-mod" id="area-mod" data-area="mod"><button type="button" class="btn area" id="b-area-mod" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Modello economico</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Modello economico</b><span>I numeri: ipotesi, piano, proiezioni e quote dei Soci.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-pro" id="area-pro" data-area="pro"><button type="button" class="btn area" id="b-area-pro" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Progetti e rete</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Progetti e rete</b><span>Il lavoro dei Soci: progetti, contatti, partner e Practice.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-too" id="area-too" data-area="too"><button type="button" class="btn area" id="b-area-too" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Tools</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Tools</b><span>Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e per la Diagnosi D³.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-amm" id="area-amm" data-area="amm"><button type="button" class="btn area" id="b-area-amm" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Amministrazione</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Amministrazione</b><span>La gestione amministrativa: le spese sostenute dai Soci per la società.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-ser" id="area-ser" data-area="ser"><button type="button" class="btn area" id="b-area-ser" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Servizio</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Servizio</b><span>Cronologia, modifiche, esportazioni e impostazioni.</span></div><div class="tm-voci"></div></div></div>
+  </nav>
+  <div class="spazio"></div>
   <div class="interruttore" id="modo"><button data-modo="lettura">Lettura</button><button data-modo="modifica">Modifica</button></div>
   <span class="stato" id="stato">Avvio…</span>
   <div class="zoom" id="zoom" title="Dimensione del documento"><button data-z="-" title="Riduci">−</button><button data-z="0" id="zoom-val" title="Torna al 100%">100%</button><button data-z="+" title="Ingrandisci">+</button></div>
-  <div class="spazio"></div>
-  <button class="btn home" id="b-home" title="La pagina iniziale: l’indice del documento per Parti e capitoli, nelle tre versioni (Sintesi, Estesa, Integrale)">Manifesto e Business Plan</button>
-  <button class="btn ipotesi" id="b-ipotesi" title="Le ipotesi del modello: i valori in giallo del documento">Ipotesi</button>
-  <button class="btn blu" id="b-progetti" title="I progetti che i Soci seguono e porteranno in Onward: schede consultabili da tutti, con ricerca e filtri">Schede Progetto</button>
-  <div class="tendina" id="strumenti-menu"><button class="btn arancio" id="b-strumenti" aria-haspopup="true" aria-expanded="false" title="Scheda di commessa, Piano e scenari (il piano condiviso della Parte terza) e Soci (struttura delle quote)">Strumenti</button><div class="tendina-menu" hidden><button id="b-commessa">Commessa</button><button id="b-scenari">Piano e scenari</button><button id="b-soci">Soci</button></div></div>
-  <button class="btn viola" id="b-proiezioni" title="Cruscotto unificato: i tre scenari sui tre esercizi, i dati reali rilevati e la proiezione della crescita, con ipotesi di prova che non toccano il documento">Proiezioni Strategiche</button>
-  <div class="tendina" id="persone-menu"><button class="btn verde" id="b-persone" aria-haspopup="true" aria-expanded="false" title="Soci e Società Partner (la rete di partenza) e Practices e Servizi">Practices e Persone</button><div class="tendina-menu" hidden><button id="b-mappe">Soci e Società Partner</button><button id="b-practice">Practices e Servizi</button></div></div>
-  <button class="btn verde" id="b-contatti" title="Il database relazionale dei Soci: i contatti della rete con ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata">Database relazionale</button>
-  <button class="btn grigio" id="b-glossario">Glossario</button>
-  <button class="btn grigio" id="b-impostazioni">Impostazioni</button>
-  <button class="btn grigio" id="b-storico">Cronologia</button>
-  <div class="tendina" id="esporta"><button class="btn" id="b-esporta" aria-haspopup="true" aria-expanded="false">Esportazione</button><div class="tendina-menu" hidden><button id="b-word">Word</button><button id="b-stampa" title="Stampa o salva in PDF dal browser">PDF (stampa)</button><button id="b-json">Dati (JSON)</button></div></div>
-  <button class="btn grigio" id="b-modifiche" title="Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico">Modifiche</button>
 </div>
-<div class="mappe home" id="home" hidden>
-  <div class="mappe-testa"><b>Manifesto e Business Plan</b><div class="mappe-azioni"><span class="nota-pannello">La piattaforma si apre sempre qui; «Chiudi» porta al testo integrale.</span></div><button class="btn piccolo" id="home-chiudi">Chiudi</button></div>
+<div class="mappe home" id="home" data-area="doc" hidden>
+  <div class="mappe-testa"><b>Manifesto e Business Plan</b><div class="mappe-azioni"><span class="nota-pannello">La piattaforma si apre sempre qui.</span></div><button class="btn piccolo" id="home-chiudi" title="Apre il testo integrale del documento, con il sommario a lato">Testo integrale</button></div>
   <div class="guida-slot" data-guida="home"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe proiezioni" id="proiezioni" hidden>
+<div class="mappe proiezioni" id="proiezioni" data-area="mod" hidden>
   <div class="mappe-testa"><b>Proiezioni Strategiche</b><div class="mappe-azioni"><button class="btn piccolo" id="px-word">Esporta in Word</button><span class="px-stato"></span><span class="nota-pannello">Il banco del controllo. A sinistra la crescita sui tre esercizi: Prudente, Base e Sviluppo letti dal piano condiviso (Piano e scenari) e la linea reale, rilevata e proiettata. A destra il cruscotto: i mandati firmati mese per mese, il metodo di proiezione e una copia di prova del piano, che cambia solo questa pagina finché non si salva.</span></div><button class="btn piccolo" id="proiezioni-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="proiezioni"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe progetti" id="progetti" hidden>
+<div class="mappe progetti" id="progetti" data-area="pro" hidden>
   <div class="mappe-testa"><b>Schede Progetto</b><div class="mappe-azioni"><button class="btn piccolo primario" id="pg-nuova">Nuova scheda</button><button class="btn piccolo" id="pg-esporta" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><span class="nota-pannello">I progetti che ciascun Socio segue e porterà in Onward: consultabili da tutti, con ricerca libera e filtri per stato, Practice, sinergie, referente e luogo.</span></div><button class="btn piccolo" id="progetti-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="progetti"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe contatti" id="contatti" hidden>
+<div class="mappe contatti" id="contatti" data-area="pro" hidden>
   <div class="mappe-testa"><b>Database relazionale</b><div class="mappe-azioni"><button class="btn piccolo primario" id="ct-nuovo">Nuovo contatto</button><button class="btn piccolo" id="ct-word" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><button class="btn piccolo" id="ct-csv" title="Esporta l’elenco corrente (filtrato) in CSV, apribile con Excel">Esporta (CSV)</button><span class="nota-pannello">I contatti della rete dei Soci, condivisi con tutti: ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.</span></div><button class="btn piccolo" id="contatti-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="contatti"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe modifiche" id="modifiche" hidden>
+<div class="mappe modifiche" id="modifiche" data-area="ser" hidden>
   <div class="mappe-testa"><b>Accessi e modifiche</b><div class="mappe-azioni"><select class="ricerca mod-filtro" id="mod-nome"><option value="">Tutti i Soci</option></select><select class="ricerca mod-filtro" id="mod-tipo"><option value="tutti">Tutto</option><option value="accessi">Solo accessi e link</option><option value="modifica">Solo modifiche</option><option value="proposta">Solo proposte</option><option value="commento">Solo commenti</option><option value="avvio">Solo avvio del repository</option></select><button class="btn piccolo" id="mod-aggiorna">Aggiorna</button><span class="nota-pannello">Chi ha ricevuto il link, quando è entrato e che cosa ha salvato, con le proposte in attesa e i commenti a margine: il registro è letto dal repository condiviso, quindi è lo stesso per tutti.</span></div><button class="btn piccolo" id="modifiche-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="modifiche"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe riassunto" id="riassunto" hidden>
+<div class="mappe riassunto" id="riassunto" data-area="doc" hidden>
   <div class="mappe-testa"><b id="riassunto-tit">Sintesi</b><div class="schede vista-sint" title="Sintetica: la parte in una pagina; Estesa: la parte in tavole"><button data-sv="sintetica" class="attivo">Sintetica</button><button data-sv="estesa">Estesa</button></div><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="riassunto-struttura">Apri la Struttura di questa parte</button><span class="nota-pannello">La parte in una pagina di cifre, schemi e grafici, letti dal documento e dal modello: cambiano quando cambia il documento. Passando con il mouse si legge di più; un clic sui titoli porta al documento.</span></div><button class="btn piccolo" id="riassunto-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="riassunto"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe sintesi" id="sintesi" hidden>
+<div class="mappe sintesi" id="sintesi" data-area="doc" hidden>
   <div class="mappe-testa"><b id="sintesi-tit">Struttura</b><div class="schede vista-sint" title="Sintetica: la parte in una pagina; Estesa: la parte in tavole"><button data-sv="sintetica">Sintetica</button><button data-sv="estesa" class="attivo">Estesa</button></div><div class="schede"><button data-parte="0">Parte prima</button><button data-parte="1">Parte seconda</button><button data-parte="2">Parte terza</button><button data-parte="3">Parte quarta</button></div><div class="mappe-azioni"><button class="btn piccolo" id="sintesi-doc">Apri la parte nel documento</button><span class="nota-pannello">Tavole lette dal testo, dalle tabelle e dal modello: cambiano quando cambia il documento. Un clic sui titoli porta al punto del documento; i termini economici e i nomi aprono le loro schede.</span></div><button class="btn piccolo" id="sintesi-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="sintesi"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe scenari" id="scenari" hidden>
+<div class="mappe scenari" id="scenari" data-area="mod" hidden>
   <div class="mappe-testa"><b>Piano e scenari</b><div class="mappe-azioni"><button class="btn piccolo" id="scenari-word">Esporta in Word</button><button class="btn piccolo" id="scenari-proiezioni" title="Il banco del controllo: dati reali, proiezione e prove senza toccare il piano">Verifica e prove: Proiezioni Strategiche</button><span class="nota-pannello">Il piano condiviso della Parte terza: i tre scenari del secondo esercizio, la traiettoria dei tre esercizi, il fabbisogno di avvio, la remunerazione dei Soci e il cruscotto, calcolati dalle ipotesi del modello e dai testi del documento. Ciò che si scrive qui vale per tutti i Soci e si salva da solo; per provare ipotesi senza cambiare il piano e per confrontarlo con i dati reali si usano le Proiezioni Strategiche.</span></div><button class="btn piccolo" id="scenari-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="scenari"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe soci" id="soci" hidden>
+<div class="mappe soci" id="soci" data-area="mod" hidden>
   <div class="mappe-testa"><b>Soci e struttura delle quote</b><div class="mappe-azioni"><button class="btn piccolo" id="soci-word">Esporta in Word</button><span class="nota-pannello">Le quote dei Soci della rete di partenza, le due categorie, l’ingresso di un finanziatore, l’utile e il valore: tutto legato alle ipotesi del modello e ai testi del documento. Le modifiche si salvano da sole.</span></div><button class="btn piccolo" id="soci-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="soci"></div>
   <div class="mappe-corpo"></div>
 </div>
-<div class="mappe commessa" id="commessa" hidden>
-  <div class="mappe-testa"><b>Scheda di commessa</b><select class="ricerca cm-elenco" id="cm-elenco"></select><div class="mappe-azioni"><button class="btn piccolo" id="cm-nuova">Nuova</button><button class="btn piccolo primario" id="cm-salva">Salva</button><button class="btn piccolo pericolo" id="cm-elimina" hidden>Elimina</button><button class="btn piccolo" id="cm-word">Esporta in Word</button><span class="nota-pannello">Scegliere la tipologia, inserire i dati: la scheda calcola prezzo, ripartizione nei tre strati, margine per giornata senior e verifiche, con le regole e le ipotesi correnti del documento.</span></div><button class="btn piccolo" id="cm-chiudi">Chiudi</button></div>
+<div class="mappe commessa" id="commessa" data-area="too" hidden>
+  <div class="mappe-testa"><b>Scheda di commessa</b><select class="ricerca cm-elenco" id="cm-elenco"></select><div class="mappe-azioni"><button class="btn piccolo" id="cm-nuova">Nuova</button><button class="btn piccolo primario" id="cm-salva">Salva</button><button class="btn piccolo pericolo" id="cm-elimina" hidden>Elimina</button><button class="btn piccolo" id="cm-word">Esporta in Word</button><span class="nota-pannello">Il tool per ipotizzare le economie di una commessa e formulare un’offerta: scelta la tipologia e inseriti i dati, la scheda calcola prezzo, ripartizione nei tre strati, margine per giornata dei Soci e verifiche, con le regole e le ipotesi correnti del documento.</span></div><button class="btn piccolo" id="cm-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="commessa"></div>
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
 </div>
-<div class="mappe" id="mappe" hidden>
+<div class="mappe formati" id="formati" data-area="too" hidden>
+  <div class="mappe-testa"><b>Format Incarico</b><div class="mappe-azioni"><span class="nota-pannello">I format compilabili per predisporre i contratti delle linee di servizio: pagina in preparazione, per ora vuota.</span></div><button class="btn piccolo" id="formati-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="formati"></div>
+  <div class="mappe-corpo"></div>
+</div>
+<div class="mappe formatd3" id="formatd3" data-area="too" hidden>
+  <div class="mappe-testa"><b>Format Diagnosi D³</b><div class="mappe-azioni"><span class="nota-pannello">Il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso: pagina in preparazione, per ora vuota.</span></div><button class="btn piccolo" id="formatd3-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="formatd3"></div>
+  <div class="mappe-corpo"></div>
+</div>
+<div class="mappe spese" id="spese" data-area="amm" hidden>
+  <div class="mappe-testa"><b>Spese dei Soci</b><div class="mappe-azioni"><button class="btn piccolo primario" id="sp-nuova">Nuova spesa</button><button class="btn piccolo" id="sp-word" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><button class="btn piccolo" id="sp-csv" title="Esporta l’elenco corrente (filtrato) in CSV, apribile con Excel">Esporta (CSV)</button><span class="nota-pannello">Le spese sostenute dai Soci per attività della società, condivise con tutti: Socio, data, Scheda Progetto di riferimento, tipologia, imponibile e IVA, giustificativo in PDF o immagine.</span></div><button class="btn piccolo" id="spese-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="spese"></div>
+  <div class="mappe-corpo"></div>
+</div>
+<div class="mappe" id="mappe" data-area="pro" hidden>
   <div class="mappe-testa"><b>Practices e Persone</b><div class="schede"><button data-vista="rete">Soci e Società Partner</button><button data-vista="practice">Practices e Servizi</button></div><div class="mappe-azioni"></div><button class="btn piccolo" id="mappe-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="rete"></div>
   <div class="mappe-corpo"></div>
@@ -1379,11 +1556,11 @@ table.ct-tab { table-layout: auto; font-size: .8rem; min-width: 1240px; }
     <article class="doc" id="doc"></article>
   </main>
 </div>
-<aside class="pannello" id="pan-ipotesi"><header>Ipotesi del modello <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="ipotesi"></div><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-storico"><header>Cronologia delle versioni <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="storico"></div><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-impostazioni"><header>Impostazioni e archivio <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="impostazioni"></div><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-trova"><header>Trova e sostituisci <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="trova"></div><div class="corpo"></div></aside>
-<aside class="pannello" id="pan-glossario"><header>Glossario economico <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="glossario"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-ipotesi" data-area="mod"><header>Ipotesi del modello <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="ipotesi"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-storico" data-area="ser"><header>Cronologia delle versioni <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="storico"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-impostazioni" data-area="ser"><header>Impostazioni e archivio <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="impostazioni"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-trova" data-area="ser"><header>Trova e sostituisci <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="trova"></div><div class="corpo"></div></aside>
+<aside class="pannello" id="pan-glossario" data-area="doc"><header>Glossario economico <button class="btn piccolo chiudi">Chiudi</button></header><div class="guida-slot" data-guida="glossario"></div><div class="corpo"></div></aside>
 <div class="sfondo" id="sfondo"></div>
 <script id="seme" type="application/json">{"meta": {"titolo": "ONWARD STRATEGIC PARTNERS", "sottotitolo": "", "dossier": "Dossier Soci fondatori e Modello di business", "occhiello": "", "riservato": "Documento riservato", "luogo": "", "chiusura": ""}, "nota": [], "parti": [], "ipotesi": {"soci": 1, "gg_anno": 1, "q_prod": 1, "q_orig": 0, "q_gest": 0, "soci_dett": [], "util": [1, 1, 1], "tariffa_media": [1, 1, 1], "listino": {"junior": 0, "senior": 0, "director": 0, "partner": 0, "equity": 0}, "costo_opp": 0, "livelli": {"equity": {"listino": 0, "util": [0, 0, 0], "tariffa": [0, 0, 0], "costo_opp": 0}, "partner": {"listino": 0, "util": [0, 0, 0], "tariffa": [0, 0, 0], "costo_opp": 0}, "director": {"listino": 0, "util": [0, 0, 0], "tariffa": [0, 0, 0], "costo_opp": 0}, "senior": {"listino": 0, "util": [0, 0, 0], "tariffa": [0, 0, 0], "costo_opp": 0}, "junior": {"listino": 0, "util": [0, 0, 0], "tariffa": [0, 0, 0], "costo_opp": 0}}, "orig_min": 0, "orig_med": 0, "orig_max": 0, "exec_q": 0, "soc_q": 0, "diag_soc": 0, "diag_soc_min": 0, "diag_prezzo_gg": 0, "tk_diag": 0, "gg_diag": 0, "tk_diag_min": 0, "tk_diag_max": 0, "gg_diag_min": 0, "gg_diag_max": 0, "tk_ret": 0, "gg_ret": 0, "m_part": 0, "gg_dir_per_100k": 0, "m_fin": 0, "gg_fin": 0, "marg_pratica": 0, "pratiche_mese": 0, "tk_form": 0, "m_form": 0, "gg_form": 0, "conv": [0, 0, 0, 0, 0, 0], "gg_funnel": [0, 0, 0], "v_mand": 0, "v_ret_2anni": 0, "v_cross": 0, "p_mand": 0, "p_ret": 0, "p_cross": 0, "gg_cliente": 0, "costi_struttura": [{"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}, {"nome": "", "valore": 0}], "q_utile": 0, "capitale": 0, "multiplo": 0, "tetto_B": 0, "coda_orig": 0, "soglia_conf": 0, "tetto_conc": 0, "jr_costo": 0, "jr_listino": 0, "jr_gg_prod": 0, "jr_mult": 0, "canale_quota": 0, "canale_piatt": 0, "gg_cassa": 0, "tar_proprio": 0, "quota_str_proprio": 0, "gg_indiff": 0, "scenari": {"Prudente": [0, 0, 0, 0, 0, 0], "Base": [0, 0, 0, 0, 0, 0], "Sviluppo": [0, 0, 0, 0, 0, 0]}}, "glossario": {"voci": []}, "rete": {"practice": [], "cerchi": {}, "soci": [], "advisor": [], "partner": [], "consulenti": [], "note": {}}, "commesse": {"commesse": []}, "quote": {}, "scenari": {}}</script>
 <script>
@@ -1678,7 +1855,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-14T07:07:17Z';
+window.ONWARD_BUILD = '2026-09-15T06:19:54Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2208,7 +2385,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key === 'spese' ? 'contenuto/spese.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -2224,6 +2401,7 @@ function datiDi(key) {
   if (key === 'progetti') return S.progetti || progettiVuoti();
   if (key === 'proiezioni') return S.proiezioni || proiezioniVuote();
   if (key === 'contatti') return S.contatti || contattiVuoti();
+  if (key === 'spese') return S.spese || speseVuote();
   if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
 }
@@ -2242,10 +2420,11 @@ function applicaDati(key, d) {
   if (key === 'progetti') { S.progetti = Object.assign(progettiVuoti(), d || {}); if (!Array.isArray(S.progetti.progetti)) S.progetti.progetti = []; return; }
   if (key === 'proiezioni') { S.proiezioni = Object.assign(proiezioniVuote(), d || {}); if (!Array.isArray(S.proiezioni.rilevazioni)) S.proiezioni.rilevazioni = []; return; }
   if (key === 'contatti') { S.contatti = Object.assign(contattiVuoti(), d || {}); if (!Array.isArray(S.contatti.contatti)) S.contatti.contatti = []; return; }
+  if (key === 'spese') { S.spese = Object.assign(speseVuote(), d || {}); if (!Array.isArray(S.spese.spese)) S.spese.spese = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
-const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti'];
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
@@ -2286,7 +2465,7 @@ class ArchivioGitHub {
     }
   }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); S.spese = speseVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -2315,7 +2494,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'spese') return 'Spese dei Soci aggiornate' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -2330,6 +2509,7 @@ async function fondi(k) {
   if (k === 'progetti') { fondiProgetti(remoto); return; }
   if (k === 'proiezioni') { fondiProiezioni(remoto); return; }
   if (k === 'contatti') { fondiContatti(remoto); return; }
+  if (k === 'spese') { fondiSpese(remoto); return; }
   if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
@@ -2346,7 +2526,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'spese' ? 'spese dei Soci' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -2354,7 +2534,7 @@ function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent
 // ================================================================ cronologia
 async function apriCronologia(keySel) {
   apriPannello('pan-storico'); const c = $('#pan-storico .corpo'); c.innerHTML = '<p class="nota-pannello">Scegliere un capitolo: ogni salvataggio è una versione, con autore e data. Si può confrontare una versione con il testo attuale o ripristinarla (il ripristino è a sua volta una nuova versione).</p>';
-  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
+  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option><option value="contatti">Database relazionale</option><option value="spese">Spese dei Soci</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
   const attuale = $('.capitolo:not(#cap-nota)') && capitoloVisibile(); if (attuale) sel.value = 'cap:' + attuale; if (typeof keySel === 'string' && [...sel.options].some(o => o.value === keySel)) sel.value = keySel;
   c.appendChild(sel); const lista = el('div', { id: 'st-lista' }); c.appendChild(lista);
   const carica = async () => { lista.innerHTML = '<p class="nota-pannello">Caricamento…</p>'; try { const st = await S.backend.storico(sel.value); if (!st.length) { lista.innerHTML = '<p class="nota-pannello">Nessuna versione salvata per questa voce.</p>'; return; } lista.innerHTML = st.map(v => '<div class="storico-voce"><div><b>' + esc(v.autore || '') + '</b></div><div class="quando">' + esc(dataIt(v.quando)) + ' · ' + esc(v.messaggio || '') + '</div><div class="azioni"><button class="btn piccolo" data-st="confronta" data-id="' + esc(v.id) + '">Confronta con il testo attuale</button><button class="btn piccolo" data-st="ripristina" data-id="' + esc(v.id) + '">Ripristina</button></div><div class="diff-slot"></div></div>').join(''); } catch (e) { lista.innerHTML = '<div class="avviso errore">Cronologia non disponibile: ' + esc(e.message) + '</div>'; } };
@@ -2376,6 +2556,7 @@ function diffVersioni(key, vecchia) {
   if (key === 'progetti') return diffDue('progetti', vecchia, datiDi('progetti'));
   if (key === 'proiezioni') return diffDue('proiezioni', vecchia, datiDi('proiezioni'));
   if (key === 'contatti') return diffDue('contatti', vecchia, datiDi('contatti'));
+  if (key === 'spese') return diffDue('spese', vecchia, datiDi('spese'));
   const vb = key === 'struttura' ? (vecchia.nota || []) : (vecchia.blocchi || []); const cb = key === 'struttura' ? S.nota : capitolo(key.slice(4)).c.blocchi;
   const vm = new Map(vb.map(b => [b.id, b])); const cm = new Map(cb.map(b => [b.id, b])); let h = ''; let n = 0;
   for (const b of cb) { const o = vm.get(b.id); const tn = testoBlocco(b), to = testoBlocco(o); if (!o) { h += '<div class="b">Blocco aggiunto</div><div class="p"><ins>' + esc(tn) + '</ins></div>'; n++; } else if (to !== tn) { h += '<div class="b">Blocco modificato</div><div class="p">' + diffParole(to, tn) + '</div>'; n++; } }
@@ -3138,7 +3319,7 @@ function calcolaCommessa(c) {
 }
 
 // ---------------------------------------------------------------- vista
-function apriCommessa() { const m = $('#commessa'); if (!m) return; chiudiMappe(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); if (!S.commessa) S.commessa = commessaNuova(); disegnaCommessa(); }
+function apriCommessa() { const m = $('#commessa'); if (!m) return; chiudiMappe(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); m.hidden = false; document.body.classList.add('con-mappe'); if (!S.commessa) S.commessa = commessaNuova(); disegnaCommessa(); }
 function chiudiCommessa() { const m = $('#commessa'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
 function campoC(lab, k, val, opt) { opt = opt || {}; const id = 'cm-' + k.replace(/[.\[\]]/g, '-'); return '<label class="campo-testo" for="' + id + '">' + lab + (opt.select ? '<select id="' + id + '" data-k="' + k + '">' + opt.select.map(([v, l]) => '<option value="' + esc(v) + '"' + (String(v) === String(val) ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>' : '<input id="' + id + '" data-k="' + k + '" data-fmt="' + (opt.fmt || 'num') + '" value="' + esc(opt.fmt === 'pct' ? String(Math.round(num(val) * 10000) / 100).replace('.', ',') : opt.fmt === 'testo' ? (val || '') : opt.fmt === 'dec' ? String(num(val)).replace('.', ',') : MODELLO.F.num(num(val))) + '"' + (opt.fmt === 'testo' ? '' : ' inputmode="decimal"') + '>') + (opt.nota ? '<span>' + opt.nota + '</span>' : '') + '</label>'; }
 function formCommessa(c) {
@@ -3786,7 +3967,7 @@ function sintesiParte4() {
 // ---------------------------------------------------------------- vista
 function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; S.riassuntoParte = S.sintesiParte; S.homeVista = 'estesa'; try { localStorage.setItem('onward.home', 'estesa'); } catch (e) {} disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); }
+function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); }
 function apriDocumento() { chiudiViste(); chiudiPopover(); window.scrollTo({ top: 0, behavior: 'auto' }); const d = $('#doc'); if (d) d.setAttribute('tabindex', '-1'); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
@@ -4032,7 +4213,7 @@ function avviaRiassunto() {
 function accessiVuoti() { return { soci: [], accessi: [] }; }
 function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k === 'spese') return 'Spese dei Soci'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -4069,6 +4250,7 @@ function diffDue(key, vecchia, nuova) {
     if (key === 'rete') return [].concat(d.soci || [], d.advisor || [], d.partner || [], d.consulenti || []).map(e => ({ id: e.id, nome: e.nome || '', tx: [e.nome, e.qualifica || '', e.sede || '', e.societa || '', (e.practice || []).map(p => p.id + ':' + p.ruolo).join(' '), e.sintesi || '', e.presidio || '', e.ambito || '', e.profilo || '', e.attivita || '', e.reti || '', e.progetti || '', e.da_completare || ''].join('\n') }));
     if (key === 'commesse') return (d.commesse || []).map(c => ({ id: c.id, nome: c.titolo || '', tx: JSON.stringify(c, null, 1) }));
     if (key === 'proiezioni') return [{ id: 'imp', nome: 'Impostazioni', tx: ['Avvio: ' + (d.avvio || ''), 'Mese corrente: ' + (d.corrente || 'automatico'), 'Metodo: ' + (d.metodo || ''), 'Riferimento: ' + (d.riferimento || ''), 'Profilo: ' + (d.profilo || '')].join('\n') }].concat((d.rilevazioni || []).map(r => ({ id: r.id, nome: etMesePx(num(r.mese), true) + ' · ' + nomeLineaPx(r.linea), tx: ['Mandati: ' + num(r.n), 'Valore: ' + num(r.valore), 'Giornate: ' + (r.gg == null ? '' : r.gg), 'Note: ' + (r.note || '')].join('\n') })));
+    if (key === 'spese') return (d.spese || []).map(x => ({ id: x.id, nome: titoloSpesa(x), tx: ['Socio: ' + (x.socio || ''), 'Data: ' + dataBreve(x.data), 'Scheda Progetto: ' + riferimentoSpesa(x.progetto), 'Tipologia: ' + etichettaTipoSpesa(x.tipologia), 'Descrizione: ' + (x.descrizione || ''), 'Imponibile: ' + spEur(imponibileSpesa(x)), 'IVA: ' + spEur(ivaSpesa(x)), 'Totale: ' + spEur(totaleSpesa(x)), 'Giustificativo: ' + (x.giustificativo ? x.giustificativo.nome : 'assente')].join('\n') }));
     if (key === 'contatti') return (d.contatti || []).map(c => ({ id: c.id, nome: nomeContatto(c), tx: ['Nome: ' + (c.nome || ''), 'Cognome: ' + (c.cognome || ''), 'Ente: ' + etichettaEnte(c.ente), 'Mail: ' + (c.mail || ''), 'Cellulare: ' + (c.cellulare || ''), 'Luogo: ' + (c.luogo || ''), 'Settore: ' + etichettaSettoreContatto(c.settore), 'Temi di interesse: ' + (c.temi || ''), 'Socio di riferimento: ' + (c.socio || ''), 'Practices: ' + (c.practice || []).map(nomePractice).join('; '), 'Scheda Progetto: ' + titoloProgettoContatto(c.progetto), 'Status: ' + etichettaStatusContatto(c.status), 'Riporto: ' + (c.riporto || ''), 'Primo contatto: ' + dataBreve(c.primo), 'Ultimo contatto: ' + dataBreve(c.ultimo)].join('\n') }));
     if (key === 'progetti') return (d.progetti || []).map(p => ({ id: p.id, nome: p.titolo || '', tx: ['Titolo: ' + (p.titolo || ''), 'Soggetti: ' + (p.soggetti || ''), 'Luogo: ' + (p.luogo || ''), 'Stato: ' + etichettaStato(p.stato), 'Referente: ' + (p.referente || ''), 'Practice: ' + (p.practice || []).map(nomePractice).join('; '), 'Sinergie: ' + (p.sinergie || []).map(nomePartner).join('; '), 'Valore: ' + (numeroIt(p.valore) !== null ? MODELLO.F.eur(numeroIt(p.valore)) : ''), 'Descrizione: ' + (p.descrizione || '')].join('\n') }));
     if (key === 'struttura') return [{ id: 'meta', nome: 'Frontespizio', tx: Object.values(d.meta || {}).join('\n') }].concat((d.nota || []).map(b => ({ id: b.id, nome: 'Nota di lettura', tx: testoBlocco(b) })), (d.parti || []).map(p => ({ id: 'parte:' + p.id, nome: 'Parte e titoli dei capitoli', tx: [p.titolo, p.intro || ''].concat((p.capitoli || []).map(c => c.titolo)).join('\n') })));
@@ -4458,7 +4640,7 @@ function htmlSchedaProgetto(p) {
   const F = MODELLO.F; const v = numeroIt(p.valore); const esp = filtroProgetti().espansi.has(p.id); const descr = String(p.descrizione || '').trim();
   const lunga = descr.length > 420 || descr.split('\n').length > 6;
   return '<article class="pg-card" data-id="' + esc(p.id) + '"><div class="pg-testa"><h3>' + esc(p.titolo || 'Senza titolo') + '</h3><span class="sem pg-stato pg-' + esc(p.stato || 'suspect') + '">' + esc(etichettaStato(p.stato)) + '</span>' + (v !== null ? '<span class="pg-valore" title="Valore stimato">' + F.eur(v) + '</span>' : '<span class="pg-valore pg-muto">valore da stimare</span>') + '</div>' +
-    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + htmlContattiScheda(p) + '</div>' +
+    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + htmlContattiScheda(p) + htmlSpeseScheda(p) + '</div>' +
     '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
     (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
     htmlParametriScheda(p) +
@@ -4751,7 +4933,7 @@ function aggiornaPipeline(opt) {
   if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if ($('#home') && !$('#home').hidden && typeof disegnaHome === 'function') disegnaHome();
   if (opt.progetti !== false && $('#progetti') && !$('#progetti').hidden) disegnaProgetti(true);
 }
-function dopoModificaProgetti() { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); }
+function dopoModificaProgetti() { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); }
 function aggiornaBlocchiProgetti() { for (const w of $$('.blk[data-t="progetti"]')) { const info = blocco(w.dataset.id); if (info) w.replaceWith(renderBlocco(info.b)); } }
 function commessaDaProgetto(id) {
   const p = progettoDi(id); if (!p) return; const d = derivataDi(p); const P = S.P; const q = parametriDi(p);
@@ -4942,6 +5124,7 @@ function avviaProgetti() {
     if (az === 'commessa') { commessaDaProgetto(b.dataset.id); return; }
     if (az === 'documenti') { apriDocumentiProgetto(b.dataset.id); return; }
     if (az === 'contatti') { apriContattiProgetto(b.dataset.id); return; }
+    if (az === 'spese') { apriSpeseProgetto(b.dataset.id); return; }
     if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
 }
@@ -5229,9 +5412,21 @@ const GUIDE_USO = {
     usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
     effetti: 'I contatti non entrano nel documento né nel modello: sono un registro di lavoro, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il database filtrato sui suoi contatti.' },
   commessa: { tit: 'Scheda di commessa',
-    serve: 'È un foglio di calcolo per una singola commessa: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
+    serve: 'È il tool dell’area Tools per ipotizzare le economie di una commessa e quindi formulare un’offerta: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
     usa: 'Si sceglie la tipologia, si compilano le caselle e si legge il risultato a destra, che si aggiorna a ogni modifica. «Salva» conserva la scheda nell’elenco in alto, condiviso con i Soci; «Nuova» ne apre una vuota; «Esporta in Word» produce il documento.',
     effetti: 'Nessuna sul documento e sul modello: la scheda legge le ipotesi correnti ma non le modifica. Le schede salvate restano nell’archivio condiviso, con la loro cronologia, e sono visibili a tutti i Soci.' },
+  formati: { tit: 'Format Incarico',
+    serve: 'È la pagina, nell’area Tools, che raccoglierà i format compilabili per predisporre i contratti delle linee di servizio immaginate: per ciascuna linea un modello da completare con i dati dell’incarico e da esportare in Word. Per ora la pagina è vuota.',
+    usa: 'Quando i format saranno inseriti, si sceglierà la linea di servizio, si compileranno i campi (cliente, oggetto, corrispettivo, durata, condizioni) e si esporterà il contratto. Oggi la pagina elenca solo le linee di servizio per cui i format saranno predisposti.',
+    effetti: 'Nessuna: la pagina non modifica il documento, il modello né i registri.' },
+  formatd3: { tit: 'Format Diagnosi D³',
+    serve: 'È la pagina, nell’area Tools, che conterrà il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso di Onward: la struttura del documento di diagnosi da consegnare al cliente, con i campi da compilare per ciascuna sezione e l’esportazione in Word. Per ora la pagina è vuota.',
+    usa: 'Quando il format sarà inserito, si compileranno i campi della diagnosi (cliente, perimetro, evidenze, valutazioni, raccomandazioni e proposta di mandato) e si esporterà il documento. Oggi la pagina riporta solo l’avviso di preparazione.',
+    effetti: 'Nessuna: la pagina non modifica il documento, il modello né i registri.' },
+  spese: { tit: 'Spese dei Soci',
+    serve: 'È il registro, nell’area Amministrazione, delle spese sostenute da ciascun Socio per attività della società: per ogni spesa il Socio che l’ha sostenuta, la data, la Scheda Progetto a cui si riferisce, la tipologia (viaggi, vitto e alloggio, ufficio, servizi, eventi, sedi e spazi di lavoro, altro), l’imponibile e l’IVA distinti, il totale e il giustificativo in PDF o immagine.',
+    usa: '«Nuova spesa» apre il modulo: il Socio si sceglie dalla tendina dei Soci, la Scheda Progetto dalla tendina delle schede presenti, che si aggiorna da sola quando se ne inserisce una nuova, con la voce fissa «Gestione Onward» per le spese della società non riferite a una scheda; la tipologia da un elenco raggruppato per categoria; imponibile e IVA si scrivono in euro con la virgola per i decimali e i pulsanti 22%, 10%, 5%, 4% e 0% calcolano l’IVA dall’imponibile; il totale è calcolato da solo; il giustificativo si allega dal proprio computer e viene custodito nel repository dei Soci (cartella giustificativi, fino a 100 MB). In alto il cruscotto somma le spese per Socio e per categoria (un clic filtra l’elenco) e conta quelle senza giustificativo; la colonna di sinistra cerca e filtra per periodo, Socio, categoria, Scheda Progetto e presenza del giustificativo; la tabella riporta imponibile, IVA e totale di ogni spesa e la somma delle spese in elenco; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
+    effetti: 'Le spese non entrano nel documento né nel modello: sono un registro amministrativo, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il registro filtrato sulle sue spese.' },
   scenari: { tit: 'Piano e scenari',
     serve: 'È il piano condiviso della Parte terza: i tre scenari del secondo esercizio (Prudente, Base, Sviluppo), la traiettoria dei tre esercizi con costi e Soci per esercizio, il fabbisogno finanziario di avvio, la remunerazione dei Soci e il cruscotto con le soglie di allarme. Tutto è calcolato dalle ipotesi e dai testi del documento.',
     usa: 'Le caselle gialle si compilano direttamente e si salvano da sole. Le cifre con il bordo tratteggiato sono ipotesi del documento: un clic le modifica lì. I pulsanti «per voce», «Valori propri» e «valore proprio» permettono di scrivere numeri specifici per un esercizio senza toccare le ipotesi generali.',
@@ -5253,8 +5448,8 @@ const GUIDE_USO = {
     usa: 'Le percentuali e gli importi si scrivono nelle caselle gialle e si salvano da soli; i controlli in fondo segnalano se le quote non sommano a cento o se il versato è sotto il minimo di legge. Il simulatore in basso confronta l’ingresso a valore economico, a valore nominale o misto.',
     effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
   home: { tit: 'Manifesto e Business Plan',
-    serve: 'È la pagina su cui la piattaforma si apre sempre, l’unica voce del documento nel menu: l’indice del documento per Parti e capitoli e, accanto, le tre versioni in cui leggerlo. Sintesi: la Parte in una pagina di cifre, schemi e grafici. Estesa: la Parte in tavole, capitolo per capitolo. Integrale: il testo completo.',
-    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Tutte le finestre della piattaforma (Practices e Persone, Strumenti, Schede Progetto, Proiezioni, le sintesi, Modifiche) tornano qui quando si chiudono; i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni) si aprono accanto alla pagina e, chiusi, lasciano quello che c’era sotto. Per tornare qui si usa anche «Manifesto e Business Plan» nel menu; «Chiudi» porta al testo integrale.',
+    serve: 'È la pagina su cui la piattaforma si apre sempre: a destra l’indice del documento per Parti e capitoli con le tre versioni in cui leggerlo (Sintesi: la Parte in una pagina di cifre, schemi e grafici; Estesa: la Parte in tavole, capitolo per capitolo; Integrale: il testo completo) e, nella colonna di sinistra, la mappa della piattaforma: le sei aree del menu (Documento, Modello economico, Progetti e rete, Tools, Amministrazione, Servizio) con tutte le pagine, ciascuna con una riga che dice a che cosa serve e che cosa cambia per gli altri Soci.',
+    usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Nella mappa un clic su una voce apre quella pagina, come dal menu. Tutte le finestre della piattaforma (Schede Progetto, Scheda di commessa, Format Incarico, Spese dei Soci, Database relazionale, Piano e scenari, Proiezioni, Soci, le mappe della rete, le sintesi, Modifiche) tornano qui quando si chiudono; i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni) si aprono accanto alla pagina e, chiusi, lasciano quello che c’era sotto. Per tornare qui si usa anche il marchio Onward in alto a sinistra o «Manifesto e Business Plan» nell’area Documento; «Testo integrale» apre il documento completo con il sommario a lato.',
     effetti: 'Nessuna: è una pagina di sola lettura, che riflette la struttura del documento (Parti, capitoli e numerazione) e si aggiorna da sola quando la struttura cambia.' },
   sintesi: { tit: 'Sintesi Estesa',
     serve: 'Presenta ciascuna delle quattro Parti del documento in tavole grafiche: testi, tabelle e cifre del modello riorganizzati per essere letti a colpo d’occhio.',
@@ -5286,8 +5481,8 @@ const GUIDE_USO = {
     effetti: 'Ogni sostituzione applicata modifica il testo condiviso dei capitoli interessati, per tutti i Soci, e resta nella Cronologia da cui si può annullare.' }
 };
 function htmlGuidaUso(k) {
-  const g = GUIDE_USO[k]; if (!g) return ''; let chiusa = false; try { chiusa = localStorage.getItem('onward.guida.' + k) === 'chiusa'; } catch (e) {}
-  return '<details class="guida-uso" data-guida-k="' + esc(k) + '"' + (chiusa ? '' : ' open') + '><summary><span class="guida-et">Definizione e modalità di utilizzo</span><span class="guida-tit">' + esc(g.tit) + '</span><span class="guida-cmd">' + (chiusa ? 'apri' : 'chiudi') + '</span></summary><div class="guida-corpo"><p><b>A che cosa serve.</b> ' + esc(g.serve) + '</p><p><b>Come si usa.</b> ' + esc(g.usa) + '</p><p><b>Che cosa cambia altrove.</b> ' + esc(g.effetti) + '</p></div></details>';
+  const g = GUIDE_USO[k]; if (!g) return ''; const chiusa = true; // i riquadri sono sempre chiusi all'apertura: si aprono solo quando si vuole leggerli
+  return '<details class="guida-uso" data-guida-k="' + esc(k) + '"' + (chiusa ? '' : ' open') + '><summary><span class="guida-et">Definizione e modalità di utilizzo</span><span class="guida-tit">' + esc(g.tit) + '</span><span class="guida-sotto">a che cosa serve, come si usa, che cosa cambia altrove</span><span class="guida-cmd">' + (chiusa ? 'apri' : 'chiudi') + '</span></summary><div class="guida-corpo"><p><b>A che cosa serve.</b> ' + esc(g.serve) + '</p><p><b>Come si usa.</b> ' + esc(g.usa) + '</p><p><b>Che cosa cambia altrove.</b> ' + esc(g.effetti) + '</p></div></details>';
 }
 function montaGuida(slot, k) { if (!slot) return; slot.innerHTML = htmlGuidaUso(k); const d = $('details', slot); if (d) d.addEventListener('toggle', () => { try { localStorage.setItem('onward.guida.' + k, d.open ? 'aperta' : 'chiusa'); } catch (e) {} const c = $('.guida-cmd', d); if (c) c.textContent = d.open ? 'chiudi' : 'apri'; }); }
 function avviaGuide() { for (const slot of $$('.guida-slot[data-guida]')) montaGuida(slot, slot.dataset.guida); }
@@ -5382,7 +5577,7 @@ function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x
 function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
 function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
 function inRegime() { return regimeAttivo() && !isApprovatore(); }
-function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti'].includes(k) && !String(k).startsWith('prop:'); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese'].includes(k) && !String(k).startsWith('prop:'); }
 function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
 function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
 function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
@@ -5467,7 +5662,7 @@ function decidiProposta(id, stato, nota, dett) {
   toast(stato === 'approvata' ? 'Proposta approvata e applicata al testo condiviso' : stato === 'respinta' ? 'Proposta respinta: l’autore vedrà la nota' : 'Proposta ritirata');
 }
 function fondiProposte(remoto) { const R = Object.assign(proposteVuote(), remoto || {}), M = S.proposte || proposteVuote(); const out = new Map(); for (const p of (R.proposte || []).concat(M.proposte || [])) { const cur = out.get(p.id); if (!cur || (Date.parse(p.agg || p.quando) || 0) >= (Date.parse(cur.agg || cur.quando) || 0)) out.set(p.id, clone(p)); } S.proposte = { proposte: [...out.values()].sort((a, b) => (Date.parse(a.quando) || 0) - (Date.parse(b.quando) || 0)) }; }
-function aggiornaBadgeModifiche() { const b = $('#b-modifiche'); if (!b) return; const n = isApprovatore() ? proposteInAttesa().length : 0; b.textContent = n ? 'Modifiche (' + n + ')' : 'Modifiche'; b.title = n ? n + (n === 1 ? ' proposta in attesa di approvazione' : ' proposte in attesa di approvazione') : 'Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico'; }
+function aggiornaBadgeModifiche() { const b = $('#b-modifiche'); if (!b) return; const n = isApprovatore() ? proposteInAttesa().length : 0; const et = $('b', b) || b; et.textContent = n ? 'Modifiche (' + n + ')' : 'Modifiche'; const ab = $('#b-area-ser'); if (ab) { let bd = $('.a-badge', ab); if (n) { if (!bd) { bd = el('span', { class: 'a-badge', title: 'Proposte in attesa di approvazione' }); ab.appendChild(bd); } bd.textContent = String(n); } else if (bd) bd.remove(); } b.title = n ? n + (n === 1 ? ' proposta in attesa di approvazione' : ' proposte in attesa di approvazione') : 'Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico'; }
 function notificaProposte(prima) {
   const P = new Map((prima && prima.proposte || []).map(p => [p.id, p])); const mio = normNome(S.autore);
   for (const p of elencoProposte()) { const old = P.get(p.id); if (!old) { if (isApprovatore() && p.stato === 'in attesa' && normNome(p.autore) !== mio) toast('Nuova proposta di ' + p.autore + ' in attesa di approvazione: «' + String(p.descrizione || '').slice(0, 60) + '» (voce Modifiche)', 7000); continue; }
@@ -5476,9 +5671,10 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
-  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); return true; }
+  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); return true; }
   if (k === 'proiezioni') { if ($('#proiezioni') && !$('#proiezioni').hidden) disegnaProiezioni(true); return true; }
   if (k === 'contatti') { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); return true; }
+  if (k === 'spese') { aggiornaSpeseSeAperte(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }
@@ -5544,19 +5740,20 @@ function disegnaHome() {
     }
   }
   h += '</div>';
-  h += '<div class="hm-piede"><span class="badge"><span class="d"></span>' + esc(meta.riservato || 'Documento riservato') + ' ai Soci</span><span>Ipotesi, Schede Progetto, Strumenti, Proiezioni Strategiche e Practices e Persone sono nel menu in alto.</span></div>';
-  corpo.innerHTML = h;
+  h += '<div class="hm-piede"><span class="badge"><span class="d"></span>' + esc(meta.riservato || 'Documento riservato') + ' ai Soci</span><span>Le stesse pagine si aprono dal menu in alto, per area: Documento, Modello economico, Progetti e rete, Servizio.</span></div>';
+  corpo.innerHTML = '<div class="hm-layout"><aside class="hm-colonna" aria-label="Mappa della piattaforma">' + htmlMappaPiattaforma(true) + '</aside><div class="hm-principale">' + h + '</div></div>';
 }
 // Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);
 // i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni, Trova) si aprono accanto alla pagina e lasciano quello che c'era sotto.
-const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti'];
+const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti', '#formati', '#formatd3', '#spese'];
 function vistaAperta() { return VISTE_FINESTRA.some(s => { const m = $(s); return m && !m.hidden; }); }
 function tornaAllaHome() { const h = $('#home'); if (!h) { chiudiViste(); return; } if (h.hidden || vistaAperta()) apriHome(); }
 function avviaRitornoHome() {
-  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
+  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi', 'formati-chiudi', 'formatd3-chiudi', 'spese-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
 }
 function avviaHome() {
   const m = $('#home'); if (!m) return; const b = $('#b-home'); if (b) b.onclick = apriHome; $('#home-chiudi').onclick = () => { chiudiHome(); };
+  m.addEventListener('click', ev => { const v = ev.target.closest('button[data-vai-a]'); if (v) { const b = $('#' + v.dataset.vaiA); if (b) { chiudiTendine(); b.click(); } return; } });
   m.addEventListener('click', ev => { const x = ev.target.closest('button[data-h]'); if (!x) return; const az = x.dataset.h;
     if (az === 'int') { chiudiViste(); vaiA(x.dataset.vai, true); return; }
     if (az === 'sint') { apriRiassunto(+x.dataset.parte); return; }
@@ -5761,6 +5958,243 @@ function avviaContatti() {
     if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaContatti(); return; }
     if (az === 'progetto') { const p = progettoDi(b.dataset.id); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; } });
 }
+// ---- tools_amm_mod
+// ================================================================ Tools: Format Incarico (pagina in preparazione: i format compilabili per i contratti delle linee di servizio)
+function apriFormati() { const m = $('#formati'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaFormati(); }
+function chiudiFormati() { const m = $('#formati'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function disegnaFormati() {
+  const m = $('#formati'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
+  corpo.innerHTML = '<div class="fi-intro avviso">Pagina in preparazione. Qui saranno raccolti i format compilabili per predisporre i contratti delle linee di servizio: per ciascuna linea un modello da completare con i dati dell’incarico (cliente, oggetto, corrispettivo, durata, condizioni) e da esportare in Word, coerente con la Scheda di commessa. Per ora la pagina è vuota: i format saranno inseriti quando i Soci ne avranno definito i testi.</div>' +
+    '<div class="fi-elenco">' + TIPOLOGIE.map(t => '<div class="fi-card"><b>' + esc(t.nome) + '</b><small>' + esc(t.descr) + '</small><span class="fi-stato">Format da predisporre</span></div>').join('') + '</div>';
+}
+function avviaFormati() { const m = $('#formati'); if (!m) return; const b = $('#b-formati'); if (b) b.onclick = apriFormati; const c = $('#formati-chiudi'); if (c) c.onclick = chiudiFormati; }
+// Tools: Format Diagnosi D³ (pagina in preparazione: il format compilabile della Diagnosi fondativa D³)
+function apriFormatD3() { const m = $('#formatd3'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaFormatD3(); }
+function chiudiFormatD3() { const m = $('#formatd3'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function disegnaFormatD3() {
+  const m = $('#formatd3'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
+  corpo.innerHTML = '<div class="fi-intro avviso">Pagina in preparazione. Qui starà il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso di Onward: la struttura del documento di diagnosi da consegnare al cliente, con i campi da compilare per ciascuna sezione (cliente e perimetro, evidenze raccolte, valutazioni, raccomandazioni, proposta di mandato) e l’esportazione in Word, coerente con la Scheda di commessa della diagnosi. Per ora la pagina è vuota: il format sarà inserito quando i Soci ne avranno definito struttura e testi.</div>';
+}
+function avviaFormatD3() { const m = $('#formatd3'); if (!m) return; const b = $('#b-formatd3'); if (b) b.onclick = apriFormatD3; const c = $('#formatd3-chiudi'); if (c) c.onclick = chiudiFormatD3; }
+
+// ================================================================ Amministrazione: le spese sostenute dai Soci per attività della società (contenuto/spese.json)
+// tipologie di spesa, raggruppate per categoria: il menù a tendina le mostra tutte
+const TIPOLOGIE_SPESA = [
+  ['viaggio', 'Viaggi e trasferimenti', [['volo', 'Volo'], ['treno', 'Treno'], ['auto', 'Auto propria (rimborso chilometrico)'], ['noleggio', 'Auto a noleggio'], ['carburante', 'Carburante'], ['pedaggio', 'Pedaggio autostradale'], ['parcheggio', 'Parcheggio'], ['taxi', 'Taxi e NCC'], ['mezzi', 'Mezzi pubblici (bus, metro, tram)'], ['nave', 'Nave e traghetto'], ['car-sharing', 'Car sharing e monopattini']]],
+  ['soggiorno', 'Vitto e alloggio', [['albergo', 'Albergo'], ['ristorante', 'Ristorante'], ['bar', 'Bar e caffetteria'], ['pasto', 'Pasto (asporto, mensa, buoni)'], ['rappresentanza', 'Spese di rappresentanza (ospitalità a clienti e partner)']]],
+  ['ufficio', 'Ufficio e materiali', [['cancelleria', 'Cancelleria'], ['stampa', 'Stampa, copie e rilegature'], ['materiali', 'Materiali di consumo'], ['attrezzatura', 'Attrezzatura e piccoli beni'], ['spedizioni', 'Spedizioni e corriere'], ['postali', 'Spese postali']]],
+  ['servizi', 'Servizi, software e comunicazione', [['software', 'Software e abbonamenti'], ['telefono', 'Telefono e connettività'], ['web', 'Dominio, hosting e servizi web'], ['consulenza', 'Consulenze e prestazioni esterne'], ['traduzioni', 'Traduzioni e trascrizioni'], ['visure', 'Visure, certificati e diritti di segreteria'], ['pubblicita', 'Pubblicità e promozione']]],
+  ['eventi', 'Eventi e formazione', [['iscrizione', 'Iscrizione a eventi e convegni'], ['fiera', 'Fiere e stand'], ['formazione', 'Formazione e corsi'], ['libri', 'Libri, riviste e banche dati'], ['associativa', 'Quote associative']]],
+  ['spazi', 'Sedi e spazi di lavoro', [['sala-riunioni', 'Affitto sale riunioni']]],
+  ['altro', 'Altro', [['bancarie', 'Commissioni bancarie e di pagamento'], ['bolli', 'Imposte di bollo, tasse e diritti'], ['omaggi', 'Omaggi'], ['altro', 'Altra spesa (indicare nella descrizione)']]]
+];
+function tipologieSpesa() { return TIPOLOGIE_SPESA.flatMap(g => g[2].map(([k, l]) => [k, l, g[0], g[1]])); }
+function etichettaTipoSpesa(k) { const x = tipologieSpesa().find(s => s[0] === k); return x ? x[1] : (k || ''); }
+function gruppoTipoSpesa(k) { const x = tipologieSpesa().find(s => s[0] === k); return x ? x[2] : ''; }
+function etichettaGruppoSpesa(g) { const x = TIPOLOGIE_SPESA.find(s => s[0] === g); return x ? x[1] : (g || ''); }
+function speseVuote() { return { spese: [] }; }
+function elencoSpese() { if (!S.spese) S.spese = speseVuote(); if (!Array.isArray(S.spese.spese)) S.spese.spese = []; return S.spese.spese; }
+function spesaDi(id) { return elencoSpese().find(s => s.id === id) || null; }
+function puoScrivereSpese() { return !S.readonly && !!S.backend; }
+function arrotonda2(v) { return Math.round((+v || 0) * 100) / 100; }
+function spEur(v) { return MODELLO.F.eur2(arrotonda2(v)); }
+function spNum(v) { return MODELLO.F.eur2(arrotonda2(v)).replace(/\s*€$/, ''); }
+function imponibileSpesa(s) { return arrotonda2(numeroIt(s.imponibile) || 0); }
+function ivaSpesa(s) { return arrotonda2(numeroIt(s.iva) || 0); }
+function totaleSpesa(s) { return arrotonda2(imponibileSpesa(s) + ivaSpesa(s)); }
+function speseDiProgetto(id) { return elencoSpese().filter(s => s.progetto === id); }
+// riferimento della spesa: una Scheda Progetto oppure la voce fissa «Gestione Onward» (spese della società non riferite a una scheda)
+const RIF_GESTIONE_ONWARD = 'gestione-onward';
+function riferimentoSpesa(id) { if (!id) return ''; if (id === RIF_GESTIONE_ONWARD) return 'Gestione Onward'; return titoloProgettoContatto(id); }
+function opzioniProgettiSpesa(cur) {
+  const l = elencoProgetti().slice().sort((a, b) => String(a.titolo || '').localeCompare(String(b.titolo || ''), 'it'));
+  let h = '<option value="">Nessuna scheda collegata</option><option value="' + RIF_GESTIONE_ONWARD + '"' + (cur === RIF_GESTIONE_ONWARD ? ' selected' : '') + '>Gestione Onward</option>' + l.map(p => '<option value="' + esc(p.id) + '"' + (p.id === cur ? ' selected' : '') + '>' + esc(p.titolo || 'Senza titolo') + ' (' + esc(etichettaStato(p.stato)) + (p.referente ? ', ' + esc(p.referente) : '') + ')</option>').join('');
+  if (cur && cur !== RIF_GESTIONE_ONWARD && !l.some(p => p.id === cur)) h += '<option value="' + esc(cur) + '" selected>Scheda non più presente</option>';
+  return h;
+}
+function notaProgettiSpesa() { return '«Gestione Onward» è per le spese della società non riferite a una scheda. ' + notaProgettiContatto(); }
+function titoloSpesa(s) { return (etichettaTipoSpesa(s.tipologia) || 'Spesa') + ' del ' + (dataBreve(s.data) || 'data non indicata') + (s.socio ? ', ' + s.socio : '') + ' (' + spEur(totaleSpesa(s)) + ')'; }
+function sommeSpese(l) { return l.reduce((a, s) => { a.imp = arrotonda2(a.imp + imponibileSpesa(s)); a.iva = arrotonda2(a.iva + ivaSpesa(s)); a.tot = arrotonda2(a.tot + totaleSpesa(s)); return a; }, { imp: 0, iva: 0, tot: 0, n: l.length }); }
+function filtroSpese() { if (!S.spf) S.spf = { q: '', socio: [], gruppo: [], progetto: [], giust: [], da: '', a: '', ordine: 'data' }; return S.spf; }
+function azzeraFiltroSpese() { const F = filtroSpese(); F.q = ''; F.socio = []; F.gruppo = []; F.progetto = []; F.giust = []; F.da = ''; F.a = ''; }
+const ORDINI_SPESA = [['data', 'Data (dalla più recente)'], ['data_vecchia', 'Data (dalla più lontana)'], ['socio', 'Socio'], ['importo', 'Importo (dal più alto)'], ['tipologia', 'Tipologia'], ['agg', 'Ultima modifica']];
+function testoRicercaSpesa(s) { return normTesto([s.socio, etichettaTipoSpesa(s.tipologia), etichettaGruppoSpesa(gruppoTipoSpesa(s.tipologia)), s.descrizione, riferimentoSpesa(s.progetto), s.giustificativo && s.giustificativo.nome, s.autore, dataBreve(s.data), spNum(totaleSpesa(s))].join(' \n ')); }
+function speseFiltrate() {
+  const F = filtroSpese(); const q = normTesto(F.q).trim(); const parole = q ? q.split(/\s+/) : [];
+  const l = elencoSpese().filter(s => {
+    if (F.socio.length && !F.socio.includes(s.socio || '')) return false;
+    if (F.gruppo.length && !F.gruppo.includes(gruppoTipoSpesa(s.tipologia))) return false;
+    if (F.progetto.length && !F.progetto.includes(s.progetto || '')) return false;
+    if (F.giust.length && !F.giust.includes(s.giustificativo ? 'si' : 'no')) return false;
+    if (F.da && (s.data || '') < F.da) return false; if (F.a && (s.data || '') > F.a) return false;
+    if (parole.length) { const t = testoRicercaSpesa(s); if (!parole.every(w => t.includes(w))) return false; }
+    return true;
+  });
+  const dt = x => Date.parse(x.data || '') || 0; const soc = (a, b) => String(a.socio || '').localeCompare(String(b.socio || ''), 'it');
+  const cmp = { data: (a, b) => dt(b) - dt(a) || soc(a, b), data_vecchia: (a, b) => dt(a) - dt(b) || soc(a, b), socio: (a, b) => soc(a, b) || dt(b) - dt(a), importo: (a, b) => totaleSpesa(b) - totaleSpesa(a) || dt(b) - dt(a), tipologia: (a, b) => etichettaTipoSpesa(a.tipologia).localeCompare(etichettaTipoSpesa(b.tipologia), 'it') || dt(b) - dt(a), agg: (a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0) };
+  l.sort(cmp[F.ordine] || cmp.data); return l;
+}
+function apriSpese() { const m = $('#spese'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaSpese(true); }
+function chiudiSpese() { const m = $('#spese'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function apriSpeseProgetto(id) { azzeraFiltroSpese(); filtroSpese().progetto = id ? [id] : []; apriSpese(); }
+function htmlCruscottoSpese(l) {
+  const tutti = elencoSpese(); const F = filtroSpese(); const T = sommeSpese(l), TT = sommeSpese(tutti);
+  const kpi = (k, v, lab, t) => '<button class="ct-kpi sp-kpi' + ((F[k] || []).includes(v) ? ' attivo' : '') + '" data-sp="filtra" data-k="' + k + '" data-v="' + esc(v) + '" title="Filtra l’elenco"><span>' + esc(lab) + '</span><b>' + esc(spEur(t.tot)) + '</b><small>' + t.n + (t.n === 1 ? ' spesa' : ' spese') + '</small></button>';
+  const soci = [...new Set(tutti.map(s => s.socio).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it')).map(n => kpi('socio', n, n, sommeSpese(tutti.filter(s => s.socio === n)))).join('');
+  const gruppi = TIPOLOGIE_SPESA.map(([g, lab]) => { const t = sommeSpese(tutti.filter(s => gruppoTipoSpesa(s.tipologia) === g)); return t.n ? kpi('gruppo', g, lab, t) : ''; }).join('');
+  const senza = tutti.filter(s => !s.giustificativo).length;
+  return '<div class="ct-cruscotto sp-cruscotto"><div class="ct-tot"><span>Spese ' + (l.length !== tutti.length ? 'in elenco' : 'registrate') + '</span><b>' + esc(spEur(T.tot)) + '</b><small>' + (l.length !== tutti.length ? l.length + ' di ' + tutti.length + ' con i filtri correnti; totale generale ' + esc(spEur(TT.tot)) : tutti.length + (tutti.length === 1 ? ' spesa' : ' spese') + ', tutte in elenco') + '</small><small>imponibile ' + esc(spEur(T.imp)) + '; IVA ' + esc(spEur(T.iva)) + '</small></div>' +
+    '<div class="ct-kpis"><div class="ct-kpi-et">Per Socio</div><div class="ct-kpi-riga">' + (soci || '<span class="pg-muto">nessuna spesa</span>') + '</div></div>' +
+    '<div class="ct-kpis"><div class="ct-kpi-et">Per categoria</div><div class="ct-kpi-riga">' + (gruppi || '<span class="pg-muto">nessuna spesa</span>') + '</div></div>' +
+    '<div class="ct-tot ct-fermi"><span>Senza giustificativo</span><b>' + senza + '</b><small>' + (senza ? 'da completare con il PDF o l’immagine' : (tutti.length ? 'tutte documentate' : 'nessuna spesa')) + '</small></div></div>';
+}
+function htmlFiltriSpese() {
+  const F = filtroSpese(); const tutti = elencoSpese(); const conta = f => tutti.filter(f).length;
+  const gruppo = (tit, nome, voci, sel) => '<div class="pg-gruppo"><div class="pg-gtit">' + esc(tit) + '</div>' + (voci.length ? voci.map(([v, l, n]) => '<label class="pg-opt"><input type="checkbox" data-spf="' + nome + '" value="' + esc(v) + '"' + (sel.includes(String(v)) ? ' checked' : '') + '> <span>' + esc(l) + '</span>' + (n !== undefined ? '<small>' + n + '</small>' : '') + '</label>').join('') : '<div class="pg-muto">nessuna voce</div>') + '</div>';
+  const soci = [...new Set(tutti.map(s => s.socio).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it')).map(n => [n, n, conta(s => s.socio === n)]);
+  const gruppi = TIPOLOGIE_SPESA.map(([g, l]) => [g, l, conta(s => gruppoTipoSpesa(s.tipologia) === g)]).filter(x => x[2]);
+  const prog = [...new Set(tutti.map(s => s.progetto).filter(Boolean))].map(id => [id, riferimentoSpesa(id) || 'Scheda non più presente', conta(s => s.progetto === id)]).sort((a, b) => (a[0] === RIF_GESTIONE_ONWARD ? -1 : b[0] === RIF_GESTIONE_ONWARD ? 1 : 0) || a[1].localeCompare(b[1], 'it'));
+  if (conta(s => !s.progetto)) prog.push(['', 'Nessuna scheda collegata', conta(s => !s.progetto)]);
+  return '<div class="pg-filtri ct-filtri sp-filtri"><label class="pg-cerca">Ricerca libera<input type="search" id="sp-q" value="' + esc(F.q) + '" placeholder="Socio, tipologia, descrizione, scheda, importo…"></label>' +
+    '<label class="pg-cerca">Ordina per<select id="sp-ordine">' + ORDINI_SPESA.map(([v, l]) => '<option value="' + v + '"' + (F.ordine === v ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select></label>' +
+    '<div class="sp-periodo"><label class="pg-cerca">Dal<input type="date" id="sp-da" value="' + esc(F.da) + '"></label><label class="pg-cerca">Al<input type="date" id="sp-a" value="' + esc(F.a) + '"></label></div>' +
+    gruppo('Socio', 'socio', soci, F.socio) + gruppo('Categoria', 'gruppo', gruppi, F.gruppo) + gruppo('Scheda Progetto', 'progetto', prog, F.progetto) +
+    gruppo('Giustificativo', 'giust', [['si', 'Con giustificativo', conta(s => !!s.giustificativo)], ['no', 'Senza giustificativo', conta(s => !s.giustificativo)]], F.giust) +
+    '<button class="btn piccolo" id="sp-azzera">Azzera ricerca e filtri</button></div>';
+}
+function shaGiustificativo(g) { const a = archivioDocumenti(); return (a && a.altri && a.altri[g.path]) || g.sha || null; }
+function htmlGiustificativoSpesa(s) {
+  const g = s.giustificativo; if (!g) return '<span class="pg-muto sp-manca">assente</span>'; const a = archivioDocumenti(); const vis = VISIBILI_DOCUMENTI.includes(estensioneDi(g.nome));
+  return '<span class="sp-giust" title="' + esc(g.nome) + '">' + (a ? '<button class="ct-lnk" data-sp="' + (vis ? 'apri' : 'scarica') + '" data-id="' + esc(s.id) + '" title="' + (vis ? 'Apre il giustificativo in una nuova scheda' : 'Scarica il giustificativo') + '">' + esc(g.nome) + '</button>' : esc(g.nome)) + (g.dim ? '<small>' + esc(dimensioneIt(g.dim)) + '</small>' : '') + '</span>';
+}
+function htmlRigaSpesa(s) {
+  const descr = String(s.descrizione || '').trim();
+  const prog = s.progetto === RIF_GESTIONE_ONWARD ? '<span class="sp-gestione" title="Spesa della società non riferita a una Scheda Progetto">Gestione Onward</span>' : s.progetto ? (progettoDi(s.progetto) ? '<button class="ct-lnk" data-sp="progetto" data-id="' + esc(s.progetto) + '" title="Apre le Schede Progetto sulla scheda collegata">' + esc(titoloProgettoContatto(s.progetto)) + '</button>' : '<span class="pg-muto" title="La scheda collegata non è più presente">scheda non più presente</span>') : '<span class="pg-muto">nessuna</span>';
+  return '<tr data-id="' + esc(s.id) + '"' + (s.giustificativo ? '' : ' class="sp-senza"') + '><td class="ct-data">' + esc(dataBreve(s.data)) + '</td><td class="sp-socio">' + esc(s.socio || '') + '</td>' +
+    '<td class="sp-tipo"><button class="ct-apri" data-sp="apri-scheda" data-id="' + esc(s.id) + '" title="Apre la scheda della spesa">' + esc(etichettaTipoSpesa(s.tipologia) || 'Da indicare') + '</button><small>' + esc(etichettaGruppoSpesa(gruppoTipoSpesa(s.tipologia))) + '</small></td>' +
+    '<td class="ct-temi sp-descr" title="' + esc(descr) + '">' + esc(descr) + '</td><td>' + prog + '</td>' +
+    '<td class="sp-num">' + esc(spNum(imponibileSpesa(s))) + '</td><td class="sp-num">' + esc(spNum(ivaSpesa(s))) + '</td><td class="sp-num sp-totale">' + esc(spNum(totaleSpesa(s))) + '</td>' +
+    '<td class="sp-giust-cella">' + htmlGiustificativoSpesa(s) + '</td>' +
+    '<td class="ct-azioni">' + (puoScrivereSpese() ? '<button class="btn piccolo" data-sp="modifica" data-id="' + esc(s.id) + '">Modifica</button>' : '<button class="btn piccolo" data-sp="apri-scheda" data-id="' + esc(s.id) + '">Apri</button>') + '</td></tr>';
+}
+function htmlTabellaSpese(l) {
+  if (!l.length) return '<div class="avviso">' + (elencoSpese().length ? 'Nessuna spesa corrisponde alla ricerca o ai filtri scelti.' : 'Nessuna spesa finora. Con «Nuova spesa» ciascun Socio registra le spese sostenute per attività della società: chi l’ha sostenuta, la data, la Scheda Progetto a cui si riferisce, la tipologia, imponibile e IVA e il giustificativo (PDF o immagine). Il registro è condiviso con tutti i Soci.') + '</div>';
+  const T = sommeSpese(l);
+  return '<div class="ct-tabella-wrap"><table class="tab ct-tab sp-tab"><colgroup><col style="width:86px"><col style="width:132px"><col style="width:150px"><col><col style="width:140px"><col style="width:96px"><col style="width:86px"><col style="width:96px"><col style="width:136px"><col style="width:84px"></colgroup><thead><tr class="intestazione"><td>Data</td><td>Socio</td><td>Tipologia</td><td>Descrizione</td><td>Scheda Progetto</td><td class="sp-num">Imponibile (€)</td><td class="sp-num">IVA (€)</td><td class="sp-num">Totale (€)</td><td>Giustificativo</td><td></td></tr></thead><tbody>' + l.map(htmlRigaSpesa).join('') + '</tbody>' +
+    '<tfoot><tr class="sp-somma"><td colspan="5">Totale delle ' + l.length + (l.length === 1 ? ' spesa' : ' spese') + ' in elenco</td><td class="sp-num">' + esc(spNum(T.imp)) + '</td><td class="sp-num">' + esc(spNum(T.iva)) + '</td><td class="sp-num sp-totale">' + esc(spNum(T.tot)) + '</td><td colspan="2"></td></tr></tfoot></table></div>';
+}
+function disegnaSpese(tutto) {
+  const m = $('#spese'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
+  if (tutto || !$('.sp-layout', corpo)) corpo.innerHTML = '<div class="pg-layout ct-layout sp-layout">' + htmlFiltriSpese() + '<div class="ct-lista sp-lista"></div></div>';
+  else { const nf = el('div'); nf.innerHTML = htmlFiltriSpese(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'sp-q'; const pos = focusQ ? attivo.selectionStart : null; $('.sp-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#sp-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
+  const l = speseFiltrate(); $('.sp-lista', corpo).innerHTML = htmlCruscottoSpese(l) + htmlTabellaSpese(l);
+  const nb = $('#sp-nuova', m); if (nb) nb.hidden = !puoScrivereSpese();
+}
+function aggiornaListaSpese() { const corpo = $('#spese .mappe-corpo'); if (!corpo || !$('.sp-lista', corpo)) return; const l = speseFiltrate(); $('.sp-lista', corpo).innerHTML = htmlCruscottoSpese(l) + htmlTabellaSpese(l); }
+function aggiornaSpeseSeAperte() { if ($('#spese') && !$('#spese').hidden) disegnaSpese(); }
+function dopoModificaSpese() { aggiornaSpeseSeAperte(); aggiornaProgettiSeAperti(); }
+// tendina delle Schede Progetto nel modulo della spesa: costruita dall'elenco corrente e aggiornata da sola se l'elenco cambia mentre il modulo è aperto
+function aggiornaTendinaProgettiSpesa() { const sel = $('#finestra.finestra-spesa select[data-f="progetto"]'); if (!sel) return; const cur = sel.value; sel.innerHTML = opzioniProgettiSpesa(cur); const n = $('.ct-prog-nota', sel.closest('label')); if (n) n.textContent = notaProgettiSpesa(); }
+function htmlTipologieSpesaSelect(cur) { return '<select class="f" data-f="tipologia"><option value="">Da indicare</option>' + TIPOLOGIE_SPESA.map(g => '<optgroup label="' + esc(g[1]) + '">' + g[2].map(([k, l]) => '<option value="' + k + '"' + (k === cur ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</optgroup>').join('') + '</select>'; }
+function oggiIso() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function formSpesa(id) {
+  const s0 = id ? spesaDi(id) : null; const nuova = !s0; const s = s0 ? clone(s0) : { id: '', socio: S.autore || '', data: oggiIso(), progetto: '', tipologia: '', descrizione: '', imponibile: '', iva: '', giustificativo: null };
+  const scrivi = puoScrivereSpese(); const a = archivioDocumenti();
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-spesa', id: 'finestra' });
+  const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+  const soci = nomiSociProgetti(); if (s.socio && !soci.includes(s.socio)) soci.push(s.socio);
+  const imp = numeroIt(s.imponibile), iva = numeroIt(s.iva);
+  fin.innerHTML = '<div class="fin-testa"><b>' + (nuova ? 'Nuova spesa' : (scrivi ? 'Modifica la spesa: ' : 'Spesa: ') + esc(etichettaTipoSpesa(s.tipologia) || 'da indicare') + ' del ' + esc(dataBreve(s.data))) + '</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>' +
+    '<p class="nota-pannello">La spesa è condivisa con tutti i Soci e ogni salvataggio resta nella cronologia. I campi con * sono obbligatori; gli importi si scrivono in euro, con la virgola per i decimali (es. 125,50).</p>' +
+    '<div class="fin-griglia">' +
+    '<label class="campo-testo">Socio che ha sostenuto la spesa *<select class="f" data-f="socio">' + opt('', s.socio || '', 'Da indicare') + soci.map(n => opt(n, s.socio || '', n)).join('') + '</select></label>' +
+    '<label class="campo-testo">Data della spesa *<input class="f" data-f="data" type="date" value="' + esc(s.data || '') + '"></label>' +
+    '<label class="campo-testo">Scheda Progetto di riferimento<select class="f" data-f="progetto">' + opzioniProgettiSpesa(s.progetto || '') + '</select><span class="ct-prog-nota">' + esc(notaProgettiSpesa()) + '</span></label>' +
+    '<label class="campo-testo">Tipologia di spesa *' + htmlTipologieSpesaSelect(s.tipologia || '') + '<span>L’elenco è raggruppato per categoria: viaggi, vitto e alloggio, ufficio, servizi, eventi, sedi e spazi, altro.</span></label>' +
+    '<label class="campo-testo sp-larga">Descrizione<input class="f" data-f="descrizione" type="text" value="' + esc(s.descrizione || '') + '" placeholder="es. Treno Milano-Roma per l’incontro con il cliente; pranzo con il partner tecnico"></label>' +
+    '<div class="sp-importi sp-larga"><label class="campo-testo">Imponibile (€) *<input class="f sp-importo" data-f="imponibile" inputmode="decimal" value="' + esc(imp === null ? '' : spNum(imp)) + '" placeholder="0,00"></label>' +
+    '<label class="campo-testo">IVA (€)<input class="f sp-importo" data-f="iva" inputmode="decimal" value="' + esc(iva === null ? '' : spNum(iva)) + '" placeholder="0,00"><span class="sp-aliquote"><span class="sp-aliq-et">Calcola dall’imponibile con l’aliquota:</span>' + [22, 10, 5, 4, 0].map(p => '<button type="button" class="btn piccolo" data-aliq="' + p + '" title="IVA al ' + p + '% dell’imponibile">' + p + '%</button>').join('') + '</span></label>' +
+    '<label class="campo-testo">Totale (€)<output class="sp-totale-out" id="sp-totale">' + esc(spNum((imp || 0) + (iva || 0))) + '</output><span>imponibile più IVA, calcolato da solo</span></label></div>' +
+    '<div class="campo-testo sp-larga sp-giustificativo"><span class="sp-et">Giustificativo (PDF o immagine)</span><div class="sp-giust-cur">' + (s.giustificativo ? htmlGiustificativoSpesa(s) + (scrivi ? ' <button type="button" class="btn piccolo" id="sp-giust-togli">Togli</button>' : '') : '<span class="pg-muto">Nessun giustificativo allegato.</span>') + '</div>' +
+    (scrivi ? (a ? '<input type="file" id="sp-file" accept="application/pdf,image/*"><span>Il file è custodito nel repository riservato dei Soci (cartella <code>giustificativi/</code>), fino a 100 MB; caricando un file nuovo si sostituisce quello presente.</span>' : '<span>Per allegare il giustificativo occorre collegare il repository dalle Impostazioni: in archivio locale la spesa si salva senza file.</span>') : '') + '</div></div>' +
+    (nuova ? '' : '<p class="nota-pannello ct-storia">' + esc('Inserita da ' + (s.autore || '') + ' il ' + dataIt(s.creato)) + (s.agg && s.agg !== s.creato ? esc('; aggiornata da ' + (s.aggDa || s.autore || '') + ' il ' + dataIt(s.agg)) : '') + '</p>') +
+    '<div class="azioni gl-azioni">' + (nuova || !scrivi ? '' : '<button class="btn piccolo pericolo" id="sp-elimina">Elimina la spesa</button>') + '<span class="spazio"></span><button class="btn piccolo" id="fin-annulla">' + (scrivi ? 'Annulla' : 'Chiudi') + '</button>' + (scrivi ? '<button class="btn piccolo primario" id="sp-salva">Salva la spesa</button>' : '') + '</div>';
+  document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+  if (!scrivi) { for (const x of $$('input, select, textarea', fin)) x.disabled = true; } else $('.f[data-f="' + (nuova ? 'tipologia' : 'imponibile') + '"]', fin).focus();
+  const f = k => { const x = $('.f[data-f="' + k + '"]', fin); return x ? x.value.trim() : ''; };
+  const totale = () => { const o = $('#sp-totale', fin); if (o) o.textContent = spNum((numeroIt(f('imponibile')) || 0) + (numeroIt(f('iva')) || 0)); };
+  fin.addEventListener('input', ev => { if (ev.target.matches('.sp-importo')) totale(); });
+  fin.addEventListener('change', ev => { if (ev.target.matches('.sp-importo')) { const n = numeroIt(ev.target.value); if (n !== null) ev.target.value = spNum(n); totale(); } });
+  fin.addEventListener('click', ev => { const b = ev.target.closest('button[data-aliq]'); if (!b) return; const impo = numeroIt(f('imponibile')); if (impo === null) { toast('Indicare prima l’imponibile'); $('.f[data-f="imponibile"]', fin).focus(); return; } $('.f[data-f="iva"]', fin).value = spNum(impo * (+b.dataset.aliq) / 100); totale(); });
+  const togli = $('#sp-giust-togli', fin); if (togli) togli.onclick = () => { fin.dataset.togli = '1'; $('.sp-giust-cur', fin).innerHTML = '<span class="pg-muto">Il giustificativo sarà tolto al salvataggio.</span>'; };
+  const del = $('#sp-elimina', fin); if (del) del.onclick = () => { if (!confirm('Eliminare la spesa «' + titoloSpesa(s) + '»? Resta nella cronologia e si può ripristinare' + (s.giustificativo ? '; il giustificativo viene tolto dal repository (resta nella sua cronologia)' : '') + '.')) return; chiudiFinestra(); eliminaSpesa(s.id); };
+  const salva = $('#sp-salva', fin); if (salva) salva.onclick = async () => {
+    if (!f('socio')) { toast('Indicare il Socio che ha sostenuto la spesa'); $('.f[data-f="socio"]', fin).focus(); return; }
+    if (!f('data')) { toast('Indicare la data della spesa'); $('.f[data-f="data"]', fin).focus(); return; }
+    if (!f('tipologia')) { toast('Indicare la tipologia di spesa'); $('.f[data-f="tipologia"]', fin).focus(); return; }
+    const impo = numeroIt(f('imponibile')); if (impo === null || impo < 0) { toast('Indicare l’imponibile della spesa (in euro, es. 125,50)'); $('.f[data-f="imponibile"]', fin).focus(); return; }
+    const ivaV = f('iva') ? numeroIt(f('iva')) : 0; if (ivaV === null || ivaV < 0) { toast('L’IVA non è un importo valido'); $('.f[data-f="iva"]', fin).focus(); return; }
+    const ora = new Date().toISOString(); const n = nuova ? { id: uid('sp'), autore: S.autore || 'anonimo', creato: ora, giustificativo: null } : s0;
+    const inp = $('#sp-file', fin); const file = inp && inp.files && inp.files[0];
+    if (file && a) {
+      if (file.size > LIMITE_DOCUMENTO) { toast('Il giustificativo supera i 100 MB, limite del repository GitHub'); return; }
+      const vecchio = n.giustificativo; const nome = nomeFileSicuro(file.name); const path = 'giustificativi/' + n.id + '/' + nome;
+      for (const b of $$('button', fin)) b.disabled = true; salva.textContent = 'Caricamento del giustificativo…';
+      try { const bytes = new Uint8Array(await file.arrayBuffer()); const shaPrec = (a.altri && a.altri[path]) || (vecchio && vecchio.path === path ? vecchio.sha : null); const r = await a.caricaFile(path, bytes, 'Spese dei Soci: giustificativo ' + nome + ' (' + f('socio') + ', ' + dataBreve(f('data')) + ')', shaPrec); n.giustificativo = { nome, path, sha: r.sha, dim: bytes.length };
+        if (vecchio && vecchio.path !== path) { try { await a.eliminaFile(vecchio.path, shaGiustificativo(vecchio), 'Spese dei Soci: sostituito il giustificativo ' + vecchio.nome); } catch (e) { console.warn(e); } } }
+      catch (e) { for (const b of $$('button', fin)) b.disabled = false; salva.textContent = 'Salva la spesa'; toast('Caricamento del giustificativo non riuscito: ' + (e.message || e)); return; }
+    } else if (fin.dataset.togli === '1' && n.giustificativo) { const vecchio = n.giustificativo; n.giustificativo = null; if (a) { try { await a.eliminaFile(vecchio.path, shaGiustificativo(vecchio), 'Spese dei Soci: tolto il giustificativo ' + vecchio.nome); } catch (e) { console.warn(e); } } }
+    for (const k of ['socio', 'data', 'progetto', 'tipologia', 'descrizione']) n[k] = f(k);
+    n.imponibile = arrotonda2(impo); n.iva = arrotonda2(ivaV); n.agg = ora; n.aggDa = S.autore || 'anonimo';
+    if (nuova) elencoSpese().push(n);
+    if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.spese = 'Spesa «' + titoloSpesa(n).slice(0, 80) + '» ' + (nuova ? 'inserita' : 'aggiornata'); segna('spese');
+    chiudiFinestra(); dopoModificaSpese(); toast(nuova ? 'Spesa registrata, visibile a tutti i Soci' : 'Spesa aggiornata');
+  };
+}
+async function eliminaSpesa(id) {
+  const l = elencoSpese(); const i = l.findIndex(s => s.id === id); if (i < 0) return; const s = l[i]; const t = titoloSpesa(s); l.splice(i, 1);
+  if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.spese = 'Spesa «' + t.slice(0, 80) + '» eliminata'; segna('spese'); dopoModificaSpese();
+  const a = archivioDocumenti(); if (a && s.giustificativo) { try { await a.eliminaFile(s.giustificativo.path, shaGiustificativo(s.giustificativo), 'Spese dei Soci: tolto il giustificativo ' + s.giustificativo.nome + ' della spesa eliminata'); } catch (e) { console.warn(e); toast('Spesa eliminata; il giustificativo resta nel repository (' + (e.message || e) + ')'); } }
+}
+function fondiSpese(remoto) {
+  const R = Object.assign(speseVuote(), remoto || {}), M = S.spese || speseVuote(); const out = new Map();
+  for (const s of (R.spese || []).concat(M.spese || [])) { const cur = out.get(s.id); if (!cur || (Date.parse(s.agg || s.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(s.id, clone(s)); }
+  const base = (S.base && S.base.spese && S.base.spese.spese) || []; const miei = new Set((M.spese || []).map(s => s.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
+  S.spese = { spese: [...out.values()] };
+}
+function apriGiustificativoSpesa(s, scarica) { const g = s && s.giustificativo; if (!g) return; apriDocumentoProgetto({ nome: g.nome, path: g.path, sha: shaGiustificativo(g) }, scarica); }
+function esportaSpeseCSV() {
+  const l = speseFiltrate(); const cella = v => { const s = String(v == null ? '' : v); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }; const n2 = v => arrotonda2(v).toFixed(2).replace('.', ',');
+  const testa = ['Data', 'Socio', 'Categoria', 'Tipologia', 'Descrizione', 'Scheda Progetto', 'Imponibile', 'IVA', 'Totale', 'Giustificativo', 'Inserita da', 'Inserita il', 'Aggiornata da', 'Aggiornata il'];
+  const righe = l.map(s => [dataBreve(s.data), s.socio, etichettaGruppoSpesa(gruppoTipoSpesa(s.tipologia)), etichettaTipoSpesa(s.tipologia), s.descrizione, riferimentoSpesa(s.progetto), n2(imponibileSpesa(s)), n2(ivaSpesa(s)), n2(totaleSpesa(s)), s.giustificativo ? s.giustificativo.nome : '', s.autore, s.creato ? dataIt(s.creato) : '', s.aggDa, s.agg ? dataIt(s.agg) : ''].map(cella).join(';'));
+  const T = sommeSpese(l); righe.push(['Totale', '', '', '', '', '', n2(T.imp), n2(T.iva), n2(T.tot), '', '', '', '', ''].map(cella).join(';'));
+  scarica('Onward_Spese_dei_Soci.csv', '﻿' + [testa.join(';')].concat(righe).join('\r\n'), 'text/csv;charset=utf-8');
+}
+function esportaSpese() {
+  const l = speseFiltrate(); const F = filtroSpese(); const filtrato = F.q || F.socio.length || F.gruppo.length || F.progetto.length || F.giust.length || F.da || F.a; const T = sommeSpese(l);
+  let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Spese dei Soci</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt} table{border-collapse:collapse;width:100%;font-size:9pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:3pt 4pt;vertical-align:top} tr.i td{background:#e9eff7;font-weight:bold} tr.t td{background:#f3f5f8;font-weight:bold} td.n{text-align:right;white-space:nowrap} p{margin:0 0 6pt}</style></head><body>';
+  h += '<h1>Onward · Spese dei Soci</h1><p>' + l.length + (l.length === 1 ? ' spesa' : ' spese') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + (filtrato ? '; elenco filtrato secondo la ricerca corrente' : '') + '. Imponibile ' + esc(spEur(T.imp)) + ', IVA ' + esc(spEur(T.iva)) + ', totale ' + esc(spEur(T.tot)) + '.</p>';
+  h += '<table><tr class="i"><td>Data</td><td>Socio</td><td>Tipologia</td><td>Descrizione</td><td>Scheda Progetto</td><td class="n">Imponibile (€)</td><td class="n">IVA (€)</td><td class="n">Totale (€)</td><td>Giustificativo</td></tr>' + l.map(s => '<tr><td>' + esc(dataBreve(s.data)) + '</td><td>' + esc(s.socio || '') + '</td><td>' + esc(etichettaTipoSpesa(s.tipologia)) + '</td><td>' + esc(s.descrizione || '') + '</td><td>' + esc(riferimentoSpesa(s.progetto)) + '</td><td class="n">' + esc(spNum(imponibileSpesa(s))) + '</td><td class="n">' + esc(spNum(ivaSpesa(s))) + '</td><td class="n">' + esc(spNum(totaleSpesa(s))) + '</td><td>' + esc(s.giustificativo ? s.giustificativo.nome : 'assente') + '</td></tr>').join('') + '<tr class="t"><td colspan="5">Totale</td><td class="n">' + esc(spNum(T.imp)) + '</td><td class="n">' + esc(spNum(T.iva)) + '</td><td class="n">' + esc(spNum(T.tot)) + '</td><td></td></tr></table>';
+  const soci = [...new Set(l.map(s => s.socio).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'));
+  if (soci.length) { h += '<h2>Riepilogo per Socio</h2><table><tr class="i"><td>Socio</td><td class="n">Spese</td><td class="n">Imponibile (€)</td><td class="n">IVA (€)</td><td class="n">Totale (€)</td></tr>' + soci.map(n => { const t = sommeSpese(l.filter(s => s.socio === n)); return '<tr><td>' + esc(n) + '</td><td class="n">' + t.n + '</td><td class="n">' + esc(spNum(t.imp)) + '</td><td class="n">' + esc(spNum(t.iva)) + '</td><td class="n">' + esc(spNum(t.tot)) + '</td></tr>'; }).join('') + '</table>'; }
+  const gruppi = TIPOLOGIE_SPESA.map(([g, lab]) => [lab, sommeSpese(l.filter(s => gruppoTipoSpesa(s.tipologia) === g))]).filter(x => x[1].n);
+  if (gruppi.length) { h += '<h2>Riepilogo per categoria</h2><table><tr class="i"><td>Categoria</td><td class="n">Spese</td><td class="n">Imponibile (€)</td><td class="n">IVA (€)</td><td class="n">Totale (€)</td></tr>' + gruppi.map(([lab, t]) => '<tr><td>' + esc(lab) + '</td><td class="n">' + t.n + '</td><td class="n">' + esc(spNum(t.imp)) + '</td><td class="n">' + esc(spNum(t.iva)) + '</td><td class="n">' + esc(spNum(t.tot)) + '</td></tr>').join('') + '</table>'; }
+  scarica('Onward_Spese_dei_Soci.doc', h + '</body></html>', 'application/msword');
+}
+// spese collegate a una Scheda Progetto: riga nella scheda, con apertura del registro filtrato
+function htmlSpeseScheda(p) { const l = speseDiProgetto(p.id); if (!l.length) return ''; const T = sommeSpese(l); return '<span><b>Spese</b> <button class="ct-lnk" data-pg="spese" data-id="' + esc(p.id) + '" title="Apre il registro delle spese collegate a questa scheda">' + l.length + (l.length === 1 ? ' spesa' : ' spese') + ', ' + esc(spEur(T.tot)) + '</button></span>'; }
+function avviaSpese() {
+  const m = $('#spese'); if (!m) return; const b = $('#b-spese'); if (b) b.onclick = apriSpese; $('#spese-chiudi').onclick = chiudiSpese;
+  $('#sp-nuova', m).onclick = () => formSpesa(null); $('#sp-word', m).onclick = () => { toast('Preparazione del file Word…'); esportaSpese(); }; $('#sp-csv', m).onclick = esportaSpeseCSV;
+  m.addEventListener('input', ev => { if (ev.target.id === 'sp-q') { filtroSpese().q = ev.target.value; aggiornaListaSpese(); } });
+  m.addEventListener('change', ev => { const F = filtroSpese(); const c = ev.target.closest('input[data-spf]'); if (c) { const k = c.dataset.spf; const cur = new Set(F[k]); if (c.checked) cur.add(c.value); else cur.delete(c.value); F[k] = [...cur]; aggiornaListaSpese(); return; } if (ev.target.id === 'sp-ordine') { F.ordine = ev.target.value; aggiornaListaSpese(); } if (ev.target.id === 'sp-da') { F.da = ev.target.value; aggiornaListaSpese(); } if (ev.target.id === 'sp-a') { F.a = ev.target.value; aggiornaListaSpese(); } });
+  m.addEventListener('click', ev => { const b = ev.target.closest('button[data-sp], #sp-azzera'); if (!b) return; const F = filtroSpese();
+    if (b.id === 'sp-azzera') { azzeraFiltroSpese(); disegnaSpese(true); return; }
+    const az = b.dataset.sp; if (az === 'apri-scheda' || az === 'modifica') { formSpesa(b.dataset.id); return; }
+    if (az === 'apri' || az === 'scarica') { apriGiustificativoSpesa(spesaDi(b.dataset.id), az === 'scarica'); return; }
+    if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaSpese(); return; }
+    if (az === 'progetto') { const p = progettoDi(b.dataset.id); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; } });
+}
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
@@ -5833,21 +6267,86 @@ const INTRO_PARTI_STANDARD = { 'parte-prima': "Che cosa è Onward, per chi e per
 function completaIntroParti() {
   try { if (S.readonly || !S.backend || S.repoVuoto) return; let n = 0; for (const p of S.parti || []) { const t = INTRO_PARTI_STANDARD[p.id]; if (t && !String(p.intro || '').trim()) { p.intro = t; n++; } } if (n) { segna('struttura'); renderDocumento(); toast('Introduzione della Parte prima aggiunta: il salvataggio è in corso'); } } catch (e) { console.warn(e); }
 }
+// ================================================================ aree della piattaforma: le sei tendine della barra, l'area attiva e la riga di posizione «Area › Pagina»
+const AREE_PIATTAFORMA = { doc: 'Documento', mod: 'Modello economico', pro: 'Progetti e rete', too: 'Tools', amm: 'Amministrazione', ser: 'Servizio' };
+// la mappa della piattaforma: per ogni area le pagine, con la spiegazione e, nello stesso testo, l'effetto (per tutti i Soci, privato, sola lettura, produce un file); alimenta le tendine della barra e la mappa nella pagina iniziale
+const MAPPA_PIATTAFORMA = [
+  { k: 'doc', nome: 'Documento', scopo: 'Il testo del Manifesto e Business Plan e il suo glossario.', voci: [
+    { id: 'b-home', nome: 'Manifesto e Business Plan', descr: 'La pagina iniziale: l’indice per Parti e capitoli e le tre letture, Sintesi, Estesa, Integrale.', effetto: 'Le modifiche al testo valgono per tutti i Soci.' },
+    { id: 'b-glossario', nome: 'Glossario', descr: 'Le voci economiche del documento, con i rimandi ai capitoli.', effetto: 'Le voci sono condivise con tutti i Soci.' }] },
+  { k: 'mod', nome: 'Modello economico', scopo: 'I numeri: ipotesi, piano, proiezioni e quote dei Soci.', voci: [
+    { id: 'b-ipotesi', nome: 'Ipotesi', descr: 'I parametri del modello: tariffe, giornate, quote, costi. Sono i valori in giallo del documento.', effetto: 'Ogni cifra cambia subito il documento, per tutti i Soci.' },
+    { id: 'b-scenari', nome: 'Piano e scenari', descr: 'La traiettoria dei ricavi, i tre scenari e il livello adottato della pipeline.', effetto: 'Il piano è condiviso: ciò che si scrive vale per tutti i Soci.' },
+    { id: 'b-proiezioni', nome: 'Proiezioni Strategiche', descr: 'Dati reali, proiezione della crescita e prove sulle leve, a confronto con i tre scenari.', effetto: 'Le prove restano private nel proprio browser finché non si salvano nelle ipotesi condivise.' },
+    { id: 'b-soci', nome: 'Soci', descr: 'Quote, apporti e struttura societaria.', effetto: 'Le quote sono condivise e si salvano per tutti i Soci.' }] },
+  { k: 'pro', nome: 'Progetti e rete', scopo: 'Il lavoro dei Soci: progetti, contatti, partner e Practice.', voci: [
+    { id: 'b-progetti', nome: 'Schede Progetto', descr: 'I progetti che ogni Socio segue e porterà in Onward; alimentano la pipeline e le tavole del documento.', effetto: 'Registro comune: ogni scheda è visibile a tutti i Soci e si salva nel repository.' },
+    { id: 'b-contatti', nome: 'Database relazionale', descr: 'I contatti della rete: ente, settore, status della relazione, Socio e Practices di riferimento, scheda collegata.', effetto: 'Registro comune, condiviso con tutti i Soci.' },
+    { id: 'b-mappe', nome: 'Soci e Società Partner', descr: 'La rete di partenza: chi c’è e che cosa porta.', effetto: 'Le schede sono condivise con tutti i Soci.' },
+    { id: 'b-practice', nome: 'Practices e Servizi', descr: 'Le cinque Practice, le persone di riferimento e i servizi offerti.', effetto: 'Le modifiche valgono per tutti i Soci.' }] },
+  { k: 'too', nome: 'Tools', scopo: 'Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e per la Diagnosi D³.', voci: [
+    { id: 'b-commessa', nome: 'Scheda di commessa', descr: 'Il tool per ipotizzare le economie di una commessa (prezzo, ripartizione nei tre strati, margine, verifiche) e quindi formulare un’offerta.', effetto: 'Le schede salvate restano nel registro condiviso con i Soci; le ipotesi del documento non cambiano.' },
+    { id: 'b-formati', nome: 'Format Incarico', descr: 'I format compilabili per i contratti delle linee di servizio: pagina in preparazione, per ora vuota.', effetto: 'Sarà condivisa con tutti i Soci.' },
+    { id: 'b-formatd3', nome: 'Format Diagnosi D³', descr: 'Il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso: pagina in preparazione, per ora vuota.', effetto: 'Sarà condiviso con tutti i Soci.' }] },
+  { k: 'amm', nome: 'Amministrazione', scopo: 'La gestione amministrativa: le spese sostenute dai Soci per la società.', voci: [
+    { id: 'b-spese', nome: 'Spese dei Soci', descr: 'Il registro delle spese sostenute da ciascun Socio per attività della società: data, Scheda Progetto, tipologia, imponibile e IVA, giustificativo.', effetto: 'Registro comune, salvato nel repository e visibile a tutti i Soci.' }] },
+  { k: 'ser', nome: 'Servizio', scopo: 'Cronologia, modifiche, esportazioni e impostazioni.', voci: [
+    { id: 'b-storico', nome: 'Cronologia', descr: 'Ogni versione salvata, per confrontare e ripristinare.', effetto: 'Di sola lettura: consultare e confrontare non cambia nulla; il ripristino crea una nuova versione.' },
+    { id: 'b-modifiche', nome: 'Modifiche', descr: 'Chi ha cambiato che cosa, gli accessi, i commenti e le proposte in attesa.', effetto: 'Di sola lettura.' },
+    { id: 'b-impostazioni', nome: 'Impostazioni', descr: 'Collegamento al repository, nome, token e pagina dei Soci.', effetto: 'Impostazioni personali: nome e token restano nel proprio browser.' },
+    { gruppo: 'Esportazione', descr: 'Il dossier come file: Word, PDF dalla stampa del browser, dati completi in JSON.', effetto: 'Produce un file e non cambia nulla nella piattaforma.', azioni: [['b-word', 'Word', ''], ['b-stampa', 'PDF (stampa)', 'Stampa o salva in PDF dal browser'], ['b-json', 'Dati (JSON)', '']] }] }
+];
+function htmlVoceMappa(v, home) {
+  const testo = '<small>' + esc(v.descr) + (v.effetto ? ' ' + esc(v.effetto) : '') + '</small>';
+  if (v.gruppo) return '<div class="tm-gruppo"><b>' + esc(v.gruppo) + '</b>' + testo + '<span class="tm-azioni">' + v.azioni.map(([id, nome, tit]) => '<button ' + (home ? 'data-vai-a="' + id + '"' : 'id="' + id + '"') + ' class="btn piccolo"' + (tit ? ' title="' + esc(tit) + '"' : '') + '>' + esc(nome) + '</button>').join('') + '</span></div>';
+  return '<button ' + (home ? 'data-vai-a="' + v.id + '"' : 'id="' + v.id + '"') + '><b>' + esc(v.nome) + '</b>' + testo + '</button>';
+}
+// riempie le tendine della barra (prima che le altre funzioni colleghino i pulsanti per id)
+function costruisciTendine() { for (const a of MAPPA_PIATTAFORMA) { const box = $('#area-' + a.k + ' .tm-voci'); if (box && !box.children.length) box.innerHTML = a.voci.map(v => htmlVoceMappa(v, false)).join(''); } }
+// la mappa nella pagina iniziale: stesse voci, un clic apre la pagina come dal menu
+function htmlMappaPiattaforma(colonna) {
+  return (colonna ? '<div class="hm-col-testa"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sei aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci; un clic apre la pagina.</span></div>' : '<div class="hm-sezione"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sei aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci.</span></div>') +
+    '<div class="hm-mappa">' + MAPPA_PIATTAFORMA.map(a => '<div class="hm-area area-' + a.k + '"><div class="hm-area-testa"><i class="a-dot"></i><b>' + esc(a.nome) + '</b><span>' + esc(a.scopo) + '</span></div><div class="tm-voci">' + a.voci.map(v => htmlVoceMappa(v, true)).join('') + '</div></div>').join('') + '</div>';
+}
+function chiudiTendine() { for (const t of $$('.barra .tendina-menu')) t.hidden = true; for (const b of $$('.barra .tendina > .btn[aria-haspopup]')) b.setAttribute('aria-expanded', 'false'); }
+function avviaAree() {
+  for (const tend of $$('.barra .tendina')) {
+    const btn = $(':scope > .btn', tend), menu = $('.tendina-menu', tend); if (!btn || !menu) continue;
+    btn.onclick = e => { e.stopPropagation(); const era = menu.hidden; chiudiTendine(); menu.hidden = !era; btn.setAttribute('aria-expanded', String(!menu.hidden)); };
+    for (const x of $$('button', menu)) x.addEventListener('click', () => { chiudiTendine(); if (tend.dataset.area) segnaArea(tend.dataset.area); });
+  }
+  document.addEventListener('click', e => { if (!e.target.closest('.barra .tendina')) chiudiTendine(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') chiudiTendine(); });
+  const marchio = $('#b-marchio'); if (marchio) marchio.onclick = () => { chiudiTendine(); apriHome(); };
+  // riga di posizione: l'area davanti al titolo di ogni vista e di ogni pannello
+  for (const v of $$('.mappe[data-area]')) { const t = $(':scope > .mappe-testa', v); if (t && !$('.pos-area', t)) t.insertBefore(el('span', { class: 'pos-area area-' + v.dataset.area, title: 'Area della piattaforma' }, '<i class="a-dot"></i><span class="pos-nome">' + esc(AREE_PIATTAFORMA[v.dataset.area] || '') + '</span><span class="pos-sep">›</span>'), t.firstChild); }
+  for (const p of $$('.pannello[data-area]')) { const h = $(':scope > header', p); if (h && !$('.pos-area', h)) h.insertBefore(el('span', { class: 'pos-area area-' + p.dataset.area, title: 'Area della piattaforma' }, '<i class="a-dot"></i><span class="pos-nome">' + esc(AREE_PIATTAFORMA[p.dataset.area] || '') + '</span><span class="pos-sep">›</span>'), h.firstChild); }
+  // area attiva nella barra: segue la vista o il pannello aperto (osservando hidden e la classe aperto)
+  const oss = new MutationObserver(() => aggiornaAreaAttiva());
+  for (const v of $$('.mappe[data-area]')) oss.observe(v, { attributes: true, attributeFilter: ['hidden'] });
+  for (const p of $$('.pannello[data-area]')) oss.observe(p, { attributes: true, attributeFilter: ['class'] });
+  aggiornaAreaAttiva();
+}
+function segnaArea(k) { for (const t of $$('.barra .tendina[data-area]')) t.classList.toggle('attiva', t.dataset.area === k); const bar = $('.barra'); if (bar) for (const a of Object.keys(AREE_PIATTAFORMA)) bar.classList.toggle('area-corrente-' + a, a === k); }
+function aggiornaAreaAttiva() {
+  const pan = $$('.pannello.aperto[data-area]')[0]; const visibili = $$('.mappe[data-area]').filter(v => !v.hidden); const vista = visibili[visibili.length - 1];
+  segnaArea(pan ? pan.dataset.area : vista ? vista.dataset.area : 'doc');
+}
 function homeAllAvvio() { if (S.homeAperta) return; S.homeAperta = true; if (location.hash && location.hash.length > 1 && !/[?&]?t=/.test(location.hash)) return; setTimeout(apriHome, 50); }
 function avvia() {
   try { const t = localStorage.getItem('onward.tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  costruisciTendine();
   $$('#modo button').forEach(b => b.onclick = () => { S.mode = b.dataset.modo; applicaModo(); aggiornaPannelloIpotesi(true); });
   $('#b-ipotesi').onclick = () => apriPannello('pan-ipotesi'); $('#b-storico').onclick = apriCronologia; $('#b-impostazioni').onclick = () => { costruisciImpostazioni(); apriPannello('pan-impostazioni'); };
   $('#b-glossario').onclick = () => apriGlossario(); $('#b-mappe').onclick = () => apriMappe('rete'); $('#b-practice').onclick = () => apriMappe('practice'); $('#mappe-chiudi').onclick = chiudiMappe; for (const b of $$('#mappe .schede button')) b.onclick = () => { S.mappaVista = b.dataset.vista; S.mappaEvid = null; disegnaMappe(); }; $('#b-stampa').onclick = () => window.print(); $('#b-json').onclick = esportaJSON; $('#b-word').onclick = () => { toast('Preparazione del file Word…'); esportaWord(); };
   for (const b of $$('.pannello .chiudi')) b.onclick = chiudiPannelli;
-  const tend = $('#esporta'); const menu = $('.tendina-menu', tend); $('#b-esporta').onclick = e => { e.stopPropagation(); menu.hidden = !menu.hidden; $('#b-esporta').setAttribute('aria-expanded', String(!menu.hidden)); }; document.addEventListener('click', e => { if (!e.target.closest('#esporta')) { menu.hidden = true; $('#b-esporta').setAttribute('aria-expanded', 'false'); } }); for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; });
-  for (const id of ['strumenti-menu', 'persone-menu']) { const tend = $('#' + id); if (!tend) continue; const btn = $(':scope > .btn', tend), menu = $('.tendina-menu', tend); btn.onclick = e => { e.stopPropagation(); const era = menu.hidden; for (const t of $$('.tendina-menu')) t.hidden = true; for (const b of $$('.tendina > .btn[aria-haspopup]')) b.setAttribute('aria-expanded', 'false'); menu.hidden = !era; btn.setAttribute('aria-expanded', String(!menu.hidden)); }; document.addEventListener('click', e => { if (!e.target.closest('#' + id)) { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); } }); for (const x of $$('button', menu)) x.addEventListener('click', () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }); }
+  avviaAree();
   $('#sfondo').onclick = chiudiFinestra;
   window.addEventListener('beforeunload', e => { if (S.dirty.size) { e.preventDefault(); e.returnValue = ''; } });
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

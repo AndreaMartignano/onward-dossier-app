@@ -1599,6 +1599,84 @@ table.d3-elenco-tab { min-width: 1000px; }
 .d3-prop-corpo small { color: var(--secondario); font-size: .74rem; line-height: 1.35; }
 .d3-prop-motivi { font-size: .74rem; color: var(--inchiostro); line-height: 1.35; }
 .d3-prop-conta { font-size: .76rem; color: var(--errore); margin-left: .6rem; }
+
+/* ---- area Mappe (verde acqua), tra Progetti e Rete e Tools; stessa logica di pastello e vivido */
+:root { --area-map: #6FC3BA; }
+.area-map { --area: var(--area-map); --area-pastello: #CBE9E5; --area-vivido: var(--area-map); --area-testo-vivido: #26221E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --area-map: #86D2C9; } :root:not([data-theme="light"]) .area-map { --area-pastello: #24443F; --area-testo-vivido: #26221E; } }
+:root[data-theme="dark"] { --area-map: #86D2C9; } :root[data-theme="dark"] .area-map { --area-pastello: #24443F; --area-testo-vivido: #26221E; }
+.barra.area-corrente-map { border-bottom-color: var(--area-map); }
+.mappe[data-area="map"] > .mappe-testa, .pannello[data-area="map"] > header { box-shadow: inset 0 3px 0 var(--area-map); }
+.hm-mappa { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.hm-colonna .hm-mappa { grid-template-columns: 1fr; }
+@media (max-width: 1100px) { .hm-colonna .hm-mappa { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hm-mappa { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .hm-colonna .hm-mappa, .hm-mappa { grid-template-columns: 1fr; } }
+/* ---- Mappa Practices-Servizi-Attività: albero a colonne (radice, Practices, servizi, attività) con collegamenti in SVG e pannello di dettaglio */
+.psa-azioni { flex-wrap: wrap; }
+.psa-cerca { width: 300px; max-width: 100%; margin: 0; border-radius: 100px; padding: .38rem .8rem; font-size: .84rem; }
+.psa-corpo { padding-top: .8rem; }
+.psa-esito { font-size: .8rem; color: var(--secondario); margin: 0 0 .6rem; }
+.psa-layout { display: grid; grid-template-columns: minmax(0, 1fr) clamp(340px, 30%, 560px); gap: 1.2rem; align-items: start; }
+.psa-tavola { overflow: auto; padding: .4rem .6rem 1rem .2rem; }
+.psa-scena { position: relative; min-height: 120px; }
+.psa-linee { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.psa-linea { fill: none; stroke: var(--chip-bordo); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.psa-linea.psa-l-dorsale { stroke: #DE5400; stroke-opacity: .8; stroke-width: 1.8; }
+.psa-linea.psa-l-practice { stroke: var(--pr, var(--accento)); stroke-opacity: .85; stroke-width: 1.8; }
+.psa-linea.psa-l-servizio, .psa-linea.psa-l-attivita { stroke: var(--pr, var(--chip-bordo)); stroke-opacity: .45; }
+.psa-linea.psa-l-sel { stroke: var(--accento); stroke-opacity: 1; stroke-width: 2.2; }
+.psa-nodi { position: absolute; inset: 0; }
+.psa-nodo { position: absolute; box-sizing: border-box; display: flex; flex-direction: column; gap: .12rem; padding: .5rem .7rem; border: 1px solid var(--filo); border-radius: 12px; background: var(--carta); cursor: pointer; transition: box-shadow .12s, border-color .12s; line-height: 1.3; }
+.psa-nodo:hover { border-color: var(--accento); box-shadow: 0 2px 10px rgba(38, 34, 30, .08); }
+.psa-nodo:focus-visible { outline: 2px solid var(--accento); outline-offset: 2px; }
+.psa-nodo b { font-family: var(--font-titoli); font-weight: 600; font-size: .86rem; color: var(--inchiostro); }
+.psa-nodo small { font-size: .7rem; color: var(--secondario); }
+.psa-nodo .psa-num { font-family: var(--font-titoli); font-size: .66rem; letter-spacing: .12em; color: var(--accento); text-transform: uppercase; }
+.psa-nodo .psa-toggle { position: absolute; right: .6rem; top: .45rem; font-size: .64rem; text-transform: uppercase; letter-spacing: .08em; color: var(--secondario); }
+.psa-nodo.psa-aperto .psa-toggle { color: var(--accento); }
+.psa-radice { background: #DE5400; border-color: #DE5400; color: #fff; gap: 0; padding: .7rem .8rem; cursor: pointer; }
+.psa-radice .psa-r-nome { font-family: var(--font-titoli); font-weight: 700; font-size: 1.25rem; letter-spacing: -.02em; color: #fff; line-height: 1.1; }
+.psa-radice:hover { border-color: #BE3C00; }
+.psa-radice .psa-r-sotto { font-family: var(--font-titoli); font-weight: 400; font-size: .58rem; letter-spacing: .2em; white-space: nowrap; text-transform: uppercase; color: #fff; opacity: .92; margin-top: .1rem; }
+.psa-radice small { color: #fff; opacity: .85; margin-top: .4rem; }
+.psa-practice { border-color: var(--pr, var(--accento)); border-width: 1.5px; border-left-width: 7px; padding-right: 3rem; }
+.psa-practice .psa-num, .psa-practice .psa-toggle, .psa-practice.psa-aperto .psa-toggle { color: var(--pr, var(--accento)); }
+.psa-practice.psa-aperto { background: var(--lavaggio); background: color-mix(in srgb, var(--pr, var(--accento)) 14%, var(--carta)); }
+.psa-servizio { padding-right: 3rem; border-left: 4px solid var(--pr, var(--filo)); }
+.psa-servizio .psa-num, .psa-servizio.psa-aperto .psa-toggle { color: var(--pr, var(--accento)); }
+.psa-servizio.psa-aperto { border-color: var(--pr, var(--accento)); background: var(--lavaggio); background: color-mix(in srgb, var(--pr, var(--accento)) 8%, var(--carta)); }
+.psa-servizio b { font-weight: 500; font-size: .82rem; }
+.psa-attivita { padding: .32rem .6rem; border-radius: 100px; background: var(--lavaggio); background: color-mix(in srgb, var(--pr, var(--secondario)) 10%, var(--carta)); border-color: transparent; }
+.psa-attivita b { font-family: var(--font-testo); font-weight: 400; font-size: .78rem; }
+.psa-nodo.psa-sel { border-color: var(--accento); box-shadow: 0 0 0 3px var(--selezione, #FBE6D9); }
+.psa-attivita.psa-sel { background: var(--selezione, #FBE6D9); border-color: var(--accento); box-shadow: none; }
+.psa-nodo.psa-hit b { text-decoration: underline; text-decoration-color: var(--accento); text-underline-offset: 3px; }
+.psa-dettaglio .psa-det-occhiello, .psa-dettaglio .psa-det-occhiello button, .psa-dettaglio .psa-num { color: var(--pr, var(--accento)); }
+.psa-dettaglio { position: sticky; top: .5rem; background: var(--carta); border: 1px solid var(--filo); border-radius: 14px; padding: 1rem 1.1rem 1.1rem; font-size: .84rem; line-height: 1.45; max-height: calc(100vh - var(--barra-h, 52px) - 8rem); overflow: auto; }
+.psa-dettaglio h2 { font-family: var(--font-titoli); font-size: 1.12rem; margin: .1rem 0 .4rem; line-height: 1.2; text-wrap: balance; }
+.psa-dettaglio p { margin: 0 0 .55rem; }
+.psa-det-occhiello { font-family: var(--font-titoli); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accento); display: flex; flex-direction: column; gap: .15rem; align-items: flex-start; }
+.psa-det-occhiello span { color: var(--secondario); }
+.psa-det-occhiello button, .psa-det-lista button, .psa-persona { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; text-align: left; }
+.psa-det-occhiello button { text-transform: inherit; letter-spacing: inherit; font-size: inherit; color: var(--accento); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; }
+.psa-det-occhiello button:hover, .psa-det-lista button:hover, .psa-persona:hover { text-decoration: underline; text-decoration-color: var(--accento); }
+.psa-det-claim { font-family: var(--font-titoli); font-weight: 500; color: var(--inchiostro); }
+.psa-det-conta { color: var(--secondario); font-size: .78rem; }
+.psa-det-tit { font-family: var(--font-titoli); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--secondario); margin: .8rem 0 .3rem; }
+.psa-det-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+.psa-det-lista li { padding: .3rem .5rem; border-radius: 8px; background: var(--lavaggio); display: flex; flex-direction: column; gap: .1rem; }
+.psa-det-lista li button { font-family: var(--font-titoli); font-weight: 500; font-size: .82rem; display: flex; gap: .45rem; align-items: baseline; }
+.psa-det-lista li small { color: var(--secondario); font-size: .74rem; line-height: 1.35; }
+.psa-det-lista .psa-num { font-size: .64rem; letter-spacing: .1em; color: var(--pr, var(--accento)); }
+.psa-persone { display: flex; flex-direction: column; gap: .3rem; }
+.psa-persone-riga { display: flex; flex-wrap: wrap; gap: .3rem .5rem; align-items: baseline; }
+.psa-persone-et { font-size: .72rem; color: var(--secondario); min-width: 6.5em; }
+.psa-persona { font-size: .82rem; color: var(--accento-scuro); }
+.psa-persona small { color: var(--secondario); }
+.psa-det-link { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; font-size: .8rem; }
+.psa-det-link a { color: var(--accento-scuro); }
+@media (max-width: 1280px) { .psa-layout { grid-template-columns: 1fr; } .psa-dettaglio { position: static; max-height: none; } }
+@media print { .psa-dettaglio { display: none; } }
 </style>
 </head>
 <body>
@@ -1609,8 +1687,10 @@ table.d3-elenco-tab { min-width: 1000px; }
       <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Documento</b><span>Il testo del Manifesto e Business Plan e il suo glossario.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-mod" id="area-mod" data-area="mod"><button type="button" class="btn area" id="b-area-mod" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Modello economico</button>
       <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Modello economico</b><span>I numeri: ipotesi, piano, proiezioni e quote dei Soci.</span></div><div class="tm-voci"></div></div></div>
-    <div class="tendina area area-pro" id="area-pro" data-area="pro"><button type="button" class="btn area" id="b-area-pro" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Progetti e rete</button>
-      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Progetti e rete</b><span>Il lavoro dei Soci: progetti, contatti, partner e Practice.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-pro" id="area-pro" data-area="pro"><button type="button" class="btn area" id="b-area-pro" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Progetti e Rete</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Progetti e Rete</b><span>Il lavoro dei Soci: progetti, contatti, partner e Practice.</span></div><div class="tm-voci"></div></div></div>
+    <div class="tendina area area-map" id="area-map" data-area="map"><button type="button" class="btn area" id="b-area-map" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Mappe</button>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Mappe</b><span>Le mappe della piattaforma: la struttura dell’offerta in Practices, Servizi e Attività.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-too" id="area-too" data-area="too"><button type="button" class="btn area" id="b-area-too" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Tools</button>
       <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Tools</b><span>Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e il format della Diagnosi D³.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-amm" id="area-amm" data-area="amm"><button type="button" class="btn area" id="b-area-amm" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Amministrazione</button>
@@ -1672,6 +1752,11 @@ table.d3-elenco-tab { min-width: 1000px; }
   <div class="mappe-testa"><b>Scheda di commessa</b><select class="ricerca cm-elenco" id="cm-elenco"></select><div class="mappe-azioni"><button class="btn piccolo" id="cm-nuova">Nuova</button><button class="btn piccolo primario" id="cm-salva">Salva</button><button class="btn piccolo pericolo" id="cm-elimina" hidden>Elimina</button><button class="btn piccolo" id="cm-word">Esporta in Word</button><span class="nota-pannello">Il tool per ipotizzare le economie di una commessa e formulare un’offerta: scelta la tipologia e inseriti i dati, la scheda calcola prezzo, ripartizione nei tre strati, margine per giornata dei Soci e verifiche, con le regole e le ipotesi correnti del documento.</span></div><button class="btn piccolo" id="cm-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="commessa"></div>
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
+</div>
+<div class="mappe alberopsa" id="alberopsa" data-area="map" hidden>
+  <div class="mappe-testa"><b>Mappa Practices-Servizi-Attività</b><div class="mappe-azioni psa-azioni"><input class="ricerca psa-cerca" id="psa-cerca" type="search" placeholder="Cerca Practice, servizio o attività" aria-label="Cerca nella mappa"><div class="schede" id="psa-livello" title="Apre l’albero fino al livello scelto"><button type="button" data-l="1">Practices</button><button type="button" data-l="2" class="attivo">Servizi</button><button type="button" data-l="3">Attività</button></div><button class="btn piccolo" id="psa-word">Esporta in Word</button><button class="btn piccolo" id="psa-stampa">Stampa</button></div><button class="btn piccolo" id="alberopsa-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="alberopsa"></div>
+  <div class="mappe-corpo psa-corpo"><div class="psa-esito" hidden></div><div class="psa-layout"><div class="psa-tavola"><div class="psa-scena"><svg class="psa-linee" aria-hidden="true"></svg><div class="psa-nodi"></div></div></div><aside class="psa-dettaglio" aria-live="polite"></aside></div></div>
 </div>
 <div class="mappe formati" id="formati" data-area="too" hidden>
   <div class="mappe-testa"><b>Format Incarico</b><div class="mappe-azioni"><span class="nota-pannello">I format compilabili per predisporre i contratti delle linee di servizio: pagina in preparazione, per ora vuota.</span></div><button class="btn piccolo" id="formati-chiudi">Chiudi</button></div>
@@ -2008,7 +2093,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-15T14:56:47Z';
+window.ONWARD_BUILD = '2026-09-15T17:12:21Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -4124,7 +4209,7 @@ function sintesiParte4() {
 // ---------------------------------------------------------------- vista
 function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; S.riassuntoParte = S.sintesiParte; S.homeVista = 'estesa'; try { localStorage.setItem('onward.home', 'estesa'); } catch (e) {} disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); }
+function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); chiudiAlberoPSA(); }
 function apriDocumento() { chiudiViste(); chiudiPopover(); window.scrollTo({ top: 0, behavior: 'auto' }); const d = $('#doc'); if (d) d.setAttribute('tabindex', '-1'); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
@@ -5601,6 +5686,10 @@ const GUIDE_USO = {
     serve: 'È il format con cui gli Strategic Partner raccolgono le informazioni dal cliente per la Diagnosi fondativa D³, il prodotto di ingresso di Onward, e il documento di diagnosi che ne discende. Il format segue le tre fasi del metodo: Decoding (modello di business, settore, contesto istituzionale, stakeholder, governance, leadership), Distillation (valutazione sui quattro capitali e sulle sette dimensioni, forze e debolezze, temi materiali con la doppia materialità, profilo di rischio sulle quattordici dimensioni della Corporate Protection, leve prioritarie) e Direction (traiettoria a 36 mesi, mandati da attivare, calendario delle decisioni, indicatori, sintesi per il Consiglio), preceduto dal mandato e dal perimetro.',
     usa: 'La pagina si apre sull’elenco delle diagnosi salvate, bozze e definitive, con la percentuale di compilazione di ciascuna, i documenti allegati e l’ultimo salvataggio; «Nuova diagnosi» avvia una diagnosi e apre il format, con l’indice delle sezioni a sinistra e la percentuale di compilazione. I campi sono a testo libero, a scelta singola o multipla, a scala da 1 a 5 (con il significato di ogni grado) o a griglia (stakeholder, capitali, dimensioni, temi, rischi); gli elenchi (leve, tappe, mandati, decisioni, indicatori) si allungano con «Aggiungi»; le leve e gli indicatori hanno uno schema di partenza: la tendina «Aggiungi dal catalogo» inserisce voci standard già compilate (per gli indicatori con unità di misura, definizione, valore di riferimento, fonte e attività da cui partire) e «Proponi dalle risposte» seleziona quelle coerenti con esigenze, temi materiali, rischi, capitali e leve già raccolti, spiegando il perché. Ogni modifica si salva da sola nel repository dei Soci. «Documento» mostra il documento di diagnosi generato dai dati raccolti: sintesi per il Consiglio, mandato, le tre fasi con tabelle e grafici (relazioni, quattro capitali, radar delle sette dimensioni, matrice di materialità, mappa dei rischi, traiettoria sui dodici trimestri, valore dei mandati per Practice) e prossimi passi; «Esporta in Word» e «Stampa» lo producono come file; «Scheda di commessa» apre la scheda economica della diagnosi precompilata; «Salva bozza» conferma la bozza e dice a che percentuale è; «Salva come definitiva» fissa la versione (se non è completa chiede conferma) e si può riaprire come bozza. Nella sezione del mandato, per ogni fonte si caricano i documenti ricevuti dal cliente (Word, PDF, Excel, immagini), custoditi nel repository dei Soci nella cartella della diagnosi; «Fascicolo» scarica in un unico file zip i dati, il documento generato e tutti i documenti delle fonti, pronto per l’analisi e per la stesura del documento finale.',
     effetti: 'Le diagnosi non entrano nel documento né nel modello: sono un registro di lavoro condiviso, salvato subito nel repository (anche in regime di approvazione) e tracciato nella Cronologia. La diagnosi collegata a una Scheda Progetto compare anche nella scheda; il prezzo e la ripartizione della diagnosi restano nella Scheda di commessa.' },
+  alberopsa: { tit: 'Mappa Practices-Servizi-Attività',
+    serve: 'È la mappa dell’offerta di Onward, nell’area Mappe: un albero interattivo con la radice Onward, le cinque Practices, i servizi di ciascuna Practice e le attività di ogni servizio, nella struttura presentata sul sito onward-partners.netlify.app. Serve a leggere l’offerta a colpo d’occhio, a ritrovare in quale Practice e in quale servizio sta un’attività, a preparare una proposta o una diagnosi con il lessico del sito.',
+    usa: 'Un clic su una Practice o su un servizio lo apre o lo chiude e ne mostra il dettaglio nel pannello di destra (claim, presentazione, servizi o attività, chi la presidia nella rete di partenza, il collegamento alla pagina del sito e a Practices e Servizi); un clic su un’attività la seleziona e mostra il servizio a cui appartiene. I pulsanti Practices, Servizi e Attività aprono l’albero fino a quel livello; la ricerca tiene in vista solo i rami che contengono la parola cercata, con le corrispondenze evidenziate. «Esporta in Word» e «Stampa» producono il documento della mappa: una tabella per Practice con servizi, descrizioni e attività.',
+    effetti: 'Di sola lettura: la mappa non cambia nulla nella piattaforma. I nomi delle Practices seguono quelli della rete di partenza; servizi e attività sono quelli del sito Onward.' },
   spese: { tit: 'Spese dei Soci',
     serve: 'È il registro, nell’area Amministrazione, delle spese sostenute da ciascun Socio per attività della società: per ogni spesa il Socio che l’ha sostenuta, la data, la Scheda Progetto a cui si riferisce, la tipologia (viaggi, vitto e alloggio, ufficio, servizi, eventi, sedi e spazi di lavoro, altro), l’imponibile e l’IVA distinti, il totale e il giustificativo in PDF o immagine.',
     usa: '«Nuova spesa» apre il modulo: il Socio si sceglie dalla tendina dei Soci, la Scheda Progetto dalla tendina delle schede presenti, che si aggiorna da sola quando se ne inserisce una nuova, con la voce fissa «Gestione Onward» per le spese della società non riferite a una scheda; la tipologia da un elenco raggruppato per categoria; imponibile e IVA si scrivono in euro con la virgola per i decimali e i pulsanti 22%, 10%, 5%, 4% e 0% calcolano l’IVA dall’imponibile; il totale è calcolato da solo; il giustificativo si allega dal proprio computer e viene custodito nel repository dei Soci (cartella giustificativi, fino a 100 MB). In alto il cruscotto somma le spese per Socio e per categoria (un clic filtra l’elenco) e conta quelle senza giustificativo; la colonna di sinistra cerca e filtra per periodo, Socio, categoria, Scheda Progetto e presenza del giustificativo; la tabella riporta imponibile, IVA e totale di ogni spesa e la somma delle spese in elenco; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
@@ -5626,7 +5715,7 @@ const GUIDE_USO = {
     usa: 'Le percentuali e gli importi si scrivono nelle caselle gialle e si salvano da soli; i controlli in fondo segnalano se le quote non sommano a cento o se il versato è sotto il minimo di legge. Il simulatore in basso confronta l’ingresso a valore economico, a valore nominale o misto.',
     effetti: 'Le quote sono condivise con i Soci e usate dal fabbisogno di avvio (Piano e scenari) e dal valore della quota nelle Proiezioni Strategiche. La pagina legge le ipotesi su capitale, utile e multiplo ma non le modifica: per cambiarle si passa da Ipotesi.' },
   home: { tit: 'Manifesto e Business Plan',
-    serve: 'È la pagina su cui la piattaforma si apre sempre: a destra l’indice del documento per Parti e capitoli con le tre versioni in cui leggerlo (Sintesi: la Parte in una pagina di cifre, schemi e grafici; Estesa: la Parte in tavole, capitolo per capitolo; Integrale: il testo completo) e, nella colonna di sinistra, la mappa della piattaforma: le sei aree del menu (Documento, Modello economico, Progetti e rete, Tools, Amministrazione, Servizio) con tutte le pagine, ciascuna con una riga che dice a che cosa serve e che cosa cambia per gli altri Soci.',
+    serve: 'È la pagina su cui la piattaforma si apre sempre: a destra l’indice del documento per Parti e capitoli con le tre versioni in cui leggerlo (Sintesi: la Parte in una pagina di cifre, schemi e grafici; Estesa: la Parte in tavole, capitolo per capitolo; Integrale: il testo completo) e, nella colonna di sinistra, la mappa della piattaforma: le sette aree del menu (Documento, Modello economico, Progetti e Rete, Mappe, Tools, Amministrazione, Servizio) con tutte le pagine, ciascuna con una riga che dice a che cosa serve e che cosa cambia per gli altri Soci.',
     usa: 'Si sceglie una riga (una Parte o un capitolo) e si preme la colonna della versione che si vuole leggere: Sintesi ed Estesa aprono la Parte (l’Estesa si posiziona sul capitolo scelto), Integrale porta al punto del testo. Nella mappa un clic su una voce apre quella pagina, come dal menu. Tutte le finestre della piattaforma (Schede Progetto, Scheda di commessa, Format Incarico, Spese dei Soci, Database relazionale, Piano e scenari, Proiezioni, Soci, le mappe della rete, le sintesi, Modifiche) tornano qui quando si chiudono; i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni) si aprono accanto alla pagina e, chiusi, lasciano quello che c’era sotto. Per tornare qui si usa anche il marchio Onward in alto a sinistra o «Manifesto e Business Plan» nell’area Documento; «Testo integrale» apre il documento completo con il sommario a lato.',
     effetti: 'Nessuna: è una pagina di sola lettura, che riflette la struttura del documento (Parti, capitoli e numerazione) e si aggiorna da sola quando la struttura cambia.' },
   sintesi: { tit: 'Sintesi Estesa',
@@ -5919,16 +6008,16 @@ function disegnaHome() {
     }
   }
   h += '</div>';
-  h += '<div class="hm-piede"><span class="badge"><span class="d"></span>' + esc(meta.riservato || 'Documento riservato') + ' ai Soci</span><span>Le stesse pagine si aprono dal menu in alto, per area: Documento, Modello economico, Progetti e rete, Servizio.</span></div>';
+  h += '<div class="hm-piede"><span class="badge"><span class="d"></span>' + esc(meta.riservato || 'Documento riservato') + ' ai Soci</span><span>Le stesse pagine si aprono dal menu in alto, per area: Documento, Modello economico, Progetti e Rete, Mappe, Tools, Amministrazione, Servizio.</span></div>';
   corpo.innerHTML = '<div class="hm-layout"><aside class="hm-colonna" aria-label="Mappa della piattaforma">' + htmlMappaPiattaforma(true) + '</aside><div class="hm-principale">' + h + '</div></div>';
 }
 // Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);
 // i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni, Trova) si aprono accanto alla pagina e lasciano quello che c'era sotto.
-const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti', '#formati', '#formatd3', '#spese'];
+const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti', '#formati', '#formatd3', '#spese', '#alberopsa'];
 function vistaAperta() { return VISTE_FINESTRA.some(s => { const m = $(s); return m && !m.hidden; }); }
 function tornaAllaHome() { const h = $('#home'); if (!h) { chiudiViste(); return; } if (h.hidden || vistaAperta()) apriHome(); }
 function avviaRitornoHome() {
-  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi', 'formati-chiudi', 'formatd3-chiudi', 'spese-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
+  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi', 'formati-chiudi', 'formatd3-chiudi', 'spese-chiudi', 'alberopsa-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
 }
 function avviaHome() {
   const m = $('#home'); if (!m) return; const b = $('#b-home'); if (b) b.onclick = apriHome; $('#home-chiudi').onclick = () => { chiudiHome(); };
@@ -7004,6 +7093,194 @@ function avviaFormatD3() {
     if (b.dataset.d3Sposta) { const k = b.dataset.k, i = +b.dataset.i, j = i + (+b.dataset.d3Sposta); const l = d.r[k]; if (!Array.isArray(l) || j < 0 || j >= l.length) return; [l[i], l[j]] = [l[j], l[i]]; segnaDiagnosi(d); ridisegnaSezioneD3(k); } });
 }
 function ridisegnaSezioneD3(k) { const m = $('#formatd3'); const d = S.d3sel ? diagnosiDi(S.d3sel) : null; if (!m || !d) return; const s = schemaD3().find(x => x.campi.some(c => c.k === k)); if (!s) return; const sez = $('#d3-sez-' + s.id, m); if (!sez) return; const nf = el('div'); nf.innerHTML = '<div class="d3-campi">' + s.campi.map(c => htmlCampoD3(c, d, puoScrivereDiagnosi())).join('') + '</div>'; $('.d3-campi', sez).replaceWith(nf.firstElementChild); aggiornaNavD3(); }
+// ---- mappe_mod
+// ================================================================ Mappe: la Mappa Practices-Servizi-Attività. L'albero interattivo dell'offerta di Onward
+// (cinque Practices, i loro servizi, le attività di ciascun servizio), mutuato dal sito onward-partners.netlify.app; di sola lettura.
+const PSA_SITO = 'https://onward-partners.netlify.app/';
+const PSA_PRACTICES = [
+  { id: 'p01', num: '01', nome: 'Strategy Intelligence', claim: 'La regia di ogni progetto', intro: 'La strategia non fallisce quando è sbagliata: fallisce quando resta sulla carta. Questa Practice esiste perché arrivi a terra.', url: 'strategy-intelligence', servizi: [
+    { nome: 'Strategic Assessment & Readiness', descr: 'La diagnosi che apre ogni percorso: i quattro capitali, la maturità organizzativa, la capacità reale di assorbire il cambiamento.', attivita: ['Diagnosi dei quattro capitali', 'Maturità organizzativa', 'Capacità di assorbimento', 'Colli di bottiglia', 'Mappa degli stakeholder', 'Quadro di sintesi'] },
+    { nome: 'Ambition & Alignment', descr: 'La rotta scritta con la proprietà e la prima linea: obiettivo-faro, metriche di successo, governance del percorso.', attivita: ['North Star e obiettivi', 'Metriche di successo', 'Allineamento del vertice', 'Governance del percorso', 'Roadmap strategica', 'Patto di trasformazione'] },
+    { nome: 'Transformation Office', descr: 'La regia unica della roadmap: le Practices verticali orchestrate come un solo intervento, un solo responsabile.', attivita: ['Regia della roadmap', 'Orchestrazione delle Practices', 'Cadenze decisionali', 'Gestione delle interdipendenze', 'Avanzamento e rischi', 'Reporting al vertice'] },
+    { nome: 'The Mover', descr: 'Il motore umano del cambiamento: un senior che entra in azienda, sblocca gli stalli, guida l’adozione fino in fondo.', attivita: ['Presenza senior in azienda', 'Sblocco degli stalli', 'Architettura del cambiamento', 'Adozione di strumenti e processi', 'Ingaggio delle persone', 'Ritmo e disciplina'] },
+    { nome: 'Organization & Capability Building', descr: 'Ruoli ridisegnati, competenze trasferite, autonomia costruita: il successo è un cliente che ha meno bisogno di noi.', attivita: ['Assetto organizzativo target', 'Ruoli e responsabilità', 'Piani di competenze', 'Percorsi di sviluppo', 'Passaggio di consegne', 'Autonomia misurata'] },
+    { nome: 'Project management d’impresa', descr: 'La disciplina trasversale che gestisce con metodo professionale tutti i progetti dell’impresa, fino al risultato.', attivita: ['Impostazione del progetto', 'Cronoprogramma e budget', 'Governo dei rischi', 'SAL e avanzamenti', 'Regia di persone e fornitori', 'Chiusura e capitalizzazione'] },
+    { nome: 'Value Realization', descr: 'Il valore misurato, difeso e corretto nel tempo: la Direction fino all’ultimo chilometro, anche a cantieri chiusi.', attivita: ['KPI e benefici attesi', 'Misurazione continua', 'Correzione di rotta', 'Difesa del valore', 'Miglioramento continuo', 'Bilancio del percorso'] }] },
+  { id: 'p02', num: '02', nome: 'Integrated Finance & Capital Solutions', claim: 'Il capitale giusto, al momento giusto, alle condizioni giuste', intro: 'Un’unica risposta alle necessità di capitale: strumenti ordinari e straordinari letti insieme, negoziati alla pari, presidiati fino al closing. E oltre.', url: 'corporate-finance', servizi: [
+    { nome: 'Strutturazione del capitale e del debito', descr: 'Costo, durata ed equilibrio della struttura finanziaria, negoziati alla pari con il sistema bancario.', attivita: ['Diagnosi del passivo', 'Architettura target', 'Negoziazione bancaria', 'Finanza ordinaria', 'Presidio dei covenant', 'Rifinanziamento'] },
+    { nome: 'Finanza agevolata & Incentivi', descr: 'Bandi, incentivi e fondi europei: arrivare prima, presentare meglio, rendicontare senza errori.', attivita: ['Monitoraggio bandi', 'Analisi di pre-fattibilità', 'Presentazione domanda', 'Project management', 'Gestione partenariati', 'Rendicontazione', 'PM dei progetti finanziati'] },
+    { nome: 'Capital markets', descr: 'Minibond, private placement, quotazione: strumenti di mercato per chi è pronto a farsi leggere dagli investitori.', attivita: ['Readiness dell’emittente', 'Equity story e informativa', 'Strutturazione dello strumento', 'Selezione degli investitori', 'Esecuzione del collocamento', 'Vita dello strumento'] },
+    { nome: 'Apertura del capitale', descr: 'Private equity e family office: il socio giusto, alle condizioni giuste, restando padroni della traiettoria.', attivita: ['Preparazione dell’impresa', 'Data room e informativa', 'Selezione degli investitori', 'Regia del processo', 'Negoziazione dei patti', 'Dopo il closing'] },
+    { nome: 'Riorganizzazioni straordinarie', descr: 'Riassetti di gruppo, holding, passaggi generazionali: l’assetto societario al servizio della strategia.', attivita: ['Mappatura dell’assetto', 'Struttura target', 'Regia dei professionisti', 'Esecuzione del riassetto', 'Governance familiare', 'Presidio nel tempo'] },
+    { nome: 'Crisi e rinegoziazione del debito', descr: 'Diagnosi rapida, piano credibile, tavolo con banche e creditori: quando il tempo conta più di tutto.', attivita: ['Diagnosi di cassa', 'Piano di risanamento', 'Rinegoziazione con le banche', 'Strumenti della crisi', 'Regia con legali e attestatori', 'Ritorno alla normalità'] }] },
+  { id: 'p03', num: '03', nome: 'Futureproof Innovation, Sustainability & AI', claim: 'La trasformazione non è digitalizzare l’esistente', intro: 'Un’impresa pronta al futuro non digitalizza l’esistente: ripensa il modello operativo alla luce di ciò che dati e algoritmi rendono possibile.', url: 'transformation-ai', servizi: [
+    { nome: 'Futureproof Innovation', descr: 'Le quattro forme di innovazione (incrementale, radicale, architetturale, disruptive) governate come un portafoglio.', attivita: ['Portafoglio delle iniziative', 'Le quattro forme', 'Business case', 'Innovazione dei materiali', 'Partnership e open innovation', 'Misurazione'] },
+    { nome: 'Sostenibilità e impatto', descr: 'ESG, doppia materialità, reporting e misurazione dell’impatto: la sostenibilità come disciplina.', attivita: ['Doppia materialità', 'Strategia ESG', 'Reporting di sostenibilità', 'Qualifica Benefit', 'Impatto misurato', 'Integrazione nel business'] },
+    { nome: 'Governance del dato', descr: 'Il dato governato come un asset: qualità, responsabilità, un’unica versione dei numeri.', attivita: ['Mappatura del patrimonio dati', 'Data governance', 'Un’unica versione dei numeri', 'Reporting direzionale', 'Analitica decisionale', 'Cultura del dato'] },
+    { nome: 'Modello operativo e processi', descr: 'Il disegno del modello operativo target e la ridefinizione dei processi core.', attivita: ['Assessment del modello', 'Disegno del target', 'Processi core', 'Roadmap in onde', 'Gestione del cambiamento', 'Beneficio misurato'] },
+    { nome: 'Intelligenza Artificiale Applicata', descr: 'AI generativa e predittiva a supporto delle decisioni: casi d’uso, modelli, governance, conformità europea.', attivita: ['Diagnosi AI readiness', 'Disegno dei casi d’uso', 'Selezione modelli e vendor', 'Sviluppo e integrazione', 'Governance e compliance', 'Misurazione del beneficio'] },
+    { nome: 'Sistemi informativi', descr: 'Architetture che si parlano: integrazione dei sistemi, selezione dei vendor.', attivita: ['Assessment dell’architettura', 'Architettura target', 'Selezione dei vendor', 'Regia dell’implementazione', 'Integrazione dei sistemi', 'Evoluzione continua'] }] },
+  { id: 'p04', num: '04', nome: 'Security, Risk & Compliance', claim: 'La protezione che funziona non si vede', intro: 'Sicurezza, rischio e conformità sono un unico sistema immunitario: opera in modo continuo e silenzioso, e diventa visibile soltanto quando fallisce.', url: 'security-risk', servizi: [
+    { nome: 'Enterprise risk assessment', descr: 'Le quattordici dimensioni della Corporate Protection mappate in un unico quadro, secondo il framework ESRM.', attivita: ['Mappatura delle 14 dimensioni', 'Rischi prioritari', 'Gap rispetto agli standard', 'Architettura fiduciaria', 'Piano di trattamento', 'Radar permanente'] },
+    { nome: 'Cybersecurity & Data Protection', descr: 'La difesa del patrimonio informativo: dalla vulnerability assessment alla formazione delle persone.', attivita: ['Vulnerability assessment', 'Architetture di sicurezza', 'Identity & Access Management', 'Data Protection & GDPR', 'Incident response & forensics', 'Awareness e formazione'] },
+    { nome: 'Business continuity e crisi', descr: 'Piani di continuità messi alla prova, gestione delle crisi preparata prima che serva.', attivita: ['Business impact analysis', 'Piani di continuità', 'Disaster recovery', 'Modello di gestione delle crisi', 'Esercitazioni', 'Manutenzione dei piani'] },
+    { nome: 'Supply chain e terze parti', descr: 'La sicurezza della filiera: due diligence dei fornitori, dipendenze critiche, visione d’insieme.', attivita: ['Mappatura delle dipendenze', 'Due diligence dei fornitori', 'Requisiti contrattuali', 'Monitoraggio continuo', 'Piani alternativi', 'Filiere regolate'] },
+    { nome: 'Compliance e controlli', descr: 'Conformità regolamentare e settoriale, modelli di controllo, antifrode: le regole come presidio, non come peso.', attivita: ['Mappa degli obblighi', 'Modello 231', 'Antifrode', 'Controlli interni', 'Canali di segnalazione', 'Aggiornamento continuo'] },
+    { nome: 'Intelligence e persone chiave', descr: 'Intelligence d’impresa, rischio geopolitico e protezione delle persone che contano di più.', attivita: ['Intelligence d’impresa', 'Scenari geopolitici', 'Due diligence di controparte', 'Protezione delle persone chiave', 'Travel security', 'Patrimonio informativo'] }] },
+  { id: 'p05', num: '05', nome: 'Communication & Reputation', claim: 'La reputazione è un patrimonio misurabile', intro: 'La reputazione è un patrimonio intangibile misurabile, generato da comportamenti coerenti nel tempo e da un sistema disciplinato di relazioni qualificate.', url: 'communication-reputation', servizi: [
+    { nome: 'Strategia reputazionale', descr: 'Audit multilivello, piano triennale, misurazione: la reputazione governata come un patrimonio.', attivita: ['Audit reputazionale', 'Mappatura degli stakeholder', 'Narrative chiave', 'Piano triennale', 'Misurazione', 'Manutenzione del capitale'] },
+    { nome: 'Media relations', descr: 'Ufficio stampa e relazioni con i media qualificati: presenza costante, voce riconoscibile.', attivita: ['Relazioni con i media', 'Ufficio stampa', 'Contenuti e posizioni', 'Portavoce preparati', 'Presenza digitale', 'Misurazione della copertura'] },
+    { nome: 'Public affairs e advocacy', descr: 'Relazioni istituzionali e dossier regolatori: una voce autorevole dove si scrivono le regole.', attivita: ['Mappa istituzionale', 'Dossier regolatori', 'Advocacy', 'Relazioni con le associazioni', 'Posizionamento tecnico', 'Monitoraggio normativo'] },
+    { nome: 'Leadership di pensiero', descr: 'I leader come voci autorevoli del settore: posizioni, contenuti, presenza costruita con metodo.', attivita: ['Posizionamento del leader', 'Piano dei contenuti', 'Interventi pubblici', 'Canali personali', 'Relazioni di settore', 'Misurazione dell’autorevolezza'] },
+    { nome: 'Comunicazione finanziaria', descr: 'Apertura del capitale, operazioni, investitori: la comunicazione dei momenti che contano.', attivita: ['Preparazione dell’operazione', 'Narrativa finanziaria', 'Mappa degli stakeholder', 'Comunicazione dell’annuncio', 'Presidio post-operazione', 'Coordinamento con gli advisor'] },
+    { nome: 'Crisis Communication & Risk Reputation', descr: 'Rischi mappati, playbook pronti, portavoce allenati: la crisi si prepara in tempo di pace.', attivita: ['Mappatura rischi reputazionali', 'Playbook di crisi', 'Media training', 'Monitoring & early warning', 'Crisis management', 'Recovery e ricostruzione'] }] }
+];
+// l'albero: radice Onward, Practices (con il nome della piattaforma se presente), servizi, attività; ogni nodo conosce il padre
+function alberoPSA() {
+  const pr = typeof practiceElenco === 'function' ? practiceElenco() : [];
+  const radice = { id: 'onward', tipo: 'radice', nome: 'Onward Strategic Partners', padre: null, figli: [] };
+  for (const p of PSA_PRACTICES) { const pp = pr.find(x => x.id === p.id);
+    const np = { id: p.id, tipo: 'practice', num: p.num, nome: (pp && pp.nome) || p.nome, claim: p.claim, intro: p.intro, url: PSA_SITO + p.url, padre: radice, figli: [] };
+    p.servizi.forEach((s, i) => { const ns = { id: p.id + '-s' + String(i + 1).padStart(2, '0'), tipo: 'servizio', num: String(i + 1).padStart(2, '0'), nome: s.nome, descr: s.descr, padre: np, figli: [] }; s.attivita.forEach((a, j) => ns.figli.push({ id: ns.id + '-a' + (j + 1), tipo: 'attivita', nome: a, padre: ns, figli: [] })); np.figli.push(ns); });
+    radice.figli.push(np); }
+  return radice;
+}
+function practiceDiPSA(n) { let x = n; while (x && x.tipo !== 'practice') x = x.padre; return x; }
+function classePrPSA(n) { const p = practiceDiPSA(n); return p && typeof PR_COL !== 'undefined' && PR_COL[p.id] ? PR_COL[p.id] : ''; }
+function nodiPSA(radice) { const out = []; const v = n => { out.push(n); n.figli.forEach(v); }; v(radice); return out; }
+function nodoPSA(radice, id) { return nodiPSA(radice).find(n => n.id === id) || null; }
+function contaPSA(n) { let s = 0, a = 0; const v = x => { if (x.tipo === 'servizio') s++; if (x.tipo === 'attivita') a++; x.figli.forEach(v); }; v(n); return { servizi: s, attivita: a }; }
+function normPSA(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function statoPSA() { if (!S.psa) S.psa = { aperti: new Set(['onward', 'p01', 'p02', 'p03', 'p04', 'p05']), sel: null, q: '', livello: 2 }; return S.psa; }
+// apre i nodi fino al livello scelto (1 Practices, 2 Servizi, 3 Attività) e chiude gli altri
+function impostaLivelloPSA(l) {
+  const st = statoPSA(); st.livello = l; st.aperti = new Set(['onward']); const radice = alberoPSA();
+  for (const n of nodiPSA(radice)) { if (n.tipo === 'practice' && l >= 2) st.aperti.add(n.id); if (n.tipo === 'servizio' && l >= 3) st.aperti.add(n.id); }
+}
+// la geometria dell'albero: colonne per livello, distanze tra fratelli
+let PSA_COL = { radice: { x: 0, w: 176 }, practice: { x: 216, w: 244 }, servizio: { x: 500, w: 264 }, attivita: { x: 804, w: 236 } };
+// le colonne si adattano alla larghezza disponibile (mai sotto i 1000 px, con scorrimento orizzontale): l'albero riempie lo spazio accanto al pannello
+function colonnePSA(W) {
+  W = Math.max(1000, Math.floor(W || 0)); const gap = Math.round(W * 0.035);
+  const wr = Math.min(260, Math.round(W * 0.17)), wp = Math.min(360, Math.round(W * 0.25)), ws = Math.min(400, Math.round(W * 0.27)); let wa = W - wr - wp - ws - 3 * gap;
+  let extra = 0; if (wa > 340) { extra = wa - 340; wa = 340; }
+  const g = gap + Math.round(extra / 3); // lo spazio in più allarga le distanze tra le colonne, in modo uniforme
+  return { radice: { x: 0, w: wr }, practice: { x: wr + g, w: wp }, servizio: { x: wr + g + wp + g, w: ws }, attivita: { x: wr + g + wp + g + ws + g, w: wa } };
+}
+const PSA_GAP = { radice: 0, practice: 22, servizio: 10, attivita: 5 };
+// i nodi visibili: con una ricerca attiva restano i rami che contengono una corrispondenza (aperti da soli); senza ricerca vale lo stato di apertura
+function visibiliPSA(radice) {
+  const st = statoPSA(); const q = normPSA(st.q.trim()); const hit = new Set(), tiene = new Set();
+  if (q) { const v = n => { let t = normPSA(n.nome + ' ' + (n.claim || '') + ' ' + (n.descr || '') + ' ' + (n.num || '')).includes(q); if (t) hit.add(n.id); for (const f of n.figli) if (v(f)) t = true; if (t) tiene.add(n.id); return t; }; v(radice); }
+  const out = []; const aperto = n => q ? (tiene.has(n.id) && (n.figli.some(f => tiene.has(f.id)) || (hit.has(n.id) && st.aperti.has(n.id)))) : st.aperti.has(n.id);
+  const v = (n, mostra) => { if (!mostra) return; out.push(n); const ap = aperto(n); n._aperto = ap; if (!ap) return; for (const f of n.figli) v(f, q ? (tiene.has(f.id) || hit.has(n.id)) : true); };
+  v(radice, true);
+  return { nodi: out, hit, tiene, q };
+}
+function htmlNodoPSA(n, vis) {
+  const c = n.tipo !== 'attivita' ? contaPSA(n) : null; const ha = n.figli.length > 0; const sel = statoPSA().sel === n.id; const hit = vis.hit.has(n.id);
+  const cls = 'psa-nodo psa-' + n.tipo + (sel ? ' psa-sel' : '') + (hit ? ' psa-hit' : '') + (ha ? (n._aperto ? ' psa-aperto' : ' psa-chiuso') : '') + (classePrPSA(n) ? ' ' + classePrPSA(n) : '');
+  let dentro = '';
+  if (n.tipo === 'radice') dentro = '<span class="psa-r-nome">Onward</span><span class="psa-r-sotto">Strategic Partners</span><small>' + PSA_PRACTICES.length + ' Practices · ' + c.servizi + ' servizi · ' + c.attivita + ' attività</small>';
+  else if (n.tipo === 'practice') dentro = '<span class="psa-num">' + esc(n.num) + '</span><b>' + esc(n.nome) + '</b><small>' + c.servizi + ' servizi · ' + c.attivita + ' attività</small>';
+  else if (n.tipo === 'servizio') dentro = '<span class="psa-num">' + esc(n.padre.num + '.' + n.num) + '</span><b>' + esc(n.nome) + '</b><small>' + c.attivita + ' attività</small>';
+  else dentro = '<b>' + esc(n.nome) + '</b>';
+  const stato = ha && n.tipo !== 'radice' ? '<span class="psa-toggle">' + (n._aperto ? 'chiudi' : 'apri') + '</span>' : '';
+  return '<div class="' + cls + '" data-psa="' + esc(n.id) + '" role="button" tabindex="0" style="left:' + PSA_COL[n.tipo].x + 'px;width:' + PSA_COL[n.tipo].w + 'px">' + dentro + stato + '</div>';
+}
+function disegnaAlberoPSA() {
+  const m = $('#alberopsa'); if (!m || m.hidden) return; const scena = $('.psa-scena', m); const box = $('.psa-nodi', scena); const svg = $('svg.psa-linee', scena); if (!box || !svg) return;
+  const radice = alberoPSA(); const vis = visibiliPSA(radice); const st = statoPSA();
+  const tavola = scena.parentElement; PSA_COL = colonnePSA((tavola ? tavola.clientWidth : 0) - 16);
+  // 1) i nodi visibili, per misurarne l'altezza con il testo a capo
+  box.innerHTML = vis.nodi.map(n => htmlNodoPSA(n, vis)).join('');
+  const dom = {}; for (const d of $$('.psa-nodo', box)) dom[d.dataset.psa] = d;
+  const alt = {}; for (const n of vis.nodi) alt[n.id] = dom[n.id] ? dom[n.id].offsetHeight : 40;
+  const figliVis = n => n._aperto ? n.figli.filter(f => dom[f.id]) : [];
+  // 2) l'ingombro verticale di ogni sottoalbero, poi la posizione: i figli in colonna, il padre centrato sui figli
+  const span = {}; const misura = n => { const ff = figliVis(n); let s = alt[n.id]; if (ff.length) { const g = PSA_GAP[ff[0].tipo]; const somma = ff.reduce((a, f) => a + misura(f), 0) + g * (ff.length - 1); s = Math.max(s, somma); } span[n.id] = s; return s; };
+  misura(radice);
+  const pos = {}; const posiziona = (n, y0) => { const ff = figliVis(n); const s = span[n.id]; pos[n.id] = n.tipo === 'radice' ? y0 : y0 + (s - alt[n.id]) / 2; if (!ff.length) return; const g = PSA_GAP[ff[0].tipo]; const somma = ff.reduce((a, f) => a + span[f.id], 0) + g * (ff.length - 1); let y = n.tipo === 'radice' ? y0 : y0 + (s - somma) / 2; for (const f of ff) { posiziona(f, y); y += span[f.id] + g; } };
+  posiziona(radice, 8);
+  for (const n of vis.nodi) if (dom[n.id]) dom[n.id].style.top = Math.round(pos[n.id]) + 'px';
+  const altezza = Math.ceil(span[radice.id]) + 16; const larghezza = Math.max(...vis.nodi.map(n => PSA_COL[n.tipo].x + PSA_COL[n.tipo].w)) + 8;
+  scena.style.height = altezza + 'px'; scena.style.width = larghezza + 'px'; svg.setAttribute('width', larghezza); svg.setAttribute('height', altezza); svg.setAttribute('viewBox', '0 0 ' + larghezza + ' ' + altezza);
+  // 3) i collegamenti: dal bordo destro del padre al bordo sinistro del figlio; il percorso del nodo selezionato è evidenziato
+  const catena = new Set(); if (st.sel) { let n = nodoPSA(radice, st.sel); while (n) { catena.add(n.id); n = n.padre; } }
+  let linee = '';
+  for (const n of vis.nodi) { const ff = figliVis(n); if (!ff.length) continue;
+    if (n.tipo === 'radice') { // dalla radice una parentesi: tratto orizzontale, dorsale verticale, un ramo per ogni Practice
+      const x1 = PSA_COL.radice.x + PSA_COL.radice.w, xs = x1 + (PSA_COL.practice.x - x1) / 2, yr = pos[n.id] + alt[n.id] / 2; const yy = ff.map(f => pos[f.id] + alt[f.id] / 2); const ymin = Math.min(yr, ...yy), ymax = Math.max(yr, ...yy);
+      linee += '<path class="psa-linea psa-l-dorsale" d="M' + x1 + ' ' + yr.toFixed(1) + ' L' + xs + ' ' + yr.toFixed(1) + ' M' + xs + ' ' + ymin.toFixed(1) + ' L' + xs + ' ' + ymax.toFixed(1) + '"/>';
+      for (const f of ff) { const y2 = pos[f.id] + alt[f.id] / 2; linee += '<path class="psa-linea psa-l-practice ' + classePrPSA(f) + (catena.has(f.id) ? ' psa-l-sel' : '') + '" d="M' + xs + ' ' + y2.toFixed(1) + ' L' + PSA_COL.practice.x + ' ' + y2.toFixed(1) + '"/>'; }
+      continue; }
+    for (const f of ff) { const x1 = PSA_COL[n.tipo].x + PSA_COL[n.tipo].w, y1 = pos[n.id] + alt[n.id] / 2, x2 = PSA_COL[f.tipo].x, y2 = pos[f.id] + alt[f.id] / 2; const dx = Math.max(18, (x2 - x1) * 0.55);
+      linee += '<path class="psa-linea psa-l-' + f.tipo + ' ' + classePrPSA(f) + (catena.has(f.id) ? ' psa-l-sel' : '') + '" d="M' + x1 + ' ' + y1.toFixed(1) + ' C' + (x1 + dx) + ' ' + y1.toFixed(1) + ' ' + (x2 - dx) + ' ' + y2.toFixed(1) + ' ' + x2 + ' ' + y2.toFixed(1) + '"/>'; } }
+  svg.innerHTML = linee;
+  // 4) la nota sui risultati della ricerca e il pannello di dettaglio
+  const nota = $('.psa-esito', m); if (nota) { if (vis.q) { const n = vis.hit.size; nota.hidden = false; nota.textContent = n ? n + (n === 1 ? ' corrispondenza' : ' corrispondenze') + ' per «' + st.q.trim() + '»: restano visibili i rami che le contengono.' : 'Nessuna corrispondenza per «' + st.q.trim() + '».'; } else nota.hidden = true; }
+  for (const b of $$('#psa-livello button', m)) b.classList.toggle('attivo', +b.dataset.l === st.livello);
+  disegnaDettaglioPSA(radice);
+}
+function percorsoPSA(n) { const l = []; let x = n.padre; while (x && x.tipo !== 'radice') { l.unshift(x); x = x.padre; } return l; }
+function htmlPersonePSA(pid) {
+  if (typeof membriPractice !== 'function' || !S.rete || !(S.rete.practice || []).length) return '';
+  const mp = membriPractice(pid); const ruolo = r => r === 'guida' ? 'guida' : r === 'presidio' ? 'presidio' : r === 'partecipa' ? 'partecipa' : 'riferimento';
+  const riga = (et, l) => l.length ? '<div class="psa-persone-riga"><span class="psa-persone-et">' + et + '</span>' + l.map(x => '<button class="psa-persona" data-psa-ente="' + esc(x.e.id) + '">' + esc(x.e.breve || x.e.nome) + (x.ruolo && x.ruolo !== 'riferimento' ? ' <small>(' + ruolo(x.ruolo) + ')</small>' : '') + '</button>').join('') + '</div>' : '';
+  const h = riga('Soci', mp.soci) + riga('Advisor', mp.advisor) + riga('Società partner', mp.partner) + riga('Consulenti', mp.consulenti);
+  return h ? '<div class="psa-det-tit">Chi la presidia nella rete di partenza</div><div class="psa-persone">' + h + '</div>' : '';
+}
+function disegnaDettaglioPSA(radice) {
+  const m = $('#alberopsa'); const box = $('.psa-dettaglio', m); if (!box) return; const st = statoPSA(); const n = (st.sel && nodoPSA(radice, st.sel)) || radice;
+  const lista = (et, l, conNum) => l.length ? '<div class="psa-det-tit">' + et + ' (' + l.length + ')</div><ol class="psa-det-lista">' + l.map(f => '<li><button data-psa-vai="' + esc(f.id) + '">' + (conNum && f.num ? '<span class="psa-num">' + esc(f.tipo === 'servizio' ? f.padre.num + '.' + f.num : f.num) + '</span>' : '') + esc(f.nome) + '</button>' + (f.descr ? '<small>' + esc(f.descr) + '</small>' : '') + '</li>').join('') + '</ol>' : '';
+  let h = '';
+  if (n.tipo === 'radice') { const c = contaPSA(n);
+    h = '<div class="psa-det-occhiello">L’offerta di Onward</div><h2>Practices, Servizi e Attività</h2><p>La struttura dell’offerta come è presentata sul sito Onward: cinque Practices, ' + c.servizi + ' servizi e ' + c.attivita + ' attività. Un clic su un nodo dell’albero lo apre o lo chiude e ne mostra qui il dettaglio; i pulsanti Practices, Servizi e Attività aprono l’albero fino a quel livello; la ricerca tiene in vista solo i rami che contengono la parola cercata.</p>' + lista('Le cinque Practices', n.figli, true) + '<p class="psa-det-link"><a href="' + esc(PSA_SITO) + '" target="_blank" rel="noopener">Il sito Onward</a></p>'; }
+  else if (n.tipo === 'practice') { const c = contaPSA(n);
+    h = '<div class="psa-det-occhiello">Practice ' + esc(n.num) + '</div><h2>' + esc(n.nome) + '</h2>' + (n.claim ? '<p class="psa-det-claim">' + esc(n.claim) + '</p>' : '') + (n.intro ? '<p>' + esc(n.intro) + '</p>' : '') + '<p class="psa-det-conta">' + c.servizi + ' servizi, ' + c.attivita + ' attività.</p>' + lista('Servizi', n.figli, true) + htmlPersonePSA(n.id) +
+      '<p class="psa-det-link"><button class="btn piccolo" data-psa-practice="' + esc(n.id) + '">Apri in Practices e Servizi</button> <a href="' + esc(n.url) + '" target="_blank" rel="noopener">La pagina sul sito Onward</a></p>'; }
+  else if (n.tipo === 'servizio') { const p = n.padre;
+    h = '<div class="psa-det-occhiello"><button data-psa-vai="' + esc(p.id) + '">Practice ' + esc(p.num) + ' · ' + esc(p.nome) + '</button><span>Servizio ' + esc(n.num) + '</span></div><h2>' + esc(n.nome) + '</h2>' + (n.descr ? '<p>' + esc(n.descr) + '</p>' : '') + lista('Attività', n.figli, false) +
+      '<p class="psa-det-link"><a href="' + esc(p.url) + '" target="_blank" rel="noopener">Il servizio sul sito Onward</a></p>'; }
+  else { const s = n.padre, p = s.padre;
+    h = '<div class="psa-det-occhiello"><button data-psa-vai="' + esc(p.id) + '">Practice ' + esc(p.num) + ' · ' + esc(p.nome) + '</button><button data-psa-vai="' + esc(s.id) + '">Servizio ' + esc(s.num) + ' · ' + esc(s.nome) + '</button></div><h2>' + esc(n.nome) + '</h2><p>Attività del servizio «' + esc(s.nome) + '»' + (s.descr ? ': ' + esc(s.descr) : '.') + '</p>' + lista('Le altre attività del servizio', s.figli.filter(x => x.id !== n.id), false); }
+  box.className = 'psa-dettaglio' + (classePrPSA(n) ? ' ' + classePrPSA(n) : ''); box.innerHTML = h;
+}
+function selezionaPSA(id, apri) {
+  const st = statoPSA(); const radice = alberoPSA(); const n = nodoPSA(radice, id); if (!n) return; st.sel = id;
+  if (apri === true) { let x = n; while (x) { st.aperti.add(x.id); x = x.padre; } }
+  else if (apri === 'toggle' && n.figli.length && n.tipo !== 'radice') { if (st.aperti.has(id)) st.aperti.delete(id); else st.aperti.add(id); }
+  disegnaAlberoPSA();
+  if (apri === true) { const d = $('#alberopsa .psa-nodo[data-psa="' + CSS.escape(id) + '"]'); if (d) d.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' }); }
+}
+function apriAlberoPSA() { const m = $('#alberopsa'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaAlberoPSA(); }
+function chiudiAlberoPSA() { const m = $('#alberopsa'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+// il documento dell'albero (Word e stampa): una tabella per Practice con servizi, descrizione e attività
+function htmlDocumentoPSA() {
+  const radice = alberoPSA(); const c = contaPSA(radice);
+  let h = '<h1>Onward · Mappa Practices-Servizi-Attività</h1><p>La struttura dell’offerta di Onward Strategic Partners: cinque Practices, ' + c.servizi + ' servizi e ' + c.attivita + ' attività, come presentata sul sito ' + esc(PSA_SITO) + ' (' + esc(new Date().toLocaleDateString('it-IT')) + ').</p>';
+  for (const p of radice.figli) { const cp = contaPSA(p);
+    h += '<h2>' + esc(p.num) + ' · ' + esc(p.nome) + '</h2>' + (p.claim ? '<p><i>' + esc(p.claim) + '</i></p>' : '') + (p.intro ? '<p>' + esc(p.intro) + '</p>' : '') + '<p>' + cp.servizi + ' servizi, ' + cp.attivita + ' attività.</p>' +
+      '<table><tr class="i"><td style="width:24%">Servizio</td><td style="width:40%">Descrizione</td><td>Attività</td></tr>' + p.figli.map(s => '<tr><td><b>' + esc(p.num + '.' + s.num) + ' ' + esc(s.nome) + '</b></td><td>' + esc(s.descr || '') + '</td><td>' + s.figli.map(a => esc(a.nome)).join('<br>') + '</td></tr>').join('') + '</table>'; }
+  return h;
+}
+const PSA_CSS_DOC = 'body{font-family:Arial;font-size:11pt;line-height:1.4;color:#26221E} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt;color:#BE3C00} table{border-collapse:collapse;width:100%;font-size:9pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:3pt 4pt;vertical-align:top} tr.i td{background:#F3EFE8;font-weight:bold} p{margin:0 0 6pt}';
+function esportaAlberoPSAWord() { const h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Mappa Practices-Servizi-Attività</title><style>' + PSA_CSS_DOC + '</style></head><body>' + htmlDocumentoPSA() + '</body></html>'; scarica('Onward_Mappa_Practices_Servizi_Attivita.doc', h, 'application/msword'); toast('Mappa esportata in Word'); }
+function stampaAlberoPSA() { const w = window.open('', '_blank'); if (!w) { toast('Il browser ha bloccato la finestra di stampa'); return; } w.document.write('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Mappa Practices-Servizi-Attività</title><style>' + PSA_CSS_DOC + ' @media print { h2 { page-break-before: always } h2:first-of-type { page-break-before: auto } }</style></head><body>' + htmlDocumentoPSA() + '</body></html>'); w.document.close(); setTimeout(() => { try { w.focus(); w.print(); } catch (e) {} }, 400); }
+function avviaAlberoPSA() {
+  const m = $('#alberopsa'); if (!m) return; const b = $('#b-alberopsa'); if (b) b.onclick = apriAlberoPSA; const c = $('#alberopsa-chiudi'); if (c) c.onclick = chiudiAlberoPSA;
+  const cerca = $('#psa-cerca', m); if (cerca) { let t = null; cerca.oninput = () => { clearTimeout(t); t = setTimeout(() => { statoPSA().q = cerca.value; disegnaAlberoPSA(); }, 160); }; }
+  for (const x of $$('#psa-livello button', m)) x.onclick = () => { impostaLivelloPSA(+x.dataset.l); disegnaAlberoPSA(); };
+  const w = $('#psa-word', m); if (w) w.onclick = esportaAlberoPSAWord; const s = $('#psa-stampa', m); if (s) s.onclick = stampaAlberoPSA;
+  m.addEventListener('click', ev => {
+    const nodo = ev.target.closest('.psa-nodo'); if (nodo) { selezionaPSA(nodo.dataset.psa, 'toggle'); return; }
+    const vai = ev.target.closest('[data-psa-vai]'); if (vai) { selezionaPSA(vai.dataset.psaVai, true); return; }
+    const pr = ev.target.closest('[data-psa-practice]'); if (pr) { if (typeof apriMappe === 'function') apriMappe('practice', pr.dataset.psaPractice); return; }
+    const en = ev.target.closest('[data-psa-ente]'); if (en) { if (typeof apriScheda === 'function') apriScheda(en.dataset.psaEnte, en); return; }
+  });
+  m.addEventListener('keydown', ev => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.classList && ev.target.classList.contains('psa-nodo')) { ev.preventDefault(); selezionaPSA(ev.target.dataset.psa, 'toggle'); } });
+  window.addEventListener('resize', () => { if (!m.hidden) disegnaAlberoPSA(); });
+}
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
@@ -7077,7 +7354,7 @@ function completaIntroParti() {
   try { if (S.readonly || !S.backend || S.repoVuoto) return; let n = 0; for (const p of S.parti || []) { const t = INTRO_PARTI_STANDARD[p.id]; if (t && !String(p.intro || '').trim()) { p.intro = t; n++; } } if (n) { segna('struttura'); renderDocumento(); toast('Introduzione della Parte prima aggiunta: il salvataggio è in corso'); } } catch (e) { console.warn(e); }
 }
 // ================================================================ aree della piattaforma: le sei tendine della barra, l'area attiva e la riga di posizione «Area › Pagina»
-const AREE_PIATTAFORMA = { doc: 'Documento', mod: 'Modello economico', pro: 'Progetti e rete', too: 'Tools', amm: 'Amministrazione', ser: 'Servizio' };
+const AREE_PIATTAFORMA = { doc: 'Documento', mod: 'Modello economico', pro: 'Progetti e Rete', map: 'Mappe', too: 'Tools', amm: 'Amministrazione', ser: 'Servizio' };
 // la mappa della piattaforma: per ogni area le pagine, con la spiegazione e, nello stesso testo, l'effetto (per tutti i Soci, privato, sola lettura, produce un file); alimenta le tendine della barra e la mappa nella pagina iniziale
 const MAPPA_PIATTAFORMA = [
   { k: 'doc', nome: 'Documento', scopo: 'Il testo del Manifesto e Business Plan e il suo glossario.', voci: [
@@ -7088,11 +7365,13 @@ const MAPPA_PIATTAFORMA = [
     { id: 'b-scenari', nome: 'Piano e scenari', descr: 'La traiettoria dei ricavi, i tre scenari e il livello adottato della pipeline.', effetto: 'Il piano è condiviso: ciò che si scrive vale per tutti i Soci.' },
     { id: 'b-proiezioni', nome: 'Proiezioni Strategiche', descr: 'Dati reali, proiezione della crescita e prove sulle leve, a confronto con i tre scenari.', effetto: 'Le prove restano private nel proprio browser finché non si salvano nelle ipotesi condivise.' },
     { id: 'b-soci', nome: 'Soci', descr: 'Quote, apporti e struttura societaria.', effetto: 'Le quote sono condivise e si salvano per tutti i Soci.' }] },
-  { k: 'pro', nome: 'Progetti e rete', scopo: 'Il lavoro dei Soci: progetti, contatti, partner e Practice.', voci: [
+  { k: 'pro', nome: 'Progetti e Rete', scopo: 'Il lavoro dei Soci: progetti, contatti, partner e Practice.', voci: [
     { id: 'b-progetti', nome: 'Schede Progetto', descr: 'I progetti che ogni Socio segue e porterà in Onward; alimentano la pipeline e le tavole del documento.', effetto: 'Registro comune: ogni scheda è visibile a tutti i Soci e si salva nel repository.' },
     { id: 'b-contatti', nome: 'Database relazionale', descr: 'I contatti della rete: ente, settore, status della relazione, Socio e Practices di riferimento, scheda collegata.', effetto: 'Registro comune, condiviso con tutti i Soci.' },
     { id: 'b-mappe', nome: 'Soci e Società Partner', descr: 'La rete di partenza: chi c’è e che cosa porta.', effetto: 'Le schede sono condivise con tutti i Soci.' },
     { id: 'b-practice', nome: 'Practices e Servizi', descr: 'Le cinque Practice, le persone di riferimento e i servizi offerti.', effetto: 'Le modifiche valgono per tutti i Soci.' }] },
+  { k: 'map', nome: 'Mappe', scopo: 'Le mappe della piattaforma: la struttura dell’offerta in Practices, Servizi e Attività.', voci: [
+    { id: 'b-alberopsa', nome: 'Mappa Practices-Servizi-Attività', descr: 'L’albero interattivo dell’offerta: le cinque Practices, i servizi di ciascuna e le attività di ogni servizio, come sul sito Onward, con ricerca e dettaglio.', effetto: 'Di sola lettura: consultare la mappa non cambia nulla.' }] },
   { k: 'too', nome: 'Tools', scopo: 'Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e il format della Diagnosi D³.', voci: [
     { id: 'b-commessa', nome: 'Scheda di commessa', descr: 'Il tool per ipotizzare le economie di una commessa (prezzo, ripartizione nei tre strati, margine, verifiche) e quindi formulare un’offerta.', effetto: 'Le schede salvate restano nel registro condiviso con i Soci; le ipotesi del documento non cambiano.' },
     { id: 'b-formati', nome: 'Format Incarico', descr: 'I format compilabili per i contratti delle linee di servizio: pagina in preparazione, per ora vuota.', effetto: 'Sarà condivisa con tutti i Soci.' },
@@ -7114,7 +7393,7 @@ function htmlVoceMappa(v, home) {
 function costruisciTendine() { for (const a of MAPPA_PIATTAFORMA) { const box = $('#area-' + a.k + ' .tm-voci'); if (box && !box.children.length) box.innerHTML = a.voci.map(v => htmlVoceMappa(v, false)).join(''); } }
 // la mappa nella pagina iniziale: stesse voci, un clic apre la pagina come dal menu
 function htmlMappaPiattaforma(colonna) {
-  return (colonna ? '<div class="hm-col-testa"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sei aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci; un clic apre la pagina.</span></div>' : '<div class="hm-sezione"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sei aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci.</span></div>') +
+  return (colonna ? '<div class="hm-col-testa"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sette aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci; un clic apre la pagina.</span></div>' : '<div class="hm-sezione"><h2 class="hm-h2">Mappa della piattaforma</h2><span class="hm-nota">Sette aree. Ogni voce dice a che cosa serve e che cosa cambia per gli altri Soci.</span></div>') +
     '<div class="hm-mappa">' + MAPPA_PIATTAFORMA.map(a => '<div class="hm-area area-' + a.k + '"><div class="hm-area-testa"><i class="a-dot"></i><b>' + esc(a.nome) + '</b><span>' + esc(a.scopo) + '</span></div><div class="tm-voci">' + a.voci.map(v => htmlVoceMappa(v, true)).join('') + '</div></div>').join('') + '</div>';
 }
 function chiudiTendine() { for (const t of $$('.barra .tendina-menu')) t.hidden = true; for (const b of $$('.barra .tendina > .btn[aria-haspopup]')) b.setAttribute('aria-expanded', 'false'); }
@@ -7155,7 +7434,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

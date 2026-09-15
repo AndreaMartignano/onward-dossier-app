@@ -1447,6 +1447,95 @@ table.sp-tab { table-layout: fixed; width: 100%; min-width: 1100px; }
 @media (max-width: 760px) { .sp-importi { grid-template-columns: 1fr; } .sp-cruscotto { grid-template-columns: 1fr; } }
 /* con sei aree le tendine delle ultime tre si aprono verso sinistra, così restano dentro lo schermo */
 #area-too .tendina-menu, #area-amm .tendina-menu, #area-ser .tendina-menu { left: auto; right: 0; }
+/* sotto il titolo di ogni sottovoce una riga sottile nel colore dell'area, larga quanto il testo descrittivo */
+.barra .tendina.area .tm-voci > button > b, .barra .tendina.area .tm-gruppo > b, .hm-area .tm-voci > button > b, .hm-area .tm-gruppo > b { align-self: stretch; padding-bottom: .22rem; margin-bottom: .08rem; border-bottom: 1px solid var(--area); }
+
+/* ---- Format Diagnosi D³: compilatore a sezioni con indice e documento generato */
+.d3-vuoto { max-width: 1100px; margin: 0 auto; }
+.d3-fasi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin-top: .6rem; }
+.d3-fase { background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; padding: .8rem .9rem; display: flex; flex-direction: column; gap: .3rem; }
+.d3-fase b { font-family: var(--font-titoli); font-size: 1rem; color: var(--accento); }
+.d3-fase small { font-size: .8rem; color: var(--secondario); line-height: 1.4; }
+.d3-layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 1.2rem; align-items: start; max-width: 1500px; margin: 0 auto; }
+.d3-nav { position: sticky; top: .5rem; background: var(--carta); border: 1px solid var(--filo); border-radius: 10px; padding: .7rem .5rem .6rem; display: flex; flex-direction: column; gap: .1rem; max-height: calc(100vh - var(--barra-h, 52px) - 150px); overflow: auto; scrollbar-width: thin; }
+.d3-nav-testa { padding: 0 .5rem .5rem; border-bottom: 1px solid var(--filo); margin-bottom: .3rem; }
+.d3-nav-testa b { display: block; font-family: var(--font-titoli); font-size: .95rem; line-height: 1.3; }
+.d3-nav-testa small { display: block; font-size: .72rem; color: var(--secondario); margin-top: .25rem; }
+.d3-pct { display: block; height: 6px; border-radius: 100px; background: var(--lavaggio); margin-top: .4rem; overflow: hidden; }
+.d3-pct i { display: block; height: 100%; background: var(--accento); border-radius: 100px; transition: width .3s; }
+.d3-nav-fase { font-family: var(--font-titoli); font-size: .66rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accento); padding: .55rem .5rem .15rem; }
+.d3-nav-voce { display: flex; align-items: center; justify-content: space-between; gap: .4rem; width: 100%; text-align: left; border: 0; background: none; font: inherit; font-size: .82rem; color: var(--inchiostro); padding: .3rem .5rem; border-radius: 8px; cursor: pointer; }
+.d3-nav-voce:hover { background: var(--lavaggio); }
+.d3-nav-voce b { font-family: var(--font-titoli); font-size: .7rem; font-weight: 600; color: var(--secondario); font-variant-numeric: tabular-nums; }
+.d3-nav-voce b.parte { color: var(--attesa); } .d3-nav-voce b.pieno { color: var(--ok); }
+.d3-nav-piede { font-size: .72rem; color: var(--secondario); padding: .5rem .5rem 0; border-top: 1px solid var(--filo); margin-top: .3rem; line-height: 1.4; }
+.d3-form { min-width: 0; display: flex; flex-direction: column; gap: .9rem; }
+.d3-fase-tit { font-family: var(--font-titoli); font-size: .8rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accento); margin: .6rem 0 -.3rem; }
+.d3-sez { background: var(--carta); border: 1px solid var(--filo); border-radius: 12px; padding: 1rem 1.2rem 1.1rem; scroll-margin-top: .6rem; }
+.d3-sez-testa { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.d3-sez h3 { margin: 0; font-family: var(--font-titoli); font-size: 1.1rem; font-weight: 700; letter-spacing: -.01em; }
+.d3-sez-pct { font-size: .72rem; color: var(--secondario); font-variant-numeric: tabular-nums; }
+.d3-intro { margin: .3rem 0 .8rem; font-size: .84rem; color: var(--secondario); line-height: 1.45; max-width: 90ch; }
+.d3-campi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem 1.2rem; }
+.d3-campo { display: block; min-width: 0; }
+.d3-larga { grid-column: 1 / -1; }
+.d3-et { display: block; font-size: .8rem; color: var(--secondario); margin-bottom: .2rem; }
+.d3-et small { font-weight: normal; }
+.d3-aiuto { display: block; font-size: .72rem; color: var(--secondario); margin-top: .2rem; line-height: 1.35; }
+.d3-campo input, .d3-campo select, .d3-campo textarea, .d3-griglia input, .d3-griglia select { width: 100%; font: inherit; font-size: .86rem; padding: .38rem .55rem; border: 1px solid var(--filo); border-radius: 6px; background: var(--fondo); color: var(--inchiostro); }
+.d3-campo textarea { resize: vertical; min-height: 4.2rem; line-height: 1.4; }
+.d3-campo input:focus, .d3-campo select:focus, .d3-campo textarea:focus, .d3-griglia input:focus, .d3-griglia select:focus { outline: 2px solid var(--selezione); border-color: var(--accento); }
+.d3-campo input:disabled, .d3-campo select:disabled, .d3-campo textarea:disabled, .d3-griglia input:disabled, .d3-griglia select:disabled { background: var(--lavaggio); color: var(--secondario); }
+.d3-num { text-align: right; font-variant-numeric: tabular-nums; }
+.d3-multi { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .1rem .8rem; }
+.d3-multi .pg-opt { font-size: .84rem; }
+.d3-griglia-wrap { margin-top: .1rem; }
+table.d3-griglia { table-layout: fixed; width: 100%; min-width: 760px; font-size: .82rem; }
+.d3-griglia thead td { font-family: var(--font-titoli); font-weight: 500; font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--secondario); white-space: normal; }
+.d3-griglia td { vertical-align: middle; padding: .3rem .4rem; border-left: 0; border-right: 0; }
+.d3-griglia td:first-child { width: 30%; }
+.d3-griglia td.d3-cella-scala, .d3-griglia td.d3-cella-select { width: 17%; }
+.d3-riga-et b { font-weight: 600; font-size: .82rem; }
+.d3-riga-et small { display: block; color: var(--secondario); font-size: .7rem; line-height: 1.3; }
+.d3-elenco { display: flex; flex-direction: column; gap: .5rem; }
+.d3-voce { border: 1px solid var(--filo); border-radius: 10px; padding: .6rem .8rem .7rem; background: var(--fondo); }
+.d3-voce-testa { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .35rem; }
+.d3-voce-testa b { font-family: var(--font-titoli); font-size: .86rem; }
+.d3-voce-az { display: flex; gap: .25rem; }
+.d3-voce-az .btn { padding: .1rem .45rem; font-size: .72rem; }
+.d3-voce-campi { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem .8rem; }
+.d3-voce .d3-campo input, .d3-voce .d3-campo select, .d3-voce .d3-campo textarea { background: var(--carta); }
+.d3-elenco > .btn { align-self: flex-start; }
+/* il documento generato */
+.d3-doc-wrap { max-width: 980px; margin: 0 auto; background: var(--carta); border: 1px solid var(--filo); border-radius: 14px; padding: 2rem 2.4rem 2.2rem; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.d3-doc h1 { font-family: var(--font-titoli); font-size: 2rem; letter-spacing: -.02em; margin: .3rem 0 .2rem; }
+.d3-doc h2 { font-family: var(--font-titoli); font-size: 1.3rem; margin: 1.6rem 0 .5rem; padding-bottom: .25rem; border-bottom: 1px solid var(--filo); }
+.d3-doc h3 { font-family: var(--font-titoli); font-size: 1.05rem; margin: 1.1rem 0 .4rem; }
+.d3-doc h4 { font-family: var(--font-titoli); font-size: .92rem; margin: .8rem 0 .3rem; }
+.d3-doc p { margin: 0 0 .5rem; line-height: 1.5; max-width: 80ch; }
+.d3-front { border-bottom: 2px solid var(--accento); padding-bottom: .9rem; margin-bottom: 1rem; }
+.d3-front-occhiello { font-family: var(--font-titoli); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--accento); }
+.d3-front-sotto { font-family: var(--font-titoli); font-size: 1rem; color: var(--secondario); letter-spacing: .04em; }
+.d3-front-meta, .d3-front-riservato { font-size: .8rem; color: var(--secondario); margin-top: .3rem; }
+.d3-messaggi { display: grid; gap: .4rem; margin: .6rem 0 .8rem; }
+.d3-messaggio { display: flex; gap: .7rem; align-items: baseline; background: var(--lavaggio); border-radius: 10px; padding: .55rem .8rem; }
+.d3-messaggio b { font-family: var(--font-titoli); color: var(--accento); font-size: 1.1rem; }
+table.d3-tab { font-size: .82rem; margin: .4rem 0 .9rem; }
+.d3-tab td.d3-e { width: 32%; background: var(--lavaggio); font-weight: 600; }
+.d3-tab td.d3-num-cella { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.d3-swot td { width: 50%; vertical-align: top; }
+.d3-swot td b { display: block; margin-bottom: .3rem; font-family: var(--font-titoli); }
+.d3-manca { color: var(--secondario); font-style: italic; }
+.d3-grafico { display: block; width: 100%; max-width: 760px; height: auto; margin: .4rem 0 .8rem; }
+.d3-piede { margin-top: 1.6rem; font-size: .74rem; color: var(--secondario); border-top: 1px solid var(--filo); padding-top: .5rem; }
+#formatd3 .mappe-testa .schede { margin-left: .3rem; }
+@media (max-width: 1100px) { .d3-layout { grid-template-columns: 1fr; } .d3-nav { position: static; max-height: none; } .d3-campi { grid-template-columns: 1fr; } .d3-voce-campi { grid-template-columns: 1fr 1fr; } .d3-fasi { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .d3-voce-campi { grid-template-columns: 1fr; } .d3-doc-wrap { padding: 1.2rem 1rem; } }
+#d3-elenco { flex: 0 1 380px; max-width: 380px; }
+.d3-multi .pg-opt { display: flex; align-items: flex-start; gap: .45rem; padding: .15rem 0; }
+.d3-multi .pg-opt input { width: auto; margin: .2rem 0 0; flex: 0 0 auto; }
+#formatd3 .mappe-azioni { flex-wrap: wrap; row-gap: .35rem; }
+#formatd3 .mappe-azioni .nota-pannello { flex: 1 1 260px; }
 </style>
 </head>
 <body>
@@ -1460,7 +1549,7 @@ table.sp-tab { table-layout: fixed; width: 100%; min-width: 1100px; }
     <div class="tendina area area-pro" id="area-pro" data-area="pro"><button type="button" class="btn area" id="b-area-pro" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Progetti e rete</button>
       <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Progetti e rete</b><span>Il lavoro dei Soci: progetti, contatti, partner e Practice.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-too" id="area-too" data-area="too"><button type="button" class="btn area" id="b-area-too" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Tools</button>
-      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Tools</b><span>Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e per la Diagnosi D³.</span></div><div class="tm-voci"></div></div></div>
+      <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Tools</b><span>Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e il format della Diagnosi D³.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-amm" id="area-amm" data-area="amm"><button type="button" class="btn area" id="b-area-amm" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Amministrazione</button>
       <div class="tendina-menu" hidden><div class="tm-testa"><i class="a-dot"></i><b>Amministrazione</b><span>La gestione amministrativa: le spese sostenute dai Soci per la società.</span></div><div class="tm-voci"></div></div></div>
     <div class="tendina area area-ser" id="area-ser" data-area="ser"><button type="button" class="btn area" id="b-area-ser" aria-haspopup="true" aria-expanded="false"><i class="a-dot"></i>Servizio</button>
@@ -1527,7 +1616,7 @@ table.sp-tab { table-layout: fixed; width: 100%; min-width: 1100px; }
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe formatd3" id="formatd3" data-area="too" hidden>
-  <div class="mappe-testa"><b>Format Diagnosi D³</b><div class="mappe-azioni"><span class="nota-pannello">Il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso: pagina in preparazione, per ora vuota.</span></div><button class="btn piccolo" id="formatd3-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Format Diagnosi D³</b><select class="ricerca cm-elenco" id="d3-elenco" title="Le diagnosi avviate"></select><div class="schede" id="d3-vista"><button data-v="raccolta" class="attivo">Raccolta</button><button data-v="documento">Documento</button></div><div class="mappe-azioni"><button class="btn piccolo primario" id="d3-nuova">Nuova diagnosi</button><button class="btn piccolo" id="d3-word" title="Esporta il documento di diagnosi in Word">Esporta in Word</button><button class="btn piccolo" id="d3-stampa" title="Apre il documento in una nuova scheda e lo stampa">Stampa</button><button class="btn piccolo" id="d3-commessa" title="Apre la Scheda di commessa della diagnosi, precompilata">Scheda di commessa</button><button class="btn piccolo" id="d3-completata">Segna come completata</button><button class="btn piccolo pericolo" id="d3-elimina">Elimina</button><span class="nota-pannello">Raccolta delle informazioni dal cliente e documento di diagnosi generato dai dati; ogni modifica si salva da sola.</span></div><button class="btn piccolo" id="formatd3-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="formatd3"></div>
   <div class="mappe-corpo"></div>
 </div>
@@ -1855,7 +1944,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-15T06:19:54Z';
+window.ONWARD_BUILD = '2026-09-15T06:55:48Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2385,7 +2474,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key === 'spese' ? 'contenuto/spese.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key === 'spese' ? 'contenuto/spese.json' : key === 'diagnosi' ? 'contenuto/diagnosi.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -2402,6 +2491,7 @@ function datiDi(key) {
   if (key === 'proiezioni') return S.proiezioni || proiezioniVuote();
   if (key === 'contatti') return S.contatti || contattiVuoti();
   if (key === 'spese') return S.spese || speseVuote();
+  if (key === 'diagnosi') return S.diagnosi || diagnosiVuote();
   if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
 }
@@ -2421,10 +2511,11 @@ function applicaDati(key, d) {
   if (key === 'proiezioni') { S.proiezioni = Object.assign(proiezioniVuote(), d || {}); if (!Array.isArray(S.proiezioni.rilevazioni)) S.proiezioni.rilevazioni = []; return; }
   if (key === 'contatti') { S.contatti = Object.assign(contattiVuoti(), d || {}); if (!Array.isArray(S.contatti.contatti)) S.contatti.contatti = []; return; }
   if (key === 'spese') { S.spese = Object.assign(speseVuote(), d || {}); if (!Array.isArray(S.spese.spese)) S.spese.spese = []; return; }
+  if (key === 'diagnosi') { S.diagnosi = Object.assign(diagnosiVuote(), d || {}); if (!Array.isArray(S.diagnosi.diagnosi)) S.diagnosi.diagnosi = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
-const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese'];
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
@@ -2465,7 +2556,7 @@ class ArchivioGitHub {
     }
   }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); S.spese = speseVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); S.spese = speseVuote(); S.diagnosi = diagnosiVuote(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -2494,7 +2585,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'spese') return 'Spese dei Soci aggiornate' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'spese') return 'Spese dei Soci aggiornate' + chi; if (k === 'diagnosi') return 'Diagnosi D³ aggiornate' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -2510,6 +2601,7 @@ async function fondi(k) {
   if (k === 'proiezioni') { fondiProiezioni(remoto); return; }
   if (k === 'contatti') { fondiContatti(remoto); return; }
   if (k === 'spese') { fondiSpese(remoto); return; }
+  if (k === 'diagnosi') { fondiDiagnosi(remoto); return; }
   if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
@@ -2526,7 +2618,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'spese' ? 'spese dei Soci' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'spese' ? 'spese dei Soci' : x === 'diagnosi' ? 'diagnosi D³' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -2534,7 +2626,7 @@ function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent
 // ================================================================ cronologia
 async function apriCronologia(keySel) {
   apriPannello('pan-storico'); const c = $('#pan-storico .corpo'); c.innerHTML = '<p class="nota-pannello">Scegliere un capitolo: ogni salvataggio è una versione, con autore e data. Si può confrontare una versione con il testo attuale o ripristinarla (il ripristino è a sua volta una nuova versione).</p>';
-  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option><option value="contatti">Database relazionale</option><option value="spese">Spese dei Soci</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
+  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option><option value="contatti">Database relazionale</option><option value="spese">Spese dei Soci</option><option value="diagnosi">Diagnosi D³</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
   const attuale = $('.capitolo:not(#cap-nota)') && capitoloVisibile(); if (attuale) sel.value = 'cap:' + attuale; if (typeof keySel === 'string' && [...sel.options].some(o => o.value === keySel)) sel.value = keySel;
   c.appendChild(sel); const lista = el('div', { id: 'st-lista' }); c.appendChild(lista);
   const carica = async () => { lista.innerHTML = '<p class="nota-pannello">Caricamento…</p>'; try { const st = await S.backend.storico(sel.value); if (!st.length) { lista.innerHTML = '<p class="nota-pannello">Nessuna versione salvata per questa voce.</p>'; return; } lista.innerHTML = st.map(v => '<div class="storico-voce"><div><b>' + esc(v.autore || '') + '</b></div><div class="quando">' + esc(dataIt(v.quando)) + ' · ' + esc(v.messaggio || '') + '</div><div class="azioni"><button class="btn piccolo" data-st="confronta" data-id="' + esc(v.id) + '">Confronta con il testo attuale</button><button class="btn piccolo" data-st="ripristina" data-id="' + esc(v.id) + '">Ripristina</button></div><div class="diff-slot"></div></div>').join(''); } catch (e) { lista.innerHTML = '<div class="avviso errore">Cronologia non disponibile: ' + esc(e.message) + '</div>'; } };
@@ -2557,6 +2649,7 @@ function diffVersioni(key, vecchia) {
   if (key === 'proiezioni') return diffDue('proiezioni', vecchia, datiDi('proiezioni'));
   if (key === 'contatti') return diffDue('contatti', vecchia, datiDi('contatti'));
   if (key === 'spese') return diffDue('spese', vecchia, datiDi('spese'));
+  if (key === 'diagnosi') return diffDue('diagnosi', vecchia, datiDi('diagnosi'));
   const vb = key === 'struttura' ? (vecchia.nota || []) : (vecchia.blocchi || []); const cb = key === 'struttura' ? S.nota : capitolo(key.slice(4)).c.blocchi;
   const vm = new Map(vb.map(b => [b.id, b])); const cm = new Map(cb.map(b => [b.id, b])); let h = ''; let n = 0;
   for (const b of cb) { const o = vm.get(b.id); const tn = testoBlocco(b), to = testoBlocco(o); if (!o) { h += '<div class="b">Blocco aggiunto</div><div class="p"><ins>' + esc(tn) + '</ins></div>'; n++; } else if (to !== tn) { h += '<div class="b">Blocco modificato</div><div class="p">' + diffParole(to, tn) + '</div>'; n++; } }
@@ -4213,7 +4306,7 @@ function avviaRiassunto() {
 function accessiVuoti() { return { soci: [], accessi: [] }; }
 function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k === 'spese') return 'Spese dei Soci'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k === 'spese') return 'Spese dei Soci'; if (k === 'diagnosi') return 'Diagnosi D³'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -4250,6 +4343,7 @@ function diffDue(key, vecchia, nuova) {
     if (key === 'rete') return [].concat(d.soci || [], d.advisor || [], d.partner || [], d.consulenti || []).map(e => ({ id: e.id, nome: e.nome || '', tx: [e.nome, e.qualifica || '', e.sede || '', e.societa || '', (e.practice || []).map(p => p.id + ':' + p.ruolo).join(' '), e.sintesi || '', e.presidio || '', e.ambito || '', e.profilo || '', e.attivita || '', e.reti || '', e.progetti || '', e.da_completare || ''].join('\n') }));
     if (key === 'commesse') return (d.commesse || []).map(c => ({ id: c.id, nome: c.titolo || '', tx: JSON.stringify(c, null, 1) }));
     if (key === 'proiezioni') return [{ id: 'imp', nome: 'Impostazioni', tx: ['Avvio: ' + (d.avvio || ''), 'Mese corrente: ' + (d.corrente || 'automatico'), 'Metodo: ' + (d.metodo || ''), 'Riferimento: ' + (d.riferimento || ''), 'Profilo: ' + (d.profilo || '')].join('\n') }].concat((d.rilevazioni || []).map(r => ({ id: r.id, nome: etMesePx(num(r.mese), true) + ' · ' + nomeLineaPx(r.linea), tx: ['Mandati: ' + num(r.n), 'Valore: ' + num(r.valore), 'Giornate: ' + (r.gg == null ? '' : r.gg), 'Note: ' + (r.note || '')].join('\n') })));
+    if (key === 'diagnosi') return (d.diagnosi || []).map(x => ({ id: x.id, nome: titoloDiagnosi(x), tx: ['Stato: ' + (x.stato || 'bozza')].concat(Object.keys(x.r || {}).sort().map(k => k + ': ' + (typeof x.r[k] === 'object' ? JSON.stringify(x.r[k]) : String(x.r[k])))).join('\n') }));
     if (key === 'spese') return (d.spese || []).map(x => ({ id: x.id, nome: titoloSpesa(x), tx: ['Socio: ' + (x.socio || ''), 'Data: ' + dataBreve(x.data), 'Scheda Progetto: ' + riferimentoSpesa(x.progetto), 'Tipologia: ' + etichettaTipoSpesa(x.tipologia), 'Descrizione: ' + (x.descrizione || ''), 'Imponibile: ' + spEur(imponibileSpesa(x)), 'IVA: ' + spEur(ivaSpesa(x)), 'Totale: ' + spEur(totaleSpesa(x)), 'Giustificativo: ' + (x.giustificativo ? x.giustificativo.nome : 'assente')].join('\n') }));
     if (key === 'contatti') return (d.contatti || []).map(c => ({ id: c.id, nome: nomeContatto(c), tx: ['Nome: ' + (c.nome || ''), 'Cognome: ' + (c.cognome || ''), 'Ente: ' + etichettaEnte(c.ente), 'Mail: ' + (c.mail || ''), 'Cellulare: ' + (c.cellulare || ''), 'Luogo: ' + (c.luogo || ''), 'Settore: ' + etichettaSettoreContatto(c.settore), 'Temi di interesse: ' + (c.temi || ''), 'Socio di riferimento: ' + (c.socio || ''), 'Practices: ' + (c.practice || []).map(nomePractice).join('; '), 'Scheda Progetto: ' + titoloProgettoContatto(c.progetto), 'Status: ' + etichettaStatusContatto(c.status), 'Riporto: ' + (c.riporto || ''), 'Primo contatto: ' + dataBreve(c.primo), 'Ultimo contatto: ' + dataBreve(c.ultimo)].join('\n') }));
     if (key === 'progetti') return (d.progetti || []).map(p => ({ id: p.id, nome: p.titolo || '', tx: ['Titolo: ' + (p.titolo || ''), 'Soggetti: ' + (p.soggetti || ''), 'Luogo: ' + (p.luogo || ''), 'Stato: ' + etichettaStato(p.stato), 'Referente: ' + (p.referente || ''), 'Practice: ' + (p.practice || []).map(nomePractice).join('; '), 'Sinergie: ' + (p.sinergie || []).map(nomePartner).join('; '), 'Valore: ' + (numeroIt(p.valore) !== null ? MODELLO.F.eur(numeroIt(p.valore)) : ''), 'Descrizione: ' + (p.descrizione || '')].join('\n') }));
@@ -4640,7 +4734,7 @@ function htmlSchedaProgetto(p) {
   const F = MODELLO.F; const v = numeroIt(p.valore); const esp = filtroProgetti().espansi.has(p.id); const descr = String(p.descrizione || '').trim();
   const lunga = descr.length > 420 || descr.split('\n').length > 6;
   return '<article class="pg-card" data-id="' + esc(p.id) + '"><div class="pg-testa"><h3>' + esc(p.titolo || 'Senza titolo') + '</h3><span class="sem pg-stato pg-' + esc(p.stato || 'suspect') + '">' + esc(etichettaStato(p.stato)) + '</span>' + (v !== null ? '<span class="pg-valore" title="Valore stimato">' + F.eur(v) + '</span>' : '<span class="pg-valore pg-muto">valore da stimare</span>') + '</div>' +
-    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + htmlContattiScheda(p) + htmlSpeseScheda(p) + '</div>' +
+    '<div class="pg-meta">' + (p.referente ? '<span><b>Referente</b> ' + esc(p.referente) + '</span>' : '') + (p.soggetti ? '<span><b>Soggetti</b> ' + esc(p.soggetti) + '</span>' : '') + (p.luogo ? '<span><b>Luogo</b> ' + esc(p.luogo) + '</span>' : '') + htmlContattiScheda(p) + htmlSpeseScheda(p) + htmlDiagnosiScheda(p) + '</div>' +
     '<div class="pg-chips">' + (p.practice || []).map(x => htmlChip(nomePractice(x), 'pg-pr')).join('') + (p.sinergie || []).map(x => htmlChip(nomePartner(x), 'pg-sin')).join('') + ((p.practice || []).length || (p.sinergie || []).length ? '' : '<span class="pg-muto">nessuna Practice o sinergia indicata</span>') + '</div>' +
     (descr ? '<div class="pg-descr' + (lunga && !esp ? ' pg-clamp' : '') + '">' + esc(descr) + '</div>' + (lunga ? '<button class="btn piccolo pg-lnk" data-pg="espandi" data-id="' + esc(p.id) + '">' + (esp ? 'Riduci' : 'Mostra tutto') + '</button>' : '') : '<div class="pg-descr pg-muto">Descrizione da completare.</div>') +
     htmlParametriScheda(p) +
@@ -4933,7 +5027,7 @@ function aggiornaPipeline(opt) {
   if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); if ($('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if ($('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if ($('#home') && !$('#home').hidden && typeof disegnaHome === 'function') disegnaHome();
   if (opt.progetti !== false && $('#progetti') && !$('#progetti').hidden) disegnaProgetti(true);
 }
-function dopoModificaProgetti() { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); }
+function dopoModificaProgetti() { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); aggiornaTendinaProgettiDiagnosi(); }
 function aggiornaBlocchiProgetti() { for (const w of $$('.blk[data-t="progetti"]')) { const info = blocco(w.dataset.id); if (info) w.replaceWith(renderBlocco(info.b)); } }
 function commessaDaProgetto(id) {
   const p = progettoDi(id); if (!p) return; const d = derivataDi(p); const P = S.P; const q = parametriDi(p);
@@ -5125,6 +5219,7 @@ function avviaProgetti() {
     if (az === 'documenti') { apriDocumentiProgetto(b.dataset.id); return; }
     if (az === 'contatti') { apriContattiProgetto(b.dataset.id); return; }
     if (az === 'spese') { apriSpeseProgetto(b.dataset.id); return; }
+    if (az === 'diagnosi') { apriFormatD3(b.dataset.id); return; }
     if (az === 'scenari') { apriScenari(); const sez = $('#scenari .q-pipeline'); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     if (az === 'espandi') { if (F.espansi.has(b.dataset.id)) F.espansi.delete(b.dataset.id); else F.espansi.add(b.dataset.id); aggiornaListaProgetti(); } });
 }
@@ -5420,9 +5515,9 @@ const GUIDE_USO = {
     usa: 'Quando i format saranno inseriti, si sceglierà la linea di servizio, si compileranno i campi (cliente, oggetto, corrispettivo, durata, condizioni) e si esporterà il contratto. Oggi la pagina elenca solo le linee di servizio per cui i format saranno predisposti.',
     effetti: 'Nessuna: la pagina non modifica il documento, il modello né i registri.' },
   formatd3: { tit: 'Format Diagnosi D³',
-    serve: 'È la pagina, nell’area Tools, che conterrà il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso di Onward: la struttura del documento di diagnosi da consegnare al cliente, con i campi da compilare per ciascuna sezione e l’esportazione in Word. Per ora la pagina è vuota.',
-    usa: 'Quando il format sarà inserito, si compileranno i campi della diagnosi (cliente, perimetro, evidenze, valutazioni, raccomandazioni e proposta di mandato) e si esporterà il documento. Oggi la pagina riporta solo l’avviso di preparazione.',
-    effetti: 'Nessuna: la pagina non modifica il documento, il modello né i registri.' },
+    serve: 'È il format con cui gli Strategic Partner raccolgono le informazioni dal cliente per la Diagnosi fondativa D³, il prodotto di ingresso di Onward, e il documento di diagnosi che ne discende. Il format segue le tre fasi del metodo: Decoding (modello di business, settore, contesto istituzionale, stakeholder, governance, leadership), Distillation (valutazione sui quattro capitali e sulle sette dimensioni, forze e debolezze, temi materiali con la doppia materialità, profilo di rischio sulle quattordici dimensioni della Corporate Protection, leve prioritarie) e Direction (traiettoria a 36 mesi, mandati da attivare, calendario delle decisioni, indicatori, sintesi per il Consiglio), preceduto dal mandato e dal perimetro.',
+    usa: '«Nuova diagnosi» avvia una diagnosi e apre il format, con l’indice delle sezioni a sinistra e la percentuale di compilazione. I campi sono a testo libero, a scelta singola o multipla, a scala da 1 a 5 (con il significato di ogni grado) o a griglia (stakeholder, capitali, dimensioni, temi, rischi); gli elenchi (leve, tappe, mandati, decisioni, indicatori) si allungano con «Aggiungi». Ogni modifica si salva da sola nel repository dei Soci. «Documento» mostra il documento di diagnosi generato dai dati raccolti: sintesi per il Consiglio, mandato, le tre fasi con tabelle e grafici (relazioni, quattro capitali, radar delle sette dimensioni, matrice di materialità, mappa dei rischi, traiettoria sui dodici trimestri, valore dei mandati per Practice) e prossimi passi; «Esporta in Word» e «Stampa» lo producono come file; «Scheda di commessa» apre la scheda economica della diagnosi precompilata; «Segna come completata» fissa la versione.',
+    effetti: 'Le diagnosi non entrano nel documento né nel modello: sono un registro di lavoro condiviso, salvato subito nel repository (anche in regime di approvazione) e tracciato nella Cronologia. La diagnosi collegata a una Scheda Progetto compare anche nella scheda; il prezzo e la ripartizione della diagnosi restano nella Scheda di commessa.' },
   spese: { tit: 'Spese dei Soci',
     serve: 'È il registro, nell’area Amministrazione, delle spese sostenute da ciascun Socio per attività della società: per ogni spesa il Socio che l’ha sostenuta, la data, la Scheda Progetto a cui si riferisce, la tipologia (viaggi, vitto e alloggio, ufficio, servizi, eventi, sedi e spazi di lavoro, altro), l’imponibile e l’IVA distinti, il totale e il giustificativo in PDF o immagine.',
     usa: '«Nuova spesa» apre il modulo: il Socio si sceglie dalla tendina dei Soci, la Scheda Progetto dalla tendina delle schede presenti, che si aggiorna da sola quando se ne inserisce una nuova, con la voce fissa «Gestione Onward» per le spese della società non riferite a una scheda; la tipologia da un elenco raggruppato per categoria; imponibile e IVA si scrivono in euro con la virgola per i decimali e i pulsanti 22%, 10%, 5%, 4% e 0% calcolano l’IVA dall’imponibile; il totale è calcolato da solo; il giustificativo si allega dal proprio computer e viene custodito nel repository dei Soci (cartella giustificativi, fino a 100 MB). In alto il cruscotto somma le spese per Socio e per categoria (un clic filtra l’elenco) e conta quelle senza giustificativo; la colonna di sinistra cerca e filtra per periodo, Socio, categoria, Scheda Progetto e presenza del giustificativo; la tabella riporta imponibile, IVA e totale di ogni spesa e la somma delle spese in elenco; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
@@ -5577,7 +5672,7 @@ function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x
 function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
 function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
 function inRegime() { return regimeAttivo() && !isApprovatore(); }
-function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese'].includes(k) && !String(k).startsWith('prop:'); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi'].includes(k) && !String(k).startsWith('prop:'); }
 function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
 function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
 function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
@@ -5671,10 +5766,11 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
-  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); return true; }
+  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); aggiornaTendinaProgettiDiagnosi(); return true; }
   if (k === 'proiezioni') { if ($('#proiezioni') && !$('#proiezioni').hidden) disegnaProiezioni(true); return true; }
   if (k === 'contatti') { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'spese') { aggiornaSpeseSeAperte(); aggiornaProgettiSeAperti(); return true; }
+  if (k === 'diagnosi') { aggiornaDiagnosiSeAperte(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }
@@ -5968,14 +6064,6 @@ function disegnaFormati() {
     '<div class="fi-elenco">' + TIPOLOGIE.map(t => '<div class="fi-card"><b>' + esc(t.nome) + '</b><small>' + esc(t.descr) + '</small><span class="fi-stato">Format da predisporre</span></div>').join('') + '</div>';
 }
 function avviaFormati() { const m = $('#formati'); if (!m) return; const b = $('#b-formati'); if (b) b.onclick = apriFormati; const c = $('#formati-chiudi'); if (c) c.onclick = chiudiFormati; }
-// Tools: Format Diagnosi D³ (pagina in preparazione: il format compilabile della Diagnosi fondativa D³)
-function apriFormatD3() { const m = $('#formatd3'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaFormatD3(); }
-function chiudiFormatD3() { const m = $('#formatd3'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function disegnaFormatD3() {
-  const m = $('#formatd3'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
-  corpo.innerHTML = '<div class="fi-intro avviso">Pagina in preparazione. Qui starà il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso di Onward: la struttura del documento di diagnosi da consegnare al cliente, con i campi da compilare per ciascuna sezione (cliente e perimetro, evidenze raccolte, valutazioni, raccomandazioni, proposta di mandato) e l’esportazione in Word, coerente con la Scheda di commessa della diagnosi. Per ora la pagina è vuota: il format sarà inserito quando i Soci ne avranno definito struttura e testi.</div>';
-}
-function avviaFormatD3() { const m = $('#formatd3'); if (!m) return; const b = $('#b-formatd3'); if (b) b.onclick = apriFormatD3; const c = $('#formatd3-chiudi'); if (c) c.onclick = chiudiFormatD3; }
 
 // ================================================================ Amministrazione: le spese sostenute dai Soci per attività della società (contenuto/spese.json)
 // tipologie di spesa, raggruppate per categoria: il menù a tendina le mostra tutte
@@ -6195,6 +6283,390 @@ function avviaSpese() {
     if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaSpese(); return; }
     if (az === 'progetto') { const p = progettoDi(b.dataset.id); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; } });
 }
+// ---- diagnosi_mod
+// ================================================================ Tools: Format Diagnosi D³ (contenuto/diagnosi.json). Il format compilabile con cui gli Strategic Partner raccolgono le informazioni dal cliente
+// (Decoding, Distillation, Direction) e il documento di diagnosi generato dai dati, con tabelle e grafici.
+const D3_SCALA_MATURITA = [['1', '1 · Assente'], ['2', '2 · Iniziale'], ['3', '3 · Definito'], ['4', '4 · Gestito'], ['5', '5 · Ottimizzato']];
+const D3_SCALA_CAPITALE = [['1', '1 · Fragile'], ['2', '2 · Debole'], ['3', '3 · Adeguato'], ['4', '4 · Solido'], ['5', '5 · Distintivo']];
+const D3_SCALA_RELAZIONE = [['1', '1 · Assente o conflittuale'], ['2', '2 · Debole'], ['3', '3 · Corretta'], ['4', '4 · Solida'], ['5', '5 · Strategica']];
+const D3_SCALA_15 = [['1', '1 · Molto bassa'], ['2', '2 · Bassa'], ['3', '3 · Media'], ['4', '4 · Alta'], ['5', '5 · Molto alta']];
+const D3_PRESIDIO = [['assente', 'Assente'], ['parziale', 'Parziale'], ['adeguato', 'Adeguato'], ['robusto', 'Robusto']];
+const D3_CAPITALI = [['fin', 'Capitale finanziario e produttivo', 'risultati economici, struttura del passivo, qualità della cassa, margini, produttività del capitale investito'], ['rel', 'Capitale sociale e di rete', 'filiera, rapporto bancario, standing istituzionale, fidelizzazione dei clienti, coinvolgimento delle persone'], ['uma', 'Capitale umano e organizzativo', 'competenze, leadership, organizzazione, cultura, capacità di assorbire il cambiamento'], ['str', 'Capitale strategico e adattivo', 'chiarezza della strategia, governance, coerenza tra dichiarato e agito, capacità di assorbire gli shock']];
+const D3_DIMENSIONI = [['strategia', 'Strategia e governance'], ['finanza', 'Finanza'], ['operations', 'Operations e trasformazione'], ['persone', 'Persone e organizzazione'], ['sicurezza', 'Sicurezza estesa'], ['comunicazione', 'Comunicazione e reputazione'], ['sostenibilita', 'Sostenibilità e impatto']];
+const D3_STAKEHOLDER = [['azionisti', 'Azionisti e famiglia'], ['management', 'Management e top team'], ['dipendenti', 'Dipendenti e rappresentanze'], ['banche', 'Banche, finanziatori e investitori'], ['clienti', 'Clienti chiave'], ['fornitori', 'Fornitori e filiera'], ['pa', 'Pubblica amministrazione e regolatori'], ['associazioni', 'Associazioni e corpi intermedi'], ['media', 'Media, comunità e territorio']];
+const D3_RISCHI = [['fisica', 'Sicurezza fisica e patrimoniale'], ['cyber', 'Cyber security e dati'], ['persone', 'Persone chiave e duty of care'], ['continuita', 'Continuità operativa'], ['crisi', 'Gestione delle crisi'], ['filiera', 'Supply chain e terze parti'], ['marchio', 'Marchio e proprietà intellettuale'], ['informazioni', 'Protezione delle informazioni'], ['frode', 'Frode e illeciti'], ['compliance', 'Compliance e Modello 231'], ['geopolitica', 'Geopolitica e sanzioni'], ['reputazione', 'Rischio reputazionale'], ['clima', 'ESG e clima'], ['ai', 'AI e minacce ibride']];
+const D3_TEMI = [
+  ['strategia', [['t_strategia', 'Chiarezza della strategia e del posizionamento'], ['t_governance', 'Assetto di governance e sistema delle deleghe'], ['t_generazionale', 'Passaggio generazionale e continuità della leadership'], ['t_capitale', 'Apertura del capitale e operazioni straordinarie']]],
+  ['finanza', [['t_passivo', 'Struttura del passivo e costo del debito'], ['t_controllo', 'Pianificazione e controllo di gestione'], ['t_circolante', 'Capitale circolante e cassa'], ['t_agevolata', 'Finanza agevolata e bandi']]],
+  ['operations', [['t_processi', 'Efficienza dei processi core'], ['t_digitale', 'Digitalizzazione e sistemi informativi'], ['t_dati', 'Dati e intelligenza artificiale applicata'], ['t_innovazione', 'Innovazione di prodotto e di servizio']]],
+  ['persone', [['t_competenze', 'Competenze chiave e successione manageriale'], ['t_talenti', 'Attrazione e permanenza dei talenti'], ['t_cultura', 'Cultura e clima organizzativo']]],
+  ['sicurezza', [['t_cyber', 'Cyber security e protezione dei dati'], ['t_continuita', 'Continuità operativa e gestione delle crisi'], ['t_conformita', 'Conformità normativa (231, NIS2, GDPR)']]],
+  ['comunicazione', [['t_reputazione', 'Reputazione e presenza pubblica'], ['t_istituzioni', 'Relazioni istituzionali e public affairs'], ['t_stakeholder', 'Comunicazione finanziaria e verso gli stakeholder']]],
+  ['sostenibilita', [['t_csrd', 'Rendicontazione di sostenibilità (CSRD/ESRS)'], ['t_clima', 'Transizione energetica e clima'], ['t_filiera', 'Filiera responsabile e diritti umani'], ['t_territorio', 'Impatto sociale e territorio']]]
+];
+const D3_TRIMESTRI = Array.from({ length: 12 }, (_, i) => [String(i + 1), 'T' + (i + 1) + ' (mesi ' + (i * 3 + 1) + '-' + (i * 3 + 3) + ')']);
+const D3_ORIZZONTI = [['0-6', 'Entro 6 mesi'], ['6-12', 'Da 6 a 12 mesi'], ['12-24', 'Da 12 a 24 mesi'], ['24-36', 'Da 24 a 36 mesi']];
+const D3_FORME = [['specialistico', 'Progetto specialistico'], ['retainer', 'Mandato di affiancamento continuativo'], ['partner', 'Progetto con partner tecnico'], ['finanza', 'Finanza agevolata'], ['formazione', 'Formazione finanziata'], ['refresh', 'Aggiornamento della diagnosi (D³ Refresh)']];
+const D3_INTENSITA = [['bassa', 'Bassa'], ['media', 'Media'], ['alta', 'Alta']];
+const D3_PRIORITA = [['alta', 'Alta'], ['media', 'Media'], ['bassa', 'Bassa']];
+const D3_TRIGGER = [['generazionale', 'Passaggio generazionale'], ['fondo', 'Ingresso di un investitore o di un fondo'], ['ipo', 'Preparazione a quotazione o apertura del capitale'], ['ma', 'Operazione di M&A in vista'], ['riassetto', 'Riassetto del modello di business'], ['internazionale', 'Espansione internazionale'], ['crisi', 'Difficoltà reversibile o rilancio'], ['leadership', 'Cambio al vertice'], ['piano', 'Nuovo piano industriale'], ['normativa', 'Adempimento normativo rilevante'], ['altro', 'Altro (indicare nella domanda iniziale)']];
+const D3_NORMATIVE = [['csrd', 'CSRD/ESRS e rendicontazione di sostenibilità'], ['nis2', 'NIS2 e sicurezza informatica'], ['gdpr', 'GDPR e protezione dei dati'], ['aiact', 'AI Act'], ['231', 'D.Lgs. 231/2001 e whistleblowing'], ['crisi', 'Codice della crisi e assetti adeguati'], ['settore', 'Normative di settore (autorizzazioni, standard tecnici)'], ['transizione', 'Transizione 5.0, PNRR e incentivi'], ['lavoro', 'Sicurezza sul lavoro e contrattazione'], ['appalti', 'Codice degli appalti e rapporti con la PA']];
+function d3Opz(lista) { return lista.map(([v, l]) => [v, l]); }
+function d3Settori() { return SETTORI_CONTATTO.map(g => ({ g: g[1], opz: g[2].map(([k, l]) => [k, l]) })); }
+// lo schema del format: sezioni per fase, campi tipizzati (testo, area, data, numero, eur, select, multi, scala, griglia, elenco)
+function schemaD3() {
+  const soci = nomiSociProgetti().map(n => [n, n]); const practice = practiceElenco().map(p => [p.id, p.num + ' ' + p.nome]); const P = S.P || {};
+  const dimOpz = d3Opz(D3_DIMENSIONI), capOpz = D3_CAPITALI.map(c => [c[0], c[1]]);
+  return [
+    { id: 'mandato', fase: 'Il mandato', tit: 'Il mandato e il perimetro', intro: 'Chi è il cliente, perché si è rivolto a Onward e che cosa la diagnosi deve coprire. Questi dati intestano il documento e collegano la diagnosi alla Scheda Progetto e alla Scheda di commessa.', campi: [
+      { k: 'cliente', et: 'Cliente (ragione sociale) *', t: 'testo', ph: 'es. Rossi Meccanica S.p.A.' },
+      { k: 'forma', et: 'Forma e assetto', t: 'select', opz: [['spa', 'Società per azioni'], ['srl', 'Società a responsabilità limitata'], ['gruppo', 'Gruppo con holding'], ['coop', 'Cooperativa o consorzio'], ['ente', 'Ente, fondazione o associazione'], ['pa', 'Ente pubblico o partecipata'], ['altro', 'Altro']] },
+      { k: 'settore', et: 'Settore', t: 'select', gruppi: d3Settori() },
+      { k: 'sede', et: 'Sede e territori', t: 'testo', ph: 'es. Bergamo; stabilimenti in Polonia' },
+      { k: 'fatturato', et: 'Classe di fatturato', t: 'select', opz: [['<10', 'Fino a 10 milioni'], ['10-50', 'Da 10 a 50 milioni'], ['50-250', 'Da 50 a 250 milioni'], ['250-1000', 'Da 250 milioni a 1 miliardo'], ['>1000', 'Oltre 1 miliardo']] },
+      { k: 'dipendenti', et: 'Classe di dipendenti', t: 'select', opz: [['<50', 'Fino a 50'], ['50-250', 'Da 50 a 250'], ['250-1000', 'Da 250 a 1.000'], ['>1000', 'Oltre 1.000']] },
+      { k: 'profondita', et: 'Profondità della diagnosi', t: 'select', opz: [['breve', 'Breve (' + (P.gg_diag_min || 5) + ' giornate): verifica preliminare'], ['riferimento', 'Di riferimento (' + (P.gg_diag || 10) + ' giornate): assessment strategico strutturato'], ['estesa', 'Estesa (' + (P.gg_diag_max || 15) + ' giornate): assessment con dimostrazione applicativa'], ['refresh', 'Aggiornamento annuale (D³ Refresh)']], aiuto: 'Le durate sono quelle delle ipotesi del modello (capitolo XI): la diagnosi è il prodotto di ingresso, con prezzo e ripartizione decisi ogni volta nella Scheda di commessa.' },
+      { k: 'lead', et: 'Lead Strategic Operating Partner *', t: 'select', opz: soci, aiuto: 'Il Socio che assume la regia del rapporto con il cliente e conduce la diagnosi.' },
+      { k: 'origina', et: 'Socio che ha originato la relazione', t: 'select', opz: soci },
+      { k: 'progetto', et: 'Scheda Progetto collegata', t: 'progetto' },
+      { k: 'avvio', et: 'Data di avvio', t: 'data' }, { k: 'consegna', et: 'Data prevista di consegna', t: 'data' },
+      { k: 'referenti', et: 'Referenti del cliente incontrati', t: 'area', ph: 'Nome, ruolo e data degli incontri', larga: true },
+      { k: 'trigger', et: 'Momento di discontinuità che motiva la diagnosi', t: 'multi', opz: D3_TRIGGER, larga: true },
+      { k: 'domanda', et: 'La domanda iniziale del cliente', t: 'area', ph: 'Con quale richiesta il cliente si è rivolto a Onward, con le sue parole', larga: true },
+      { k: 'perimetro', et: 'Perimetro dell’analisi', t: 'area', ph: 'Società, funzioni, mercati e temi compresi; che cosa resta fuori', larga: true },
+      { k: 'fonti', et: 'Fonti e documenti raccolti', t: 'multi', opz: [['bilanci', 'Bilanci degli ultimi tre esercizi'], ['piano', 'Piano industriale o budget'], ['organigramma', 'Organigramma e deleghe'], ['statuto', 'Statuto e patti parasociali'], ['reporting', 'Reporting gestionale'], ['clienti', 'Anagrafica clienti e fornitori'], ['contratti', 'Contratti rilevanti'], ['policy', 'Policy, modelli e certificazioni'], ['interviste', 'Interviste al top team'], ['sopralluogo', 'Visita agli stabilimenti o alle sedi']], larga: true }] },
+    { id: 'modello', fase: 'Decoding', tit: 'Modello di business e catena del valore', intro: 'La ricostruzione di come l’impresa crea valore: che cosa vende, a chi, con quali leve di redditività e quali asset distintivi.', campi: [
+      { k: 'bm_descr', et: 'Il modello di business in sintesi', t: 'area', ph: 'Che cosa produce o eroga, per quali clienti, con quale catena del valore', larga: true },
+      { k: 'bm_ricavi', et: 'Fonti di ricavo principali', t: 'area', ph: 'Linee di prodotto o servizio con il loro peso indicativo sui ricavi' },
+      { k: 'bm_leve', et: 'Leve di redditività e struttura dei costi', t: 'area', ph: 'Dove si forma il margine; costi fissi e variabili; circolante' },
+      { k: 'bm_distintivi', et: 'Asset e competenze distintivi', t: 'area', ph: 'Che cosa il cliente fa meglio dei concorrenti e perché' },
+      { k: 'bm_diversificazione', et: 'Diversificazione dell’offerta', t: 'select', opz: [['mono', 'Mono-prodotto o mono-servizio'], ['poche', 'Poche linee correlate'], ['diversificato', 'Portafoglio diversificato']] },
+      { k: 'bm_concentrazione', et: 'Concentrazione dei clienti', t: 'select', opz: [['alta', 'I primi tre clienti oltre il 50% dei ricavi'], ['media', 'I primi tre clienti tra il 20% e il 50%'], ['bassa', 'I primi tre clienti sotto il 20%']] },
+      { k: 'bm_prezzo', et: 'Posizionamento di prezzo', t: 'select', opz: [['premium', 'Premium'], ['medio', 'Fascia media'], ['costo', 'Competizione di costo']] },
+      { k: 'bm_export', et: 'Quota di ricavi all’estero', t: 'select', opz: [['0', 'Nessuna'], ['<25', 'Fino al 25%'], ['25-50', 'Dal 25% al 50%'], ['>50', 'Oltre il 50%']] }] },
+    { id: 'settore', fase: 'Decoding', tit: 'Settore e contesto competitivo', intro: 'La lettura del mercato di riferimento: dimensione, dinamica, concorrenti, traiettorie e barriere.', campi: [
+      { k: 'se_dinamica', et: 'Dinamica del mercato', t: 'select', opz: [['crescita', 'In crescita'], ['stabile', 'Stabile'], ['contrazione', 'In contrazione'], ['trasformazione', 'In trasformazione (tecnologia, regole, consolidamento)']] },
+      { k: 'se_intensita', et: 'Intensità competitiva', t: 'scala', opz: D3_SCALA_15 },
+      { k: 'se_posizione', et: 'Posizione competitiva del cliente', t: 'select', opz: [['leader', 'Leader o tra i primi del segmento'], ['inseguitore', 'Inseguitore con quota rilevante'], ['nicchia', 'Specialista di nicchia'], ['marginale', 'Posizione marginale o in difficoltà']] },
+      { k: 'se_concorrenti', et: 'Principali concorrenti e loro mosse', t: 'area' },
+      { k: 'se_traiettorie', et: 'Traiettorie evolutive del settore', t: 'area', ph: 'Tecnologia, domanda, regolazione, consolidamento' },
+      { k: 'se_spazi', et: 'Spazi di crescita e barriere', t: 'area', ph: 'Dove il cliente può crescere e che cosa lo frena' }] },
+    { id: 'contesto', fase: 'Decoding', tit: 'Contesto istituzionale e regolatorio', intro: 'Le regole e i soggetti pubblici che pesano sulla traiettoria del cliente, con le opportunità di finanza pubblica.', campi: [
+      { k: 'co_normative', et: 'Quadro regolatorio rilevante', t: 'multi', opz: D3_NORMATIVE, larga: true },
+      { k: 'co_esposizione', et: 'Esposizione regolatoria complessiva', t: 'scala', opz: D3_SCALA_15 },
+      { k: 'co_finanza', et: 'Opportunità di finanza pubblica', t: 'area', ph: 'Bandi, incentivi, programmi europei e nazionali applicabili' },
+      { k: 'co_soggetti', et: 'Soggetti istituzionali rilevanti', t: 'area', ph: 'Regolatori, enti locali, associazioni, autorità' },
+      { k: 'co_policy', et: 'Tendenze di policy che impattano il cliente', t: 'area', larga: true }] },
+    { id: 'stakeholder', fase: 'Decoding', tit: 'Stakeholder e rete relazionale', intro: 'La mappa delle relazioni del cliente e la loro qualità: da qui si vede quali relazioni critiche vanno sviluppate.', campi: [
+      { k: 'st_griglia', et: 'Qualità delle relazioni', t: 'griglia', righe: D3_STAKEHOLDER, cols: [{ k: 'q', et: 'Qualità della relazione', t: 'scala', opz: D3_SCALA_RELAZIONE }, { k: 'stato', et: 'Priorità', t: 'select', opz: [['sviluppare', 'Da sviluppare'], ['presidiare', 'Da presidiare'], ['consolidata', 'Consolidata']] }, { k: 'note', et: 'Note', t: 'testo' }] },
+      { k: 'st_critiche', et: 'Relazioni critiche da sviluppare', t: 'area', larga: true }] },
+    { id: 'governance', fase: 'Decoding', tit: 'Governance e assetto proprietario', intro: 'L’architettura societaria, gli organi, le deleghe e le dinamiche familiari: la cornice entro cui le decisioni vengono prese.', campi: [
+      { k: 'go_assetto', et: 'Assetto proprietario', t: 'select', opz: [['famiglia1', 'Familiare, un solo ramo'], ['famiglia2', 'Familiare, più rami'], ['investitore', 'Con investitore finanziario'], ['quotata', 'Quotata'], ['coop', 'Cooperativa o consortile'], ['pubblica', 'Pubblica o partecipata']] },
+      { k: 'go_organo', et: 'Organo amministrativo', t: 'select', opz: [['unico', 'Amministratore unico'], ['cda_fam', 'Consiglio di amministrazione di soli familiari o soci'], ['cda_ind', 'Consiglio di amministrazione con indipendenti']] },
+      { k: 'go_controlli', et: 'Organi e sistemi di controllo presenti', t: 'multi', opz: [['sindaci', 'Collegio sindacale'], ['revisore', 'Revisore legale'], ['odv', 'Organismo di vigilanza 231'], ['rischi', 'Comitato rischi o controllo interno'], ['sostenibilita', 'Comitato o responsabile sostenibilità'], ['internal', 'Internal audit']], larga: true },
+      { k: 'go_patti', et: 'Patti parasociali', t: 'select', opz: [['si', 'Presenti'], ['no', 'Assenti'], ['definizione', 'In definizione']] },
+      { k: 'go_generazionale', et: 'Passaggio generazionale', t: 'select', opz: [['nr', 'Non rilevante'], ['pianificare', 'Da pianificare'], ['corso', 'In corso'], ['completato', 'Completato']] },
+      { k: 'go_deleghe', et: 'Sistema delle deleghe e compensation', t: 'area' },
+      { k: 'go_note', et: 'Note sulla governance', t: 'area' }] },
+    { id: 'leadership', fase: 'Decoding', tit: 'Leadership e cultura', intro: 'Lo stile decisionale, il top team e la capacità dell’organizzazione di assorbire il cambiamento: spesso la dimensione decisiva per il successo dei mandati.', campi: [
+      { k: 'le_stile', et: 'Stile decisionale', t: 'select', opz: [['accentrato', 'Accentrato sul fondatore o sull’amministratore delegato'], ['condiviso', 'Condiviso nel top team'], ['delegato', 'Delegato per funzione']] },
+      { k: 'le_formalizzazione', et: 'Formalizzazione dei processi', t: 'scala', opz: D3_SCALA_MATURITA },
+      { k: 'le_cambiamento', et: 'Capacità di assorbire il cambiamento', t: 'scala', opz: D3_SCALA_15 },
+      { k: 'le_coesione', et: 'Coesione del top team', t: 'scala', opz: D3_SCALA_15 },
+      { k: 'le_profilo', et: 'Profilo del vertice', t: 'area', ph: 'Chi decide, come, con quali tempi; rapporto tra proprietà e management' },
+      { k: 'le_cultura', et: 'Cultura organizzativa', t: 'area', ph: 'Valori praticati, orientamento al risultato, apertura all’esterno' }] },
+    { id: 'capitali', fase: 'Distillation', tit: 'Valutazione sui quattro capitali', intro: 'La griglia dei quattro capitali (capitolo XI, § 5): per ciascuno la valutazione attuale, l’obiettivo a 36 mesi e le evidenze raccolte. Ancora il prezzo dei mandati a una grandezza dell’impresa, non al tempo impiegato.', campi: [
+      { k: 'ca_griglia', et: 'Stato dei quattro capitali', t: 'griglia', righe: D3_CAPITALI, cols: [{ k: 'att', et: 'Oggi', t: 'scala', opz: D3_SCALA_CAPITALE }, { k: 'obi', et: 'Obiettivo a 36 mesi', t: 'scala', opz: D3_SCALA_CAPITALE }, { k: 'evid', et: 'Evidenze', t: 'testo' }] },
+      { k: 'ca_note', et: 'Lettura d’insieme dei capitali', t: 'area', larga: true }] },
+    { id: 'dimensioni', fase: 'Distillation', tit: 'Le sette dimensioni del management', intro: 'La griglia di lettura dell’impresa: per ciascuna dimensione la maturità attuale, l’obiettivo e il gap strutturale rispetto al benchmark di settore.', campi: [
+      { k: 'di_griglia', et: 'Maturità per dimensione', t: 'griglia', righe: D3_DIMENSIONI, cols: [{ k: 'att', et: 'Maturità oggi', t: 'scala', opz: D3_SCALA_MATURITA }, { k: 'obi', et: 'Obiettivo', t: 'scala', opz: D3_SCALA_MATURITA }, { k: 'gap', et: 'Gap ed evidenze', t: 'testo' }] },
+      { k: 'di_note', et: 'Lettura del gap complessivo', t: 'area', larga: true }] },
+    { id: 'swot', fase: 'Distillation', tit: 'Punti di forza, debolezze, opportunità e minacce', intro: 'La sintesi classica, un elemento per riga: serve al Consiglio per riconoscersi nella lettura prima di discutere le priorità.', campi: [
+      { k: 'sw_forza', et: 'Punti di forza', t: 'area', ph: 'Un elemento per riga' }, { k: 'sw_debolezza', et: 'Debolezze', t: 'area', ph: 'Un elemento per riga' },
+      { k: 'sw_opportunita', et: 'Opportunità', t: 'area', ph: 'Un elemento per riga' }, { k: 'sw_minacce', et: 'Minacce', t: 'area', ph: 'Un elemento per riga' }] },
+    { id: 'materialita', fase: 'Distillation', tit: 'Temi materiali e priorità', intro: 'La selezione dei temi strategicamente rilevanti con il principio della doppia materialità: un tema è prioritario se pesa sul modello di business o sugli impatti generati dall’impresa. Si valutano solo i temi pertinenti; gli altri si lasciano vuoti.', campi: [
+      { k: 'ma_griglia', et: 'Valutazione dei temi', t: 'griglia', righe: D3_TEMI.flatMap(g => g[1].map(t => [t[0], t[1], etichettaOpz(D3_DIMENSIONI, g[0])])), cols: [{ k: 'fin', et: 'Rilevanza per il business', t: 'scala', opz: D3_SCALA_15 }, { k: 'imp', et: 'Rilevanza degli impatti', t: 'scala', opz: D3_SCALA_15 }, { k: 'note', et: 'Note', t: 'testo' }] },
+      { k: 'ma_altri', et: 'Altri temi emersi', t: 'area', ph: 'Temi non in elenco, con la loro rilevanza', larga: true }] },
+    { id: 'rischi', fase: 'Distillation', tit: 'Profilo di rischio', intro: 'La sintesi del rischio sulle quattordici dimensioni della Corporate Protection: probabilità, impatto e presidio esistente. Anticipa il lavoro specialistico della Practice di sicurezza, rischio e conformità.', campi: [
+      { k: 'ri_griglia', et: 'Valutazione dei rischi', t: 'griglia', righe: D3_RISCHI, cols: [{ k: 'p', et: 'Probabilità', t: 'scala', opz: D3_SCALA_15 }, { k: 'i', et: 'Impatto', t: 'scala', opz: D3_SCALA_15 }, { k: 'pres', et: 'Presidio', t: 'select', opz: D3_PRESIDIO }, { k: 'note', et: 'Note', t: 'testo' }] },
+      { k: 'ri_note', et: 'Vulnerabilità prioritarie e presidi mancanti', t: 'area', larga: true }] },
+    { id: 'leve', fase: 'Distillation', tit: 'Leve strategiche prioritarie', intro: 'L’esito della distillazione: da sei a dodici leve, ciascuna con il capitale e la dimensione su cui agisce, la Practice che la attiverebbe, l’orizzonte e l’intensità dell’intervento.', campi: [
+      { k: 'lv_elenco', et: 'Leve', t: 'elenco', max: 12, nomeVoce: 'leva', cols: [{ k: 'leva', et: 'Leva', t: 'testo', larga: true }, { k: 'capitale', et: 'Capitale', t: 'select', opz: capOpz }, { k: 'dimensione', et: 'Dimensione', t: 'select', opz: dimOpz }, { k: 'practice', et: 'Practice', t: 'select', opz: practice }, { k: 'orizzonte', et: 'Orizzonte', t: 'select', opz: D3_ORIZZONTI }, { k: 'intensita', et: 'Intensità', t: 'select', opz: D3_INTENSITA }, { k: 'razionale', et: 'Razionale', t: 'area', larga: true }] }] },
+    { id: 'traiettoria', fase: 'Direction', tit: 'Traiettoria strategica', intro: 'L’ambizione a 36 mesi, i presupposti e le tappe: la traiettoria che il Consiglio è chiamato ad adottare.', campi: [
+      { k: 'tr_ambizione', et: 'Ambizione a 36 mesi', t: 'area', ph: 'Dove l’impresa vuole essere e che cosa la distinguerà', larga: true },
+      { k: 'tr_presupposti', et: 'Presupposti di contesto', t: 'area', ph: 'Ipotesi macro, di mercato e interne su cui poggia la traiettoria', larga: true },
+      { k: 'tr_tappe', et: 'Tappe (milestone)', t: 'elenco', max: 16, nomeVoce: 'tappa', cols: [{ k: 'trim', et: 'Trimestre', t: 'select', opz: D3_TRIMESTRI }, { k: 'descr', et: 'Tappa', t: 'testo', larga: true }, { k: 'tipo', et: 'Natura', t: 'select', opz: [['decisione', 'Decisione'], ['risultato', 'Risultato'], ['avvio', 'Avvio di iniziativa'], ['verifica', 'Verifica']] }] }] },
+    { id: 'mandati', fase: 'Direction', tit: 'Piano di attivazione dei mandati', intro: 'I mandati specialistici che le Practice attiveranno per eseguire la traiettoria: perimetro, forma, avvio, durata e valore. È la base contrattuale che discende dalla diagnosi e la misura della sua conversione.', campi: [
+      { k: 'md_elenco', et: 'Mandati', t: 'elenco', max: 12, nomeVoce: 'mandato', cols: [{ k: 'mandato', et: 'Mandato', t: 'testo', larga: true }, { k: 'practice', et: 'Practice', t: 'select', opz: practice }, { k: 'forma', et: 'Forma', t: 'select', opz: D3_FORME }, { k: 'avvio', et: 'Avvio', t: 'select', opz: D3_TRIMESTRI }, { k: 'durata', et: 'Durata (mesi)', t: 'numero' }, { k: 'valore', et: 'Valore stimato (€)', t: 'eur' }, { k: 'priorita', et: 'Priorità', t: 'select', opz: D3_PRIORITA }] },
+      { k: 'md_note', et: 'Sequenza e condizioni di attivazione', t: 'area', larga: true }] },
+    { id: 'decisioni', fase: 'Direction', tit: 'Architettura decisionale', intro: 'Il calendario strategico condiviso: le decisioni critiche dei prossimi 12-24 mesi, la sede in cui si prendono e la cadenza del confronto con il Lead Strategic Operating Partner.', campi: [
+      { k: 'de_elenco', et: 'Decisioni critiche', t: 'elenco', max: 12, nomeVoce: 'decisione', cols: [{ k: 'decisione', et: 'Decisione', t: 'testo', larga: true }, { k: 'sede', et: 'Sede', t: 'select', opz: [['cda', 'Consiglio di amministrazione'], ['assemblea', 'Assemblea dei soci'], ['famiglia', 'Consiglio di famiglia'], ['comitato', 'Comitato di direzione'], ['ad', 'Amministratore delegato']] }, { k: 'trim', et: 'Trimestre', t: 'select', opz: D3_TRIMESTRI }] },
+      { k: 'de_cadenza', et: 'Cadenza del confronto con il Lead Strategic Operating Partner', t: 'select', opz: [['mensile', 'Mensile'], ['bimestrale', 'Bimestrale'], ['trimestrale', 'Trimestrale'], ['semestrale', 'Semestrale']] },
+      { k: 'de_board', et: 'Partecipazione ai consigli e ai tavoli', t: 'area', ph: 'In quali sedi il Lead Strategic Operating Partner partecipa e con quale ruolo' }] },
+    { id: 'indicatori', fase: 'Direction', tit: 'Indicatori di avanzamento', intro: 'Gli indicatori con cui cliente e Onward misureranno la traiettoria: valore attuale, obiettivo a 12 e a 36 mesi, fonte del dato.', campi: [
+      { k: 'in_elenco', et: 'Indicatori', t: 'elenco', max: 12, nomeVoce: 'indicatore', cols: [{ k: 'ind', et: 'Indicatore', t: 'testo', larga: true }, { k: 'capitale', et: 'Capitale', t: 'select', opz: capOpz }, { k: 'att', et: 'Oggi', t: 'testo' }, { k: 'o12', et: 'A 12 mesi', t: 'testo' }, { k: 'o36', et: 'A 36 mesi', t: 'testo' }, { k: 'fonte', et: 'Fonte', t: 'testo' }] }] },
+    { id: 'sintesi', fase: 'Direction', tit: 'Sintesi per il Consiglio', intro: 'La pagina che apre il documento: la lettura in poche righe, i tre messaggi che il Consiglio deve trattenere, i prossimi passi e le riserve.', campi: [
+      { k: 'si_sintesi', et: 'Sintesi direzionale', t: 'area', ph: 'La diagnosi in dieci righe: che cosa abbiamo capito e che cosa proponiamo', larga: true },
+      { k: 'si_m1', et: 'Primo messaggio chiave', t: 'testo', larga: true }, { k: 'si_m2', et: 'Secondo messaggio chiave', t: 'testo', larga: true }, { k: 'si_m3', et: 'Terzo messaggio chiave', t: 'testo', larga: true },
+      { k: 'si_passi', et: 'Prossimi passi', t: 'area', ph: 'Che cosa succede dopo la presentazione al Consiglio, con date', larga: true },
+      { k: 'si_riserve', et: 'Condizioni e riserve', t: 'area', ph: 'Limiti dell’analisi, dati mancanti, ipotesi da verificare', larga: true }] }
+  ];
+}
+function diagnosiVuote() { return { diagnosi: [] }; }
+function elencoDiagnosi() { if (!S.diagnosi) S.diagnosi = diagnosiVuote(); if (!Array.isArray(S.diagnosi.diagnosi)) S.diagnosi.diagnosi = []; return S.diagnosi.diagnosi; }
+function diagnosiDi(id) { return elencoDiagnosi().find(d => d.id === id) || null; }
+function puoScrivereDiagnosi() { return !S.readonly && !!S.backend; }
+function titoloDiagnosi(d) { const r = (d && d.r) || {}; return (r.cliente || 'Cliente da indicare') + (r.avvio ? ' · ' + dataBreve(r.avvio) : ''); }
+function diagnosiDiProgetto(id) { return elencoDiagnosi().filter(d => d.r && d.r.progetto === id); }
+function d3Val(d, k) { const v = d && d.r ? d.r[k] : undefined; return v === undefined || v === null ? '' : v; }
+function d3Pieno(v) { if (Array.isArray(v)) return v.length > 0; if (v && typeof v === 'object') return Object.values(v).some(x => x && typeof x === 'object' ? Object.values(x).some(y => String(y || '').trim() !== '') : String(x || '').trim() !== ''); return String(v == null ? '' : v).trim() !== ''; }
+// completamento: quota dei campi compilati, per sezione e complessiva
+function completamentoD3(d) {
+  const out = { sezioni: {}, tot: 0, fatti: 0 };
+  for (const s of schemaD3()) { let n = 0, f = 0; for (const c of s.campi) { n++; if (d3Pieno(d3Val(d, c.k))) f++; } out.sezioni[s.id] = { n, f, pct: n ? Math.round(f / n * 100) : 0 }; out.tot += n; out.fatti += f; }
+  out.pct = out.tot ? Math.round(out.fatti / out.tot * 100) : 0; return out;
+}
+function faseSezione(s) { return s.fase; }
+// ---- la pagina: intestazione con la tendina delle diagnosi, il compilatore (Raccolta) e il documento generato (Documento)
+function apriFormatD3(id) { const m = $('#formatd3'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); if (id) S.d3sel = id; if (!S.d3sel || !diagnosiDi(S.d3sel)) S.d3sel = (elencoDiagnosi()[0] || {}).id || null; disegnaFormatD3(); }
+function chiudiFormatD3() { const m = $('#formatd3'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function aggiornaTendinaDiagnosi() {
+  const sel = $('#d3-elenco'); if (!sel) return; const l = elencoDiagnosi().slice().sort((a, b) => (Date.parse(b.agg || b.creato) || 0) - (Date.parse(a.agg || a.creato) || 0));
+  sel.innerHTML = (l.length ? '' : '<option value="">Nessuna diagnosi finora</option>') + l.map(d => '<option value="' + esc(d.id) + '"' + (d.id === S.d3sel ? ' selected' : '') + '>' + esc(titoloDiagnosi(d)) + (d.stato === 'completata' ? ' (completata)' : '') + '</option>').join('');
+}
+function disegnaFormatD3() {
+  const m = $('#formatd3'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); aggiornaTendinaDiagnosi();
+  const d = S.d3sel ? diagnosiDi(S.d3sel) : null; const scrive = puoScrivereDiagnosi();
+  for (const b of ['d3-elimina', 'd3-word', 'd3-stampa', 'd3-commessa', 'd3-completata']) { const x = $('#' + b, m); if (x) x.hidden = !d || ((b === 'd3-elimina' || b === 'd3-completata') && !scrive); }
+  const nb = $('#d3-nuova', m); if (nb) nb.hidden = !scrive; const el2 = $('#d3-elenco', m); if (el2) el2.hidden = !elencoDiagnosi().length;
+  const comp = $('#d3-completata', m); if (comp && d) comp.textContent = d.stato === 'completata' ? 'Riapri come bozza' : 'Segna come completata';
+  if (!d) { corpo.innerHTML = '<div class="d3-vuoto"><div class="avviso">' + (elencoDiagnosi().length ? 'Scegliere una diagnosi dalla tendina in alto.' : 'Nessuna diagnosi finora. Con «Nuova diagnosi» si apre il format: tre fasi (Decoding, Distillation, Direction) più il mandato e la sintesi per il Consiglio, con campi a testo libero e scelte guidate. I dati raccolti si trasformano da soli nel documento di diagnosi, con tabelle e grafici, esportabile in Word.' + (scrive ? '' : ' Per compilare occorre collegare il repository dalle Impostazioni.')) + '</div>' + htmlPresentazioneD3() + '</div>'; return; }
+  const vista = S.d3vista || 'raccolta'; for (const b of $$('#d3-vista button', m)) b.classList.toggle('attivo', b.dataset.v === vista);
+  corpo.innerHTML = vista === 'documento' ? '<div class="d3-doc-wrap">' + htmlDocumentoD3(d, false) + '</div>' : htmlRaccoltaD3(d, scrive);
+  if (vista === 'raccolta') { const h = S.d3ancora; if (h) { const sez = $('#d3-sez-' + h, corpo); if (sez) sez.scrollIntoView({ block: 'start' }); } }
+}
+function htmlPresentazioneD3() {
+  const fasi = [['Decoding', 'La lettura interpretativa del cliente: modello di business, settore, contesto istituzionale, stakeholder, governance, leadership.'], ['Distillation', 'La valutazione strutturata sui quattro capitali e sulle sette dimensioni, i temi materiali, il profilo di rischio e le leve prioritarie.'], ['Direction', 'La traiettoria a 36 mesi, i mandati che la eseguono, il calendario delle decisioni, gli indicatori e la sintesi per il Consiglio.']];
+  return '<div class="d3-fasi">' + fasi.map(([t, s]) => '<div class="d3-fase"><b>' + t + '</b><small>' + esc(s) + '</small></div>').join('') + '</div>';
+}
+function d3Input(c, v, nome, scrive, extra) {
+  const dis = scrive ? '' : ' disabled'; const attr = ' data-d3="' + esc(nome) + '"' + (extra || '') + dis;
+  if (c.t === 'area') return '<textarea class="d3-f"' + attr + ' rows="' + (c.righe || 3) + '"' + (c.ph ? ' placeholder="' + esc(c.ph) + '"' : '') + '>' + esc(v || '') + '</textarea>';
+  if (c.t === 'select' || c.t === 'scala') { const opt = (val, lab) => '<option value="' + esc(val) + '"' + (String(val) === String(v || '') ? ' selected' : '') + '>' + esc(lab) + '</option>'; return '<select class="d3-f"' + attr + '>' + opt('', c.t === 'scala' ? 'Non valutato' : 'Da indicare') + (c.gruppi ? c.gruppi.map(g => '<optgroup label="' + esc(g.g) + '">' + g.opz.map(([val, lab]) => opt(val, lab)).join('') + '</optgroup>').join('') : (c.opz || []).map(([val, lab]) => opt(val, lab)).join('')) + '</select>'; }
+  if (c.t === 'multi') { const sel = Array.isArray(v) ? v : []; return '<div class="d3-multi">' + (c.opz || []).map(([val, lab]) => '<label class="pg-opt"><input type="checkbox" class="d3-f" data-multi="1"' + attr + ' value="' + esc(val) + '"' + (sel.includes(val) ? ' checked' : '') + '> <span>' + esc(lab) + '</span></label>').join('') + '</div>'; }
+  if (c.t === 'progetto') return '<select class="d3-f"' + attr + '>' + opzioniProgettiContatto(v || '') + '</select>';
+  const tipo = c.t === 'data' ? 'date' : 'text'; const val = c.t === 'eur' ? (v === '' || v == null ? '' : (numeroIt(v) !== null ? MODELLO.F.num(numeroIt(v)) : v)) : (v || '');
+  return '<input class="d3-f' + (c.t === 'eur' || c.t === 'numero' ? ' d3-num' : '') + '" type="' + tipo + '"' + attr + ' value="' + esc(val) + '"' + (c.ph ? ' placeholder="' + esc(c.ph) + '"' : '') + (c.t === 'numero' || c.t === 'eur' ? ' inputmode="decimal"' : '') + '>';
+}
+function htmlCampoD3(c, d, scrive) {
+  const v = d3Val(d, c.k); const aiuto = c.aiuto ? '<span class="d3-aiuto">' + esc(c.aiuto) + '</span>' : '';
+  if (c.t === 'griglia') {
+    const g = v && typeof v === 'object' ? v : {};
+    return '<div class="d3-campo d3-larga"><div class="d3-et">' + esc(c.et) + '</div>' + aiuto + '<div class="ct-tabella-wrap d3-griglia-wrap"><table class="tab d3-griglia"><thead><tr class="intestazione"><td>Voce</td>' + c.cols.map(col => '<td>' + esc(col.et) + '</td>').join('') + '</tr></thead><tbody>' +
+      c.righe.map(r => '<tr><td class="d3-riga-et"><b>' + esc(r[1]) + '</b>' + (r[2] ? '<small>' + esc(r[2]) + '</small>' : '') + '</td>' + c.cols.map(col => '<td class="d3-cella-' + col.t + '">' + d3Input(col, (g[r[0]] || {})[col.k], c.k + '.' + r[0] + '.' + col.k, scrive) + '</td>').join('') + '</tr>').join('') + '</tbody></table></div></div>';
+  }
+  if (c.t === 'elenco') {
+    const l = Array.isArray(v) ? v : []; const max = c.max || 12;
+    const riga = (x, i) => '<div class="d3-voce" data-i="' + i + '"><div class="d3-voce-testa"><b>' + esc((c.nomeVoce || 'voce').charAt(0).toUpperCase() + (c.nomeVoce || 'voce').slice(1)) + ' ' + (i + 1) + '</b>' + (scrive ? '<span class="d3-voce-az"><button type="button" class="btn piccolo" data-d3-sposta="-1" data-k="' + esc(c.k) + '" data-i="' + i + '" title="Sposta in su">Su</button><button type="button" class="btn piccolo" data-d3-sposta="1" data-k="' + esc(c.k) + '" data-i="' + i + '" title="Sposta in giù">Giù</button><button type="button" class="btn piccolo pericolo" data-d3-togli="' + esc(c.k) + '" data-i="' + i + '">Togli</button></span>' : '') + '</div><div class="d3-voce-campi">' + c.cols.map(col => '<label class="d3-campo' + (col.larga ? ' d3-larga' : '') + '"><span class="d3-et">' + esc(col.et) + '</span>' + d3Input(col, (x || {})[col.k], c.k + '[' + i + '].' + col.k, scrive) + '</label>').join('') + '</div></div>';
+    return '<div class="d3-campo d3-larga d3-elenco" data-k="' + esc(c.k) + '"><div class="d3-et">' + esc(c.et) + (l.length ? ' <small>(' + l.length + ')</small>' : '') + '</div>' + aiuto + (l.length ? l.map(riga).join('') : '<div class="pg-muto">Nessuna voce finora.</div>') + (scrive && l.length < max ? '<button type="button" class="btn piccolo" data-d3-aggiungi="' + esc(c.k) + '">Aggiungi ' + esc(c.nomeVoce || 'voce') + '</button>' : '') + '</div>';
+  }
+  return '<label class="d3-campo' + (c.larga || c.t === 'multi' ? ' d3-larga' : '') + '"><span class="d3-et">' + esc(c.et) + '</span>' + d3Input(c, v, c.k, scrive) + aiuto + '</label>';
+}
+function htmlRaccoltaD3(d, scrive) {
+  const sch = schemaD3(); const comp = completamentoD3(d); let fase = '';
+  const nav = '<nav class="d3-nav"><div class="d3-nav-testa"><b>' + esc(titoloDiagnosi(d)) + '</b><span class="d3-pct"><i style="width:' + comp.pct + '%"></i></span><small>' + comp.pct + '% compilato · ' + (d.stato === 'completata' ? 'completata' : 'bozza') + '</small></div>' + sch.map(s => { const c = comp.sezioni[s.id]; const h = s.fase !== fase ? '<div class="d3-nav-fase">' + esc(s.fase) + '</div>' : ''; fase = s.fase; return h + '<button type="button" class="d3-nav-voce" data-d3-vai="' + s.id + '"><span>' + esc(s.tit) + '</span><b class="' + (c.pct === 100 ? 'pieno' : c.pct ? 'parte' : '') + '">' + c.pct + '%</b></button>'; }).join('') + '<div class="d3-nav-piede">' + (scrive ? 'Le modifiche si salvano da sole nel repository dei Soci, come le Schede Progetto.' : 'Sola lettura: per compilare occorre collegare il repository.') + '</div></nav>';
+  fase = '';
+  const sezioni = sch.map(s => { const h = s.fase !== fase ? '<h2 class="d3-fase-tit">' + esc(s.fase) + '</h2>' : ''; fase = s.fase; return h + '<section class="d3-sez" id="d3-sez-' + s.id + '"><div class="d3-sez-testa"><h3>' + esc(s.tit) + '</h3><span class="d3-sez-pct">' + comp.sezioni[s.id].f + ' di ' + comp.sezioni[s.id].n + ' campi</span></div><p class="d3-intro">' + esc(s.intro) + '</p><div class="d3-campi">' + s.campi.map(c => htmlCampoD3(c, d, scrive)).join('') + '</div></section>'; }).join('');
+  return '<div class="d3-layout">' + nav + '<div class="d3-form">' + sezioni + '</div></div>';
+}
+// ---- modifica dei dati dal modulo: percorso k, k.riga.col, k[i].col
+function scriviD3(d, percorso, valore) {
+  const m = percorso.match(/^([^.\[]+)(?:\[(\d+)\])?(?:\.([^.]+))?(?:\.([^.]+))?$/); if (!m) return; const k = m[1]; if (!d.r) d.r = {};
+  if (m[2] !== undefined) { if (!Array.isArray(d.r[k])) d.r[k] = []; const i = +m[2]; if (!d.r[k][i]) d.r[k][i] = {}; d.r[k][i][m[3]] = valore; return; }
+  if (m[3] && m[4]) { if (!d.r[k] || typeof d.r[k] !== 'object' || Array.isArray(d.r[k])) d.r[k] = {}; if (!d.r[k][m[3]]) d.r[k][m[3]] = {}; d.r[k][m[3]][m[4]] = valore; return; }
+  d.r[k] = valore;
+}
+function segnaDiagnosi(d, msg) { d.agg = new Date().toISOString(); d.aggDa = S.autore || 'anonimo'; if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.diagnosi = msg || ('Diagnosi D³ «' + titoloDiagnosi(d).slice(0, 60) + '» aggiornata'); segna('diagnosi'); }
+function aggiornaNavD3() { const m = $('#formatd3'); const d = S.d3sel ? diagnosiDi(S.d3sel) : null; if (!m || !d || !$('.d3-nav', m)) return; const comp = completamentoD3(d); const p = $('.d3-pct i', m); if (p) p.style.width = comp.pct + '%'; const s = $('.d3-nav-testa small', m); if (s) s.textContent = comp.pct + '% compilato · ' + (d.stato === 'completata' ? 'completata' : 'bozza'); const b = $('.d3-nav-testa b', m); if (b) b.textContent = titoloDiagnosi(d); for (const v of $$('.d3-nav-voce', m)) { const c = comp.sezioni[v.dataset.d3Vai]; const x = $('b', v); if (c && x) { x.textContent = c.pct + '%'; x.className = c.pct === 100 ? 'pieno' : c.pct ? 'parte' : ''; } const sez = $('#d3-sez-' + v.dataset.d3Vai + ' .d3-sez-pct', m); if (sez && c) sez.textContent = c.f + ' di ' + c.n + ' campi'; } aggiornaTendinaDiagnosi(); }
+function nuovaDiagnosi() {
+  if (!puoScrivereDiagnosi()) return; const ora = new Date().toISOString(); const d = { id: uid('d3'), stato: 'bozza', autore: S.autore || 'anonimo', creato: ora, agg: ora, aggDa: S.autore || 'anonimo', r: { lead: S.autore || '', origina: S.autore || '', avvio: oggiIso() } };
+  elencoDiagnosi().push(d); S.d3sel = d.id; S.d3vista = 'raccolta'; S.d3ancora = 'mandato'; segnaDiagnosi(d, 'Diagnosi D³: nuova diagnosi avviata'); disegnaFormatD3(); const c = $('#formatd3 .d3-f[data-d3="cliente"]'); if (c) c.focus(); toast('Nuova diagnosi avviata: si compila sezione per sezione e si salva da sola');
+}
+function eliminaDiagnosi(id) { const l = elencoDiagnosi(); const i = l.findIndex(d => d.id === id); if (i < 0) return; const t = titoloDiagnosi(l[i]); l.splice(i, 1); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.diagnosi = 'Diagnosi D³ «' + t.slice(0, 60) + '» eliminata'; segna('diagnosi'); S.d3sel = (l[0] || {}).id || null; disegnaFormatD3(); aggiornaProgettiSeAperti(); }
+function fondiDiagnosi(remoto) {
+  const R = Object.assign(diagnosiVuote(), remoto || {}), M = S.diagnosi || diagnosiVuote(); const out = new Map();
+  for (const d of (R.diagnosi || []).concat(M.diagnosi || [])) { const cur = out.get(d.id); if (!cur || (Date.parse(d.agg || d.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(d.id, clone(d)); }
+  const base = (S.base && S.base.diagnosi && S.base.diagnosi.diagnosi) || []; const miei = new Set((M.diagnosi || []).map(d => d.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
+  S.diagnosi = { diagnosi: [...out.values()] };
+}
+function aggiornaDiagnosiSeAperte() { if ($('#formatd3') && !$('#formatd3').hidden) { const attivo = document.activeElement; if (attivo && attivo.classList && attivo.classList.contains('d3-f')) { aggiornaNavD3(); return; } disegnaFormatD3(); } }
+function aggiornaTendinaProgettiDiagnosi() { const sel = $('#formatd3 .d3-f[data-d3="progetto"]'); if (!sel) return; const cur = sel.value; sel.innerHTML = opzioniProgettiContatto(cur); }
+// scheda di commessa precompilata dalla diagnosi (tipologia diagnosi)
+function commessaDaDiagnosi(d) {
+  const P = S.P; const c = commessaNuova('diagnosi'); const r = d.r || {}; c.titolo = 'Diagnosi D³ ' + (r.cliente || ''); c.cliente = r.cliente || ''; c.origina = r.origina || r.lead || ''; c.esegue = r.lead || c.origina;
+  const gg = r.profondita === 'breve' ? P.gg_diag_min : r.profondita === 'estesa' ? P.gg_diag_max : r.profondita === 'refresh' ? Math.max(1, Math.round(P.gg_diag_min / 2)) : P.gg_diag; if (gg) c.dati.gg = gg;
+  c.note = 'Precompilata dal Format Diagnosi D³ «' + titoloDiagnosi(d) + '».'; S.commessa = c; apriCommessa(); toast('Scheda di commessa della diagnosi precompilata: prezzo e ripartizione si decidono qui');
+}
+// ---- il documento generato: testo, tabelle e grafici dai dati raccolti
+const D3_COL = { att: '#DE5400', obi: '#4A6C99', neutro: '#8C877F', filo: '#E4DFD6', testo: '#26221E', chiaro: '#F3EFE8' };
+function d3Num(v) { const n = parseInt(v, 10); return isFinite(n) ? n : 0; }
+function d3Etichetta(opz, v) { return etichettaOpz(opz, v); }
+function d3Righe(t) { return String(t || '').split(/\n+/).map(x => x.trim()).filter(Boolean); }
+function d3Testo(t) { return d3Righe(t).map(x => '<p>' + esc(x) + '</p>').join(''); }
+function svgApri(w, h, cls) { return '<svg class="d3-grafico ' + (cls || '') + '" viewBox="0 0 ' + w + ' ' + h + '" width="' + w + '" height="' + h + '" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="' + D3_COL.testo + '">'; }
+function svgT(x, y, t, a) { return '<text x="' + x + '" y="' + y + '" ' + (a || '') + '>' + esc(t) + '</text>'; }
+// barre affiancate: oggi e obiettivo, per i quattro capitali (o per le dimensioni)
+function svgBarreDoppie(righe, titolo, scalaMax) {
+  const W = 720, rh = 34, top = 34, left = 250, bw = W - left - 90, H = top + righe.length * rh + 30; const sc = bw / (scalaMax || 5);
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  for (let i = 1; i <= (scalaMax || 5); i++) { const x = left + i * sc; s += '<line x1="' + x + '" y1="' + (top - 6) + '" x2="' + x + '" y2="' + (H - 26) + '" stroke="' + D3_COL.filo + '"/>' + svgT(x, H - 10, String(i), 'text-anchor="middle" font-size="10" fill="' + D3_COL.neutro + '"'); }
+  righe.forEach((r, i) => { const y = top + i * rh; s += svgT(left - 8, y + 20, r.nome, 'text-anchor="end" font-size="11"');
+    if (r.att) s += '<rect x="' + left + '" y="' + (y + 4) + '" width="' + (r.att * sc) + '" height="12" rx="2" fill="' + D3_COL.att + '"/>' + svgT(left + r.att * sc + 5, y + 14, String(r.att), 'font-size="10"');
+    if (r.obi) s += '<rect x="' + left + '" y="' + (y + 18) + '" width="' + (r.obi * sc) + '" height="8" rx="2" fill="' + D3_COL.obi + '"/>' + svgT(left + r.obi * sc + 5, y + 26, String(r.obi), 'font-size="10" fill="' + D3_COL.obi + '"'); });
+  s += '<rect x="' + (W - 80) + '" y="8" width="10" height="10" fill="' + D3_COL.att + '"/>' + svgT(W - 66, 17, 'Oggi', 'font-size="10"') + '<rect x="' + (W - 80) + '" y="22" width="10" height="10" fill="' + D3_COL.obi + '"/>' + svgT(W - 66, 31, 'Obiettivo', 'font-size="10"');
+  return s + '</svg>';
+}
+// radar delle sette dimensioni: oggi (pieno) e obiettivo (tratteggiato)
+function svgRadar(righe, titolo) {
+  const W = 720, H = 400, cx = 360, cy = 215, R = 140, n = righe.length; const pt = (i, v) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * R * v / 5, cy + Math.sin(a) * R * v / 5]; };
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  for (let l = 1; l <= 5; l++) s += '<polygon points="' + righe.map((_, i) => pt(i, l).join(',')).join(' ') + '" fill="none" stroke="' + D3_COL.filo + '"/>';
+  righe.forEach((r, i) => { const [x, y] = pt(i, 5); s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + x + '" y2="' + y + '" stroke="' + D3_COL.filo + '"/>'; const [tx, ty] = pt(i, 6.1); s += svgT(tx, ty + 4, r.nome, 'text-anchor="middle" font-size="11"'); });
+  const poly = (k, fill, stroke, dash) => { const p = righe.map((r, i) => pt(i, r[k] || 0)); return '<polygon points="' + p.map(x => x.join(',')).join(' ') + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2"' + (dash ? ' stroke-dasharray="5 4"' : '') + '/>' + p.map((x, i) => righe[i][k] ? '<circle cx="' + x[0] + '" cy="' + x[1] + '" r="3.5" fill="' + stroke + '"/>' : '').join(''); };
+  if (righe.some(r => r.obi)) s += poly('obi', 'none', D3_COL.obi, true); if (righe.some(r => r.att)) s += poly('att', 'rgba(222,84,0,.18)', D3_COL.att, false);
+  s += '<rect x="' + (W - 110) + '" y="' + (H - 40) + '" width="10" height="10" fill="' + D3_COL.att + '"/>' + svgT(W - 96, H - 31, 'Oggi', 'font-size="10"') + '<line x1="' + (W - 110) + '" y1="' + (H - 15) + '" x2="' + (W - 100) + '" y2="' + (H - 15) + '" stroke="' + D3_COL.obi + '" stroke-width="2" stroke-dasharray="4 3"/>' + svgT(W - 96, H - 11, 'Obiettivo', 'font-size="10"');
+  return s + '</svg>';
+}
+// matrice di materialità: rilevanza per il business (x) e rilevanza degli impatti (y)
+function svgMaterialita(temi, titolo) {
+  const W = 720, H = 440, left = 60, top = 40, pw = 500, ph = 340; const X = v => left + (v - 0.5) * pw / 5, Y = v => top + ph - (v - 0.5) * ph / 5;
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  s += '<rect x="' + X(3) + '" y="' + top + '" width="' + (left + pw - X(3)) + '" height="' + (Y(3) - top) + '" fill="' + D3_COL.chiaro + '"/>';
+  for (let v = 1; v <= 5; v++) { s += '<line x1="' + X(v) + '" y1="' + top + '" x2="' + X(v) + '" y2="' + (top + ph) + '" stroke="' + D3_COL.filo + '"/>' + '<line x1="' + left + '" y1="' + Y(v) + '" x2="' + (left + pw) + '" y2="' + Y(v) + '" stroke="' + D3_COL.filo + '"/>' + svgT(X(v), top + ph + 16, String(v), 'text-anchor="middle" font-size="10" fill="' + D3_COL.neutro + '"') + svgT(left - 8, Y(v) + 4, String(v), 'text-anchor="end" font-size="10" fill="' + D3_COL.neutro + '"'); }
+  s += svgT(left + pw / 2, H - 6, 'Rilevanza per il modello di business', 'text-anchor="middle" font-size="11"') + '<text x="14" y="' + (top + ph / 2) + '" transform="rotate(-90 14 ' + (top + ph / 2) + ')" text-anchor="middle" font-size="11">Rilevanza degli impatti generati</text>';
+  s += svgT(X(3) + 6, top + 14, 'Temi prioritari', 'font-size="10" fill="' + D3_COL.neutro + '"');
+  const gruppi = {}; temi.forEach(t => { const k = t.fin + '-' + t.imp; (gruppi[k] = gruppi[k] || []).push(t); });
+  temi.forEach((t, i) => { const g = gruppi[t.fin + '-' + t.imp]; const j = g.indexOf(t); const dx = (j % 3) * 8 - 8, dy = Math.floor(j / 3) * 8; const prio = t.fin >= 3 && t.imp >= 3; s += '<circle cx="' + (X(t.fin) + dx) + '" cy="' + (Y(t.imp) + dy) + '" r="7" fill="' + (prio ? D3_COL.att : D3_COL.obi) + '" stroke="#fff" stroke-width="1.5"/>' + svgT(X(t.fin) + dx, Y(t.imp) + dy + 3.5, String(i + 1), 'text-anchor="middle" font-size="9" fill="#fff" font-weight="bold"'); });
+  const leg = temi.map((t, i) => (i + 1) + ' ' + t.nome); const col2 = left + pw + 14; leg.forEach((l, i) => { if (i < 26) s += svgT(col2, top + 12 + i * 12.5, l.length > 24 ? l.slice(0, 23) + '…' : l, 'font-size="8.5"'); });
+  return s + '</svg>';
+}
+// mappa dei rischi: probabilità (x) e impatto (y), con il numero del rischio
+function svgRischi(rischi, titolo) {
+  const W = 720, H = 400, left = 60, top = 40, cw = 76, ch = 60; const col = (p, i) => { const v = p * i; return v >= 16 ? '#BE3C00' : v >= 10 ? '#DE5400' : v >= 5 ? '#F4C400' : '#D2EAC7'; };
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  for (let p = 1; p <= 5; p++) for (let i = 1; i <= 5; i++) s += '<rect x="' + (left + (p - 1) * cw) + '" y="' + (top + (5 - i) * ch) + '" width="' + (cw - 2) + '" height="' + (ch - 2) + '" fill="' + col(p, i) + '" opacity=".55"/>';
+  for (let v = 1; v <= 5; v++) { s += svgT(left + (v - 1) * cw + cw / 2, top + 5 * ch + 16, String(v), 'text-anchor="middle" font-size="10"') + svgT(left - 8, top + (5 - v) * ch + ch / 2 + 4, String(v), 'text-anchor="end" font-size="10"'); }
+  s += svgT(left + 2.5 * cw, H - 6, 'Probabilità', 'text-anchor="middle" font-size="11"') + '<text x="14" y="' + (top + 2.5 * ch) + '" transform="rotate(-90 14 ' + (top + 2.5 * ch) + ')" text-anchor="middle" font-size="11">Impatto</text>';
+  const cel = {}; rischi.forEach((r, i) => { const k = r.p + '-' + r.i; (cel[k] = cel[k] || []).push(i + 1); });
+  Object.keys(cel).forEach(k => { const [p, i] = k.split('-').map(Number); s += svgT(left + (p - 1) * cw + cw / 2 - 1, top + (5 - i) * ch + ch / 2 + 4, cel[k].join(', '), 'text-anchor="middle" font-size="11" font-weight="bold"'); });
+  const col2 = left + 5 * cw + 16; rischi.forEach((r, i) => { if (i < 24) s += svgT(col2, top + 12 + i * 13, (i + 1) + ' ' + r.nome, 'font-size="9"'); });
+  return s + '</svg>';
+}
+// barre semplici (qualità delle relazioni; valore dei mandati per Practice)
+function svgBarre(righe, titolo, fmt, max) {
+  const W = 720, rh = 26, top = 34, left = 250, bw = W - left - 110, H = top + righe.length * rh + 14; const mx = max || Math.max(1, ...righe.map(r => r.v)); const sc = bw / mx;
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  righe.forEach((r, i) => { const y = top + i * rh; s += svgT(left - 8, y + 15, r.nome, 'text-anchor="end" font-size="11"') + '<rect x="' + left + '" y="' + (y + 4) + '" width="' + Math.max(0, r.v * sc) + '" height="14" rx="2" fill="' + (r.col || D3_COL.att) + '"/>' + svgT(left + Math.max(0, r.v * sc) + 5, y + 15, fmt ? fmt(r.v) : String(r.v), 'font-size="10"'); });
+  return s + '</svg>';
+}
+// traiettoria: tappe e mandati sui dodici trimestri
+function svgRoadmap(tappe, mandati, titolo) {
+  const W = 720, left = 230, cw = (W - left - 10) / 12, rh = 22, top = 60; const righe = mandati.map(m => ({ nome: m.mandato, da: d3Num(m.avvio) || 1, n: Math.max(1, Math.ceil((numeroIt(m.durata) || 3) / 3)), tipo: 'mandato' })); const H = top + Math.max(1, righe.length) * rh + 64;
+  let s = svgApri(W, H) + svgT(0, 18, titolo, 'font-size="13" font-weight="bold"');
+  for (let t = 1; t <= 12; t++) { const x = left + (t - 1) * cw; s += '<rect x="' + x + '" y="' + (top - 14) + '" width="' + cw + '" height="' + (Math.max(1, righe.length) * rh + 36) + '" fill="' + (Math.floor((t - 1) / 4) % 2 ? D3_COL.chiaro : 'none') + '"/>' + svgT(x + cw / 2, top - 3, 'T' + t, 'text-anchor="middle" font-size="9" fill="' + D3_COL.neutro + '"'); }
+  [1, 2, 3].forEach(a => s += svgT(left + (a - 1) * 4 * cw + 2 * cw, 36, 'Esercizio ' + a, 'text-anchor="middle" font-size="10"'));
+  righe.forEach((r, i) => { const y = top + i * rh; s += svgT(left - 8, y + 14, r.nome.length > 34 ? r.nome.slice(0, 33) + '…' : r.nome, 'text-anchor="end" font-size="10"') + '<rect x="' + (left + (r.da - 1) * cw) + '" y="' + (y + 3) + '" width="' + Math.min(12 - r.da + 1, r.n) * cw + '" height="14" rx="3" fill="' + D3_COL.obi + '"/>'; });
+  const yT = top + Math.max(1, righe.length) * rh + 4; s += svgT(left - 8, yT + 12, 'Tappe', 'text-anchor="end" font-size="10"');
+  tappe.forEach(t => { const q = d3Num(t.trim); if (!q) return; const x = left + (q - 1) * cw + cw / 2; s += '<circle cx="' + x + '" cy="' + (yT + 8) + '" r="6" fill="' + D3_COL.att + '"/>'; });
+  const el = tappe.filter(t => d3Num(t.trim)).map(t => 'T' + t.trim + ' ' + t.descr).join(' · '); s += svgT(0, yT + 40, el.length > 150 ? el.slice(0, 149) + '…' : el, 'font-size="9" fill="' + D3_COL.neutro + '"');
+  return s + '</svg>';
+}
+function htmlTabD3(testa, righe, opt) { if (!righe.length) return ''; return '<table class="tab d3-tab"><thead><tr class="intestazione">' + testa.map(t => '<td>' + esc(t) + '</td>').join('') + '</tr></thead><tbody>' + righe.map(r => '<tr>' + r.map((c, i) => '<td' + (opt && opt.num && opt.num.includes(i) ? ' class="d3-num-cella"' : '') + '>' + c + '</td>').join('') + '</tr>').join('') + '</tbody></table>'; }
+function htmlSchedaD3(coppie) { const l = coppie.filter(x => d3Pieno(x[1])); if (!l.length) return ''; return '<table class="tab d3-tab d3-scheda"><tbody>' + l.map(([a, b]) => '<tr><td class="d3-e">' + esc(a) + '</td><td>' + (typeof b === 'string' && b.startsWith('<') ? b : esc(b)) + '</td></tr>').join('') + '</tbody></table>'; }
+function d3Multi(opz, v) { return (Array.isArray(v) ? v : []).map(x => d3Etichetta(opz, x)).filter(Boolean).join('; '); }
+function htmlDocumentoD3(d, perWord) {
+  const r = d.r || {}; const sch = schemaD3(); const campo = (sid, k) => (sch.find(s => s.id === sid) || { campi: [] }).campi.find(c => c.k === k); const et = (sid, k, v) => { const c = campo(sid, k); return c && (c.opz || c.gruppi) ? (c.gruppi ? etichettaSettoreContatto(v) : d3Etichetta(c.opz, v)) : (v || ''); };
+  const comp = completamentoD3(d); const oggi = new Date().toLocaleDateString('it-IT'); const lead = r.lead || ''; const prog = r.progetto ? titoloProgettoContatto(r.progetto) : '';
+  let h = '<div class="d3-doc">';
+  h += '<div class="d3-front"><div class="d3-front-occhiello">Onward Strategic Partners · Diagnosi fondativa D³</div><h1>' + esc(r.cliente || 'Cliente da indicare') + '</h1><div class="d3-front-sotto">Decoding · Distillation · Direction</div><div class="d3-front-meta">' + esc([lead ? 'Lead Strategic Operating Partner: ' + lead : '', r.avvio ? 'Avvio ' + dataBreve(r.avvio) : '', r.consegna ? 'consegna prevista ' + dataBreve(r.consegna) : '', 'documento generato il ' + oggi, d.stato === 'completata' ? 'versione completata' : 'bozza di lavoro, ' + comp.pct + '% dei campi compilati'].filter(Boolean).join(' · ')) + '</div><div class="d3-front-riservato">Documento riservato al cliente e ai Soci di Onward</div></div>';
+  // 1. sintesi
+  h += '<h2>1. Sintesi per il Consiglio</h2>' + (r.si_sintesi ? d3Testo(r.si_sintesi) : '<p class="d3-manca">Sintesi direzionale da scrivere.</p>');
+  const msg = [r.si_m1, r.si_m2, r.si_m3].filter(Boolean); if (msg.length) h += '<div class="d3-messaggi">' + msg.map((m, i) => '<div class="d3-messaggio"><b>' + (i + 1) + '</b><span>' + esc(m) + '</span></div>').join('') + '</div>';
+  // 2. mandato
+  h += '<h2>2. Il mandato e il perimetro</h2>' + htmlSchedaD3([['Cliente', r.cliente], ['Forma e assetto', et('mandato', 'forma', r.forma)], ['Settore', et('mandato', 'settore', r.settore)], ['Sede e territori', r.sede], ['Classe di fatturato', et('mandato', 'fatturato', r.fatturato)], ['Classe di dipendenti', et('mandato', 'dipendenti', r.dipendenti)], ['Profondità della diagnosi', et('mandato', 'profondita', r.profondita)], ['Lead Strategic Operating Partner', lead], ['Socio che ha originato la relazione', r.origina], ['Scheda Progetto collegata', prog], ['Referenti del cliente', r.referenti], ['Momento di discontinuità', d3Multi(D3_TRIGGER, r.trigger)], ['Fonti e documenti raccolti', d3Multi(campo('mandato', 'fonti').opz, r.fonti)]]);
+  if (r.domanda) h += '<h3>La domanda iniziale del cliente</h3>' + d3Testo(r.domanda); if (r.perimetro) h += '<h3>Perimetro dell’analisi</h3>' + d3Testo(r.perimetro);
+  // 3. decoding
+  h += '<h2>3. Decoding: la lettura del cliente</h2>';
+  h += '<h3>3.1 Modello di business e catena del valore</h3>' + d3Testo(r.bm_descr) + htmlSchedaD3([['Fonti di ricavo', r.bm_ricavi], ['Leve di redditività e costi', r.bm_leve], ['Asset e competenze distintivi', r.bm_distintivi], ['Diversificazione', et('modello', 'bm_diversificazione', r.bm_diversificazione)], ['Concentrazione dei clienti', et('modello', 'bm_concentrazione', r.bm_concentrazione)], ['Posizionamento di prezzo', et('modello', 'bm_prezzo', r.bm_prezzo)], ['Ricavi all’estero', et('modello', 'bm_export', r.bm_export)]]);
+  h += '<h3>3.2 Settore e contesto competitivo</h3>' + htmlSchedaD3([['Dinamica del mercato', et('settore', 'se_dinamica', r.se_dinamica)], ['Intensità competitiva', d3Etichetta(D3_SCALA_15, r.se_intensita)], ['Posizione del cliente', et('settore', 'se_posizione', r.se_posizione)], ['Concorrenti', r.se_concorrenti], ['Traiettorie del settore', r.se_traiettorie], ['Spazi di crescita e barriere', r.se_spazi]]);
+  h += '<h3>3.3 Contesto istituzionale e regolatorio</h3>' + htmlSchedaD3([['Quadro regolatorio', d3Multi(D3_NORMATIVE, r.co_normative)], ['Esposizione regolatoria', d3Etichetta(D3_SCALA_15, r.co_esposizione)], ['Finanza pubblica', r.co_finanza], ['Soggetti istituzionali', r.co_soggetti], ['Tendenze di policy', r.co_policy]]);
+  const st = (r.st_griglia && typeof r.st_griglia === 'object') ? r.st_griglia : {}; const stR = D3_STAKEHOLDER.map(([k, n]) => ({ k, nome: n, v: d3Num((st[k] || {}).q), stato: (st[k] || {}).stato, note: (st[k] || {}).note })).filter(x => x.v || x.stato || x.note);
+  h += '<h3>3.4 Stakeholder e rete relazionale</h3>' + (stR.some(x => x.v) ? svgBarre(stR.filter(x => x.v).map(x => ({ nome: x.nome, v: x.v, col: x.stato === 'sviluppare' ? D3_COL.att : x.stato === 'consolidata' ? D3_COL.obi : D3_COL.neutro })), 'Qualità delle relazioni (1 assente o conflittuale, 5 strategica)', null, 5) : '') + htmlTabD3(['Stakeholder', 'Qualità', 'Priorità', 'Note'], stR.map(x => [esc(x.nome), esc(d3Etichetta(D3_SCALA_RELAZIONE, String(x.v || ''))), esc(d3Etichetta([['sviluppare', 'Da sviluppare'], ['presidiare', 'Da presidiare'], ['consolidata', 'Consolidata']], x.stato)), esc(x.note || '')])) + (r.st_critiche ? '<h4>Relazioni critiche da sviluppare</h4>' + d3Testo(r.st_critiche) : '');
+  h += '<h3>3.5 Governance e assetto proprietario</h3>' + htmlSchedaD3([['Assetto proprietario', et('governance', 'go_assetto', r.go_assetto)], ['Organo amministrativo', et('governance', 'go_organo', r.go_organo)], ['Organi e sistemi di controllo', d3Multi(campo('governance', 'go_controlli').opz, r.go_controlli)], ['Patti parasociali', et('governance', 'go_patti', r.go_patti)], ['Passaggio generazionale', et('governance', 'go_generazionale', r.go_generazionale)], ['Deleghe e compensation', r.go_deleghe], ['Note', r.go_note]]);
+  h += '<h3>3.6 Leadership e cultura</h3>' + htmlSchedaD3([['Stile decisionale', et('leadership', 'le_stile', r.le_stile)], ['Formalizzazione dei processi', d3Etichetta(D3_SCALA_MATURITA, r.le_formalizzazione)], ['Capacità di assorbire il cambiamento', d3Etichetta(D3_SCALA_15, r.le_cambiamento)], ['Coesione del top team', d3Etichetta(D3_SCALA_15, r.le_coesione)], ['Profilo del vertice', r.le_profilo], ['Cultura organizzativa', r.le_cultura]]);
+  // 4. distillation
+  h += '<h2>4. Distillation: valutazione e priorità</h2>';
+  const ca = (r.ca_griglia && typeof r.ca_griglia === 'object') ? r.ca_griglia : {}; const caR = D3_CAPITALI.map(c => ({ nome: c[1], att: d3Num((ca[c[0]] || {}).att), obi: d3Num((ca[c[0]] || {}).obi), evid: (ca[c[0]] || {}).evid || '' }));
+  h += '<h3>4.1 I quattro capitali</h3>' + (caR.some(x => x.att || x.obi) ? svgBarreDoppie(caR, 'I quattro capitali: oggi e obiettivo a 36 mesi (1 fragile, 5 distintivo)') : '') + htmlTabD3(['Capitale', 'Oggi', 'Obiettivo', 'Gap', 'Evidenze'], caR.filter(x => x.att || x.obi || x.evid).map(x => [esc(x.nome), esc(d3Etichetta(D3_SCALA_CAPITALE, String(x.att || ''))), esc(d3Etichetta(D3_SCALA_CAPITALE, String(x.obi || ''))), x.att && x.obi ? String(x.obi - x.att) : '', esc(x.evid)])) + (r.ca_note ? d3Testo(r.ca_note) : '');
+  const di = (r.di_griglia && typeof r.di_griglia === 'object') ? r.di_griglia : {}; const diR = D3_DIMENSIONI.map(c => ({ nome: c[1], att: d3Num((di[c[0]] || {}).att), obi: d3Num((di[c[0]] || {}).obi), gap: (di[c[0]] || {}).gap || '' }));
+  h += '<h3>4.2 Le sette dimensioni del management</h3>' + (diR.some(x => x.att || x.obi) ? svgRadar(diR, 'Maturità per dimensione: oggi e obiettivo (1 assente, 5 ottimizzato)') : '') + htmlTabD3(['Dimensione', 'Oggi', 'Obiettivo', 'Gap', 'Evidenze'], diR.filter(x => x.att || x.obi || x.gap).map(x => [esc(x.nome), esc(d3Etichetta(D3_SCALA_MATURITA, String(x.att || ''))), esc(d3Etichetta(D3_SCALA_MATURITA, String(x.obi || ''))), x.att && x.obi ? String(x.obi - x.att) : '', esc(x.gap)])) + (r.di_note ? d3Testo(r.di_note) : '');
+  const sw = [['Punti di forza', r.sw_forza], ['Debolezze', r.sw_debolezza], ['Opportunità', r.sw_opportunita], ['Minacce', r.sw_minacce]]; if (sw.some(x => x[1])) h += '<h3>4.3 Forze, debolezze, opportunità e minacce</h3><table class="tab d3-tab d3-swot"><tbody><tr>' + sw.slice(0, 2).map(x => '<td><b>' + x[0] + '</b>' + d3Righe(x[1]).map(y => '<div>• ' + esc(y) + '</div>').join('') + '</td>').join('') + '</tr><tr>' + sw.slice(2).map(x => '<td><b>' + x[0] + '</b>' + d3Righe(x[1]).map(y => '<div>• ' + esc(y) + '</div>').join('') + '</td>').join('') + '</tr></tbody></table>';
+  const ma = (r.ma_griglia && typeof r.ma_griglia === 'object') ? r.ma_griglia : {}; const temi = D3_TEMI.flatMap(g => g[1].map(t => ({ k: t[0], nome: t[1], dim: etichettaOpz(D3_DIMENSIONI, g[0]), fin: d3Num((ma[t[0]] || {}).fin), imp: d3Num((ma[t[0]] || {}).imp), note: (ma[t[0]] || {}).note || '' }))).filter(t => t.fin || t.imp || t.note).sort((a, b) => (b.fin * b.imp) - (a.fin * a.imp));
+  h += '<h3>4.4 Temi materiali e priorità</h3>' + (temi.filter(t => t.fin && t.imp).length ? svgMaterialita(temi.filter(t => t.fin && t.imp), 'Matrice di doppia materialità') : '') + htmlTabD3(['N.', 'Tema', 'Dimensione', 'Business', 'Impatti', 'Priorità', 'Note'], temi.map((t, i) => [String(i + 1), esc(t.nome), esc(t.dim), String(t.fin || ''), String(t.imp || ''), t.fin >= 3 && t.imp >= 3 ? 'Prioritario' : t.fin >= 3 || t.imp >= 3 ? 'Rilevante' : 'Da osservare', esc(t.note)])) + (r.ma_altri ? '<h4>Altri temi emersi</h4>' + d3Testo(r.ma_altri) : '');
+  const ri = (r.ri_griglia && typeof r.ri_griglia === 'object') ? r.ri_griglia : {}; const rischi = D3_RISCHI.map(c => ({ nome: c[1], p: d3Num((ri[c[0]] || {}).p), i: d3Num((ri[c[0]] || {}).i), pres: (ri[c[0]] || {}).pres || '', note: (ri[c[0]] || {}).note || '' })).filter(x => x.p || x.i || x.pres || x.note).sort((a, b) => (b.p * b.i) - (a.p * a.i));
+  const classe = v => v >= 16 ? 'Critico' : v >= 10 ? 'Rilevante' : v >= 5 ? 'Moderato' : v ? 'Basso' : '';
+  h += '<h3>4.5 Profilo di rischio</h3>' + (rischi.filter(x => x.p && x.i).length ? svgRischi(rischi.filter(x => x.p && x.i), 'Mappa dei rischi (probabilità per impatto)') : '') + htmlTabD3(['N.', 'Dimensione', 'Probabilità', 'Impatto', 'Livello', 'Presidio', 'Note'], rischi.map((x, i) => [String(i + 1), esc(x.nome), String(x.p || ''), String(x.i || ''), classe(x.p * x.i), esc(d3Etichetta(D3_PRESIDIO, x.pres)), esc(x.note)])) + (r.ri_note ? d3Testo(r.ri_note) : '');
+  const leve = Array.isArray(r.lv_elenco) ? r.lv_elenco.filter(x => x && x.leva) : [];
+  h += '<h3>4.6 Leve strategiche prioritarie</h3>' + (leve.length ? htmlTabD3(['N.', 'Leva', 'Capitale', 'Dimensione', 'Practice', 'Orizzonte', 'Intensità'], leve.map((x, i) => [String(i + 1), esc(x.leva), esc(etichettaOpz(D3_CAPITALI.map(c => [c[0], c[1]]), x.capitale)), esc(etichettaOpz(D3_DIMENSIONI, x.dimensione)), esc(x.practice ? nomePractice(x.practice) : ''), esc(etichettaOpz(D3_ORIZZONTI, x.orizzonte)), esc(etichettaOpz(D3_INTENSITA, x.intensita))])) + leve.filter(x => x.razionale).map((x, i) => '<p><b>' + esc(x.leva) + '.</b> ' + esc(x.razionale) + '</p>').join('') : '<p class="d3-manca">Leve da indicare.</p>');
+  // 5. direction
+  h += '<h2>5. Direction: la traiettoria e i mandati</h2>';
+  const tappe = Array.isArray(r.tr_tappe) ? r.tr_tappe.filter(x => x && x.descr) : []; const mandati = Array.isArray(r.md_elenco) ? r.md_elenco.filter(x => x && x.mandato) : [];
+  h += '<h3>5.1 Traiettoria strategica</h3>' + (r.tr_ambizione ? '<h4>Ambizione a 36 mesi</h4>' + d3Testo(r.tr_ambizione) : '') + (r.tr_presupposti ? '<h4>Presupposti di contesto</h4>' + d3Testo(r.tr_presupposti) : '') + (tappe.length || mandati.length ? svgRoadmap(tappe, mandati, 'Traiettoria sui dodici trimestri: mandati e tappe') : '') + htmlTabD3(['Trimestre', 'Tappa', 'Natura'], tappe.slice().sort((a, b) => d3Num(a.trim) - d3Num(b.trim)).map(x => [esc(etichettaOpz(D3_TRIMESTRI, x.trim)), esc(x.descr), esc(etichettaOpz([['decisione', 'Decisione'], ['risultato', 'Risultato'], ['avvio', 'Avvio di iniziativa'], ['verifica', 'Verifica']], x.tipo))]));
+  const totM = mandati.reduce((a, x) => a + (numeroIt(x.valore) || 0), 0); const perPr = practiceElenco().map(p => ({ nome: p.num + ' ' + p.nome, v: mandati.filter(x => x.practice === p.id).reduce((a, x) => a + (numeroIt(x.valore) || 0), 0) })).filter(x => x.v);
+  h += '<h3>5.2 Piano di attivazione dei mandati</h3>' + (mandati.length ? htmlTabD3(['Mandato', 'Practice', 'Forma', 'Avvio', 'Durata', 'Valore stimato', 'Priorità'], mandati.map(x => [esc(x.mandato), esc(x.practice ? nomePractice(x.practice) : ''), esc(etichettaOpz(D3_FORME, x.forma)), esc(etichettaOpz(D3_TRIMESTRI, x.avvio)), x.durata ? esc(String(x.durata)) + ' mesi' : '', numeroIt(x.valore) !== null ? esc(MODELLO.F.eur(numeroIt(x.valore))) : '', esc(etichettaOpz(D3_PRIORITA, x.priorita))]), { num: [5] }) + '<p><b>Valore complessivo dei mandati proposti: ' + esc(MODELLO.F.eur(totM)) + '</b>' + (mandati.length ? ' su ' + mandati.length + (mandati.length === 1 ? ' mandato' : ' mandati') : '') + '.</p>' + (perPr.length > 1 ? svgBarre(perPr, 'Valore dei mandati per Practice', v => MODELLO.F.eur(v)) : '') : '<p class="d3-manca">Mandati da indicare.</p>') + (r.md_note ? d3Testo(r.md_note) : '');
+  const dec = Array.isArray(r.de_elenco) ? r.de_elenco.filter(x => x && x.decisione) : [];
+  h += '<h3>5.3 Architettura decisionale</h3>' + htmlTabD3(['Decisione', 'Sede', 'Trimestre'], dec.slice().sort((a, b) => d3Num(a.trim) - d3Num(b.trim)).map(x => [esc(x.decisione), esc(etichettaOpz([['cda', 'Consiglio di amministrazione'], ['assemblea', 'Assemblea dei soci'], ['famiglia', 'Consiglio di famiglia'], ['comitato', 'Comitato di direzione'], ['ad', 'Amministratore delegato']], x.sede)), esc(etichettaOpz(D3_TRIMESTRI, x.trim))])) + htmlSchedaD3([['Cadenza del confronto con il Lead Strategic Operating Partner', et('decisioni', 'de_cadenza', r.de_cadenza)], ['Partecipazione ai consigli e ai tavoli', r.de_board]]);
+  const kpi = Array.isArray(r.in_elenco) ? r.in_elenco.filter(x => x && x.ind) : [];
+  h += '<h3>5.4 Indicatori di avanzamento</h3>' + (kpi.length ? htmlTabD3(['Indicatore', 'Capitale', 'Oggi', 'A 12 mesi', 'A 36 mesi', 'Fonte'], kpi.map(x => [esc(x.ind), esc(etichettaOpz(D3_CAPITALI.map(c => [c[0], c[1]]), x.capitale)), esc(x.att || ''), esc(x.o12 || ''), esc(x.o36 || ''), esc(x.fonte || '')])) : '<p class="d3-manca">Indicatori da indicare.</p>');
+  h += '<h2>6. Prossimi passi</h2>' + (r.si_passi ? d3Testo(r.si_passi) : '<p class="d3-manca">Prossimi passi da indicare.</p>') + (r.si_riserve ? '<h3>Condizioni e riserve</h3>' + d3Testo(r.si_riserve) : '');
+  h += '<div class="d3-piede">Diagnosi fondativa D³ · ' + esc(r.cliente || '') + ' · Onward Strategic Partners S.r.l. Società Benefit · ' + (d.stato === 'completata' ? 'versione completata' : 'bozza di lavoro') + (d.autore ? ' · avviata da ' + esc(d.autore) + ' il ' + esc(dataIt(d.creato)) : '') + (d.agg && d.agg !== d.creato ? ', aggiornata da ' + esc(d.aggDa || '') + ' il ' + esc(dataIt(d.agg)) : '') + '</div></div>';
+  return h;
+}
+const D3_CSS_DOC = 'body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.45;color:#26221E;margin:24px} h1{font-size:22pt;margin:8pt 0 4pt} h2{font-size:14pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt;margin-top:20pt} h3{font-size:12pt;margin-top:14pt} h4{font-size:11pt;margin:10pt 0 4pt} p{margin:0 0 6pt} table{border-collapse:collapse;width:100%;font-size:9pt;margin:6pt 0 10pt} td{border:1px solid #bfbfbf;padding:3pt 5pt;vertical-align:top} tr.intestazione td{background:#e9eff7;font-weight:bold} td.d3-e{width:32%;background:#f3f5f8;font-weight:bold} td.d3-num-cella{text-align:right;white-space:nowrap} .d3-front{border-bottom:2px solid #DE5400;padding-bottom:12pt;margin-bottom:14pt} .d3-front-occhiello{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;color:#DE5400} .d3-front-sotto{font-size:12pt;color:#6E6A64} .d3-front-meta,.d3-front-riservato{font-size:9pt;color:#6E6A64;margin-top:4pt} .d3-messaggi{margin:8pt 0} .d3-messaggio{display:flex;gap:8pt;margin:4pt 0} .d3-messaggio b{color:#DE5400} .d3-swot td{width:50%} .d3-manca{color:#8C877F;font-style:italic} .d3-piede{margin-top:20pt;font-size:8.5pt;color:#6E6A64;border-top:1px solid #bfbfbf;padding-top:6pt} .d3-grafico{display:block;max-width:100%;margin:6pt 0 10pt}';
+async function esportaDiagnosiWord(d) {
+  let h = htmlDocumentoD3(d, true); const svgs = h.match(/<svg[\s\S]*?<\/svg>/g) || [];
+  for (const s of svgs) { const png = await svgToPng(s.replace(/ width="\d+" height="\d+"/, '')); h = h.replace(s, png ? '<p><img src="' + png + '" width="600"></p>' : ''); }
+  const doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Diagnosi D³ ' + esc((d.r || {}).cliente || '') + '</title><style>' + D3_CSS_DOC + '</style></head><body>' + h + '</body></html>';
+  scarica('Onward_Diagnosi_D3_' + nomeFileSicuro(((d.r || {}).cliente || 'cliente').replace(/\s+/g, '_')) + '.doc', doc, 'application/msword');
+}
+function stampaDiagnosi(d) {
+  const w = window.open('', '_blank'); if (!w) { toast('Il browser ha bloccato la finestra di stampa'); return; }
+  w.document.write('<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Diagnosi D³ ' + esc((d.r || {}).cliente || '') + '</title><style>' + D3_CSS_DOC + ' @media print { h2 { page-break-before: auto } .d3-front { page-break-after: always } }</style></head><body>' + htmlDocumentoD3(d, false) + '</body></html>'); w.document.close(); setTimeout(() => { try { w.focus(); w.print(); } catch (e) {} }, 400);
+}
+// riga nella Scheda Progetto: le diagnosi collegate
+function htmlDiagnosiScheda(p) { const l = diagnosiDiProgetto(p.id); if (!l.length) return ''; return '<span><b>Diagnosi D³</b> ' + l.map(d => '<button class="ct-lnk" data-pg="diagnosi" data-id="' + esc(d.id) + '" title="Apre il Format Diagnosi D³">' + esc(titoloDiagnosi(d)) + (d.stato === 'completata' ? ' (completata)' : ' (bozza)') + '</button>').join(', ') + '</span>'; }
+function avviaFormatD3() {
+  const m = $('#formatd3'); if (!m) return; const b = $('#b-formatd3'); if (b) b.onclick = () => apriFormatD3(); const c = $('#formatd3-chiudi'); if (c) c.onclick = chiudiFormatD3;
+  const dSel = () => S.d3sel ? diagnosiDi(S.d3sel) : null;
+  $('#d3-nuova', m).onclick = nuovaDiagnosi; $('#d3-elenco', m).onchange = e => { S.d3sel = e.target.value || null; S.d3ancora = null; disegnaFormatD3(); $('.mappe-corpo', m).scrollTop = 0; };
+  $('#d3-elimina', m).onclick = () => { const d = dSel(); if (!d) return; if (!confirm('Eliminare la diagnosi «' + titoloDiagnosi(d) + '»? Resta nella cronologia e si può ripristinare.')) return; eliminaDiagnosi(d.id); };
+  $('#d3-word', m).onclick = () => { const d = dSel(); if (!d) return; toast('Preparazione del file Word…'); esportaDiagnosiWord(d); }; $('#d3-stampa', m).onclick = () => { const d = dSel(); if (d) stampaDiagnosi(d); };
+  $('#d3-commessa', m).onclick = () => { const d = dSel(); if (d) commessaDaDiagnosi(d); };
+  $('#d3-completata', m).onclick = () => { const d = dSel(); if (!d || !puoScrivereDiagnosi()) return; d.stato = d.stato === 'completata' ? 'bozza' : 'completata'; segnaDiagnosi(d, 'Diagnosi D³ «' + titoloDiagnosi(d).slice(0, 60) + '» ' + (d.stato === 'completata' ? 'segnata come completata' : 'riaperta come bozza')); disegnaFormatD3(); };
+  for (const x of $$('#d3-vista button', m)) x.onclick = () => { S.d3vista = x.dataset.v; S.d3ancora = null; disegnaFormatD3(); $('.mappe-corpo', m).scrollTop = 0; };
+  const cambia = ev => { const x = ev.target.closest('.d3-f'); if (!x || !puoScrivereDiagnosi()) return; const d = dSel(); if (!d) return; let v;
+    if (x.dataset.multi) { v = $$('.d3-f[data-d3="' + CSS.escape(x.dataset.d3) + '"]:checked', m).map(y => y.value); } else if (x.classList.contains('d3-num')) { const n = numeroIt(x.value); v = n === null ? x.value.trim() : n; if (ev.type === 'change' && n !== null) x.value = MODELLO.F.num(n); } else v = x.value;
+    scriviD3(d, x.dataset.d3, v); segnaDiagnosi(d); aggiornaNavD3(); };
+  m.addEventListener('input', ev => { const x = ev.target.closest('.d3-f'); if (!x || x.dataset.multi || x.tagName === 'SELECT' || x.type === 'date') return; cambia(ev); });
+  m.addEventListener('change', ev => { const x = ev.target.closest('.d3-f'); if (!x) return; if (x.dataset.multi || x.tagName === 'SELECT' || x.type === 'date' || x.classList.contains('d3-num')) cambia(ev); else if (x.tagName === 'TEXTAREA' || x.tagName === 'INPUT') { /* già salvato all'input */ } });
+  m.addEventListener('click', ev => { const b = ev.target.closest('button[data-d3-vai], button[data-d3-aggiungi], button[data-d3-togli], button[data-d3-sposta]'); if (!b) return; const d = dSel();
+    if (b.dataset.d3Vai) { S.d3ancora = b.dataset.d3Vai; const sez = $('#d3-sez-' + b.dataset.d3Vai, m); if (sez) sez.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+    if (!d || !puoScrivereDiagnosi()) return; if (!d.r) d.r = {};
+    if (b.dataset.d3Aggiungi) { const k = b.dataset.d3Aggiungi; if (!Array.isArray(d.r[k])) d.r[k] = []; d.r[k].push({}); S.d3ancora = null; segnaDiagnosi(d); ridisegnaSezioneD3(k); const ult = $$('.d3-elenco[data-k="' + CSS.escape(k) + '"] .d3-voce', m).pop(); if (ult) { const f = $('.d3-f', ult); if (f) f.focus(); } return; }
+    if (b.dataset.d3Togli) { const k = b.dataset.d3Togli, i = +b.dataset.i; if (Array.isArray(d.r[k])) d.r[k].splice(i, 1); segnaDiagnosi(d); ridisegnaSezioneD3(k); return; }
+    if (b.dataset.d3Sposta) { const k = b.dataset.k, i = +b.dataset.i, j = i + (+b.dataset.d3Sposta); const l = d.r[k]; if (!Array.isArray(l) || j < 0 || j >= l.length) return; [l[i], l[j]] = [l[j], l[i]]; segnaDiagnosi(d); ridisegnaSezioneD3(k); } });
+}
+function ridisegnaSezioneD3(k) { const m = $('#formatd3'); const d = S.d3sel ? diagnosiDi(S.d3sel) : null; if (!m || !d) return; const s = schemaD3().find(x => x.campi.some(c => c.k === k)); if (!s) return; const sez = $('#d3-sez-' + s.id, m); if (!sez) return; const nf = el('div'); nf.innerHTML = '<div class="d3-campi">' + s.campi.map(c => htmlCampoD3(c, d, puoScrivereDiagnosi())).join('') + '</div>'; $('.d3-campi', sez).replaceWith(nf.firstElementChild); aggiornaNavD3(); }
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
@@ -6284,10 +6756,10 @@ const MAPPA_PIATTAFORMA = [
     { id: 'b-contatti', nome: 'Database relazionale', descr: 'I contatti della rete: ente, settore, status della relazione, Socio e Practices di riferimento, scheda collegata.', effetto: 'Registro comune, condiviso con tutti i Soci.' },
     { id: 'b-mappe', nome: 'Soci e Società Partner', descr: 'La rete di partenza: chi c’è e che cosa porta.', effetto: 'Le schede sono condivise con tutti i Soci.' },
     { id: 'b-practice', nome: 'Practices e Servizi', descr: 'Le cinque Practice, le persone di riferimento e i servizi offerti.', effetto: 'Le modifiche valgono per tutti i Soci.' }] },
-  { k: 'too', nome: 'Tools', scopo: 'Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e per la Diagnosi D³.', voci: [
+  { k: 'too', nome: 'Tools', scopo: 'Gli strumenti di lavoro: le economie di una commessa, i format per gli incarichi e il format della Diagnosi D³.', voci: [
     { id: 'b-commessa', nome: 'Scheda di commessa', descr: 'Il tool per ipotizzare le economie di una commessa (prezzo, ripartizione nei tre strati, margine, verifiche) e quindi formulare un’offerta.', effetto: 'Le schede salvate restano nel registro condiviso con i Soci; le ipotesi del documento non cambiano.' },
     { id: 'b-formati', nome: 'Format Incarico', descr: 'I format compilabili per i contratti delle linee di servizio: pagina in preparazione, per ora vuota.', effetto: 'Sarà condivisa con tutti i Soci.' },
-    { id: 'b-formatd3', nome: 'Format Diagnosi D³', descr: 'Il format compilabile della Diagnosi fondativa D³, il prodotto di ingresso: pagina in preparazione, per ora vuota.', effetto: 'Sarà condiviso con tutti i Soci.' }] },
+    { id: 'b-formatd3', nome: 'Format Diagnosi D³', descr: 'Il format con cui si raccolgono le informazioni dal cliente (Decoding, Distillation, Direction) e il documento di diagnosi generato dai dati, con tabelle e grafici.', effetto: 'Registro comune: ogni diagnosi è visibile a tutti i Soci e si salva nel repository.' }] },
   { k: 'amm', nome: 'Amministrazione', scopo: 'La gestione amministrativa: le spese sostenute dai Soci per la società.', voci: [
     { id: 'b-spese', nome: 'Spese dei Soci', descr: 'Il registro delle spese sostenute da ciascun Socio per attività della società: data, Scheda Progetto, tipologia, imponibile e IVA, giustificativo.', effetto: 'Registro comune, salvato nel repository e visibile a tutti i Soci.' }] },
   { k: 'ser', nome: 'Servizio', scopo: 'Cronologia, modifiche, esportazioni e impostazioni.', voci: [

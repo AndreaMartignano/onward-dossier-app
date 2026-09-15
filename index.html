@@ -1429,8 +1429,14 @@ table.sp-tab { table-layout: fixed; width: 100%; min-width: 1100px; }
 .sp-tab tfoot td { border-top: 2px solid var(--filo); font-weight: 600; background: var(--fondo); }
 .sp-tipo small { display: block; color: var(--secondario); font-size: .7rem; }
 .sp-gestione { font-weight: 600; color: var(--inchiostro); }
-.sp-giust { display: inline-flex; flex-direction: column; gap: .05rem; max-width: 200px; }
-.sp-giust .ct-lnk { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+/* il nome del giustificativo resta nella cella: la parte centrale si accorcia con i puntini, l'estensione resta visibile, il nome intero è nel suggerimento */
+.sp-giust { display: flex; flex-direction: column; gap: .05rem; max-width: 100%; min-width: 0; }
+.sp-tab td.sp-giust-cella { overflow: hidden; }
+.sp-giust .ct-lnk, .sp-giust .sp-gnome { display: flex; align-items: baseline; max-width: 100%; min-width: 0; text-decoration: none; }
+.sp-giust .sp-gn { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sp-giust .sp-ge { flex: 0 0 auto; }
+.sp-giust .ct-lnk .sp-gn, .sp-giust .ct-lnk .sp-ge { text-decoration: underline dotted; }
+.sp-giust .ct-lnk:hover .sp-gn, .sp-giust .ct-lnk:hover .sp-ge { text-decoration: underline; }
 .sp-giust small { font-size: .68rem; color: var(--secondario); }
 .sp-periodo { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
 .finestra-spesa .sp-larga { grid-column: 1 / -1; }
@@ -1573,6 +1579,11 @@ table.d3-elenco-tab { min-width: 1000px; }
 #d3-vista button:disabled { opacity: .45; cursor: default; }
 .d3-elenco-tab td:nth-child(6) { min-width: 96px; }
 .d3-elenco-tab td:nth-child(2) { min-width: 150px; }
+
+/* avviso di copia non collegata al repository, in testa ai registri condivisi */
+.avviso-registro { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .9rem; border-left-color: var(--errore); background: var(--lavaggio); margin: 0 0 1rem; font-size: .84rem; line-height: 1.45; }
+.avviso-registro > span { flex: 1 1 32ch; min-width: 0; }
+.avviso-registro > .btn { flex: 0 0 auto; }
 </style>
 </head>
 <body>
@@ -1982,7 +1993,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-15T07:21:28Z';
+window.ONWARD_BUILD = '2026-09-15T09:49:52Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2744,7 +2755,7 @@ async function collega(mostra) {
     catch (e) { stato('errore', 'Repository non raggiungibile'); if (esito) esito.innerHTML = '<div class="avviso errore">Collegamento non riuscito: ' + esc(e.message) + '. Verificare proprietario, nome del repository, ramo e token (permesso Contents).</div>'; S.backend = new ArchivioLocale(); S.readonly = true; }
   } else if (window.ONWARD_GUSCIO) { S.backend = null; S.readonly = true; renderDocumento(); costruisciPannelloIpotesi(); stato('attesa', 'Inserire nome e token nelle Impostazioni'); if (esito) esito.innerHTML = '<div class="avviso">Inserire il proprio nome e il token personale, poi «Salva e collega».</div>'; $('#doc').innerHTML = '<div class="frontespizio"><div class="t1">' + esc(S.meta.titolo) + '</div><div class="t3">' + esc(S.meta.dossier || '') + '</div></div><div class="riquadro" style="max-width:60ch;margin:2rem auto"><div class="txt"><b>Dossier vivo.</b> Il testo è custodito nel repository riservato dei Soci. Per aprirlo premere «Impostazioni» in alto a destra e inserire il proprio nome e il token personale di accesso (guida, sezione 4). Dopo il primo collegamento la pagina si apre da sola.</div></div>'; }
   else { S.backend = new ArchivioLocale(); const n = await S.backend.carica(); for (const k of tuttiKey().concat(CHIAVI_EXTRA)) S.base[k] = clone(datiDi(k)); homeAllAvvio(); renderDocumento(); costruisciPannelloIpotesi(); stato('ok', n ? 'Archivio locale: ' + n + ' file modificati in questo browser' : 'Contenuto incorporato (archivio locale)'); if (mostra && esito) esito.innerHTML = '<div class="avviso">Modalità di prova: le modifiche restano in questo browser.</div>'; }
-  applicaModo();
+  applicaModo(); aggiornaProgettiSeAperti(); aggiornaContattiSeAperti(); aggiornaSpeseSeAperte(); aggiornaDiagnosiSeAperte();
 }
 function esportaJSON() { scarica('onward-dossier-contenuto.json', JSON.stringify({ meta: S.meta, nota: S.nota, parti: S.parti, ipotesi: S.P, glossario: { voci: S.glossario }, rete: S.rete, commesse: { commesse: S.commesse }, quote: S.quote, scenari: S.scenari, esportato: new Date().toISOString() }, null, 1), 'application/json'); }
 function importaJSON(testo) {
@@ -4888,6 +4899,7 @@ function disegnaProgetti(tutto) {
   const l = progettiFiltrati(); const lista = $('.pg-lista', corpo);
   lista.innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">' + (elencoProgetti().length ? 'Nessuna scheda corrisponde alla ricerca o ai filtri scelti.' : 'Nessuna scheda progetto finora. Con «Nuova scheda» ciascun Socio inserisce i progetti che sta seguendo e che porterà in Onward; i parametri di progetto alimentano il documento, il modello e gli scenari.') + '</div>');
   const nb = $('#pg-nuova', m); if (nb) nb.hidden = !puoScrivereProgetti();
+  aggiornaAvvisoRegistro(corpo, 'Le Schede Progetto registrate nel repository');
 }
 function aggiornaListaProgetti() { const corpo = $('#progetti .mappe-corpo'); if (!corpo || !$('.pg-lista', corpo)) return; const l = progettiFiltrati(); $('.pg-lista', corpo).innerHTML = htmlRiepilogoProgetti(l) + (l.length ? l.map(htmlSchedaProgetto).join('') : '<div class="avviso">Nessuna scheda corrisponde alla ricerca o ai filtri scelti.</div>'); }
 // nota sotto il campo «Probabilità di chiusura», in linguaggio piano; si aggiorna quando cambia lo stato della scheda
@@ -4977,6 +4989,24 @@ function mimeDi(nome) { return MIME_DOCUMENTI[estensioneDi(nome)] || 'applicatio
 function nomeFileSicuro(nome) { let n = String(nome || '').normalize('NFC').replace(/[\/\\:*?"<>|#%&+;{}\[\]^~`]/g, '_').replace(/[\x00-\x1f\x7f]/g, '').replace(/\s+/g, ' ').trim().replace(/^\.+/, ''); if (n.length > 120) { const e = estensioneDi(n); n = n.slice(0, 120 - (e ? e.length + 1 : 0)).trim() + (e ? '.' + e : ''); } return n || 'documento'; }
 function dimensioneIt(b) { b = +b || 0; if (b < 1024) return b + ' B'; if (b < 1024 * 1024) return MODELLO.F.num1(b / 1024) + ' KB'; return MODELLO.F.num1(b / (1024 * 1024)) + ' MB'; }
 function archivioDocumenti() { return S.backend && S.backend.nome === 'github' ? S.backend : null; }
+// avviso in testa ai registri condivisi (Schede Progetto, Database relazionale, Spese, Diagnosi) quando la copia non legge dal repository:
+// senza collegamento la pagina mostra solo il contenuto incorporato nel file o quanto inserito in questo browser, non i dati condivisi dai Soci
+function htmlAvvisoRegistro(cosa) {
+  if (S.backend && S.backend.nome === 'github') return '';
+  const cfgOk = !!(S.cfg && S.cfg.tipo === 'github' && S.cfg.owner && S.cfg.repo && S.cfg.token);
+  let t;
+  if (!S.backend && window.ONWARD_GUSCIO) t = '<b>Repository non ancora collegato.</b> ' + cosa + ' compaiono dopo aver inserito il proprio nome e il token personale nelle Impostazioni.';
+  else if (cfgOk) t = '<b>Repository non raggiungibile in questo momento.</b> ' + cosa + ' non sono state lette: la pagina mostra solo il contenuto incorporato in questo file, non l’ultima versione condivisa. Verificare il collegamento dalle Impostazioni.';
+  else t = '<b>Questa copia non è collegata al repository dei Soci.</b> ' + cosa + ' non compaiono qui e quanto si inserisce resta soltanto in questo browser. Per ritrovare i dati condivisi e condividere i propri, collegare il repository dalle Impostazioni: nome del repository e token restano nel browser di chi li inserisce.';
+  return '<div class="avviso avviso-registro" role="status"><span>' + t + '</span><button class="btn piccolo" data-apri-impostazioni>Apri le Impostazioni</button></div>';
+}
+// mantiene l’avviso come primo elemento del corpo della pagina (lo inserisce, lo aggiorna o lo toglie secondo lo stato del collegamento)
+function aggiornaAvvisoRegistro(corpo, cosa) {
+  if (!corpo) return; const h = htmlAvvisoRegistro(cosa); const v = corpo.firstElementChild && corpo.firstElementChild.classList.contains('avviso-registro') ? corpo.firstElementChild : null;
+  if (v) { if (!h) v.remove(); else if (v.outerHTML !== h) { const t = el('div'); t.innerHTML = h; v.replaceWith(t.firstElementChild); } }
+  else if (h) corpo.insertAdjacentHTML('afterbegin', h);
+}
+document.addEventListener('click', ev => { const b = ev.target.closest('[data-apri-impostazioni]'); if (!b) return; ev.preventDefault(); costruisciImpostazioni(); apriPannello('pan-impostazioni'); });
 function cartellaDocumenti(id, slug) { return 'documenti/' + id + '/' + slug + '/'; }
 // elenco dei documenti di una scheda, per cartella, letto dall'albero del repository (già caricato e aggiornato a ogni controllo delle novità)
 function documentiProgetto(id) {
@@ -5559,7 +5589,7 @@ const GUIDE_USO = {
   spese: { tit: 'Spese dei Soci',
     serve: 'È il registro, nell’area Amministrazione, delle spese sostenute da ciascun Socio per attività della società: per ogni spesa il Socio che l’ha sostenuta, la data, la Scheda Progetto a cui si riferisce, la tipologia (viaggi, vitto e alloggio, ufficio, servizi, eventi, sedi e spazi di lavoro, altro), l’imponibile e l’IVA distinti, il totale e il giustificativo in PDF o immagine.',
     usa: '«Nuova spesa» apre il modulo: il Socio si sceglie dalla tendina dei Soci, la Scheda Progetto dalla tendina delle schede presenti, che si aggiorna da sola quando se ne inserisce una nuova, con la voce fissa «Gestione Onward» per le spese della società non riferite a una scheda; la tipologia da un elenco raggruppato per categoria; imponibile e IVA si scrivono in euro con la virgola per i decimali e i pulsanti 22%, 10%, 5%, 4% e 0% calcolano l’IVA dall’imponibile; il totale è calcolato da solo; il giustificativo si allega dal proprio computer e viene custodito nel repository dei Soci (cartella giustificativi, fino a 100 MB). In alto il cruscotto somma le spese per Socio e per categoria (un clic filtra l’elenco) e conta quelle senza giustificativo; la colonna di sinistra cerca e filtra per periodo, Socio, categoria, Scheda Progetto e presenza del giustificativo; la tabella riporta imponibile, IVA e totale di ogni spesa e la somma delle spese in elenco; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
-    effetti: 'Le spese non entrano nel documento né nel modello: sono un registro amministrativo, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il registro filtrato sulle sue spese.' },
+    effetti: 'Le spese non entrano nel documento né nel modello: sono un registro amministrativo, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il registro filtrato sulle sue spese. Se la copia aperta non è collegata al repository (stato «archivio locale»), un avviso in testa alla pagina lo segnala: le spese salvate dai Soci non compaiono finché non si collega il repository dalle Impostazioni.' },
   scenari: { tit: 'Piano e scenari',
     serve: 'È il piano condiviso della Parte terza: i tre scenari del secondo esercizio (Prudente, Base, Sviluppo), la traiettoria dei tre esercizi con costi e Soci per esercizio, il fabbisogno finanziario di avvio, la remunerazione dei Soci e il cruscotto con le soglie di allarme. Tutto è calcolato dalle ipotesi e dai testi del documento.',
     usa: 'Le caselle gialle si compilano direttamente e si salvano da sole. Le cifre con il bordo tratteggiato sono ipotesi del documento: un clic le modifica lì. I pulsanti «per voce», «Valori propri» e «valore proprio» permettono di scrivere numeri specifici per un esercizio senza toccare le ipotesi generali.',
@@ -5997,6 +6027,7 @@ function disegnaContatti(tutto) {
   else { const nf = el('div'); nf.innerHTML = htmlFiltriContatti(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'ct-q'; const pos = focusQ ? attivo.selectionStart : null; $('.ct-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#ct-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
   const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l);
   const nb = $('#ct-nuovo', m); if (nb) nb.hidden = !puoScrivereContatti();
+  aggiornaAvvisoRegistro(corpo, 'I contatti del Database relazionale registrati nel repository');
 }
 function aggiornaListaContatti() { const corpo = $('#contatti .mappe-corpo'); if (!corpo || !$('.ct-lista', corpo)) return; const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l); }
 function aggiornaContattiSeAperti() { if ($('#contatti') && !$('#contatti').hidden) disegnaContatti(); }
@@ -6191,7 +6222,8 @@ function htmlFiltriSpese() {
 function shaGiustificativo(g) { const a = archivioDocumenti(); return (a && a.altri && a.altri[g.path]) || g.sha || null; }
 function htmlGiustificativoSpesa(s) {
   const g = s.giustificativo; if (!g) return '<span class="pg-muto sp-manca">assente</span>'; const a = archivioDocumenti(); const vis = VISIBILI_DOCUMENTI.includes(estensioneDi(g.nome));
-  return '<span class="sp-giust" title="' + esc(g.nome) + '">' + (a ? '<button class="ct-lnk" data-sp="' + (vis ? 'apri' : 'scarica') + '" data-id="' + esc(s.id) + '" title="' + (vis ? 'Apre il giustificativo in una nuova scheda' : 'Scarica il giustificativo') + '">' + esc(g.nome) + '</button>' : esc(g.nome)) + (g.dim ? '<small>' + esc(dimensioneIt(g.dim)) + '</small>' : '') + '</span>';
+  const est = estensioneDi(g.nome); const base = est ? g.nome.slice(0, -(est.length + 1)) : g.nome; const nomeHtml = '<span class="sp-gn">' + esc(base) + '</span>' + (est ? '<span class="sp-ge">.' + esc(est) + '</span>' : '');
+  return '<span class="sp-giust" title="' + esc(g.nome) + (g.dim ? ' (' + esc(dimensioneIt(g.dim)) + ')' : '') + '">' + (a ? '<button class="ct-lnk" data-sp="' + (vis ? 'apri' : 'scarica') + '" data-id="' + esc(s.id) + '" title="' + esc(g.nome) + ': ' + (vis ? 'apre il giustificativo in una nuova scheda' : 'scarica il giustificativo') + '">' + nomeHtml + '</button>' : '<span class="sp-gnome">' + nomeHtml + '</span>') + (g.dim ? '<small>' + esc(dimensioneIt(g.dim)) + '</small>' : '') + '</span>';
 }
 function htmlRigaSpesa(s) {
   const descr = String(s.descrizione || '').trim();
@@ -6215,6 +6247,7 @@ function disegnaSpese(tutto) {
   else { const nf = el('div'); nf.innerHTML = htmlFiltriSpese(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'sp-q'; const pos = focusQ ? attivo.selectionStart : null; $('.sp-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#sp-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
   const l = speseFiltrate(); $('.sp-lista', corpo).innerHTML = htmlCruscottoSpese(l) + htmlTabellaSpese(l);
   const nb = $('#sp-nuova', m); if (nb) nb.hidden = !puoScrivereSpese();
+  aggiornaAvvisoRegistro(corpo, 'Le spese dei Soci registrate nel repository');
 }
 function aggiornaListaSpese() { const corpo = $('#spese .mappe-corpo'); if (!corpo || !$('.sp-lista', corpo)) return; const l = speseFiltrate(); $('.sp-lista', corpo).innerHTML = htmlCruscottoSpese(l) + htmlTabellaSpese(l); }
 function aggiornaSpeseSeAperte() { if ($('#spese') && !$('#spese').hidden) disegnaSpese(); }
@@ -6540,7 +6573,7 @@ function disegnaFormatD3() {
   const nb = $('#d3-nuova', m); if (nb) nb.hidden = !scrive; const el2 = $('#d3-elenco', m); if (el2) el2.hidden = !elencoDiagnosi().length || vista === 'elenco';
   const def = $('#d3-definitiva', m); if (def && d) def.textContent = d.stato === 'completata' ? 'Riapri come bozza' : 'Salva come definitiva';
   for (const b of $$('#d3-vista button', m)) { b.classList.toggle('attivo', b.dataset.v === vista); if (b.dataset.v !== 'elenco') b.disabled = !S.d3sel || !diagnosiDi(S.d3sel); }
-  if (vista === 'elenco' || !d) { corpo.innerHTML = htmlElencoD3(scrive); return; }
+  if (vista === 'elenco' || !d) { corpo.innerHTML = htmlAvvisoRegistro('Le diagnosi D³ salvate nel repository') + htmlElencoD3(scrive); return; }
   corpo.innerHTML = vista === 'documento' ? '<div class="d3-doc-wrap">' + htmlDocumentoD3(d, false) + '</div>' : htmlRaccoltaD3(d, scrive);
   if (vista === 'raccolta') { const h = S.d3ancora; if (h) { const sez = $('#d3-sez-' + h, corpo); if (sez) sez.scrollIntoView({ block: 'start' }); } }
 }

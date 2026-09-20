@@ -1264,7 +1264,18 @@ table.ct-tab { table-layout: auto; font-size: .8rem; min-width: 1240px; }
 .ct-apri { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: var(--inchiostro); cursor: pointer; text-align: left; }
 .ct-apri:hover { color: var(--accento-scuro); text-decoration: underline; }
 .ct-nome small { display: block; color: var(--secondario); font-size: .72rem; }
-.ct-recapiti { font-size: .76rem; white-space: nowrap; line-height: 1.5; }
+.ct-recapiti { font-size: .76rem; white-space: nowrap; line-height: 1.5; min-width: 190px; }
+.ct-rec { display: flex; align-items: center; gap: .4rem; }
+.ct-ico { flex: 0 0 auto; color: var(--secondario); }
+.ct-th-rec { min-width: 190px; }
+.ct-th-ico { display: inline-flex; gap: .45rem; align-items: center; color: var(--secondario); vertical-align: middle; }
+.ct-th-ico .ct-ico { width: 16px; height: 16px; }
+.vis-nascosto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ct-tab thead td { min-width: 6.5em; background: var(--lavaggio); padding: .55rem .65rem; border-bottom: 2px solid var(--filo); vertical-align: bottom; }
+.ct-tab tbody td { padding: .5rem .65rem; }
+.ct-tab tbody tr + tr td { border-top: 1px solid var(--filo); }
+.ct-tab thead td:first-child, .ct-tab tbody td:first-child { padding-left: .9rem; }
+.ct-tab td:nth-child(5) { min-width: 160px; white-space: nowrap; }
 .ct-recapiti a { color: var(--accento-scuro); text-decoration: none; }
 .ct-recapiti a:hover { text-decoration: underline; }
 .ct-pr .pg-chip { margin: .05rem .15rem .05rem 0; }
@@ -1717,6 +1728,11 @@ table.d3-elenco-tab { min-width: 1000px; }
 
 .ac-analisi { margin: 0 0 .8rem; }
 .ac-analisi.corso { border-left-color: var(--accento); }
+
+/* ---- dettatura a voce: pulsante che compare accanto all'area di testo attiva */
+#dettatura { position: fixed; z-index: 60; box-shadow: 0 2px 8px rgba(38, 34, 30, .18); background: var(--carta); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#dettatura.attiva { background: var(--accento); color: var(--accento-testo); border-color: var(--accento); }
+textarea.in-dettatura { outline: 2px solid var(--accento); outline-offset: 1px; }
 </style>
 </head>
 <body>
@@ -2139,7 +2155,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-15T23:26:53Z';
+window.ONWARD_BUILD = '2026-09-20T06:28:02Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -6159,13 +6175,20 @@ function htmlFiltriContatti() {
     gruppo('Scheda Progetto collegata', 'progetto', prog, F.progetto) +
     '<button class="btn piccolo" id="ct-azzera">Azzera ricerca e filtri</button></div>';
 }
+const ICONA_MAIL = '<svg class="ct-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 7.5 12 13l8.5-5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ICONA_TEL = '<svg class="ct-ico" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M6.6 3.5h3.2l1.6 4.2-2.1 1.6a12.5 12.5 0 0 0 5.4 5.4l1.6-2.1 4.2 1.6v3.2a1.9 1.9 0 0 1-2 1.9A16.4 16.4 0 0 1 4.7 5.5a1.9 1.9 0 0 1 1.9-2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+function htmlRecapitiContatto(c) {
+  const l = [];
+  if (c.mail) l.push('<span class="ct-rec" title="E-mail">' + ICONA_MAIL + '<a class="lk" href="mailto:' + esc(c.mail) + '">' + esc(c.mail) + '</a></span>');
+  if (c.cellulare) l.push('<span class="ct-rec" title="Telefono">' + ICONA_TEL + '<a class="lk" href="tel:' + esc(String(c.cellulare).replace(/\s+/g, '')) + '">' + esc(c.cellulare) + '</a></span>');
+  return l.length ? l.join('') : '<span class="pg-muto">nessun recapito</span>';
+}
 function htmlRigaContatto(c) {
   const F = filtroContatti(); const g = giorniDa(c.ultimo); const fermo = g !== null && g > 90;
-  const recapiti = [c.mail ? '<a class="lk" href="mailto:' + esc(c.mail) + '">' + esc(c.mail) + '</a>' : '', c.cellulare ? '<a class="lk" href="tel:' + esc(String(c.cellulare).replace(/\s+/g, '')) + '">' + esc(c.cellulare) + '</a>' : ''].filter(Boolean).join('<br>');
   const temi = String(c.temi || '').trim(); const riporto = String(c.riporto || '').trim();
   const prog = c.progetto ? (progettoDi(c.progetto) ? '<button class="ct-lnk" data-ct="progetto" data-id="' + esc(c.progetto) + '" title="Apre le Schede Progetto sulla scheda collegata">' + esc(titoloProgettoContatto(c.progetto)) + '</button>' : '<span class="pg-muto" title="La scheda collegata non è più presente">scheda non più presente</span>') : '';
   return '<tr data-id="' + esc(c.id) + '"' + (fermo ? ' class="ct-fermo"' : '') + '><td class="ct-nome"><button class="ct-apri" data-ct="apri" data-id="' + esc(c.id) + '" title="Apre la scheda del contatto">' + esc(nomeContatto(c)) + '</button>' + (c.ente || c.luogo ? '<small>' + esc([etichettaEnte(c.ente), c.luogo].filter(Boolean).join(' · ')) + '</small>' : '') + '</td>' +
-    '<td class="ct-recapiti">' + (recapiti || '<span class="pg-muto">—</span>') + '</td>' +
+    '<td class="ct-recapiti">' + htmlRecapitiContatto(c) + '</td>' +
     '<td>' + esc(etichettaSettoreContatto(c.settore)) + '</td>' +
     '<td>' + htmlStatusContatto(c.status) + '</td>' +
     '<td>' + esc(c.socio || '') + '</td>' +
@@ -6179,7 +6202,7 @@ function htmlRigaContatto(c) {
 }
 function htmlTabellaContatti(l) {
   if (!l.length) return '<div class="avviso">' + (elencoContatti().length ? 'Nessun contatto corrisponde alla ricerca o ai filtri scelti.' : 'Nessun contatto finora. Con «Nuovo contatto» ciascun Socio registra le persone della propria rete: ente, settore, temi di interesse, status della relazione, chi ce lo ha presentato e le date del primo e dell’ultimo contatto. Il database è condiviso con tutti i Soci.') + '</div>';
-  return '<div class="ct-tabella-wrap"><table class="tab ct-tab"><thead><tr class="intestazione"><td>Contatto</td><td>Recapiti</td><td>Settore</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Temi di interesse</td><td>Riporto</td><td>Primo contatto</td><td>Ultimo contatto</td><td></td></tr></thead><tbody>' + l.map(htmlRigaContatto).join('') + '</tbody></table></div>';
+  return '<div class="ct-tabella-wrap"><table class="tab ct-tab"><thead><tr class="intestazione"><td>Contatto</td><td class="ct-th-rec" title="Recapiti: e-mail e telefono"><span class="ct-th-ico">' + ICONA_MAIL + ICONA_TEL + '</span><span class="vis-nascosto">Recapiti</span></td><td>Settore</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Temi di interesse</td><td>Riporto</td><td>Primo contatto</td><td>Ultimo contatto</td><td></td></tr></thead><tbody>' + l.map(htmlRigaContatto).join('') + '</tbody></table></div>';
 }
 function disegnaContatti(tutto) {
   const m = $('#contatti'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m);
@@ -7545,6 +7568,64 @@ function avviaAccordi() {
     if (d.acElimina) { eliminaAccordo(d.acElimina); return; }
   });
 }
+// ---- dettatura_mod
+// ================================================================ Dettatura: imputazione a voce in ogni campo di testo lungo della piattaforma.
+// Quando un'area di testo riceve il fuoco compare accanto il pulsante «Detta»; il riconoscimento usa il servizio vocale del browser
+// (Web Speech API, in italiano); il testo riconosciuto entra nel punto del cursore e la punteggiatura detta a parole viene convertita.
+const DETTATURA_LINGUA = 'it-IT';
+const DETTATURA_PUNTEGGIATURA = [[/\s*\bpunto e virgola\b/gi, ';'], [/\s*\bpunto interrogativo\b/gi, '?'], [/\s*\bpunto esclamativo\b/gi, '!'], [/\s*\bdue punti\b/gi, ':'], [/\s*\bpunto\b/gi, '.'], [/\s*\bvirgola\b/gi, ','], [/\s*\ba capo\b\s*/gi, '\n'], [/\s*\bnuova riga\b\s*/gi, '\n'], [/\s*\bparentesi aperta\b\s*/gi, ' ('], [/\s*\bparentesi chiusa\b/gi, ')'], [/\s*\bvirgolette\b\s*/gi, ' «']];
+function riconoscimentoVocale() { return window.SpeechRecognition || window.webkitSpeechRecognition || null; }
+function testoDettato(t, precedente) {
+  let s = ' ' + String(t || '').trim(); for (const [re, rep] of DETTATURA_PUNTEGGIATURA) s = s.replace(re, rep);
+  s = s.replace(/([.!?])\s*([a-zàèéìòù])/g, (m, p, l) => p + ' ' + l.toUpperCase()).replace(/(\n\s*)([a-zàèéìòù])/g, (m, sp, l) => sp + l.toUpperCase()); // maiuscola dopo il punto e a capo
+  const prima = String(precedente || ''); const fine = prima.trim().slice(-1);
+  if (!prima.trim() || fine === '.' || fine === '!' || fine === '?' || prima.endsWith('\n')) s = s.replace(/^(\s*)([a-zàèéìòù])/, (m, sp, l) => sp + l.toUpperCase());
+  if (!prima || /\s$/.test(prima) || s.startsWith('\n')) s = s.replace(/^ /, '');
+  return s;
+}
+const DETT = { campo: null, rec: null, attivo: false, btn: null, sessione: '' };
+function bottoneDettatura() {
+  if (DETT.btn) return DETT.btn;
+  const b = el('button', { type: 'button', id: 'dettatura', class: 'btn piccolo dettatura', title: 'Detta il testo a voce (riconoscimento del browser, in italiano)' }, 'Detta');
+  b.hidden = true; b.onmousedown = e => e.preventDefault(); b.onclick = () => { if (DETT.attivo) fermaDettatura(); else avviaDettatura(); };
+  document.body.appendChild(b); DETT.btn = b; return b;
+}
+function posizionaDettatura() {
+  const b = DETT.btn, c = DETT.campo; if (!b || !c || b.hidden) return; if (!c.isConnected) { fermaDettatura(); b.hidden = true; DETT.campo = null; return; } const r = c.getBoundingClientRect();
+  if (r.width === 0 || r.bottom < 0 || r.top > window.innerHeight) { b.style.visibility = 'hidden'; return; }
+  b.style.visibility = 'visible'; b.style.top = Math.max(4, r.top + 6) + 'px'; b.style.left = 'auto'; b.style.right = Math.max(4, window.innerWidth - r.right + 8) + 'px';
+}
+function mostraDettatura(campo) {
+  if (!riconoscimentoVocale()) return; const b = bottoneDettatura(); if (DETT.attivo && DETT.campo !== campo) fermaDettatura();
+  DETT.campo = campo; b.hidden = false; b.textContent = 'Detta'; b.classList.remove('attiva'); posizionaDettatura();
+}
+function nascondiDettatura() { if (DETT.attivo) return; if (DETT.btn) DETT.btn.hidden = true; DETT.campo = null; }
+function inserisciDettato(t) {
+  const c = DETT.campo; if (!c) return; const v = c.value; let i = typeof c.selectionStart === 'number' ? c.selectionStart : v.length; if (i > v.length) i = v.length; const j = typeof c.selectionEnd === 'number' ? c.selectionEnd : i;
+  const pezzo = testoDettato(t, v.slice(0, i)); c.value = v.slice(0, i) + pezzo + v.slice(j); const pos = i + pezzo.length; try { c.setSelectionRange(pos, pos); } catch (e) {}
+  c.dispatchEvent(new Event('input', { bubbles: true })); c.dispatchEvent(new Event('change', { bubbles: true }));
+}
+function avviaDettatura() {
+  const R = riconoscimentoVocale(); if (!R || !DETT.campo) return; const c = DETT.campo; if (c.disabled || c.readOnly) { toast('Questo campo non è modificabile'); return; }
+  let rec; try { rec = new R(); } catch (e) { toast('Riconoscimento vocale non disponibile in questo browser'); return; }
+  rec.lang = DETTATURA_LINGUA; rec.continuous = true; rec.interimResults = true; rec.maxAlternatives = 1; DETT.rec = rec; DETT.attivo = true; DETT.sessione = '';
+  const b = bottoneDettatura(); b.classList.add('attiva'); b.textContent = 'In ascolto… ferma'; c.classList.add('in-dettatura');
+  rec.onresult = ev => { let finale = ''; let interim = ''; for (let k = ev.resultIndex; k < ev.results.length; k++) { const r = ev.results[k]; if (r.isFinal) finale += r[0].transcript; else interim += r[0].transcript; } if (finale) inserisciDettato(finale); b.textContent = interim ? 'In ascolto… ' + interim.trim().slice(-28) : 'In ascolto… ferma'; };
+  rec.onerror = ev => { const e = ev.error || ''; if (e === 'not-allowed' || e === 'service-not-allowed') toast('Microfono non autorizzato: consentire l’uso del microfono a questa pagina nelle impostazioni del browser', 6000); else if (e === 'no-speech') toast('Nessuna voce rilevata: riprovare parlando più vicino al microfono'); else if (e === 'network') toast('Il servizio di riconoscimento vocale non è raggiungibile'); else if (e !== 'aborted') toast('Dettatura interrotta: ' + e); fermaDettatura(); };
+  rec.onend = () => { if (DETT.attivo) { try { rec.start(); } catch (e) { fermaDettatura(); } } };
+  try { rec.start(); } catch (e) { toast('Impossibile avviare la dettatura: ' + (e.message || e)); fermaDettatura(); }
+}
+function fermaDettatura() {
+  DETT.attivo = false; const rec = DETT.rec; DETT.rec = null; if (rec) { rec.onend = null; try { rec.stop(); } catch (e) {} }
+  const b = DETT.btn; if (b) { b.classList.remove('attiva'); b.textContent = 'Detta'; } if (DETT.campo) { DETT.campo.classList.remove('in-dettatura'); if (document.activeElement !== DETT.campo) nascondiDettatura(); }
+}
+function avviaDettatura_inizializza() {
+  if (!riconoscimentoVocale()) return;
+  document.addEventListener('focusin', ev => { const t = ev.target; if (t && t.tagName === 'TEXTAREA' && !t.disabled && !t.readOnly) mostraDettatura(t); });
+  document.addEventListener('focusout', ev => { const t = ev.target; if (t && t.tagName === 'TEXTAREA') setTimeout(() => { if (document.activeElement !== t && !(DETT.btn && document.activeElement === DETT.btn)) nascondiDettatura(); }, 150); });
+  document.addEventListener('scroll', posizionaDettatura, true); window.addEventListener('resize', posizionaDettatura);
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && DETT.attivo) fermaDettatura(); });
+}
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
@@ -7699,7 +7780,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaAccordi(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaAccordi(); avviaDettatura_inizializza(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

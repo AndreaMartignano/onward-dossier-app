@@ -1906,7 +1906,60 @@ textarea.in-dettatura { outline: 2px solid var(--accento); outline-offset: 1px; 
 .nai-avvisi .nai-gruppo-testa { cursor: default; background: var(--lavaggio); border-color: var(--filo); border-left-color: var(--attesa); }
 .nai-avvisi .nai-gruppo-num { background: var(--attesa); }
 .nai-avvisi .nai-gruppo-conti b { color: var(--attesa); }
-@media (max-width: 700px) { .ct-imp-griglia { grid-template-columns: 1fr; } }
+.finestra-import { width: min(1120px, 96vw); max-height: 88vh; top: 6vh; }
+.ct-imp-passi { display: flex; gap: .3rem; margin-left: auto; margin-right: .6rem; }
+.ct-imp-passi span { font-family: var(--font-titoli); font-weight: 600; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 999px; border: 1px solid var(--filo); color: var(--secondario); }
+.ct-imp-passi span.attivo { background: var(--accento); border-color: var(--accento); color: var(--accento-testo); }
+.ct-imp-strumenti { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .4rem 0 .5rem; font-size: .8rem; color: var(--secondario); }
+.ct-imp-elenco { display: flex; flex-direction: column; gap: .4rem; }
+.ct-imp-riga { border: 1px solid var(--filo); border-radius: 10px; background: var(--carta); }
+.ct-imp-riga.ct-imp-aperta { border-color: var(--accento); }
+.ct-imp-riga.ct-imp-esclusa { opacity: .55; }
+.ct-imp-riga.ct-imp-doppio .ct-imp-sommario b { color: var(--secondario); }
+.ct-imp-testa { display: flex; align-items: center; gap: .7rem; padding: .45rem .7rem; }
+.ct-imp-chk input { margin: 0; accent-color: var(--accento); width: 1.05rem; height: 1.05rem; }
+.ct-imp-sommario { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+.ct-imp-sommario b { font-family: var(--font-titoli); font-size: .92rem; }
+.ct-imp-sommario small { color: var(--secondario); font-size: .74rem; }
+.ct-imp-tags { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .15rem; }
+.ct-imp-tag { font-size: .68rem; padding: .05rem .45rem; border-radius: 999px; background: var(--lavaggio); border: 1px solid var(--filo); color: var(--inchiostro); }
+.ct-imp-tag-no { text-decoration: line-through; color: var(--secondario); }
+.ct-imp-tag-vuoto { color: var(--attesa); border-color: color-mix(in srgb, var(--attesa) 45%, var(--filo)); background: transparent; }
+.ct-imp-form { border-top: 1px solid var(--filo); padding: .5rem .8rem .8rem; background: var(--lavaggio); border-radius: 0 0 10px 10px; }
+.ct-imp-fgriglia { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 .8rem; }
+.ct-imp-form .ricerca { margin-bottom: 0; }
+.ct-imp-inc-testa { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.ct-imp-inc { display: inline-flex; align-items: center; gap: .25rem; font-size: .72rem; color: var(--accento-scuro); font-family: var(--font-titoli); font-weight: 600; cursor: pointer; }
+.ct-imp-inc input { margin: 0; accent-color: var(--accento); }
+.ct-imp-form input[disabled], .ct-imp-form textarea[disabled] { opacity: .45; text-decoration: line-through; }
+.ct-imp-piede { position: sticky; bottom: -1rem; background: var(--carta); padding-top: .6rem; margin-top: .6rem; border-top: 1px solid var(--filo); }
+@media (max-width: 900px) { .ct-imp-fgriglia { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) { .ct-imp-griglia, .ct-imp-fgriglia { grid-template-columns: 1fr; } }
+
+/* ---- Credito e consumi AI */
+.ai-credito { border: 1px solid var(--filo); border-left: 4px solid var(--ok); border-radius: 0 10px 10px 0; padding: .6rem .8rem .7rem; margin: .3rem 0 .6rem; background: var(--carta); display: flex; flex-direction: column; gap: .45rem; }
+.ai-credito.ai-cred-attenzione { border-left-color: var(--attesa); }
+.ai-credito.ai-cred-allarme { border-left-color: var(--errore); }
+.ai-cred-testa { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; }
+.ai-cred-testa small { color: var(--secondario); font-size: .76rem; }
+.ai-cred-barra { height: 10px; border-radius: 999px; background: var(--lavaggio); overflow: hidden; border: 1px solid var(--filo); }
+.ai-cred-barra i { display: block; height: 100%; background: var(--ok); border-radius: 999px; transition: width .3s; }
+.ai-cred-attenzione .ai-cred-barra i { background: var(--attesa); }
+.ai-cred-allarme .ai-cred-barra i { background: var(--errore); }
+.ai-cred-numeri { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; font-size: .84rem; }
+.ai-cred-numeri b { display: block; font-family: var(--font-titoli); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--secondario); font-weight: 600; }
+.ai-cred-numeri small { color: var(--secondario); }
+.ai-cred-azioni { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; font-size: .8rem; }
+.ai-cred-azioni label { display: inline-flex; align-items: center; gap: .3rem; color: var(--secondario); }
+.ai-cred-azioni input { width: 7em; padding: .25rem .4rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--inchiostro); font: inherit; }
+.ai-cred-azioni input[type="date"] { width: auto; }
+.ai-cred-storico { font-size: .8rem; }
+.ai-cred-dett summary { cursor: pointer; font-size: .8rem; color: var(--accento-scuro); font-family: var(--font-titoli); font-weight: 600; }
+.ai-cred-tab { margin-top: .4rem; }
+.ai-cred-tab td { font-size: .74rem; }
+.ai-cred-prezzi { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .6rem; font-size: .78rem; color: var(--secondario); margin: .4rem 0; }
+.ai-cred-prezzi input { width: 5.5em; padding: .2rem .35rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--inchiostro); font: inherit; }
+.ai-cred-prezzi label { display: inline-flex; align-items: center; gap: .25rem; }
 </style>
 </head>
 <body>
@@ -2335,7 +2388,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-20T08:01:33Z';
+window.ONWARD_BUILD = '2026-09-20T08:58:41Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -5924,7 +5977,7 @@ const GUIDE_USO = {
     effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
   contatti: { tit: 'Database relazionale',
     serve: 'È la rubrica condivisa della rete dei Soci: una scheda per ogni persona con cui Onward ha o vuole avere una relazione, con l’ente di appartenenza (azienda, PA, associazione, privato), il settore, i temi di interesse, lo status della relazione, il Socio e le Practices di riferimento, la Scheda Progetto a cui il contatto è collegato, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.',
-    usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel. «Importa (vCard, CSV)» carica in blocco i contatti da un file: la rubrica di iPhone, iPad o Mac esportata in vCard (.vcf) oppure un CSV di Excel, Numbers o Google Contatti; la piattaforma propone la corrispondenza delle colonne, chiede i valori comuni (ente, status, Socio di riferimento, Practices, riporto), mostra l’anteprima e salta i contatti già presenti.',
+    usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel. «Importa (vCard, CSV)» carica in blocco i contatti da un file: la rubrica di iPhone, iPad o Mac esportata in vCard (.vcf) oppure un CSV di Excel, Numbers o Google Contatti; al passo 1 la piattaforma propone la corrispondenza delle colonne e i valori comuni (ente, status, Socio di riferimento, Practices, riporto), al passo 2 ogni contatto si rivede da solo: si decide se importarlo, quali dati condividere (mail, cellulare, luogo, organizzazione, note, riporto) e si compilano tutte le altre variabili del database prima di confermare.',
     effetti: 'I contatti non entrano nel documento né nel modello: sono un registro di lavoro, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il database filtrato sui suoi contatti.' },
   commessa: { tit: 'Scheda di commessa',
     serve: 'È il tool dell’area Tools per ipotizzare le economie di una commessa e quindi formulare un’offerta: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
@@ -6567,46 +6620,102 @@ async function importaContattiDaFile(file) {
   else { st.dati = analizzaCSV(testo); if (st.dati.righe.length < 2) { toast('Il file CSV non contiene righe di dati oltre all’intestazione'); return; } const usati = new Set(); st.mappa = st.dati.righe[0].map(h => { const k = campoDaIntestazione(h, usati); if (k) usati.add(k); return k; }); st.contatti = contattiDaCSV(st.dati, st.mappa); }
   apriImportContatti(st);
 }
+// la finestra ha due passi: 1) lettura del file, corrispondenza delle colonne e valori comuni; 2) revisione contatto per contatto, con la scelta
+// di che cosa importare di ciascuno (mail, cellulare, luogo, organizzazione, note, riporto) e tutte le variabili del database modificabili una per una
+const CT_IMPORT_INCLUDIBILI = [['mail', 'Mail'], ['cellulare', 'Cellulare'], ['luogo', 'Luogo'], ['organizzazione', 'Organizzazione'], ['temi', 'Temi di interesse'], ['riporto', 'Riporto']];
+function firmaImportContatti(st) { return JSON.stringify([st.tipo, st.mappa || null, st.ente, st.status, st.socio, st.practice, st.riporto, st.salta]); }
+function righeImportContatti(st) {
+  const chiavi = chiaviContattoEsistente();
+  return st.contatti.map(c => { const doppio = contattoGiaPresente(c, chiavi); const dati = { nome: c.nome || '', cognome: c.cognome || '', organizzazione: c.organizzazione || '', ente: c.ente || st.ente || (c.organizzazione ? 'azienda' : 'privato'), settore: c.settore || '', mail: c.mail || '', cellulare: c.cellulare || '', luogo: c.luogo || '', status: c.status || st.status || 'idea', socio: c.socio || st.socio || '', practice: st.practice.slice(), progetto: '', temi: c.temi || '', riporto: c.riporto || st.riporto || '', primo: c.primo || '', ultimo: c.ultimo || '' };
+    const includi = {}; for (const [k] of CT_IMPORT_INCLUDIBILI) includi[k] = !!dati[k]; return { dati, includi, importa: !(st.salta && doppio), doppio, aperta: false }; });
+}
+function htmlRigaImport(r, i) {
+  const d = r.dati; const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+  const tag = (k, et) => d[k] ? '<span class="ct-imp-tag' + (r.includi[k] ? '' : ' ct-imp-tag-no') + '" title="' + esc(d[k]) + '">' + et + (r.includi[k] ? '' : ' esclusa') + '</span>' : '';
+  const pr = (d.practice || []).length ? '<span class="ct-imp-tag">' + d.practice.length + (d.practice.length === 1 ? ' Practice' : ' Practices') + '</span>' : '<span class="ct-imp-tag ct-imp-tag-vuoto">nessuna Practice</span>';
+  let h = '<div class="ct-imp-riga' + (r.importa ? '' : ' ct-imp-esclusa') + (r.doppio ? ' ct-imp-doppio' : '') + (r.aperta ? ' ct-imp-aperta' : '') + '" data-riga="' + i + '">' +
+    '<div class="ct-imp-testa"><label class="ct-imp-chk" title="Importare questo contatto"><input type="checkbox" data-imp-row="' + i + '"' + (r.importa ? ' checked' : '') + '></label>' +
+    '<div class="ct-imp-sommario"><b>' + esc([d.nome, d.cognome].filter(Boolean).join(' ') || 'Senza nome') + '</b><small>' + esc([r.includi.organizzazione && d.organizzazione, etichettaOpz(OPZ_ENTE, d.ente), r.includi.luogo && d.luogo].filter(Boolean).join(' · ')) + '</small><div class="ct-imp-tags">' + tag('mail', 'Mail') + tag('cellulare', 'Cellulare') + tag('temi', 'Note') + '<span class="ct-imp-tag">' + esc(etichettaOpz(STATUS_CONTATTO, d.status)) + '</span>' + (d.socio ? '<span class="ct-imp-tag">' + esc(d.socio) + '</span>' : '<span class="ct-imp-tag ct-imp-tag-vuoto">senza Socio</span>') + pr + (r.doppio ? '<span class="sem">già presente</span>' : '') + '</div></div>' +
+    '<button class="btn piccolo" data-imp-apri="' + i + '">' + (r.aperta ? 'Chiudi' : 'Modifica') + '</button></div>';
+  if (r.aperta) {
+    const campo = (k, lab, tipo, ph) => '<label class="campo-testo">' + lab + '<input class="ricerca" type="' + (tipo || 'text') + '" data-k="' + k + '" data-r="' + i + '" value="' + esc(d[k] || '') + '"' + (ph ? ' placeholder="' + esc(ph) + '"' : '') + '></label>';
+    const campoInc = (k, lab, tipo, ph) => '<label class="campo-testo ct-imp-campo-inc"><span class="ct-imp-inc-testa">' + lab + '<span class="ct-imp-inc"><input type="checkbox" data-inc="' + k + '" data-r="' + i + '"' + (r.includi[k] ? ' checked' : '') + '> importa</span></span><input class="ricerca" type="' + (tipo || 'text') + '" data-k="' + k + '" data-r="' + i + '" value="' + esc(d[k] || '') + '"' + (r.includi[k] ? '' : ' disabled') + (ph ? ' placeholder="' + esc(ph) + '"' : '') + '></label>';
+    const soci = nomiSociProgetti(); if (d.socio && !soci.includes(d.socio)) soci.push(d.socio);
+    h += '<div class="ct-imp-form"><div class="ct-imp-fgriglia">' + campo('nome', 'Nome') + campo('cognome', 'Cognome') +
+      '<label class="campo-testo">Ente (tipologia)<select class="ricerca" data-k="ente" data-r="' + i + '">' + OPZ_ENTE.map(([k, l]) => opt(k, d.ente, l)).join('') + '</select></label>' +
+      '<label class="campo-testo">Settore<span class="ct-imp-settore">' + htmlSettoriSelect(d.settore, d.ente).replace('class="f" data-f="settore"', 'class="ricerca" data-k="settore" data-r="' + i + '"') + '</span></label>' +
+      campoInc('organizzazione', 'Organizzazione') + campoInc('mail', 'Mail', 'email') + campoInc('cellulare', 'Cellulare', 'tel') + campoInc('luogo', 'Luogo') +
+      '<label class="campo-testo">Status<select class="ricerca" data-k="status" data-r="' + i + '">' + STATUS_CONTATTO.map(([k, l]) => opt(k, d.status, l)).join('') + '</select></label>' +
+      '<label class="campo-testo">Socio di riferimento<select class="ricerca" data-k="socio" data-r="' + i + '">' + opt('', d.socio, 'non indicato') + soci.map(n => opt(n, d.socio, n)).join('') + '</select></label>' +
+      '<label class="campo-testo">Scheda Progetto collegata<select class="ricerca" data-k="progetto" data-r="' + i + '">' + opzioniProgettiContatto(d.progetto) + '</select></label>' +
+      campoInc('riporto', 'Riporto (chi ce lo ha presentato)') + campo('primo', 'Data primo contatto', 'date') + campo('ultimo', 'Data ultimo contatto', 'date') + '</div>' +
+      '<div class="pop-tit">Practices di riferimento</div><div class="pg-multi">' + practiceElenco().map(x => '<label class="pg-opt"><input type="checkbox" data-pr="' + esc(x.id) + '" data-r="' + i + '"' + ((d.practice || []).includes(x.id) ? ' checked' : '') + '> <span>' + esc(x.num + ' ' + x.nome) + '</span></label>').join('') + '</div>' +
+      '<label class="campo-testo ct-imp-campo-inc"><span class="ct-imp-inc-testa">Temi di interesse<span class="ct-imp-inc"><input type="checkbox" data-inc="temi" data-r="' + i + '"' + (r.includi.temi ? ' checked' : '') + '> importa</span></span><textarea class="ricerca" rows="3" data-k="temi" data-r="' + i + '"' + (r.includi.temi ? '' : ' disabled') + '>' + esc(d.temi || '') + '</textarea></label></div>';
+  }
+  return h + '</div>';
+}
 function apriImportContatti(st) {
-  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-import', id: 'finestra' }); document.body.appendChild(fin); $('#sfondo').classList.add('aperto');
-  const disegna = () => {
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-import', id: 'finestra' }); document.body.appendChild(fin); $('#sfondo').classList.add('aperto'); st.passo = 1;
+  const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+  const testaFin = () => '<div class="fin-testa"><b>Importa contatti da «' + esc(st.nome) + '»</b><span class="ct-imp-passi"><span class="' + (st.passo === 1 ? 'attivo' : '') + '">1 File e valori comuni</span><span class="' + (st.passo === 2 ? 'attivo' : '') + '">2 Revisione contatto per contatto</span></span><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>';
+  const disegnaPasso1 = () => {
     if (st.tipo === 'csv') st.contatti = contattiDaCSV(st.dati, st.mappa);
-    const chiavi = chiaviContattoEsistente(); const doppi = st.contatti.filter(c => contattoGiaPresente(c, chiavi)).length; const daImportare = st.salta ? st.contatti.length - doppi : st.contatti.length; st.daImportare = daImportare;
-    const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
-    const soci = nomiSociProgetti();
-    let h = '<div class="fin-testa"><b>Importa contatti da «' + esc(st.nome) + '»</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>';
-    h += '<p class="nota-pannello">' + (st.tipo === 'vcf' ? 'File vCard (rubrica di iPhone, iPad, Mac o altri sistemi): letti ' + st.contatti.length + (st.contatti.length === 1 ? ' contatto' : ' contatti') + ' con nome, organizzazione, mail, cellulare, città e note.' : 'File CSV: ' + (st.dati.righe.length - 1) + ' righe di dati e ' + st.dati.righe[0].length + ' colonne (separatore «' + (st.dati.sep === '\t' ? 'tabulazione' : st.dati.sep) + '»). Controllare la corrispondenza tra le colonne del file e i campi del Database relazionale: la piattaforma la propone dai titoli delle colonne e si può correggere.') + ' Il file resta nel browser: nel repository entrano solo i contatti importati.</p>';
+    const chiavi = chiaviContattoEsistente(); const doppi = st.contatti.filter(c => contattoGiaPresente(c, chiavi)).length; const soci = nomiSociProgetti();
+    let h = testaFin();
+    h += '<p class="nota-pannello">' + (st.tipo === 'vcf' ? 'File vCard (rubrica di iPhone, iPad, Mac o altri sistemi): letti ' + st.contatti.length + (st.contatti.length === 1 ? ' contatto' : ' contatti') + ' con nome, organizzazione, mail, cellulare, città e note.' : 'File CSV: ' + (st.dati.righe.length - 1) + ' righe di dati e ' + st.dati.righe[0].length + ' colonne (separatore «' + (st.dati.sep === '\t' ? 'tabulazione' : st.dati.sep) + '»). Controllare la corrispondenza tra le colonne del file e i campi del Database relazionale: la piattaforma la propone dai titoli delle colonne e si può correggere.') + ' Il file resta nel browser: nel repository entrano solo i contatti che si confermano al passo 2, dove ogni contatto si rivede uno per uno.</p>';
     if (st.tipo === 'csv') h += '<div class="ct-imp-mappa"><table class="tab"><thead><tr class="intestazione"><td>Colonna del file</td><td>Esempio</td><td>Campo del Database relazionale</td></tr></thead><tbody>' + st.dati.righe[0].map((t, i) => { const es = (st.dati.righe.slice(1).map(r => r[i]).find(v => String(v || '').trim()) || ''); return '<tr><td><b>' + esc(t) + '</b></td><td class="ct-imp-es">' + esc(taglioNAI(es, 40)) + '</td><td><select class="ricerca ct-imp-sel" data-col="' + i + '">' + CT_IMPORT_CAMPI.map(([k, l]) => opt(k, st.mappa[i] || '', l)).join('') + '</select></td></tr>'; }).join('') + '</tbody></table></div>';
-    h += '<div class="pop-tit">Valori per tutti i contatti importati (dove il file non li indica)</div><div class="fin-griglia ct-imp-griglia">' +
+    h += '<div class="pop-tit">Valori comuni proposti a tutti i contatti (al passo 2 si cambiano contatto per contatto)</div><div class="fin-griglia ct-imp-griglia">' +
       '<label class="campo-testo">Ente (tipologia)<select class="ricerca" id="ct-imp-ente">' + opt('', st.ente, 'Automatico: Azienda se c’è l’organizzazione, altrimenti Privato') + OPZ_ENTE.map(([k, l]) => opt(k, st.ente, l)).join('') + '</select></label>' +
       '<label class="campo-testo">Status<select class="ricerca" id="ct-imp-status">' + STATUS_CONTATTO.map(([k, l]) => opt(k, st.status, l)).join('') + '</select></label>' +
       '<label class="campo-testo">Socio di riferimento<select class="ricerca" id="ct-imp-socio">' + opt('', st.socio, 'non indicato') + soci.map(n => opt(n, st.socio, n)).join('') + '</select></label>' +
       '<label class="campo-testo">Riporto (chi ce lo ha presentato)<input class="ricerca" id="ct-imp-riporto" value="' + esc(st.riporto) + '" placeholder="es. rubrica personale di ' + esc(S.autore || '') + '"></label></div>' +
-      '<div class="pop-tit">Practices di riferimento (facoltative)</div><div class="pg-multi">' + practiceElenco().map(x => '<label class="pg-opt"><input type="checkbox" data-imp-pr="' + esc(x.id) + '"' + (st.practice.includes(x.id) ? ' checked' : '') + '> <span>' + esc(x.num + ' ' + x.nome) + '</span></label>').join('') + '</div>';
-    h += '<label class="ct-imp-salta"><input type="checkbox" id="ct-imp-salta"' + (st.salta ? ' checked' : '') + '> Salta i contatti già presenti nel database (stessa mail, oppure stesso nome e cognome)' + (doppi ? ' <b>' + doppi + (doppi === 1 ? ' trovato' : ' trovati') + '</b>' : ' <small>nessuno trovato</small>') + '</label>';
-    const ant = st.contatti.slice(0, 8);
-    h += '<div class="pop-tit">Anteprima' + (st.contatti.length > 8 ? ' (primi 8 di ' + st.contatti.length + ')' : '') + '</div><div class="ct-imp-ant"><table class="tab"><thead><tr class="intestazione"><td>Nome</td><td>Cognome</td><td>Organizzazione</td><td>Mail</td><td>Cellulare</td><td>Luogo</td><td></td></tr></thead><tbody>' + ant.map(c => '<tr' + (contattoGiaPresente(c, chiavi) ? ' class="ct-imp-doppio"' : '') + '><td>' + esc(c.nome) + '</td><td>' + esc(c.cognome) + '</td><td>' + esc(c.organizzazione) + '</td><td>' + esc(c.mail) + '</td><td>' + esc(c.cellulare) + '</td><td>' + esc(c.luogo) + '</td><td>' + (contattoGiaPresente(c, chiavi) ? '<span class="sem">già presente</span>' : '') + '</td></tr>').join('') + (ant.length ? '' : '<tr><td colspan="7" class="pg-muto">Con questa corrispondenza delle colonne non risulta alcun contatto: indicare almeno la colonna del nome o del cognome.</td></tr>') + '</tbody></table></div>';
-    h += '<div class="azioni gl-azioni"><span class="nota-pannello">I contatti importati sono condivisi con tutti i Soci e restano nella Cronologia; Network AI li legge alla prossima analisi.</span><span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="ct-imp-ok"' + (daImportare ? '' : ' disabled') + '>Importa ' + daImportare + (daImportare === 1 ? ' contatto' : ' contatti') + '</button></div>';
-    fin.innerHTML = h;
-    $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
-    $('#ct-imp-ok', fin).onclick = () => eseguiImportContatti(st);
+      '<div class="pop-tit">Practices di riferimento proposte</div><div class="pg-multi">' + practiceElenco().map(x => '<label class="pg-opt"><input type="checkbox" data-imp-pr="' + esc(x.id) + '"' + (st.practice.includes(x.id) ? ' checked' : '') + '> <span>' + esc(x.num + ' ' + x.nome) + '</span></label>').join('') + '</div>';
+    h += '<label class="ct-imp-salta"><input type="checkbox" id="ct-imp-salta"' + (st.salta ? ' checked' : '') + '> Escludi in partenza i contatti già presenti nel database (stessa mail, oppure stesso nome e cognome)' + (doppi ? ' <b>' + doppi + (doppi === 1 ? ' trovato' : ' trovati') + '</b>' : ' <small>nessuno trovato</small>') + '</label>';
+    const ant = st.contatti.slice(0, 6);
+    h += '<div class="pop-tit">Anteprima' + (st.contatti.length > 6 ? ' (primi 6 di ' + st.contatti.length + ')' : '') + '</div><div class="ct-imp-ant"><table class="tab"><thead><tr class="intestazione"><td>Nome</td><td>Cognome</td><td>Organizzazione</td><td>Mail</td><td>Cellulare</td><td>Luogo</td><td></td></tr></thead><tbody>' + ant.map(c => '<tr' + (contattoGiaPresente(c, chiavi) ? ' class="ct-imp-doppio"' : '') + '><td>' + esc(c.nome) + '</td><td>' + esc(c.cognome) + '</td><td>' + esc(c.organizzazione) + '</td><td>' + esc(c.mail) + '</td><td>' + esc(c.cellulare) + '</td><td>' + esc(c.luogo) + '</td><td>' + (contattoGiaPresente(c, chiavi) ? '<span class="sem">già presente</span>' : '') + '</td></tr>').join('') + (ant.length ? '' : '<tr><td colspan="7" class="pg-muto">Con questa corrispondenza delle colonne non risulta alcun contatto: indicare almeno la colonna del nome o del cognome.</td></tr>') + '</tbody></table></div>';
+    h += '<div class="azioni gl-azioni"><span class="nota-pannello">Al passo 2 si decide, per ogni contatto, se importarlo e quali informazioni condividere (mail, cellulare, luogo, organizzazione, note) e si compilano tutte le altre variabili.</span><span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="ct-imp-avanti"' + (st.contatti.length ? '' : ' disabled') + '>Avanti: rivedi i ' + st.contatti.length + ' contatti</button></div>';
+    fin.innerHTML = h; $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+    $('#ct-imp-avanti', fin).onclick = () => { const f = firmaImportContatti(st); if (!st.righe || st.firma !== f) { st.righe = righeImportContatti(st); st.firma = f; } st.passo = 2; disegnaPasso2(); };
   };
-  fin.addEventListener('change', ev => { const t = ev.target;
-    if (t.classList.contains('ct-imp-sel')) { st.mappa[+t.dataset.col] = t.value; disegna(); return; }
-    if (t.id === 'ct-imp-salta') { st.salta = t.checked; disegna(); return; }
-    if (t.id === 'ct-imp-ente') st.ente = t.value; if (t.id === 'ct-imp-status') st.status = t.value; if (t.id === 'ct-imp-socio') st.socio = t.value; if (t.id === 'ct-imp-riporto') st.riporto = t.value.trim();
-    if (t.dataset && t.dataset.impPr) { const cur = new Set(st.practice); if (t.checked) cur.add(t.dataset.impPr); else cur.delete(t.dataset.impPr); st.practice = [...cur]; } });
-  fin.addEventListener('input', ev => { if (ev.target.id === 'ct-imp-riporto') st.riporto = ev.target.value.trim(); });
-  disegna();
+  const conteggio = () => st.righe.filter(r => r.importa).length;
+  const aggiornaConteggio = () => { const b = $('#ct-imp-ok', fin); const n = conteggio(); if (b) { b.textContent = 'Importa ' + n + (n === 1 ? ' contatto' : ' contatti'); b.disabled = !n; } const s2 = $('#ct-imp-conto', fin); if (s2) s2.textContent = n + ' di ' + st.righe.length + ' contatti da importare'; };
+  const disegnaPasso2 = () => {
+    let h = testaFin();
+    h += '<p class="nota-pannello">Ogni contatto si rivede da solo: la casella a sinistra decide se importarlo; «Modifica» apre tutte le variabili del database (ente, settore, status, Socio, Practices, Scheda Progetto, date, note) e, per mail, cellulare, luogo, organizzazione, note e riporto, la casella «importa» decide se quel dato entra nel database condiviso oppure resta fuori.</p>';
+    h += '<div class="ct-imp-strumenti"><span id="ct-imp-conto"></span><span class="spazio"></span><button class="btn piccolo" data-imp-tutti="1">Seleziona tutti</button><button class="btn piccolo" data-imp-tutti="0">Nessuno</button><button class="btn piccolo" data-imp-apri-tutti="1">Apri tutti</button><button class="btn piccolo" data-imp-apri-tutti="0">Chiudi tutti</button></div>';
+    h += '<div class="ct-imp-elenco">' + st.righe.map(htmlRigaImport).join('') + '</div>';
+    h += '<div class="azioni gl-azioni ct-imp-piede"><span class="nota-pannello">I contatti importati sono condivisi con tutti i Soci e restano nella Cronologia; Network AI li legge alla prossima analisi.</span><span class="spazio"></span><button class="btn piccolo" id="ct-imp-indietro">Indietro</button><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="ct-imp-ok">Importa</button></div>';
+    fin.innerHTML = h; aggiornaConteggio(); $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+    $('#ct-imp-indietro', fin).onclick = () => { st.passo = 1; disegnaPasso1(); }; $('#ct-imp-ok', fin).onclick = () => eseguiImportContatti(st);
+  };
+  const ridisegnaRiga = i => { const r = $('.ct-imp-riga[data-riga="' + i + '"]', fin); if (!r) return; const t = el('div'); t.innerHTML = htmlRigaImport(st.righe[i], i); r.replaceWith(t.firstElementChild); };
+  fin.addEventListener('change', ev => { const t = ev.target; const d = t.dataset || {};
+    if (st.passo === 1) {
+      if (t.classList.contains('ct-imp-sel')) { st.mappa[+d.col] = t.value; disegnaPasso1(); return; }
+      if (t.id === 'ct-imp-salta') { st.salta = t.checked; disegnaPasso1(); return; }
+      if (t.id === 'ct-imp-ente') st.ente = t.value; if (t.id === 'ct-imp-status') st.status = t.value; if (t.id === 'ct-imp-socio') st.socio = t.value; if (t.id === 'ct-imp-riporto') st.riporto = t.value.trim();
+      if (d.impPr) { const cur = new Set(st.practice); if (t.checked) cur.add(d.impPr); else cur.delete(d.impPr); st.practice = [...cur]; }
+      return; }
+    if (d.impRow !== undefined) { st.righe[+d.impRow].importa = t.checked; const riga = t.closest('.ct-imp-riga'); if (riga) riga.classList.toggle('ct-imp-esclusa', !t.checked); aggiornaConteggio(); return; }
+    if (d.inc && d.r !== undefined) { const r = st.righe[+d.r]; r.includi[d.inc] = t.checked; ridisegnaRiga(+d.r); return; }
+    if (d.pr && d.r !== undefined) { const r = st.righe[+d.r]; const cur = new Set(r.dati.practice || []); if (t.checked) cur.add(d.pr); else cur.delete(d.pr); r.dati.practice = [...cur]; ridisegnaRiga(+d.r); return; }
+    if (d.k && d.r !== undefined) { const r = st.righe[+d.r]; r.dati[d.k] = t.value; if (t.tagName === 'SELECT') ridisegnaRiga(+d.r); return; } });
+  fin.addEventListener('input', ev => { const t = ev.target; const d = t.dataset || {}; if (st.passo === 1) { if (t.id === 'ct-imp-riporto') st.riporto = t.value.trim(); return; } if (d.k && d.r !== undefined) st.righe[+d.r].dati[d.k] = t.value; });
+  fin.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b || st.passo !== 2) return; const d = b.dataset;
+    if (d.impApri !== undefined) { const i = +d.impApri; st.righe[i].aperta = !st.righe[i].aperta; ridisegnaRiga(i); return; }
+    if (d.impTutti !== undefined) { for (const r of st.righe) r.importa = d.impTutti === '1'; for (const x of $$('[data-imp-row]', fin)) { x.checked = d.impTutti === '1'; x.closest('.ct-imp-riga').classList.toggle('ct-imp-esclusa', d.impTutti !== '1'); } aggiornaConteggio(); return; }
+    if (d.impApriTutti !== undefined) { for (const r of st.righe) r.aperta = d.impApriTutti === '1'; $('.ct-imp-elenco', fin).innerHTML = st.righe.map(htmlRigaImport).join(''); return; } });
+  disegnaPasso1();
 }
 function eseguiImportContatti(st) {
-  if (!puoScrivereContatti()) return; const chiavi = chiaviContattoEsistente(); const ora = new Date().toISOString(); const l = elencoContatti(); let n = 0, saltati = 0;
-  for (const c of st.contatti) { if (st.salta && contattoGiaPresente(c, chiavi)) { saltati++; continue; }
-    const nuovo = { id: uid('ct'), autore: S.autore || 'anonimo', creato: ora, agg: ora, aggDa: S.autore || 'anonimo', nome: c.nome || '', cognome: c.cognome || '', organizzazione: c.organizzazione || '', ente: c.ente || st.ente || (c.organizzazione ? 'azienda' : 'privato'), mail: c.mail || '', cellulare: c.cellulare || '', luogo: c.luogo || '', settore: c.settore || '', temi: c.temi || '', socio: c.socio || st.socio || '', practice: st.practice.slice(), progetto: '', status: c.status || st.status || 'idea', riporto: c.riporto || st.riporto || '', primo: c.primo || '', ultimo: c.ultimo || '' };
-    l.push(nuovo); if (nuovo.mail) chiavi.add('m:' + normIntestazione(nuovo.mail)); chiavi.add('n:' + normIntestazione(nuovo.nome + ' ' + nuovo.cognome)); n++; }
-  if (!n) { toast('Nessun contatto da importare' + (saltati ? ': erano tutti già presenti' : '')); return; }
+  if (!puoScrivereContatti() || !st.righe) return; const ora = new Date().toISOString(); const l = elencoContatti(); let n = 0; const saltati = st.righe.filter(r => !r.importa).length;
+  for (const r of st.righe) { if (!r.importa) continue; const d = r.dati; if (!String(d.nome || '').trim() && !String(d.cognome || '').trim()) continue;
+    const nuovo = { id: uid('ct'), autore: S.autore || 'anonimo', creato: ora, agg: ora, aggDa: S.autore || 'anonimo', nome: String(d.nome || '').trim(), cognome: String(d.cognome || '').trim(), organizzazione: '', ente: d.ente || (d.organizzazione ? 'azienda' : 'privato'), mail: '', cellulare: '', luogo: '', settore: d.settore || '', temi: '', socio: d.socio || '', practice: (d.practice || []).slice(), progetto: d.progetto || '', status: d.status || 'idea', riporto: '', primo: d.primo || '', ultimo: d.ultimo || '' };
+    for (const [k] of CT_IMPORT_INCLUDIBILI) nuovo[k] = r.includi[k] ? String(d[k] || '').trim() : '';
+    l.push(nuovo); n++; }
+  if (!n) { toast('Nessun contatto da importare'); return; }
   if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.contatti = 'Database relazionale: importati ' + n + (n === 1 ? ' contatto' : ' contatti') + ' da ' + st.nome; segna('contatti');
-  chiudiFinestra(); dopoModificaContatti(); disegnaContatti(true); toast('Importati ' + n + (n === 1 ? ' contatto' : ' contatti') + (saltati ? '; ' + saltati + ' già presenti non duplicati' : '') + '. Il salvataggio nel repository è in corso.', 6000);
+  chiudiFinestra(); dopoModificaContatti(); disegnaContatti(true); toast('Importati ' + n + (n === 1 ? ' contatto' : ' contatti') + (saltati ? '; ' + saltati + ' esclusi' : '') + '. Il salvataggio nel repository è in corso.', 6000);
 }
 function avviaImportContatti() {
   const m = $('#contatti'); if (!m) return; const b = $('#ct-importa', m), f = $('#ct-import-file', m); if (!b || !f) return;
@@ -7666,6 +7775,74 @@ function avviaAlberoPSA() {
   m.addEventListener('keydown', ev => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.classList && ev.target.classList.contains('psa-nodo')) { ev.preventDefault(); selezionaPSA(ev.target.dataset.psa, 'toggle'); } });
   window.addEventListener('resize', () => { if (!m.hidden) disegnaAlberoPSA(); });
 }
+// ---- consumi_mod
+// ================================================================ Credito e consumi AI: stima nel browser. Ogni richiesta alle API (Accordi, Network AI, prove) registra i token
+// restituiti dal servizio e il costo ai prezzi di listino del modello; le ricariche inserite a mano danno il credito, il residuo è la differenza.
+// Il saldo reale resta nella console Anthropic: la stima non vede le richieste fatte altrove con la stessa chiave.
+const AI_LISTINO = [[/fable-5-1|mythos-5-1/, [10, 50, 12.5, 0.25]], [/fable|mythos/, [10, 50, 12.5, 1]], [/opus-4-[5-9]|opus-[5-9]/, [5, 25, 6.25, 0.5]], [/opus/, [15, 75, 18.75, 1.5]], [/sonnet-[5-9]/, [2, 10, 2.5, 0.2]], [/sonnet/, [3, 15, 3.75, 0.3]], [/haiku-4/, [1, 5, 1.25, 0.1]], [/haiku/, [0.8, 4, 1, 0.08]]];
+const AI_LISTINO_URL = 'https://platform.claude.com/docs/en/about-claude/pricing';
+const AI_FUNZIONI = { networkai: 'Network AI', accordi: 'Accordi Società Partner', prova: 'Prova una richiesta', storico: 'Analisi precedenti al contatore' };
+function consumiAI() { let c = {}; try { c = JSON.parse(localStorage.getItem('onward.ai.consumi') || '{}') || {}; } catch (e) { c = {}; } if (!Array.isArray(c.ricariche)) c.ricariche = []; if (!Array.isArray(c.voci)) c.voci = []; if (!(Number(c.cambio) > 0)) c.cambio = 0.92; if (!c.prezzi || typeof c.prezzi !== 'object') c.prezzi = {}; return c; }
+function salvaConsumiAI(c) { try { localStorage.setItem('onward.ai.consumi', JSON.stringify(c)); } catch (e) {} }
+function listinoModelloAI(modello, c) { c = c || consumiAI(); const o = c.prezzi[modello]; if (o && Number(o.in) > 0 && Number(o.out) > 0) return { in: +o.in, out: +o.out, cw: +o.in * 1.25, cr: +o.in * 0.1, fonte: 'personalizzato' }; const m = String(modello || '').toLowerCase(); for (const [re, p] of AI_LISTINO) if (re.test(m)) return { in: p[0], out: p[1], cw: p[2], cr: p[3], fonte: 'listino' }; return { in: 5, out: 25, cw: 6.25, cr: 0.5, fonte: 'stima' }; }
+function costoUsoAI(modello, usage, c) { const p = listinoModelloAI(modello, c); const u = usage || {}; const n = k => Number(u[k] || 0); return (n('input_tokens') * p.in + n('output_tokens') * p.out + n('cache_creation_input_tokens') * p.cw + n('cache_read_input_tokens') * p.cr) / 1e6; }
+function eurAI(usd, c) { c = c || consumiAI(); return Number(usd || 0) * Number(c.cambio || 0.92); }
+function fmtEurAI(x) { return (Math.round(Number(x || 0) * 100) / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function fmtUsdAI(x) { return (Math.round(Number(x || 0) * 100) / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $'; }
+function fmtTokAI(n) { return Number(n || 0).toLocaleString('it-IT'); }
+// registra una richiesta: restituisce il costo in dollari
+function registraConsumoAI(funzione, modello, usage, nota) {
+  if (!usage) return 0; const c = consumiAI(); const usd = costoUsoAI(modello, usage, c);
+  c.voci.push({ quando: new Date().toISOString(), funzione, modello, in: usage.input_tokens || 0, out: usage.output_tokens || 0, cw: usage.cache_creation_input_tokens || 0, cr: usage.cache_read_input_tokens || 0, usd, nota: nota || '' });
+  if (c.voci.length > 600) c.voci.splice(0, c.voci.length - 600); salvaConsumiAI(c);
+  const s = statoCreditoAI(c); if (s.credito > 0 && s.residuo <= s.credito * 0.1) toast('Credito AI stimato in esaurimento: restano circa ' + fmtEurAI(s.residuo) + '. Ricaricare nella console Anthropic e registrare la ricarica nelle Impostazioni.', 8000);
+  if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) { const box = $('#ai-credito'); if (box) { const t = el('div'); t.innerHTML = htmlCreditoAI(); box.replaceWith(t.firstElementChild); attivaCreditoAI($('#pan-impostazioni')); } }
+  return usd;
+}
+function statoCreditoAI(c) {
+  c = c || consumiAI(); const ric = c.ricariche.slice().sort((a, b) => String(a.quando).localeCompare(String(b.quando))); const prima = ric.length ? ric[0].quando : null;
+  const credito = ric.reduce((t, r) => t + Number(r.importo || 0), 0); const voci = c.voci.filter(v => !prima || String(v.quando) >= prima);
+  const usd = voci.reduce((t, v) => t + Number(v.usd || 0), 0); const speso = eurAI(usd, c); const residuo = credito - speso;
+  const per = {}; for (const v of voci) { const k = v.funzione || 'altro'; per[k] = per[k] || { n: 0, usd: 0, in: 0, out: 0 }; per[k].n++; per[k].usd += Number(v.usd || 0); per[k].in += Number(v.in || 0); per[k].out += Number(v.out || 0); }
+  return { credito, usd, speso, residuo, quota: credito > 0 ? Math.max(0, Math.min(1, residuo / credito)) : null, voci, per, ultimaRicarica: ric.length ? ric[ric.length - 1] : null, tokIn: voci.reduce((t, v) => t + Number(v.in || 0), 0), tokOut: voci.reduce((t, v) => t + Number(v.out || 0), 0) };
+}
+// analisi già registrate nel repository prima del contatore (Network AI e Accordi con i token salvati): si possono aggiungere una volta, con una ripartizione stimata tra ingresso e uscita
+function storicoConsumiAI() {
+  const c = consumiAI(); const gia = new Set(c.voci.map(v => v.rif).filter(Boolean)); const out = [];
+  for (const a of (typeof elencoAnalisiNAI === 'function' ? elencoAnalisiNAI() : [])) { if (!a.tokens || gia.has('na:' + a.id) || (a.autore && S.autore && a.autore !== S.autore)) continue; if (a.usage) continue; out.push({ rif: 'na:' + a.id, quando: a.quando, modello: a.modello || '', funzione: 'networkai', in: Math.round(a.tokens * 0.85), out: a.tokens - Math.round(a.tokens * 0.85), nota: 'Network AI del ' + dataIt(a.quando) }); }
+  for (const a of ((S.accordi && S.accordi.accordi) || [])) { const g = a.generata; if (!g || !g.tokens || gia.has('ac:' + a.id + ':' + g.quando) || (a.aggDa && S.autore && a.aggDa !== S.autore)) continue; if (g.usage) continue; out.push({ rif: 'ac:' + a.id + ':' + g.quando, quando: g.quando, modello: g.modello || '', funzione: 'accordi', in: Math.round(g.tokens * 0.9), out: g.tokens - Math.round(g.tokens * 0.9), nota: 'Sintesi dell’accordo «' + (typeof nomeAccordo === 'function' ? nomeAccordo(a) : '') + '»' }); }
+  return out;
+}
+function aggiungiStoricoConsumiAI() { const c = consumiAI(); const l = storicoConsumiAI(); for (const v of l) { const usd = costoUsoAI(v.modello, { input_tokens: v.in, output_tokens: v.out }, c); c.voci.push({ quando: v.quando, funzione: v.funzione, modello: v.modello, in: v.in, out: v.out, cw: 0, cr: 0, usd, nota: v.nota + ' (ripartizione stimata dei token)', rif: v.rif }); } c.voci.sort((a, b) => String(a.quando).localeCompare(String(b.quando))); salvaConsumiAI(c); return l.length; }
+function htmlCreditoAI() {
+  const c = consumiAI(); const s = statoCreditoAI(c); const cfg = cfgAI(); const p = listinoModelloAI(cfg.modello || '', c); const storico = storicoConsumiAI();
+  const livello = s.quota == null ? '' : s.quota <= 0.1 ? ' ai-cred-allarme' : s.quota <= 0.25 ? ' ai-cred-attenzione' : ' ai-cred-ok';
+  const sem = s.quota == null ? '<span class="sem">Nessuna ricarica registrata</span>' : s.quota <= 0.1 ? '<span class="sem allarme">Credito in esaurimento: ricaricare</span>' : s.quota <= 0.25 ? '<span class="sem attenzione">Credito sotto il 25%</span>' : '<span class="sem ok">Credito disponibile</span>';
+  const oggi = new Date().toISOString().slice(0, 10);
+  let h = '<div class="ai-credito' + livello + '" id="ai-credito"><div class="ai-cred-testa">' + sem + (s.ultimaRicarica ? '<small>Ultima ricarica registrata: ' + fmtEurAI(s.ultimaRicarica.importo) + ' il ' + esc(dataBreve(s.ultimaRicarica.quando)) + '</small>' : '<small>Registrare qui sotto l’importo caricato nella console Anthropic (per esempio 20 €) per vedere il residuo.</small>') + '</div>';
+  if (s.quota != null) h += '<div class="ai-cred-barra" title="Residuo stimato ' + Math.round(s.quota * 100) + '%"><i style="width:' + Math.round(s.quota * 100) + '%"></i></div>';
+  h += '<div class="ai-cred-numeri"><span><b>Credito registrato</b>' + fmtEurAI(s.credito) + '</span><span><b>Speso (stima)</b>' + fmtEurAI(s.speso) + ' <small>(' + fmtUsdAI(s.usd) + ')</small></span><span><b>Residuo (stima)</b>' + fmtEurAI(s.residuo) + (s.quota != null ? ' <small>(' + Math.round(s.quota * 100) + '%)</small>' : '') + '</span><span><b>Richieste</b>' + s.voci.length + '</span><span><b>Token</b>' + fmtTokAI(s.tokIn) + ' in ingresso, ' + fmtTokAI(s.tokOut) + ' in uscita</span></div>';
+  const perF = Object.keys(s.per).map(k => (AI_FUNZIONI[k] || k) + ' ' + s.per[k].n + ' (' + fmtEurAI(eurAI(s.per[k].usd, c)) + ')').join('; ');
+  h += '<p class="nota-pannello">La stima conta le richieste fatte da questo browser con la chiave salvata' + (perF ? ': ' + esc(perF) : '') + '. I prezzi sono quelli di listino per milione di token del modello usato (per ' + esc(cfg.modello || 'il modello scelto') + ': ' + fmtUsdAI(p.in) + ' in ingresso, ' + fmtUsdAI(p.out) + ' in uscita' + (p.fonte === 'personalizzato' ? ', valori personalizzati' : '') + '), convertiti in euro al cambio indicato. Anthropic addebita in dollari: il saldo reale è nella console (sezione Billing) e le richieste fatte altrove con la stessa chiave non sono conteggiate.</p>';
+  h += '<div class="ai-cred-azioni"><label>Ricarica<input type="text" inputmode="decimal" id="ai-cred-importo" placeholder="20,00"><span>€</span></label><label>del<input type="date" id="ai-cred-data" value="' + oggi + '"></label><button class="btn piccolo primario" id="ai-cred-aggiungi">Registra la ricarica</button><label>Cambio: 1 $ =<input type="text" inputmode="decimal" id="ai-cred-cambio" value="' + String(Math.round(Number(c.cambio) * 100) / 100) + '"><span>€</span></label></div>';
+  if (storico.length) h += '<div class="avviso ai-cred-storico">Nel repository ci sono ' + storico.length + (storico.length === 1 ? ' analisi fatta' : ' analisi fatte') + ' da te prima del contatore (token registrati: ' + fmtTokAI(storico.reduce((t, v) => t + v.in + v.out, 0)) + '): <button class="btn piccolo" id="ai-cred-storico">Aggiungila al conteggio</button> con una ripartizione stimata tra token in ingresso e in uscita.</div>';
+  h += '<details class="ai-cred-dett"><summary>Ultime richieste, ricariche e prezzi</summary>';
+  const ultime = s.voci.slice(-12).reverse();
+  h += ultime.length ? '<table class="tab ai-cred-tab"><thead><tr class="intestazione"><td>Quando</td><td>Funzione</td><td>Modello</td><td>Token in</td><td>Token out</td><td>Costo</td></tr></thead><tbody>' + ultime.map(v => '<tr><td>' + esc(dataIt(v.quando)) + '</td><td>' + esc(AI_FUNZIONI[v.funzione] || v.funzione || '') + (v.nota ? '<br><small>' + esc(taglioNAI(v.nota, 60)) + '</small>' : '') + '</td><td>' + esc(v.modello || '') + '</td><td>' + fmtTokAI(v.in) + '</td><td>' + fmtTokAI(v.out) + '</td><td>' + fmtEurAI(eurAI(v.usd, c)) + '</td></tr>').join('') + '</tbody></table>' : '<p class="nota-pannello">Nessuna richiesta registrata finora.</p>';
+  if (c.ricariche.length) h += '<p class="nota-pannello">Ricariche registrate: ' + c.ricariche.map(r => fmtEurAI(r.importo) + ' il ' + dataBreve(r.quando)).join('; ') + '. <button class="btn piccolo" id="ai-cred-togli-ric">Togli l’ultima ricarica</button></p>';
+  h += '<div class="ai-cred-prezzi"><span>Prezzi personalizzati per ' + esc(cfg.modello || 'il modello scelto') + ' ($ per milione di token):</span><label>ingresso<input type="text" inputmode="decimal" id="ai-prezzo-in" value="' + (c.prezzi[cfg.modello] ? c.prezzi[cfg.modello].in : '') + '" placeholder="' + p.in + '"></label><label>uscita<input type="text" inputmode="decimal" id="ai-prezzo-out" value="' + (c.prezzi[cfg.modello] ? c.prezzi[cfg.modello].out : '') + '" placeholder="' + p.out + '"></label><button class="btn piccolo" id="ai-prezzo-salva">Salva i prezzi</button><a href="' + AI_LISTINO_URL + '" target="_blank" rel="noopener">Listino Anthropic</a></div>';
+  h += '<p class="nota-pannello"><button class="btn piccolo pericolo" id="ai-cred-azzera">Azzera il contatore</button> Cancella richieste e ricariche registrate in questo browser (non tocca l’account Anthropic).</p></details></div>';
+  return h;
+}
+function attivaCreditoAI(c) {
+  const box = $('#ai-credito', c); if (!box) return; const rifai = () => { costruisciImpostazioni(); const d = $('#ai-credito .ai-cred-dett'); if (d) d.open = true; };
+  const agg = $('#ai-cred-aggiungi', box); if (agg) agg.onclick = () => { const v = Number(String($('#ai-cred-importo', box).value).replace(',', '.')); if (!(v > 0)) { toast('Indicare l’importo della ricarica'); $('#ai-cred-importo', box).focus(); return; } const d = $('#ai-cred-data', box).value || new Date().toISOString().slice(0, 10); const cc = consumiAI(); cc.ricariche.push({ quando: d + 'T00:00:00.000Z', importo: Math.round(v * 100) / 100 }); salvaConsumiAI(cc); toast('Ricarica di ' + fmtEurAI(v) + ' registrata: il residuo si aggiorna a ogni richiesta'); costruisciImpostazioni(); };
+  const cam = $('#ai-cred-cambio', box); if (cam) cam.onchange = () => { const v = Number(String(cam.value).replace(',', '.')); if (!(v > 0)) return; const cc = consumiAI(); cc.cambio = v; salvaConsumiAI(cc); costruisciImpostazioni(); };
+  const st = $('#ai-cred-storico', box); if (st) st.onclick = () => { const n = aggiungiStoricoConsumiAI(); toast(n + (n === 1 ? ' analisi aggiunta' : ' analisi aggiunte') + ' al conteggio'); rifai(); };
+  const tr = $('#ai-cred-togli-ric', box); if (tr) tr.onclick = () => { const cc = consumiAI(); cc.ricariche.pop(); salvaConsumiAI(cc); rifai(); };
+  const ps = $('#ai-prezzo-salva', box); if (ps) ps.onclick = () => { const cfg = cfgAI(); if (!cfg.modello) return; const cc = consumiAI(); const pin = Number(String($('#ai-prezzo-in', box).value).replace(',', '.')), pout = Number(String($('#ai-prezzo-out', box).value).replace(',', '.')); if (pin > 0 && pout > 0) cc.prezzi[cfg.modello] = { in: pin, out: pout }; else delete cc.prezzi[cfg.modello]; for (const v of cc.voci) if (v.modello === cfg.modello) v.usd = costoUsoAI(v.modello, { input_tokens: v.in, output_tokens: v.out, cache_creation_input_tokens: v.cw, cache_read_input_tokens: v.cr }, cc); salvaConsumiAI(cc); toast(pin > 0 && pout > 0 ? 'Prezzi personalizzati salvati e consumi ricalcolati' : 'Prezzi di listino ripristinati'); rifai(); };
+  const az = $('#ai-cred-azzera', box); if (az) az.onclick = () => { if (!confirm('Azzerare il contatore dei consumi e le ricariche registrate in questo browser?')) return; const cc = consumiAI(); salvaConsumiAI({ ricariche: [], voci: [], cambio: cc.cambio, prezzi: cc.prezzi }); toast('Contatore azzerato'); costruisciImpostazioni(); };
+}
 // ---- accordi_mod
 // ================================================================ Progetti e Rete: gli Accordi con le Società Partner (contenuto/accordi.json). Per ogni Società partner
 // si caricano gli accordi (Word, PDF, immagini) nel repository dei Soci e la piattaforma genera, leggendo i documenti con l'AI, uno schema di sintesi
@@ -7706,7 +7883,7 @@ function htmlAnalisiAI() {
   return '<h4>Analisi dei documenti con AI</h4><p class="nota-pannello">La pagina «Accordi Società Partner» legge gli accordi con l’AI e ne genera lo schema di sintesi; «Network AI» legge l’insieme di contatti, Schede Progetto, Soci, Società partner e Practices e segnala le connessioni interessanti. Serve una chiave API personale di Anthropic (console.anthropic.com, sezione API keys): resta salvata solo in questo browser, come il token del repository, e viene usata soltanto per inviare i documenti da analizzare direttamente al servizio. Ogni analisi ha un costo a consumo sul proprio account.</p>' +
     '<label class="campo-testo">Chiave API Anthropic<input id="ai-chiave" type="password" value="' + esc(c.chiave || '') + '" autocomplete="off"><span>Con «Verifica e salva» la chiave viene provata e si carica l’elenco dei modelli disponibili.</span></label>' +
     '<label class="campo-testo">Modello<select id="ai-modello"' + (opz ? '' : ' disabled') + '>' + (opz || '<option value="">Prima verificare la chiave</option>') + '</select><span>Per i contratti è adatto un modello della famiglia Sonnet; Opus è più accurato e più costoso.</span></label>' +
-    '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="ai-verifica">Verifica e salva</button>' + (c.chiave && c.modello ? '<button class="btn" id="ai-prova" title="Invia una richiesta minima al modello scelto per verificare che chiave, credito e collegamento funzionino">Prova una richiesta</button>' : '') + (c.chiave ? '<button class="btn" id="ai-togli">Togli la chiave</button>' : '') + '</div>' + (c.chiave && c.modello ? '<div class="ai-opz"><label><input type="checkbox" id="ai-auto-network"' + (c.autoNetwork === false ? '' : ' checked') + '><span>Network AI: analisi automatica a ogni modifica di contatti, Schede Progetto, Soci e Società partner</span></label><small>Parte da questo browser un minuto dopo l’ultima modifica, propria o arrivata da altri Soci; ogni analisi ha un costo a consumo sull’account di chi la esegue.</small></div>' : '') + '<div id="ai-esito">' + (c.chiave ? '<p class="nota-pannello">Chiave salvata in questo browser (termina con …' + esc(String(c.chiave).slice(-4)) + ')' + (c.modello ? ', modello ' + esc(c.modello) : ', modello da scegliere') + '.</p>' : '') + '</div>';
+    '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="ai-verifica">Verifica e salva</button>' + (c.chiave && c.modello ? '<button class="btn" id="ai-prova" title="Invia una richiesta minima al modello scelto per verificare che chiave, credito e collegamento funzionino">Prova una richiesta</button>' : '') + (c.chiave ? '<button class="btn" id="ai-togli">Togli la chiave</button>' : '') + '</div>' + (c.chiave && c.modello ? '<div class="ai-opz"><label><input type="checkbox" id="ai-auto-network"' + (c.autoNetwork === false ? '' : ' checked') + '><span>Network AI: analisi automatica a ogni modifica di contatti, Schede Progetto, Soci e Società partner</span></label><small>Parte da questo browser un minuto dopo l’ultima modifica, propria o arrivata da altri Soci; ogni analisi ha un costo a consumo sull’account di chi la esegue.</small></div>' : '') + '<div id="ai-esito">' + (c.chiave ? '<p class="nota-pannello">Chiave salvata in questo browser (termina con …' + esc(String(c.chiave).slice(-4)) + ')' + (c.modello ? ', modello ' + esc(c.modello) : ', modello da scegliere') + '.</p>' : '') + '</div>' + (c.chiave ? '<h4>Credito e consumi AI (stima)</h4>' + htmlCreditoAI() : '');
 }
 function attivaAnalisiAI(c) {
   const b = $('#ai-verifica', c); if (!b) return;
@@ -7715,8 +7892,9 @@ function attivaAnalisiAI(c) {
     catch (e) { esito.innerHTML = '<div class="avviso errore">Verifica non riuscita: ' + esc(e.message || e) + '. Controllare la chiave; se il browser blocca la richiesta, riprovare da Safari o Chrome aggiornati.</div>'; b.disabled = false; b.textContent = 'Verifica e salva'; } };
   const sel = $('#ai-modello', c); if (sel) sel.onchange = () => { const cur = cfgAI(); cur.modello = sel.value; salvaCfgAI(cur); toast('Modello per l’analisi: ' + sel.value); };
   const t = $('#ai-togli', c); if (t) t.onclick = () => { salvaCfgAI({}); costruisciImpostazioni(); toast('Chiave API rimossa da questo browser'); };
+  attivaCreditoAI(c);
   const an = $('#ai-auto-network', c); if (an) an.onchange = () => { const cur = cfgAI(); cur.autoNetwork = an.checked; salvaCfgAI(cur); toast(an.checked ? 'Network AI: analisi automatica attiva' : 'Network AI: analisi automatica disattivata; resta «Analizza ora»'); if (an.checked) pianificaNetworkAI(); else { clearTimeout(naiTimer); S.naiProgrammata = null; aggiornaNetworkAISeAperto(); } };
-  const pr = $('#ai-prova', c); if (pr) pr.onclick = async () => { const cur = cfgAI(); const esito = $('#ai-esito', c); pr.disabled = true; pr.textContent = 'Prova in corso…'; try { const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: intestazioniAI(cur.chiave), body: JSON.stringify({ model: cur.modello, max_tokens: 20, messages: [{ role: 'user', content: 'Rispondi solo con la parola OK.' }] }) }); const t = await r.text(); if (!r.ok) { let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg); } const j = JSON.parse(t); esito.innerHTML = '<div class="avviso">Collegamento funzionante: il modello ' + esc(cur.modello) + ' ha risposto «' + esc(((j.content || [])[0] || {}).text || '') + '». L’analisi degli accordi può partire.</div>'; } catch (e) { esito.innerHTML = '<div class="avviso errore">Prova non riuscita: ' + esc(e.message || e) + (/Failed to fetch|Load failed|NetworkError/i.test(String(e.message || e)) ? '. Il browser non ha raggiunto il servizio: controllare rete, estensioni che bloccano le richieste o firewall aziendale.' : '') + '</div>'; } pr.disabled = false; pr.textContent = 'Prova una richiesta'; };
+  const pr = $('#ai-prova', c); if (pr) pr.onclick = async () => { const cur = cfgAI(); const esito = $('#ai-esito', c); pr.disabled = true; pr.textContent = 'Prova in corso…'; try { const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: intestazioniAI(cur.chiave), body: JSON.stringify({ model: cur.modello, max_tokens: 20, messages: [{ role: 'user', content: 'Rispondi solo con la parola OK.' }] }) }); const t = await r.text(); if (!r.ok) { let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg); } const j = JSON.parse(t); registraConsumoAI('prova', cur.modello, j.usage, 'Prova dalle Impostazioni'); esito.innerHTML = '<div class="avviso">Collegamento funzionante: il modello ' + esc(cur.modello) + ' ha risposto «' + esc(((j.content || [])[0] || {}).text || '') + '». L’analisi degli accordi può partire.</div>'; } catch (e) { esito.innerHTML = '<div class="avviso errore">Prova non riuscita: ' + esc(e.message || e) + (/Failed to fetch|Load failed|NetworkError/i.test(String(e.message || e)) ? '. Il browser non ha raggiunto il servizio: controllare rete, estensioni che bloccano le richieste o firewall aziendale.' : '') + '</div>'; } pr.disabled = false; pr.textContent = 'Prova una richiesta'; };
 }
 // ---- documenti dell'accordo nel repository (accordi/<id>/<file>), come i Documenti di Progetto
 const AC_ACCETTA = '.pdf,.doc,.docx,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.rtf,.odt';
@@ -7775,8 +7953,8 @@ async function generaSintesiAI(id) {
     if (!r.ok) { const t = await r.text(); let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg + (r.status === 401 ? ' (chiave non valida o revocata: verificarla nelle Impostazioni)' : r.status === 400 && /credit|billing/i.test(msg) ? ' (aggiungere credito nella console Anthropic, sezione Billing)' : r.status === 404 ? ' (modello non disponibile: sceglierne un altro nelle Impostazioni)' : r.status === 429 ? ' (limite di richieste: riprovare tra un minuto)' : '')); }
     const j = await r.json(); console.info('Accordi AI: risposta', j.stop_reason, j.usage, (j.content || []).map(x => x.type).join(',')); if (j.stop_reason === 'max_tokens') throw new Error('risposta interrotta per lunghezza (' + (j.usage && j.usage.output_tokens || '?') + ' token prodotti): riprovare, se il caso con un documento più breve'); const testo = (j.content || []).filter(x => x.type === 'text').map(x => x.text).join('\n'); let dati; try { dati = estraiJSON(testo); } catch (e) { console.error('Risposta AI non in JSON:', testo); throw new Error('la risposta dell’AI non è nello schema atteso (dettaglio nella console del browser): riprovare'); }
     const s = sintesiVuota(); for (const [k, , t] of AC_CAMPI) { const v = dati[k]; if (t === 'l') s[k] = Array.isArray(v) ? v.map(x => typeof x === 'object' && x ? Object.values(x).filter(Boolean).join(': ') : String(x)).filter(Boolean) : (v ? [String(v)] : []); else s[k] = v == null ? '' : (typeof v === 'object' ? JSON.stringify(v) : String(v)); }
-    a.sintesi = s; a.generata = { quando: new Date().toISOString(), modello: cfg.modello, file: usati, tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null }; a.stato = 'bozza'; segnaAccordo(a, 'Accordo con «' + nomeAccordo(a) + '»: sintesi generata con l’AI');
-    statoAnalisi(id, null); disegnaAccordi(); toast('Sintesi generata: rivederla e confermarla con «Segna come verificata»' + (saltati.length ? '. Non analizzati: ' + saltati.join('; ') : ''), 6000); }
+    a.sintesi = s; a.generata = { quando: new Date().toISOString(), modello: cfg.modello, file: usati, tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null, usage: j.usage ? { in: j.usage.input_tokens || 0, out: j.usage.output_tokens || 0 } : null, costo: j.usage ? costoUsoAI(cfg.modello, j.usage) : null }; registraConsumoAI('accordi', cfg.modello, j.usage, 'Sintesi dell’accordo «' + nomeAccordo(a) + '»'); a.stato = 'bozza'; segnaAccordo(a, 'Accordo con «' + nomeAccordo(a) + '»: sintesi generata con l’AI');
+    statoAnalisi(id, null); disegnaAccordi(); toast('Sintesi generata' + (a.generata.costo != null ? ' (costo stimato ' + fmtEurAI(eurAI(a.generata.costo)) + ')' : '') + ': rivederla e confermarla con «Segna come verificata»' + (saltati.length ? '. Non analizzati: ' + saltati.join('; ') : ''), 6000); }
   catch (e) { console.error('Analisi AI non riuscita', e); const m = String(e && e.message || e); statoAnalisi(id, 'errore', (/Failed to fetch|Load failed|NetworkError/i.test(m) ? 'Il browser non è riuscito a raggiungere il servizio (rete, blocco della richiesta o estensione del browser). ' : '') + m + '. Se il problema persiste, nelle Impostazioni «Prova una richiesta» verifica chiave e modello.'); disegnaAccordi(); toast('Analisi non riuscita: ' + m, 7000); }
 }
 function statoAnalisi(id, tipo, testo) { if (!S.acStato) S.acStato = {}; if (!tipo) delete S.acStato[id]; else S.acStato[id] = { tipo, testo, quando: Date.now() }; }
@@ -8094,10 +8272,11 @@ async function analizzaNetworkAI(manuale) {
     const prec = ultimaAnalisiNAI(); const precTitoli = new Map((prec && prec.connessioni || []).map(c => [nomeNorm(c.titolo), c]));
     const connessioni = (Array.isArray(dati.connessioni) ? dati.connessioni : []).map((c, i) => { const tipo = tipiOk.includes(c.tipo) ? c.tipo : 'business'; const sogg = (Array.isArray(c.soggetti) ? c.soggetti : []).map(s => { const id = String(s.id || ''); const tipoS = String(s.tipo || ''); const chiave = { socio: 'so:', partner: 'pa:', advisor: 'ad:', practice: 'pr:', contatto: 'ct:', progetto: 'pg:' }[tipoS]; const nodo = chiave ? g.nodi.find(x => x.id === chiave + id) : null; return { tipo: tipoS, id, nome: String((nodo && nodo.nome) || s.nome || id), nodo: nodo ? nodo.id : null }; }).filter(s => s.nome);
       const precC = precTitoli.get(nomeNorm(c.titolo)); return { id: uid('nc'), tipo, titolo: taglioNAI(c.titolo, 140), descrizione: String(c.descrizione || '').trim(), soggetti: sogg, priorita: ['alta', 'media', 'bassa'].includes(c.priorita) ? c.priorita : 'media', prossimo_passo: String(c.prossimo_passo || '').trim(), orizzonte: String(c.orizzonte || '').trim(), stato: precC ? (precC.stato || 'nuova') : 'nuova', nuova: !precC }; });
-    const a = { id: uid('na'), quando: new Date().toISOString(), autore: S.autore || 'anonimo', modello: cfg.modello, impronta, conteggi: conteggiNAI(d), sintesi: String(dati.sintesi || '').trim(), connessioni, avvisi: (Array.isArray(dati.avvisi) ? dati.avvisi : []).map(x => String(x)).filter(Boolean).concat(dati.troncata ? ['La risposta dell’AI si è interrotta per lunghezza: l’elenco delle connessioni è parziale (' + connessioni.length + ' recuperate); una nuova analisi può completarlo.'] : []), tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null, automatica: !manuale };
+    const a = { id: uid('na'), quando: new Date().toISOString(), autore: S.autore || 'anonimo', modello: cfg.modello, impronta, conteggi: conteggiNAI(d), sintesi: String(dati.sintesi || '').trim(), connessioni, avvisi: (Array.isArray(dati.avvisi) ? dati.avvisi : []).map(x => String(x)).filter(Boolean).concat(dati.troncata ? ['La risposta dell’AI si è interrotta per lunghezza: l’elenco delle connessioni è parziale (' + connessioni.length + ' recuperate); una nuova analisi può completarlo.'] : []), tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null, usage: j.usage ? { in: j.usage.input_tokens || 0, out: j.usage.output_tokens || 0 } : null, costo: j.usage ? costoUsoAI(cfg.modello, j.usage) : null, automatica: !manuale };
+    registraConsumoAI('networkai', cfg.modello, j.usage, (manuale ? 'Analisi richiesta' : 'Analisi automatica') + ' della rete');
     const l = elencoAnalisiNAI(); l.unshift(a); l.sort((x, y) => (Date.parse(y.quando) || 0) - (Date.parse(x.quando) || 0)); if (l.length > 12) l.length = 12;
     if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.networkai = 'Network AI: analisi ' + (manuale ? 'richiesta' : 'automatica') + ' della rete (' + connessioni.length + ' connessioni)'; segna('networkai');
-    clearTimeout(naiTimer); S.naiProgrammata = null; statoAnalisiNAI(null); toast('Network AI: ' + connessioni.length + ' connessioni individuate' + (connessioni.filter(c => c.nuova).length ? ', ' + connessioni.filter(c => c.nuova).length + ' nuove' : ''), 6000);
+    clearTimeout(naiTimer); S.naiProgrammata = null; statoAnalisiNAI(null); toast('Network AI: ' + connessioni.length + ' connessioni individuate' + (connessioni.filter(c => c.nuova).length ? ', ' + connessioni.filter(c => c.nuova).length + ' nuove' : '') + (a.costo != null ? ' (costo stimato ' + fmtEurAI(eurAI(a.costo)) + ')' : ''), 6000);
   } catch (e) { console.error('Network AI non riuscita', e); statoAnalisiNAI('errore', String(e && e.message || e) + (/Failed to fetch|Load failed|NetworkError/i.test(String(e && e.message || e)) ? ' (il browser non ha raggiunto il servizio)' : '')); }
 }
 // analisi automatica: a ogni modifica dei quattro registri (propria o arrivata da altri Soci) l'analisi riparte da sola, dopo una pausa, se in questo browser c'è la chiave
@@ -8127,7 +8306,7 @@ function htmlStatoNAI(d) {
   else if (S.naiProgrammata) riga = '<span class="sem attenzione">Dati cambiati</span> Analisi automatica in programma tra ' + Math.max(1, Math.round((S.naiProgrammata - Date.now()) / 1000)) + ' secondi.';
   else if (cambiati) riga = '<span class="sem attenzione">Dati cambiati dopo l’ultima analisi</span> Alla prossima modifica l’analisi riparte da sola; «Analizza ora» la avvia subito.';
   else riga = '<span class="sem ok">Analisi aggiornata</span> I dati non sono cambiati dopo l’ultima analisi.';
-  return '<div class="nai-stato"><div class="nai-stato-riga">' + riga + '</div><div class="nai-stato-dati"><span><b>Dati letti ora</b> ' + esc(testoConteggi(c)) + '</span>' + (ultima ? '<span><b>Ultima analisi</b> ' + esc(dataIt(ultima.quando)) + ' di ' + esc(ultima.autore || '') + ' (' + esc(ultima.modello || '') + ', ' + (ultima.automatica ? 'automatica' : 'richiesta') + ') su ' + esc(testoConteggi(ultima.conteggi || c)) + '</span>' : '<span>Nessuna analisi finora.</span>') + '</div></div>';
+  return '<div class="nai-stato"><div class="nai-stato-riga">' + riga + '</div><div class="nai-stato-dati"><span><b>Dati letti ora</b> ' + esc(testoConteggi(c)) + '</span>' + (ultima ? '<span><b>Ultima analisi</b> ' + esc(dataIt(ultima.quando)) + ' di ' + esc(ultima.autore || '') + ' (' + esc(ultima.modello || '') + ', ' + (ultima.automatica ? 'automatica' : 'richiesta') + ') su ' + esc(testoConteggi(ultima.conteggi || c)) + (ultima.costo != null ? ', costo stimato ' + fmtEurAI(eurAI(ultima.costo)) : '') + '</span>' : '<span>Nessuna analisi finora.</span>') + '</div></div>';
 }
 function htmlLegendaNAI(g) {
   const st = statoNAI(); const conta = t => g.nodi.filter(x => x.tipo === t).length + (t === 'contatto' ? g.nodi.filter(x => x.tipo === 'gruppo').reduce((n, x) => n + (x.n || 0), 0) : 0);

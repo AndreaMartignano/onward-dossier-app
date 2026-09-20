@@ -1733,6 +1733,180 @@ table.d3-elenco-tab { min-width: 1000px; }
 #dettatura { position: fixed; z-index: 60; box-shadow: 0 2px 8px rgba(38, 34, 30, .18); background: var(--carta); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #dettatura.attiva { background: var(--accento); color: var(--accento-testo); border-color: var(--accento); }
 textarea.in-dettatura { outline: 2px solid var(--accento); outline-offset: 1px; }
+
+/* ---- Network AI: mappa delle relazioni e connessioni dell'AI */
+:root { --nai-socio: #DE5400; --nai-partner: #26221E; --nai-advisor: #7A8794; --nai-contatto: #1F8C82; --nai-progetto: #D99A00; --nai-arco: #C9C2B6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --nai-socio: #F4741E; --nai-partner: #EDE6DA; --nai-advisor: #9AA7B4; --nai-contatto: #5FC1B5; --nai-progetto: #F2C24E; --nai-arco: #4A453E; } }
+:root[data-theme="dark"] { --nai-socio: #F4741E; --nai-partner: #EDE6DA; --nai-advisor: #9AA7B4; --nai-contatto: #5FC1B5; --nai-progetto: #F2C24E; --nai-arco: #4A453E; }
+.nai-socio { --nai: var(--nai-socio); } .nai-partner { --nai: var(--nai-partner); } .nai-advisor { --nai: var(--nai-advisor); } .nai-contatto { --nai: var(--nai-contatto); } .nai-progetto { --nai: var(--nai-progetto); } .nai-practice { --nai: var(--pr, var(--secondario)); } .nai-conn { --nai: var(--accento-scuro); }
+.nai-stato { display: flex; flex-direction: column; gap: .3rem; padding: .6rem .9rem; margin-bottom: .9rem; border: 1px solid var(--filo); border-left: 4px solid var(--accento); border-radius: 0 10px 10px 0; background: var(--carta); font-size: .84rem; }
+.nai-stato-riga .sem { margin-right: .4rem; }
+.nai-stato-dati { display: flex; flex-wrap: wrap; gap: .2rem 1.4rem; font-size: .76rem; color: var(--secondario); }
+.nai-stato-dati b { color: var(--inchiostro); font-weight: 600; margin-right: .25rem; }
+.nai-layout { display: grid; grid-template-columns: minmax(0, 60fr) minmax(0, 40fr); gap: 1rem; align-items: start; }
+.nai-mappa, .nai-connessioni { min-width: 0; }
+.nai-mappa { background: var(--carta); border: 1px solid var(--filo); border-radius: 14px; padding: .9rem 1rem 1rem; }
+.nai-mappa-testa { display: grid; grid-template-columns: 1fr auto; gap: .2rem .8rem; align-items: center; margin-bottom: .5rem; }
+.nai-mappa-testa h2, .nai-conn-testa h2 { font-family: var(--font-titoli); font-size: 1.1rem; font-weight: 600; margin: 0; }
+.nai-mappa-testa span, .nai-conn-testa span { grid-column: 1; font-size: .76rem; color: var(--secondario); line-height: 1.35; }
+.nai-mappa-testa .nai-cerca { grid-column: 2; grid-row: 1 / span 2; width: 14em; margin: 0; }
+.nai-legenda { display: flex; flex-wrap: wrap; gap: .25rem .9rem; margin: .2rem 0 .5rem; font-size: .76rem; color: var(--secondario); }
+.nai-leg { display: inline-flex; align-items: center; gap: .3rem; }
+.nai-leg-f { cursor: pointer; }
+.nai-leg input { margin: 0; accent-color: var(--accento); }
+.nai-leg small { font-size: .7rem; color: var(--secondario); }
+.nai-pallino { display: inline-block; width: .7em; height: .7em; border-radius: 50%; background: var(--nai); flex: none; }
+.nai-pallino.nai-practice { background: linear-gradient(135deg, var(--pr1) 0 20%, var(--pr2) 20% 40%, var(--pr3) 40% 60%, var(--pr4) 60% 80%, var(--pr5) 80% 100%); }
+.nai-tavola { border: 1px solid var(--filo); border-radius: 12px; background: var(--carta); overflow: auto; max-height: 78vh; }
+.nai-svg { display: block; font-family: var(--font-testo); }
+.nai-corsia { fill: var(--lavaggio); opacity: .55; }
+.nai-corsia-et { font-family: var(--font-titoli); font-weight: 600; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; fill: var(--secondario); }
+.nai-corsia-et tspan { letter-spacing: 0; fill: var(--termine-filo); }
+.nai-arco { fill: none; stroke: var(--nai-arco); stroke-width: 1; opacity: .75; transition: opacity .15s; }
+.nai-arco-socio { stroke: var(--nai-socio); opacity: .35; }
+.nai-arco-partner { stroke: var(--nai-partner); opacity: .3; }
+.nai-arco-progetto { stroke: var(--nai-progetto); opacity: .5; }
+.nai-arco-ev { stroke: var(--accento); stroke-width: 2.4; opacity: 1; }
+.nai-arco-dim { opacity: .08; }
+.nai-percorso { fill: none; stroke: var(--accento); stroke-width: 2.4; stroke-dasharray: 7 5; stroke-linecap: round; }
+.nai-nodo { cursor: pointer; outline: none; }
+.nai-nodo rect { fill: var(--carta); stroke: var(--filo); stroke-width: 1; transition: opacity .15s; }
+.nai-nodo.nai-practice rect { fill: var(--pr); stroke: var(--pr); }
+.nai-nodo.nai-gruppo rect { stroke-dasharray: 3 3; fill: color-mix(in srgb, var(--nai-contatto) 8%, var(--carta)); }
+.nai-nodo:hover rect, .nai-nodo:focus-visible rect { stroke: var(--accento); stroke-width: 1.6; }
+.nai-nodo.nai-sel rect { stroke: var(--accento); stroke-width: 2.6; }
+.nai-nodo.nai-vicino rect { stroke: var(--accento-scuro); stroke-width: 2; }
+.nai-nodo.nai-vicino.nai-practice rect, .nai-nodo.nai-sel.nai-practice rect { stroke: var(--accento); }
+.nai-nodo.nai-dim { opacity: .2; }
+.nai-punto { fill: var(--nai); }
+.nai-et { font-size: 11px; fill: var(--inchiostro); pointer-events: none; }
+.nai-socio .nai-et, .nai-partner .nai-et { font-family: var(--font-titoli); font-weight: 600; font-size: 11.5px; }
+.nai-practice .nai-et { font-family: var(--font-titoli); font-weight: 600; font-size: 11.5px; fill: var(--pr-testo); }
+.nai-advisor .nai-et, .nai-contatto .nai-et, .nai-progetto .nai-et, .nai-gruppo .nai-et { fill: var(--inchiostro); }
+.nai-advisor .nai-et { fill: var(--secondario); }
+.nai-num { font-family: var(--font-titoli); font-weight: 700; font-size: 11px; fill: var(--pr-testo); pointer-events: none; }
+.nai-linea { display: inline-block; width: 1.4em; height: 0; border-top: 2px solid var(--nai-arco); flex: none; }
+.nai-linea-percorso { border-top: 2px dashed var(--accento); }
+.nai-leg-archi { margin-left: auto; }
+.nai-leg-nota { color: var(--secondario); }
+.nai-percorso-testa { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; margin: 0 0 .5rem; padding: .45rem .7rem; border: 1px solid color-mix(in srgb, var(--accento) 40%, var(--filo)); border-left: 4px solid var(--accento); border-radius: 0 10px 10px 0; background: color-mix(in srgb, var(--accento) 7%, var(--carta)); font-size: .82rem; }
+.nai-percorso-testa .nai-det-et { flex: none; }
+.nai-percorso-testa b { font-family: var(--font-titoli); font-weight: 600; }
+.nai-percorso-nota { flex: 1 1 24ch; font-size: .74rem; color: var(--secondario); }
+.nai-carta-azioni { display: flex; justify-content: flex-end; }
+.nai-sugg-tocco { fill: none; stroke: transparent; stroke-width: 12; cursor: pointer; }
+.nai-percorso-sugg { stroke-width: 1.8; opacity: .75; pointer-events: none; }
+.nai-sugg-media .nai-percorso-sugg { stroke: var(--attesa); }
+.nai-sugg-bassa .nai-percorso-sugg { stroke: var(--termine-filo); }
+.nai-sugg:hover .nai-percorso-sugg { opacity: 1; stroke-width: 2.8; }
+.nai-filtri { background: var(--carta); border: 1px solid var(--filo); border-radius: 14px; padding: .7rem .9rem .6rem; display: flex; flex-direction: column; gap: .4rem; }
+.nai-filtri-riga { display: grid; grid-template-columns: 6.5em 1fr; gap: .3rem .5rem; align-items: start; }
+.nai-filtri-riga .nai-det-et { flex: none; padding-top: .3rem; }
+.nai-filtri-chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+.nai-chipf { font-family: var(--font-titoli); font-weight: 600; font-size: .74rem; line-height: 1.2; padding: .22rem .65rem; border-radius: 999px; border: 1px solid var(--filo); background: var(--lavaggio); color: var(--inchiostro); cursor: pointer; }
+.nai-chipf small { font-weight: 600; color: var(--secondario); margin-left: .15rem; }
+.nai-chipf:hover { border-color: var(--accento); }
+.nai-chipf.attivo { background: var(--accento); border-color: var(--accento); color: var(--accento-testo); }
+.nai-chipf.attivo small { color: var(--accento-testo); opacity: .85; }
+.nai-chipf[disabled] { opacity: .45; cursor: default; }
+.nai-chipf-alta:not(.attivo) { color: var(--accento-scuro); border-color: color-mix(in srgb, var(--accento) 45%, var(--filo)); }
+.nai-chipf-media:not(.attivo) { color: var(--attesa); border-color: color-mix(in srgb, var(--attesa) 45%, var(--filo)); }
+.nai-chipf-nuove:not(.attivo) { color: var(--accento-scuro); }
+.nai-filtri-esito { display: flex; align-items: center; justify-content: space-between; gap: .6rem; font-size: .76rem; color: var(--secondario); padding-top: .2rem; border-top: 1px solid var(--filo); }
+.nai-legenda-carte { font-size: .8rem; }
+.nai-legenda-carte summary { cursor: pointer; font-family: var(--font-titoli); font-weight: 600; color: var(--accento-scuro); padding: .2rem .2rem; }
+.nai-legenda-carte dl { margin: .3rem 0 0; padding: .6rem .9rem; background: var(--carta); border: 1px solid var(--filo); border-radius: 12px; display: grid; grid-template-columns: max-content 1fr; gap: .3rem .8rem; line-height: 1.4; }
+.nai-legenda-carte dt { font-family: var(--font-titoli); font-weight: 600; color: var(--inchiostro); }
+.nai-legenda-carte dd { margin: 0; color: var(--secondario); }
+@media (max-width: 700px) { .nai-filtri-riga { grid-template-columns: 1fr; } .nai-legenda-carte dl { grid-template-columns: 1fr; } }
+.nai-carta.nai-carta-sel { outline: 2px solid var(--accento); outline-offset: 2px; }
+.nai-det { margin-top: .8rem; padding: .7rem .9rem .8rem; border: 1px solid var(--filo); border-left: 4px solid var(--accento); border-radius: 0 10px 10px 0; background: var(--lavaggio); }
+.nai-det-testa { display: flex; justify-content: space-between; align-items: center; gap: .6rem; }
+.nai-det-occhiello { display: inline-flex; align-items: center; gap: .35rem; font-family: var(--font-titoli); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--secondario); }
+.nai-det h3 { font-family: var(--font-titoli); font-size: 1rem; margin: .15rem 0 0; }
+.nai-det > small { display: block; color: var(--secondario); font-size: .76rem; margin-bottom: .2rem; }
+.nai-det-gruppo { margin-top: .5rem; display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; }
+.nai-det-et { flex: 0 0 100%; font-family: var(--font-titoli); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--secondario); }
+.nai-det-azioni { margin-top: .6rem; }
+.nai-chip { display: inline-flex; align-items: center; gap: .3rem; border: 1px solid color-mix(in srgb, var(--nai) 55%, var(--filo)); background: color-mix(in srgb, var(--nai) 10%, var(--carta)); color: var(--inchiostro); border-radius: 999px; padding: .12rem .6rem .12rem .45rem; font-size: .74rem; line-height: 1.3; cursor: pointer; font-family: var(--font-testo); }
+.nai-chip::before { content: ''; width: .55em; height: .55em; border-radius: 50%; background: var(--nai); flex: none; }
+.nai-chip:hover { border-color: var(--nai); background: color-mix(in srgb, var(--nai) 20%, var(--carta)); }
+.nai-chip.nai-chip-off { opacity: .55; cursor: default; }
+.nai-connessioni { display: flex; flex-direction: column; gap: .8rem; }
+.nai-conn-testa { display: flex; flex-direction: column; gap: .15rem; padding: .1rem .2rem 0; }
+.nai-sintesi { background: var(--carta); border: 1px solid var(--filo); border-radius: 14px; padding: .8rem 1rem .9rem; }
+.nai-sintesi p { margin: .2rem 0 0; font-size: .9rem; line-height: 1.5; }
+.nai-gruppo { display: flex; flex-direction: column; gap: .55rem; }
+.nai-gruppo-testa { display: flex; flex-direction: column; gap: .05rem; padding: .3rem .2rem 0; }
+.nai-gruppo-testa h3 { font-family: var(--font-titoli); font-size: .95rem; font-weight: 600; margin: 0; color: var(--accento-scuro); }
+.nai-gruppo-testa h3 small { font-weight: 600; font-size: .72rem; color: var(--secondario); margin-left: .3rem; }
+.nai-gruppo-testa span { font-size: .74rem; color: var(--secondario); }
+.nai-carta { background: var(--carta); border: 1px solid var(--filo); border-radius: 12px; padding: .7rem .9rem .8rem; display: flex; flex-direction: column; gap: .35rem; transition: box-shadow .12s; }
+.nai-carta:hover { box-shadow: var(--ombra); }
+.nai-carta.nai-p-alta { border-left: 4px solid var(--accento); }
+.nai-carta.nai-p-media { border-left: 4px solid var(--attesa); }
+.nai-carta.nai-p-bassa { border-left: 4px solid var(--filo); }
+.nai-carta.nai-chiusa { opacity: .6; }
+.nai-carta.ct-evid { outline: 2px solid var(--accento); outline-offset: 3px; }
+.nai-carta-testa { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; font-size: .7rem; }
+.nai-carta-testa .nai-stato-sel, .nai-carta-testa .nai-stato-et { margin-left: auto; }
+.nai-prio { font-family: var(--font-titoli); font-weight: 600; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; padding: .1rem .5rem; border-radius: 999px; border: 1px solid; }
+.nai-prio-alta { color: var(--accento-scuro); border-color: var(--accento); background: color-mix(in srgb, var(--accento) 12%, transparent); }
+.nai-prio-media { color: var(--attesa); border-color: var(--attesa); background: color-mix(in srgb, var(--attesa) 12%, transparent); }
+.nai-prio-bassa { color: var(--secondario); border-color: var(--filo); background: var(--lavaggio); }
+.nai-nuova { font-family: var(--font-titoli); font-weight: 700; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accento-testo); background: var(--accento); border-radius: 4px; padding: .1rem .4rem; }
+.nai-oriz { color: var(--secondario); }
+.nai-stato-sel { font-size: .74rem; padding: .1rem .3rem; border: 1px solid var(--filo); border-radius: 4px; background: var(--carta); color: var(--inchiostro); }
+.nai-stato-et { color: var(--secondario); font-size: .72rem; }
+.nai-carta h4 { font-family: var(--font-titoli); font-size: .98rem; font-weight: 600; margin: 0; line-height: 1.3; }
+.nai-carta p { margin: 0; font-size: .84rem; line-height: 1.45; }
+.nai-sogg { display: flex; flex-wrap: wrap; gap: .3rem; }
+.nai-passo { display: flex; flex-wrap: wrap; gap: .1rem; font-size: .82rem; line-height: 1.4; padding: .4rem .6rem; border-radius: 8px; background: var(--lavaggio); }
+.nai-avvisi ul { margin: 0; padding-left: 1.2rem; background: var(--carta); border: 1px solid var(--filo); border-radius: 12px; padding: .7rem .9rem .7rem 2rem; font-size: .84rem; line-height: 1.45; }
+.nai-avvisi li { margin: .15rem 0; }
+.nai-vuoto { margin: 0; }
+.ai-opz { margin: .6rem 0 .4rem; }
+.ai-opz label { display: flex; align-items: flex-start; gap: .5rem; font-size: .84rem; cursor: pointer; }
+.ai-opz input { margin: .2rem 0 0; accent-color: var(--accento); flex: none; }
+.ai-opz small { display: block; font-size: .74rem; color: var(--secondario); padding-left: 1.6rem; margin-top: .15rem; }
+@media (max-width: 1280px) { .nai-layout { grid-template-columns: 1fr; } .nai-mappa { position: static !important; } }
+@media (max-width: 700px) { .nai-mappa-testa { grid-template-columns: 1fr; } .nai-mappa-testa .nai-cerca { grid-column: 1; grid-row: auto; width: 100%; } }
+
+/* ---- Importazione dei contatti (vCard, CSV) */
+.finestra-import { width: min(1040px, 96vw); }
+.ct-imp-mappa { margin: .3rem 0 .6rem; max-height: 34vh; overflow: auto; border: 1px solid var(--filo); border-radius: 8px; }
+.ct-imp-mappa table, .ct-imp-ant table { margin: 0; }
+.ct-imp-mappa td { font-size: .8rem; vertical-align: middle; }
+.ct-imp-es { color: var(--secondario); }
+.ct-imp-sel { margin: 0; width: 100%; }
+.ct-imp-griglia { grid-template-columns: 1fr 1fr; }
+.ct-imp-griglia .ricerca { margin-bottom: 0; }
+.ct-imp-salta { display: flex; align-items: center; gap: .45rem; margin: .7rem 0 .2rem; font-size: .84rem; cursor: pointer; }
+.ct-imp-salta input { margin: 0; accent-color: var(--accento); }
+.ct-imp-salta small { color: var(--secondario); }
+.ct-imp-ant { max-height: 30vh; overflow: auto; border: 1px solid var(--filo); border-radius: 8px; margin-top: .3rem; }
+.ct-imp-ant td { font-size: .8rem; }
+.ct-imp-doppio td { color: var(--secondario); }
+/* ---- Network AI: intestazioni delle categorie evidenti, fisse allo scorrimento, comprimibili */
+.nai-gruppo-testa { position: sticky; top: 0; z-index: 3; display: flex; flex-direction: row; align-items: center; gap: .7rem; padding: .55rem .8rem .55rem .6rem; margin: .2rem 0 .1rem; border-radius: 12px; background: color-mix(in srgb, var(--accento) 12%, var(--carta)); border: 1px solid color-mix(in srgb, var(--accento) 35%, var(--filo)); border-left: 6px solid var(--accento); cursor: pointer; box-shadow: 0 2px 8px rgba(38, 34, 30, .06); }
+.nai-gruppo-testa:hover { background: color-mix(in srgb, var(--accento) 18%, var(--carta)); }
+.nai-gruppo-testa:focus-visible { outline: 2px solid var(--accento); outline-offset: 2px; }
+.nai-gruppo-testa .nai-gruppo-num { flex: none; width: 2rem; height: 2rem; border-radius: 50%; background: var(--accento); color: var(--accento-testo); font-family: var(--font-titoli); font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+.nai-gruppo-titoli { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: .05rem; }
+.nai-gruppo-testa h3 { font-family: var(--font-titoli); font-size: 1.12rem; font-weight: 700; margin: 0; color: var(--inchiostro); line-height: 1.2; }
+.nai-gruppo-testa h3 small { display: none; }
+.nai-gruppo-titoli span { font-size: .74rem; color: var(--secondario); line-height: 1.3; }
+.nai-gruppo-conti { flex: none; display: flex; align-items: center; gap: .4rem; font-size: .72rem; }
+.nai-gruppo-conti b { font-family: var(--font-titoli); font-size: 1.05rem; color: var(--accento-scuro); min-width: 1.2em; text-align: center; }
+.nai-gruppo-conti i { font-style: normal; font-family: var(--font-titoli); font-weight: 600; font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; padding: .1rem .45rem; border-radius: 999px; border: 1px solid; }
+.nai-gruppo-alta { color: var(--accento-scuro); border-color: var(--accento); }
+.nai-gruppo-nuove { color: var(--accento-testo); background: var(--accento); border-color: var(--accento); }
+.nai-gruppo-testa .nai-gruppo-freccia { font-family: var(--font-titoli); font-weight: 600; font-size: .7rem; color: var(--secondario); padding-left: .3rem; border-left: 1px solid var(--filo); margin-left: .2rem; }
+.nai-gruppo-chiuso .nai-gruppo-testa { opacity: .85; }
+.nai-avvisi .nai-gruppo-testa { cursor: default; background: var(--lavaggio); border-color: var(--filo); border-left-color: var(--attesa); }
+.nai-avvisi .nai-gruppo-num { background: var(--attesa); }
+.nai-avvisi .nai-gruppo-conti b { color: var(--attesa); }
+@media (max-width: 700px) { .ct-imp-griglia { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1775,8 +1949,9 @@ textarea.in-dettatura { outline: 2px solid var(--accento); outline-offset: 1px; 
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe contatti" id="contatti" data-area="pro" hidden>
-  <div class="mappe-testa"><b>Database relazionale</b><div class="mappe-azioni"><button class="btn piccolo primario" id="ct-nuovo">Nuovo contatto</button><button class="btn piccolo" id="ct-word" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><button class="btn piccolo" id="ct-csv" title="Esporta l’elenco corrente (filtrato) in CSV, apribile con Excel">Esporta (CSV)</button><span class="nota-pannello">I contatti della rete dei Soci, condivisi con tutti: ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.</span></div><button class="btn piccolo" id="contatti-chiudi">Chiudi</button></div>
+  <div class="mappe-testa"><b>Database relazionale</b><div class="mappe-azioni"><button class="btn piccolo primario" id="ct-nuovo">Nuovo contatto</button><button class="btn piccolo" id="ct-word" title="Esporta l’elenco corrente (filtrato) in Word">Esporta (Word)</button><button class="btn piccolo" id="ct-csv" title="Esporta l’elenco corrente (filtrato) in CSV, apribile con Excel">Esporta (CSV)</button><button class="btn piccolo" id="ct-importa" title="Importa contatti da un file vCard (.vcf: rubrica di iPhone, iPad, Mac) o CSV (Excel, Numbers, Google Contatti)">Importa (vCard, CSV)</button><span class="nota-pannello">I contatti della rete dei Soci, condivisi con tutti: ente, settore, temi di interesse, status della relazione, Socio e Practices di riferimento, Scheda Progetto collegata, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.</span></div><button class="btn piccolo" id="contatti-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="contatti"></div>
+  <input type="file" id="ct-import-file" hidden accept=".vcf,.vcard,.csv,.txt,text/vcard,text/x-vcard,text/csv,text/plain">
   <div class="mappe-corpo"></div>
 </div>
 <div class="mappe modifiche" id="modifiche" data-area="ser" hidden>
@@ -1808,6 +1983,11 @@ textarea.in-dettatura { outline: 2px solid var(--accento); outline-offset: 1px; 
   <div class="mappe-testa"><b>Scheda di commessa</b><select class="ricerca cm-elenco" id="cm-elenco"></select><div class="mappe-azioni"><button class="btn piccolo" id="cm-nuova">Nuova</button><button class="btn piccolo primario" id="cm-salva">Salva</button><button class="btn piccolo pericolo" id="cm-elimina" hidden>Elimina</button><button class="btn piccolo" id="cm-word">Esporta in Word</button><span class="nota-pannello">Il tool per ipotizzare le economie di una commessa e formulare un’offerta: scelta la tipologia e inseriti i dati, la scheda calcola prezzo, ripartizione nei tre strati, margine per giornata dei Soci e verifiche, con le regole e le ipotesi correnti del documento.</span></div><button class="btn piccolo" id="cm-chiudi">Chiudi</button></div>
   <div class="guida-slot" data-guida="commessa"></div>
   <div class="mappe-corpo cm-corpo"><div class="cm-form" id="cm-form"></div><div class="cm-ris" id="cm-ris"></div></div>
+</div>
+<div class="mappe networkai" id="networkai" data-area="pro" hidden>
+  <div class="mappe-testa"><b>Network AI</b><div class="mappe-azioni"><button class="btn piccolo primario" id="nai-analizza" title="Fa leggere subito all’AI l’insieme di contatti, Schede Progetto, Soci, Società partner e Practices">Analizza ora</button><button class="btn piccolo" id="nai-word" title="Esporta in Word l’ultima analisi" hidden>Esporta in Word</button><span class="nota-pannello">La mappa delle relazioni tra contatti, Schede Progetto, Soci, Società partner e Practices e le connessioni che l’AI individua a ogni modifica: sinergie, possibilità di business, azioni comuni, opportunità.</span></div><button class="btn piccolo" id="networkai-chiudi">Chiudi</button></div>
+  <div class="guida-slot" data-guida="networkai"></div>
+  <div class="mappe-corpo"></div>
 </div>
 <div class="mappe accordi" id="accordi" data-area="pro" hidden>
   <div class="mappe-testa"><b>Accordi Società Partner</b><div class="mappe-azioni"><button class="btn piccolo primario" id="ac-nuovo">Nuovo accordo</button><button class="btn piccolo" id="ac-word" title="Esporta in Word le schede di sintesi di tutti gli accordi">Esporta in Word</button><span class="nota-pannello">Gli accordi con le singole Società partner: documenti nel repository dei Soci e schema di sintesi generato dall’AI con gli elementi essenziali e caratterizzanti.</span></div><button class="btn piccolo" id="accordi-chiudi">Chiudi</button></div>
@@ -2155,7 +2335,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-20T06:28:02Z';
+window.ONWARD_BUILD = '2026-09-20T08:01:33Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -2685,7 +2865,7 @@ function aggiornaPannelloIpotesi(forza) {
 }
 
 // ================================================================ archivio: locale e GitHub
-function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key === 'spese' ? 'contenuto/spese.json' : key === 'diagnosi' ? 'contenuto/diagnosi.json' : key === 'accordi' ? 'contenuto/accordi.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
+function fileDi(key) { return key === 'struttura' ? 'contenuto/struttura.json' : key === 'ipotesi' ? 'contenuto/ipotesi.json' : key === 'glossario' ? 'contenuto/glossario.json' : key === 'rete' ? 'contenuto/rete.json' : key === 'commesse' ? 'contenuto/commesse.json' : key === 'quote' ? 'contenuto/quote.json' : key === 'scenari' ? 'contenuto/scenari.json' : key === 'accessi' ? 'contenuto/accessi.json' : key === 'commenti' ? 'contenuto/commenti.json' : key === 'regole' ? 'contenuto/regole.json' : key === 'proposte' ? 'contenuto/proposte.json' : key === 'progetti' ? 'contenuto/progetti.json' : key === 'proiezioni' ? 'contenuto/proiezioni.json' : key === 'contatti' ? 'contenuto/contatti.json' : key === 'spese' ? 'contenuto/spese.json' : key === 'diagnosi' ? 'contenuto/diagnosi.json' : key === 'accordi' ? 'contenuto/accordi.json' : key === 'networkai' ? 'contenuto/networkai.json' : key.startsWith('prop:') ? 'contenuto/proposte/' + key.slice(5) + '.json' : 'contenuto/capitoli/' + key.slice(4) + '.json'; }
 function datiDi(key) {
   if (key === 'struttura') return { meta: S.meta, nota: S.nota, parti: S.parti.map(p => ({ id: p.id, titolo: p.titolo, intro: p.intro, capitoli: p.capitoli.map(c => ({ id: c.id, titolo: c.titolo })) })) };
   if (key === 'ipotesi') return S.P;
@@ -2703,6 +2883,7 @@ function datiDi(key) {
   if (key === 'contatti') return S.contatti || contattiVuoti();
   if (key === 'spese') return S.spese || speseVuote();
   if (key === 'accordi') return S.accordi || accordiVuoti();
+  if (key === 'networkai') return S.networkai || networkaiVuoto();
   if (key === 'diagnosi') return S.diagnosi || diagnosiVuote();
   if (key.startsWith('prop:')) return (S.proposteDett || {})[key.slice(5)] || null;
   const c = capitolo(key.slice(4)); return { id: c.c.id, titolo: c.c.titolo, blocchi: c.c.blocchi };
@@ -2724,11 +2905,12 @@ function applicaDati(key, d) {
   if (key === 'contatti') { S.contatti = Object.assign(contattiVuoti(), d || {}); if (!Array.isArray(S.contatti.contatti)) S.contatti.contatti = []; return; }
   if (key === 'spese') { S.spese = Object.assign(speseVuote(), d || {}); if (!Array.isArray(S.spese.spese)) S.spese.spese = []; return; }
   if (key === 'accordi') { S.accordi = Object.assign(accordiVuoti(), d || {}); if (!Array.isArray(S.accordi.accordi)) S.accordi.accordi = []; return; }
+  if (key === 'networkai') { S.networkai = Object.assign(networkaiVuoto(), d || {}); if (!Array.isArray(S.networkai.analisi)) S.networkai.analisi = []; return; }
   if (key === 'diagnosi') { S.diagnosi = Object.assign(diagnosiVuote(), d || {}); if (!Array.isArray(S.diagnosi.diagnosi)) S.diagnosi.diagnosi = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
   const c = capitolo(key.slice(4)); if (c) { c.c.blocchi = d.blocchi; if (d.titolo) c.c.titolo = d.titolo; }
 }
-const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi', 'accordi'];
+const CHIAVI_EXTRA = ['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi', 'accordi', 'networkai'];
 const tuttiKey = () => ['struttura', 'ipotesi', 'glossario', 'rete', 'commesse', 'quote', 'scenari'].concat(S.parti.flatMap(p => p.capitoli.map(c => 'cap:' + c.id)));
 
 class ArchivioLocale {
@@ -2769,7 +2951,7 @@ class ArchivioGitHub {
     }
   }
   async leggi(path) { const r = await this.api('/contents/' + path + '?ref=' + encodeURIComponent(this.cfg.branch)); if (!r) return null; this.sha[path] = r.sha; const txt = decodeURIComponent(escape(atob(r.content.replace(/\n/g, '')))); return JSON.parse(txt); }
-  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); S.spese = speseVuote(); S.diagnosi = diagnosiVuote(); S.accordi = accordiVuoti(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
+  async carica() { const alb = await this.albero(); if (!alb['contenuto/struttura.json']) return 0; const st = await this.leggi('contenuto/struttura.json'); if (!st) return 0; applicaDati('struttura', st); let n = 1; for (const k of tuttiKey()) { if (k === 'struttura') continue; const p = fileDi(k); if (!alb[p]) continue; const d = await this.leggi(p); if (d) { applicaDati(k, d); n++; } } S.accessi = accessiVuoti(); S.commenti = commentiVuoti(); S.regole = regoleVuote(); S.proposte = proposteVuote(); S.progetti = progettiVuoti(); S.proiezioni = proiezioniVuote(); S.contatti = contattiVuoti(); S.spese = speseVuote(); S.diagnosi = diagnosiVuote(); S.accordi = accordiVuoti(); S.networkai = networkaiVuoto(); for (const k of CHIAVI_EXTRA) { const p = fileDi(k); if (alb[p]) { const d = await this.leggi(p); if (d) applicaDati(k, d); } } return n; }
   async salva(key, dati, messaggio) {
     const path = fileDi(key); const content = btoa(unescape(encodeURIComponent(JSON.stringify(dati, null, 1))));
     const body = { message: messaggio, content, branch: this.cfg.branch }; if (this.sha[path]) body.sha = this.sha[path];
@@ -2784,7 +2966,7 @@ class ArchivioGitHub {
 }
 
 // coda di salvataggio con fusione a livello di blocco in caso di conflitto
-function segna(key) { if (S.readonly) return; if (inRegime() && chiaveProponibile(key)) { segnaProposta(key); return; } S.dirty.add(key); stato('attesa', 'Modifiche in attesa'); salvaDebounced(); }
+function segna(key) { if (S.readonly) return; if (key === 'contatti' || key === 'progetti' || key === 'rete') setTimeout(dopoModificaDatiNAI, 0); if (inRegime() && chiaveProponibile(key)) { segnaProposta(key); return; } S.dirty.add(key); stato('attesa', 'Modifiche in attesa'); salvaDebounced(); }
 const salvaDebounced = debounce(() => salvaTutto(), 1500);
 async function salvaTutto() {
   if (S.saving || !S.dirty.size || !S.backend) return; S.saving = true; stato('attesa', 'Salvataggio…');
@@ -2798,7 +2980,7 @@ async function salvaTutto() {
   if (errore) { stato('errore', 'Salvataggio non riuscito: ' + (errore.message || errore)); console.error(errore); setTimeout(salvaDebounced, 8000); }
   else if (S.dirty.size) salvaDebounced(); else stato('ok', 'Salvato' + (S.backend.nome === 'github' ? ' nel repository' : ' in questo browser'));
 }
-function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'spese') return 'Spese dei Soci aggiornate' + chi; if (k === 'diagnosi') return 'Diagnosi D³ aggiornate' + chi; if (k === 'accordi') return 'Accordi Società Partner aggiornati' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
+function descrizioneSalvataggio(k) { const chi = (S.ripristini && S.ripristini.has(k) ? ' [ripristino di una versione precedente]' : '') + (S.autore ? ' (' + S.autore + ')' : ''); if (S.ripristini) S.ripristini.delete(k); if (S.msgExtra && S.msgExtra[k]) { const m = S.msgExtra[k]; delete S.msgExtra[k]; return m + chi; } if (k === 'accessi') return 'Registro degli accessi aggiornato' + chi; if (k === 'commenti') return 'Commenti a margine aggiornati' + chi; if (k === 'regole') return 'Regole di approvazione aggiornate' + chi; if (k === 'proposte') return 'Elenco delle proposte aggiornato' + chi; if (k === 'progetti') return 'Schede progetto aggiornate' + chi; if (k === 'contatti') return 'Database relazionale aggiornato' + chi; if (k === 'spese') return 'Spese dei Soci aggiornate' + chi; if (k === 'diagnosi') return 'Diagnosi D³ aggiornate' + chi; if (k === 'accordi') return 'Accordi Società Partner aggiornati' + chi; if (k === 'networkai') return 'Network AI aggiornata' + chi; if (k === 'proiezioni') return 'Proiezioni strategiche aggiornate' + chi; if (k === 'ipotesi') return 'Ipotesi del modello aggiornate' + chi; if (k === 'glossario') return 'Glossario economico aggiornato' + chi; if (k === 'rete') return 'Rete di partenza aggiornata' + chi; if (k === 'commesse') return 'Schede di commessa aggiornate' + chi; if (k === 'quote') return 'Struttura delle quote aggiornata' + chi; if (k === 'scenari') return 'Piano e scenari aggiornati' + chi; if (k === 'struttura') return 'Struttura, nota di lettura o titoli aggiornati' + chi; const c = capitolo(k.slice(4)); return 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo + ': modifica' + chi; }
 async function fondi(k) {
   const remoto = await S.backend.versione(k, S.cfg.branch); if (!remoto) return; const base = S.base[k];
   if (k === 'ipotesi') { const mio = S.P; const out = clone(remoto); for (const key of Object.keys(mio)) if (JSON.stringify(mio[key]) !== JSON.stringify(base && base[key])) out[key] = mio[key]; S.P = Object.assign(clone(MODELLO.IPOTESI_DEFAULT), out); aggiornaCalcolati(); return; }
@@ -2816,6 +2998,7 @@ async function fondi(k) {
   if (k === 'spese') { fondiSpese(remoto); return; }
   if (k === 'diagnosi') { fondiDiagnosi(remoto); return; }
   if (k === 'accordi') { fondiAccordi(remoto); return; }
+  if (k === 'networkai') { fondiNetworkAI(remoto); return; }
   if (k === 'regole') { return; }
   if (k === 'scenari') { const out = Object.assign(scenariDefault(), remoto || {}); out.personalizzati = fondiBlocchi(base && base.personalizzati || [], S.scenari.personalizzati || [], (remoto && remoto.personalizzati) || []); for (const kk of ['anni', 'soglie', 'fabbisogno']) if (JSON.stringify(S.scenari[kk]) !== JSON.stringify(base && base[kk])) out[kk] = clone(S.scenari[kk]); S.scenari = out; return; }
   const c = capitolo(k.slice(4)); c.c.blocchi = fondiBlocchi(base && base.blocchi || [], c.c.blocchi, remoto.blocchi || []); const sec = $('#cap-' + c.c.id); if (sec) sec.replaceWith(renderCapitolo(c.c));
@@ -2832,7 +3015,7 @@ function stato(cls, testo) { const s = $('#stato'); s.className = 'stato ' + cls
 let pollTimer = null;
 async function controllaNovita() {
   if (!S.backend || S.backend.nome !== 'github') return;
-  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'spese' ? 'spese dei Soci' : x === 'diagnosi' ? 'diagnosi D³' : x === 'accordi' ? 'accordi Società Partner' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
+  try { const nov = await S.backend.novita(); for (const k of nov) { if (S.dirty.has(k) || (S.bozza && S.bozza.has(k))) continue; const d = await S.backend.leggi(fileDi(k)); if (!d) continue; const primaDi = (k === 'proposte') ? clone(datiDi(k)) : null; applicaDati(k, d); S.base[k] = clone(d); if (dopoNovita(k, primaDi)) continue; if (k === 'ipotesi') aggiornaCalcolati(); else if (k === 'accessi') { if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); } else if (k === 'commesse') { if ($('#commessa') && !$('#commessa').hidden) disegnaCommessa(); } else if (k === 'quote') { if ($('#soci') && !$('#soci').hidden) disegnaSoci(); } else if (k === 'scenari') { ricalcola(); aggiornaTok(); aggiornaBlocchiProgetti(); if ($('#scenari') && !$('#scenari').hidden) disegnaScenari(); aggiornaProgettiSeAperti(); } else if (k === 'struttura' || k === 'glossario' || k === 'rete') { renderDocumento(); if (k === 'glossario') aggiornaGlossario(); if (k === 'rete' && $('#mappe') && !$('#mappe').hidden) disegnaMappe(); if (k === 'rete') dopoModificaDatiNAI(); } else { const c = capitolo(k.slice(4)); const sec = $('#cap-' + c.c.id); if (sec && !sec.contains(document.activeElement)) { sec.replaceWith(renderCapitolo(c.c)); applicaModo(); } } if (nov.length && $('#sintesi') && !$('#sintesi').hidden) disegnaSintesi(); if (nov.length && $('#riassunto') && !$('#riassunto').hidden) disegnaRiassunto(); if (nov.length) toast('Aggiornamento ricevuto: ' + nov.map(x => x === 'ipotesi' ? 'ipotesi' : x === 'struttura' ? 'struttura' : x === 'glossario' ? 'glossario' : x === 'rete' ? 'rete di partenza' : x === 'commesse' ? 'schede di commessa' : x === 'quote' ? 'struttura delle quote' : x === 'scenari' ? 'scenari e traiettoria' : x === 'commenti' ? 'commenti' : x === 'proposte' ? 'proposte di modifica' : x === 'regole' ? 'regole di approvazione' : x === 'progetti' ? 'schede progetto' : x === 'proiezioni' ? 'proiezioni strategiche' : x === 'contatti' ? 'database relazionale' : x === 'spese' ? 'spese dei Soci' : x === 'diagnosi' ? 'diagnosi D³' : x === 'accordi' ? 'accordi Società Partner' : x === 'networkai' ? 'Network AI' : x === 'accessi' ? 'registro degli accessi' : 'capitolo ' + S.numeri[x.slice(4)]).join(', ')); } }
   catch (e) { console.warn('controllo novità', e); }
 }
 function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3500); }
@@ -2840,7 +3023,7 @@ function toast(msg, ms) { const t = el('div', { class: 'toast' }); t.textContent
 // ================================================================ cronologia
 async function apriCronologia(keySel) {
   apriPannello('pan-storico'); const c = $('#pan-storico .corpo'); c.innerHTML = '<p class="nota-pannello">Scegliere un capitolo: ogni salvataggio è una versione, con autore e data. Si può confrontare una versione con il testo attuale o ripristinarla (il ripristino è a sua volta una nuova versione).</p>';
-  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option><option value="contatti">Database relazionale</option><option value="spese">Spese dei Soci</option><option value="diagnosi">Diagnosi D³</option><option value="accordi">Accordi Società Partner</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
+  const sel = el('select', { class: 'ricerca', id: 'st-cap' }); sel.innerHTML = '<option value="struttura">Nota di lettura, titoli e struttura</option><option value="ipotesi">Ipotesi del modello</option><option value="glossario">Glossario economico</option><option value="rete">Rete di partenza (schede)</option><option value="commesse">Schede di commessa</option><option value="quote">Struttura delle quote (Soci)</option><option value="scenari">Piano e scenari (traiettoria)</option><option value="progetti">Schede progetto</option><option value="proiezioni">Proiezioni strategiche</option><option value="contatti">Database relazionale</option><option value="spese">Spese dei Soci</option><option value="diagnosi">Diagnosi D³</option><option value="accordi">Accordi Società Partner</option><option value="networkai">Network AI</option>' + S.parti.flatMap(p => p.capitoli.map(cc => '<option value="cap:' + cc.id + '">' + esc(S.numeri[cc.id] + '. ' + cc.titolo) + '</option>')).join('');
   const attuale = $('.capitolo:not(#cap-nota)') && capitoloVisibile(); if (attuale) sel.value = 'cap:' + attuale; if (typeof keySel === 'string' && [...sel.options].some(o => o.value === keySel)) sel.value = keySel;
   c.appendChild(sel); const lista = el('div', { id: 'st-lista' }); c.appendChild(lista);
   const carica = async () => { lista.innerHTML = '<p class="nota-pannello">Caricamento…</p>'; try { const st = await S.backend.storico(sel.value); if (!st.length) { lista.innerHTML = '<p class="nota-pannello">Nessuna versione salvata per questa voce.</p>'; return; } lista.innerHTML = st.map(v => '<div class="storico-voce"><div><b>' + esc(v.autore || '') + '</b></div><div class="quando">' + esc(dataIt(v.quando)) + ' · ' + esc(v.messaggio || '') + '</div><div class="azioni"><button class="btn piccolo" data-st="confronta" data-id="' + esc(v.id) + '">Confronta con il testo attuale</button><button class="btn piccolo" data-st="ripristina" data-id="' + esc(v.id) + '">Ripristina</button></div><div class="diff-slot"></div></div>').join(''); } catch (e) { lista.innerHTML = '<div class="avviso errore">Cronologia non disponibile: ' + esc(e.message) + '</div>'; } };
@@ -2865,6 +3048,7 @@ function diffVersioni(key, vecchia) {
   if (key === 'spese') return diffDue('spese', vecchia, datiDi('spese'));
   if (key === 'diagnosi') return diffDue('diagnosi', vecchia, datiDi('diagnosi'));
   if (key === 'accordi') return diffDue('accordi', vecchia, datiDi('accordi'));
+  if (key === 'networkai') return diffDue('networkai', vecchia, datiDi('networkai'));
   const vb = key === 'struttura' ? (vecchia.nota || []) : (vecchia.blocchi || []); const cb = key === 'struttura' ? S.nota : capitolo(key.slice(4)).c.blocchi;
   const vm = new Map(vb.map(b => [b.id, b])); const cm = new Map(cb.map(b => [b.id, b])); let h = ''; let n = 0;
   for (const b of cb) { const o = vm.get(b.id); const tn = testoBlocco(b), to = testoBlocco(o); if (!o) { h += '<div class="b">Blocco aggiunto</div><div class="p"><ins>' + esc(tn) + '</ins></div>'; n++; } else if (to !== tn) { h += '<div class="b">Blocco modificato</div><div class="p">' + diffParole(to, tn) + '</div>'; n++; } }
@@ -4275,7 +4459,7 @@ function sintesiParte4() {
 // ---------------------------------------------------------------- vista
 function apriSintesi(i) { const m = $('#sintesi'); if (!m) return; chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); m.hidden = false; document.body.classList.add('con-mappe'); S.sintesiParte = i == null ? (S.sintesiParte || 0) : +i; S.riassuntoParte = S.sintesiParte; S.homeVista = 'estesa'; try { localStorage.setItem('onward.home', 'estesa'); } catch (e) {} disegnaSintesi(); $('#sintesi .mappe-corpo').scrollTop = 0; }
 function chiudiSintesi() { const m = $('#sintesi'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
-function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); chiudiAlberoPSA(); chiudiAccordi(); }
+function chiudiViste() { chiudiHome(); chiudiMappe(); chiudiCommessa(); chiudiSoci(); chiudiScenari(); chiudiSintesi(); chiudiRiassunto(); chiudiModifiche(); chiudiProgetti(); chiudiProiezioni(); chiudiContatti(); chiudiFormati(); chiudiFormatD3(); chiudiSpese(); chiudiAlberoPSA(); chiudiAccordi(); chiudiNetworkAI(); }
 function apriDocumento() { chiudiViste(); chiudiPopover(); window.scrollTo({ top: 0, behavior: 'auto' }); const d = $('#doc'); if (d) d.setAttribute('tabindex', '-1'); }
 function disegnaSintesi() {
   const m = $('#sintesi'); if (!m) return; const i = S.sintesiParte || 0; const parte = S.parti.find(p => p.id === SI_PARTI[i]) || S.parti[i]; if (!parte) return;
@@ -4521,7 +4705,7 @@ function avviaRiassunto() {
 function accessiVuoti() { return { soci: [], accessi: [] }; }
 function chiaveDiPath(p) { if (!p || !p.startsWith('contenuto/') || !p.endsWith('.json')) return null; if (p.startsWith('contenuto/capitoli/')) return 'cap:' + p.slice('contenuto/capitoli/'.length, -5); if (p.startsWith('contenuto/proposte/')) return 'prop:' + p.slice('contenuto/proposte/'.length, -5); return p.slice('contenuto/'.length, -5); }
 function nomeChiave(k) {
-  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k === 'spese') return 'Spese dei Soci'; if (k === 'diagnosi') return 'Diagnosi D³'; if (k === 'accordi') return 'Accordi Società Partner'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
+  if (k === 'struttura') return 'Nota di lettura, titoli e struttura'; if (k === 'ipotesi') return 'Ipotesi del modello'; if (k === 'glossario') return 'Glossario economico'; if (k === 'rete') return 'Rete di partenza'; if (k === 'commesse') return 'Schede di commessa'; if (k === 'quote') return 'Struttura delle quote'; if (k === 'scenari') return 'Piano e scenari (traiettoria)'; if (k === 'accessi') return 'Registro degli accessi'; if (k === 'commenti') return 'Commenti a margine'; if (k === 'regole') return 'Regole di approvazione'; if (k === 'proposte') return 'Elenco delle proposte'; if (k === 'progetti') return 'Schede progetto'; if (k === 'proiezioni') return 'Proiezioni strategiche'; if (k === 'contatti') return 'Database relazionale'; if (k === 'spese') return 'Spese dei Soci'; if (k === 'diagnosi') return 'Diagnosi D³'; if (k === 'accordi') return 'Accordi Società Partner'; if (k === 'networkai') return 'Network AI'; if (k && k.startsWith('prop:')) { const p = propostaDi(k.slice(5)); return 'Proposta' + (p ? ' di ' + p.autore : ''); }
   if (k && k.startsWith('cap:')) { const c = capitolo(k.slice(4)); return c ? 'Capitolo ' + (S.numeri[c.c.id] || '') + ' ' + c.c.titolo : k; } return k || '';
 }
 function registraSocioLink(nome) {
@@ -4559,6 +4743,7 @@ function diffDue(key, vecchia, nuova) {
     if (key === 'commesse') return (d.commesse || []).map(c => ({ id: c.id, nome: c.titolo || '', tx: JSON.stringify(c, null, 1) }));
     if (key === 'proiezioni') return [{ id: 'imp', nome: 'Impostazioni', tx: ['Avvio: ' + (d.avvio || ''), 'Mese corrente: ' + (d.corrente || 'automatico'), 'Metodo: ' + (d.metodo || ''), 'Riferimento: ' + (d.riferimento || ''), 'Profilo: ' + (d.profilo || '')].join('\n') }].concat((d.rilevazioni || []).map(r => ({ id: r.id, nome: etMesePx(num(r.mese), true) + ' · ' + nomeLineaPx(r.linea), tx: ['Mandati: ' + num(r.n), 'Valore: ' + num(r.valore), 'Giornate: ' + (r.gg == null ? '' : r.gg), 'Note: ' + (r.note || '')].join('\n') })));
     if (key === 'diagnosi') return (d.diagnosi || []).map(x => ({ id: x.id, nome: titoloDiagnosi(x), tx: ['Stato: ' + (x.stato || 'bozza')].concat(Object.keys(x.r || {}).sort().map(k => k + ': ' + (typeof x.r[k] === 'object' ? JSON.stringify(x.r[k]) : String(x.r[k])))).join('\n') }));
+    if (key === 'networkai') return (d.analisi || []).map(x => ({ id: x.id, nome: 'Analisi del ' + dataIt(x.quando) + ' (' + (x.autore || '') + ')', tx: ['Sintesi: ' + (x.sintesi || '')].concat((x.connessioni || []).map(cn => '[' + (cn.priorita || '') + ', ' + (cn.stato || 'nuova') + '] ' + (cn.titolo || '') + ': ' + (cn.descrizione || '') + (cn.prossimo_passo ? ' Prossimo passo: ' + cn.prossimo_passo : ''))).concat((x.avvisi || []).map(v => 'Segnale: ' + v)).join('\n') }));
     if (key === 'accordi') return (d.accordi || []).map(x => ({ id: x.id, nome: nomeAccordo(x), tx: ['Stato: ' + (x.stato || 'bozza'), 'Note: ' + (x.note || '')].concat(AC_CAMPI.map(([k, e]) => e + ': ' + (Array.isArray(acVal(x.sintesi, k)) ? acVal(x.sintesi, k).join(' | ') : acVal(x.sintesi, k)))).join('\n') }));
     if (key === 'spese') return (d.spese || []).map(x => ({ id: x.id, nome: titoloSpesa(x), tx: ['Socio: ' + (x.socio || ''), 'Data: ' + dataBreve(x.data), 'Scheda Progetto: ' + riferimentoSpesa(x.progetto), 'Tipologia: ' + etichettaTipoSpesa(x.tipologia), 'Descrizione: ' + (x.descrizione || ''), 'Imponibile: ' + spEur(imponibileSpesa(x)), 'IVA: ' + spEur(ivaSpesa(x)), 'Totale: ' + spEur(totaleSpesa(x)), 'Giustificativo: ' + (x.giustificativo ? x.giustificativo.nome : 'assente')].join('\n') }));
     if (key === 'contatti') return (d.contatti || []).map(c => ({ id: c.id, nome: nomeContatto(c), tx: ['Nome: ' + (c.nome || ''), 'Cognome: ' + (c.cognome || ''), 'Ente: ' + etichettaEnte(c.ente), 'Mail: ' + (c.mail || ''), 'Cellulare: ' + (c.cellulare || ''), 'Luogo: ' + (c.luogo || ''), 'Settore: ' + etichettaSettoreContatto(c.settore), 'Temi di interesse: ' + (c.temi || ''), 'Socio di riferimento: ' + (c.socio || ''), 'Practices: ' + (c.practice || []).map(nomePractice).join('; '), 'Scheda Progetto: ' + titoloProgettoContatto(c.progetto), 'Status: ' + etichettaStatusContatto(c.status), 'Riporto: ' + (c.riporto || ''), 'Primo contatto: ' + dataBreve(c.primo), 'Ultimo contatto: ' + dataBreve(c.ultimo)].join('\n') }));
@@ -5739,7 +5924,7 @@ const GUIDE_USO = {
     effetti: 'Le schede non cambiano le ipotesi del modello, ma alimentano le tavole generate nei capitoli VI, VIII, XVI e XVIII, la colonna «Pipeline» di Piano e scenari e la pipeline nelle Proiezioni Strategiche. Sono visibili a tutti i Soci e si salvano subito, anche quando è attivo il regime di approvazione, perché sono un registro e non parte del testo.' },
   contatti: { tit: 'Database relazionale',
     serve: 'È la rubrica condivisa della rete dei Soci: una scheda per ogni persona con cui Onward ha o vuole avere una relazione, con l’ente di appartenenza (azienda, PA, associazione, privato), il settore, i temi di interesse, lo status della relazione, il Socio e le Practices di riferimento, la Scheda Progetto a cui il contatto è collegato, chi ce lo ha presentato e le date del primo e dell’ultimo contatto.',
-    usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel.',
+    usa: '«Nuovo contatto» apre il modulo: nome, cognome ed ente sono obbligatori; il settore si sceglie da una tendina che copre tutte le tipologie di ente (il gruppo dell’ente scelto compare per primo); lo status usa la stessa scala delle Schede Progetto, da Idea a Promoter; la tendina «Scheda Progetto collegata» elenca le schede presenti e si aggiorna da sola quando se ne inserisce una nuova. In alto il cruscotto conta i contatti per status e per ente (un clic filtra l’elenco) e segnala quelli da risentire, con l’ultimo contatto da più di 90 giorni. Le colonne di sinistra cercano e filtrano per ente, status, settore, Socio, Practice e Scheda Progetto; un clic sul nome apre la scheda del contatto; «Esporta» produce l’elenco corrente in Word o in CSV per Excel. «Importa (vCard, CSV)» carica in blocco i contatti da un file: la rubrica di iPhone, iPad o Mac esportata in vCard (.vcf) oppure un CSV di Excel, Numbers o Google Contatti; la piattaforma propone la corrispondenza delle colonne, chiede i valori comuni (ente, status, Socio di riferimento, Practices, riporto), mostra l’anteprima e salta i contatti già presenti.',
     effetti: 'I contatti non entrano nel documento né nel modello: sono un registro di lavoro, visibile a tutti i Soci, salvato subito nel repository condiviso (anche in regime di approvazione) e tracciato nella Cronologia. Il collegamento con una Scheda Progetto compare anche nella scheda stessa, da cui si apre il database filtrato sui suoi contatti.' },
   commessa: { tit: 'Scheda di commessa',
     serve: 'È il tool dell’area Tools per ipotizzare le economie di una commessa e quindi formulare un’offerta: scelta la tipologia (diagnosi, mandato continuativo, progetto specialistico, partner tecnico, finanza agevolata, formazione) e inseriti i dati, calcola prezzo, ripartizione nei tre strati (origination, Execution, margine societario), margine per giornata dei Soci e verifiche.',
@@ -5753,6 +5938,10 @@ const GUIDE_USO = {
     serve: 'È il format con cui gli Strategic Partner raccolgono le informazioni dal cliente per la Diagnosi fondativa D³, il prodotto di ingresso di Onward, e il documento di diagnosi che ne discende. Il format segue le tre fasi del metodo: Decoding (modello di business, settore, contesto istituzionale, stakeholder, governance, leadership), Distillation (valutazione sui quattro capitali e sulle sette dimensioni, forze e debolezze, temi materiali con la doppia materialità, profilo di rischio sulle quattordici dimensioni della Corporate Protection, leve prioritarie) e Direction (traiettoria a 36 mesi, mandati da attivare, calendario delle decisioni, indicatori, sintesi per il Consiglio), preceduto dal mandato e dal perimetro.',
     usa: 'La pagina si apre sull’elenco delle diagnosi salvate, bozze e definitive, con la percentuale di compilazione di ciascuna, i documenti allegati e l’ultimo salvataggio; «Nuova diagnosi» avvia una diagnosi e apre il format, con l’indice delle sezioni a sinistra e la percentuale di compilazione. I campi sono a testo libero, a scelta singola o multipla, a scala da 1 a 5 (con il significato di ogni grado) o a griglia (stakeholder, capitali, dimensioni, temi, rischi); gli elenchi (leve, tappe, mandati, decisioni, indicatori) si allungano con «Aggiungi»; le leve e gli indicatori hanno uno schema di partenza: la tendina «Aggiungi dal catalogo» inserisce voci standard già compilate (per gli indicatori con unità di misura, definizione, valore di riferimento, fonte e attività da cui partire) e «Proponi dalle risposte» seleziona quelle coerenti con esigenze, temi materiali, rischi, capitali e leve già raccolti, spiegando il perché. Ogni modifica si salva da sola nel repository dei Soci. «Documento» mostra il documento di diagnosi generato dai dati raccolti: sintesi per il Consiglio, mandato, le tre fasi con tabelle e grafici (relazioni, quattro capitali, radar delle sette dimensioni, matrice di materialità, mappa dei rischi, traiettoria sui dodici trimestri, valore dei mandati per Practice) e prossimi passi; «Esporta in Word» e «Stampa» lo producono come file; «Scheda di commessa» apre la scheda economica della diagnosi precompilata; «Salva bozza» conferma la bozza e dice a che percentuale è; «Salva come definitiva» fissa la versione (se non è completa chiede conferma) e si può riaprire come bozza. Nella sezione del mandato, per ogni fonte si caricano i documenti ricevuti dal cliente (Word, PDF, Excel, immagini), custoditi nel repository dei Soci nella cartella della diagnosi; «Fascicolo» scarica in un unico file zip i dati, il documento generato e tutti i documenti delle fonti, pronto per l’analisi e per la stesura del documento finale.',
     effetti: 'Le diagnosi non entrano nel documento né nel modello: sono un registro di lavoro condiviso, salvato subito nel repository (anche in regime di approvazione) e tracciato nella Cronologia. La diagnosi collegata a una Scheda Progetto compare anche nella scheda; il prezzo e la ripartizione della diagnosi restano nella Scheda di commessa.' },
+  networkai: { tit: 'Network AI',
+    serve: 'È la pagina, nell’area Progetti e Rete, che legge insieme il Database relazionale, le Schede Progetto, Soci e Società Partner e Practices e Servizi: a sinistra la mappa delle relazioni a corsie ordinate, da sinistra a destra (Practices, Soci che le presidiano, Società partner con i loro advisor, Schede Progetto e contatti seguiti da ciascun Socio), a destra le connessioni individuate dall’AI: sinergie tra Soci, possibilità di business, azioni comuni, opportunità legate a persone, a Practice e a Società partner, con i soggetti coinvolti, la priorità e il prossimo passo.',
+    usa: 'La mappa si legge da sola: un clic su un nodo evidenzia i suoi collegamenti e mostra le connessioni in cui compare, i pulsanti aprono la scheda nel Database relazionale, la Scheda Progetto o la pagina Practices; «Mostra il percorso sulla mappa» su una connessione dell’AI evidenzia i soggetti coinvolti, con linea piena i collegamenti già registrati e tratteggiato quello che l’AI suggerisce di creare; la ricerca evidenzia i nomi, le caselle della legenda nascondono contatti, Schede Progetto, advisor o tutti i collegamenti; oltre quaranta contatti la corsia li raggruppa per Socio e ogni gruppo si apre con un clic. L’analisi con l’AI parte da sola un minuto dopo ogni modifica ai quattro registri (propria o arrivata da altri Soci) nel browser che ha la chiave API nelle Impostazioni (sezione «Analisi dei documenti con AI»); «Analizza ora» la avvia subito. In cima alle connessioni i filtri per categoria, priorità, stato, novità e orizzonte (il tempo del prossimo passo: settimane o mesi) e la legenda «Come leggere le schede»; sulla mappa i tratteggi arancioni sono i collegamenti che le connessioni aperte suggeriscono di creare (un clic apre la scheda). Ogni connessione ha uno stato (nuova, in corso, chiusa, scartata) che si sceglie dalla tendina e resta condiviso con i Soci; «Esporta in Word» produce il rapporto.',
+    effetti: 'Le analisi sono salvate nel repository (contenuto/networkai.json, ultime dodici) e tracciate nella Cronologia (voce «Network AI»); non entrano nel documento né nel modello. L’analisi invia all’AI una fotografia compatta dei quattro registri, a spese dell’account di chi la esegue; chi non ha la chiave vede comunque la mappa e le connessioni prodotte dagli altri.' },
   accordi: { tit: 'Accordi Società Partner',
     serve: 'È il registro, nell’area Progetti e Rete, degli accordi con le singole Società partner: per ciascuna i documenti dell’accordo (Word, PDF o immagini), custoditi nel repository dei Soci, e lo schema di sintesi con gli elementi essenziali e caratterizzanti (identità dell’accordo, durata e uscita, oggetto e perimetro, economia, obblighi delle parti, tutele, clausole finali, lettura d’insieme con clausole caratterizzanti, punti di attenzione ed elementi non rilevati).',
     usa: '«Nuovo accordo» sceglie la Società partner dalla rete di partenza (o un nome libero); nella scheda «Carica documenti» mette l’accordo nel repository e «Genera la sintesi con l’AI» lo fa leggere all’AI, che compila lo schema in un minuto circa: serve la chiave API personale inserita nelle Impostazioni (sezione «Analisi dei documenti con AI»), che resta nel browser come il token. La sintesi arriva in bozza: si controlla, si corregge con «Modifica la sintesi» e si conferma con «Segna come verificata». Chi non usa la chiave può compilare a mano o «Incolla una sintesi (JSON)»: copia le istruzioni, le consegna all’AI insieme all’accordo e incolla la risposta. In alto il quadro riassume tutti gli accordi (firma, durata e rinnovo, esclusiva, corrispettivi, stato); «Esporta in Word» produce le schede.',
@@ -5915,7 +6104,7 @@ function approvatori() { return ((S.regole && S.regole.approvatori) || []).map(x
 function isApprovatore(nome) { const n = normNome(nome === undefined ? S.autore : nome); return !!n && approvatori().map(normNome).includes(n); }
 function regimeAttivo() { return !!(S.regole && S.regole.approvazione) && !!S.backend && S.backend.nome === 'github'; }
 function inRegime() { return regimeAttivo() && !isApprovatore(); }
-function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi', 'accordi'].includes(k) && !String(k).startsWith('prop:'); }
+function chiaveProponibile(k) { return !['accessi', 'commenti', 'regole', 'proposte', 'progetti', 'proiezioni', 'contatti', 'spese', 'diagnosi', 'accordi', 'networkai'].includes(k) && !String(k).startsWith('prop:'); }
 function elencoProposte() { if (!S.proposte) S.proposte = proposteVuote(); if (!Array.isArray(S.proposte.proposte)) S.proposte.proposte = []; return S.proposte.proposte; }
 function propostaDi(id) { return elencoProposte().find(p => p.id === id) || null; }
 function proposteInAttesa() { return elencoProposte().filter(p => p.stato === 'in attesa'); }
@@ -6009,12 +6198,13 @@ function notificaProposte(prima) {
 function dopoNovita(k, prima) {
   if (k === 'commenti') { marcaCommenti(); const pop = $('#popover'); if (pop && pop.dataset.commenti) ridisegnaCommenti(pop.dataset.commenti, true); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
   if (k === 'proposte') { notificaProposte(prima); aggiornaBadgeModifiche(); if ($('#modifiche') && !$('#modifiche').hidden) disegnaModifiche(false); return true; }
-  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); aggiornaTendinaProgettiDiagnosi(); return true; }
+  if (k === 'progetti') { aggiornaPipeline(); aggiornaTendinaProgettiContatto(); aggiornaContattiSeAperti(); aggiornaTendinaProgettiSpesa(); aggiornaSpeseSeAperte(); aggiornaTendinaProgettiDiagnosi(); dopoModificaDatiNAI(); return true; }
   if (k === 'proiezioni') { if ($('#proiezioni') && !$('#proiezioni').hidden) disegnaProiezioni(true); return true; }
-  if (k === 'contatti') { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); return true; }
+  if (k === 'contatti') { aggiornaContattiSeAperti(); aggiornaProgettiSeAperti(); dopoModificaDatiNAI(); return true; }
   if (k === 'spese') { aggiornaSpeseSeAperte(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'diagnosi') { aggiornaDiagnosiSeAperte(); aggiornaProgettiSeAperti(); return true; }
   if (k === 'accordi') { aggiornaAccordiSeAperti(); return true; }
+  if (k === 'networkai') { aggiornaNetworkAISeAperto(); return true; }
   if (k === 'regole') { aggiornaBannerProposta(); aggiornaBadgeModifiche(); if ($('#pan-impostazioni') && $('#pan-impostazioni').classList.contains('aperto')) costruisciImpostazioni(); if (!inRegime() && S.bozza && S.bozza.size) caricaBozzaLocale(); return true; }
   return false;
 }
@@ -6085,11 +6275,11 @@ function disegnaHome() {
 }
 // Le finestre a tutto schermo tornano alla pagina Manifesto e Business Plan quando si chiudono (pulsante «Chiudi» o tasto Esc);
 // i pannelli laterali (Ipotesi, Glossario, Cronologia, Impostazioni, Trova) si aprono accanto alla pagina e lasciano quello che c'era sotto.
-const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti', '#formati', '#formatd3', '#spese', '#alberopsa', '#accordi'];
+const VISTE_FINESTRA = ['#mappe', '#commessa', '#soci', '#scenari', '#sintesi', '#riassunto', '#modifiche', '#progetti', '#proiezioni', '#contatti', '#formati', '#formatd3', '#spese', '#alberopsa', '#accordi', '#networkai'];
 function vistaAperta() { return VISTE_FINESTRA.some(s => { const m = $(s); return m && !m.hidden; }); }
 function tornaAllaHome() { const h = $('#home'); if (!h) { chiudiViste(); return; } if (h.hidden || vistaAperta()) apriHome(); }
 function avviaRitornoHome() {
-  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi', 'formati-chiudi', 'formatd3-chiudi', 'spese-chiudi', 'alberopsa-chiudi', 'accordi-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
+  for (const id of ['mappe-chiudi', 'cm-chiudi', 'soci-chiudi', 'scenari-chiudi', 'sintesi-chiudi', 'riassunto-chiudi', 'modifiche-chiudi', 'progetti-chiudi', 'proiezioni-chiudi', 'contatti-chiudi', 'formati-chiudi', 'formatd3-chiudi', 'spese-chiudi', 'alberopsa-chiudi', 'accordi-chiudi', 'networkai-chiudi']) { const b = $('#' + id); if (b) b.onclick = tornaAllaHome; }
 }
 function avviaHome() {
   const m = $('#home'); if (!m) return; const b = $('#b-home'); if (b) b.onclick = apriHome; $('#home-chiudi').onclick = () => { chiudiHome(); };
@@ -6125,7 +6315,7 @@ function titoloProgettoContatto(id) { const p = id ? progettoDi(id) : null; retu
 function contattiDiProgetto(id) { return elencoContatti().filter(c => c.progetto === id); }
 function filtroContatti() { if (!S.ctt) S.ctt = { q: '', ente: [], status: [], socio: [], practice: [], progetto: [], settore: '', ordine: 'cognome' }; return S.ctt; }
 const ORDINI_CONTATTO = [['cognome', 'Cognome e nome'], ['ultimo', 'Ultimo contatto (dal più recente)'], ['ultimo_vecchio', 'Ultimo contatto (dal più lontano)'], ['primo', 'Primo contatto (dal più recente)'], ['status', 'Status (dall’idea al promoter)'], ['ente', 'Ente'], ['agg', 'Ultima modifica']];
-function testoRicercaContatto(c) { return normTesto([c.nome, c.cognome, etichettaEnte(c.ente), c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join(' '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, c.autore].join(' \n ')); }
+function testoRicercaContatto(c) { return normTesto([c.nome, c.cognome, c.organizzazione, etichettaEnte(c.ente), c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join(' '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, c.autore].join(' \n ')); }
 function contattiFiltrati() {
   const F = filtroContatti(); const q = normTesto(F.q).trim(); const parole = q ? q.split(/\s+/) : [];
   const l = elencoContatti().filter(c => {
@@ -6187,7 +6377,7 @@ function htmlRigaContatto(c) {
   const F = filtroContatti(); const g = giorniDa(c.ultimo); const fermo = g !== null && g > 90;
   const temi = String(c.temi || '').trim(); const riporto = String(c.riporto || '').trim();
   const prog = c.progetto ? (progettoDi(c.progetto) ? '<button class="ct-lnk" data-ct="progetto" data-id="' + esc(c.progetto) + '" title="Apre le Schede Progetto sulla scheda collegata">' + esc(titoloProgettoContatto(c.progetto)) + '</button>' : '<span class="pg-muto" title="La scheda collegata non è più presente">scheda non più presente</span>') : '';
-  return '<tr data-id="' + esc(c.id) + '"' + (fermo ? ' class="ct-fermo"' : '') + '><td class="ct-nome"><button class="ct-apri" data-ct="apri" data-id="' + esc(c.id) + '" title="Apre la scheda del contatto">' + esc(nomeContatto(c)) + '</button>' + (c.ente || c.luogo ? '<small>' + esc([etichettaEnte(c.ente), c.luogo].filter(Boolean).join(' · ')) + '</small>' : '') + '</td>' +
+  return '<tr data-id="' + esc(c.id) + '"' + (fermo ? ' class="ct-fermo"' : '') + '><td class="ct-nome"><button class="ct-apri" data-ct="apri" data-id="' + esc(c.id) + '" title="Apre la scheda del contatto">' + esc(nomeContatto(c)) + '</button>' + (c.organizzazione || c.ente || c.luogo ? '<small>' + esc([c.organizzazione, etichettaEnte(c.ente), c.luogo].filter(Boolean).join(' · ')) + '</small>' : '') + '</td>' +
     '<td class="ct-recapiti">' + htmlRecapitiContatto(c) + '</td>' +
     '<td>' + esc(etichettaSettoreContatto(c.settore)) + '</td>' +
     '<td>' + htmlStatusContatto(c.status) + '</td>' +
@@ -6209,7 +6399,7 @@ function disegnaContatti(tutto) {
   if (tutto || !$('.ct-layout', corpo)) corpo.innerHTML = '<div class="pg-layout ct-layout">' + htmlFiltriContatti() + '<div class="ct-lista"></div></div>';
   else { const nf = el('div'); nf.innerHTML = htmlFiltriContatti(); const attivo = document.activeElement; const focusQ = attivo && attivo.id === 'ct-q'; const pos = focusQ ? attivo.selectionStart : null; $('.ct-filtri', corpo).replaceWith(nf.firstElementChild); if (focusQ) { const q = $('#ct-q', corpo); q.focus(); try { q.setSelectionRange(pos, pos); } catch (e) {} } }
   const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l);
-  const nb = $('#ct-nuovo', m); if (nb) nb.hidden = !puoScrivereContatti();
+  const nb = $('#ct-nuovo', m); if (nb) nb.hidden = !puoScrivereContatti(); const ib = $('#ct-importa', m); if (ib) ib.hidden = !puoScrivereContatti();
   aggiornaAvvisoRegistro(corpo, 'I contatti del Database relazionale registrati nel repository');
 }
 function aggiornaListaContatti() { const corpo = $('#contatti .mappe-corpo'); if (!corpo || !$('.ct-lista', corpo)) return; const l = contattiFiltrati(); $('.ct-lista', corpo).innerHTML = htmlCruscottoContatti(l) + htmlTabellaContatti(l); }
@@ -6229,7 +6419,7 @@ function htmlSettoriSelect(cur, ente) {
   return '<select class="f" data-f="settore"><option value="">Da indicare</option>' + gruppi.map(g => '<optgroup label="' + esc(g[1]) + (g[0] === ente ? ' (per l’ente scelto)' : '') + '">' + g[2].map(([k, l]) => '<option value="' + k + '"' + (k === cur ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</optgroup>').join('') + '</select>';
 }
 function formContatto(id) {
-  const c0 = id ? contattoDi(id) : null; const nuovo = !c0; const c = c0 ? clone(c0) : { id: '', nome: '', cognome: '', ente: '', mail: '', cellulare: '', luogo: '', settore: '', temi: '', socio: S.autore || '', practice: [], progetto: '', status: 'idea', riporto: '', primo: '', ultimo: '' };
+  const c0 = id ? contattoDi(id) : null; const nuovo = !c0; const c = c0 ? clone(c0) : { id: '', nome: '', cognome: '', ente: '', organizzazione: '', mail: '', cellulare: '', luogo: '', settore: '', temi: '', socio: S.autore || '', practice: [], progetto: '', status: 'idea', riporto: '', primo: '', ultimo: '' };
   const scrivi = puoScrivereContatti();
   chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-contatto', id: 'finestra' });
   const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
@@ -6239,6 +6429,7 @@ function formContatto(id) {
     '<p class="nota-pannello">Il contatto è condiviso con tutti i Soci e ogni salvataggio resta nella cronologia. I campi con * sono obbligatori.</p>' +
     '<div class="fin-griglia">' + campo('nome', 'Nome *', 'es. Maria') + campo('cognome', 'Cognome *', 'es. Rossi') +
     '<label class="campo-testo">Ente *<select class="f" data-f="ente">' + opt('', c.ente || '', 'Da indicare') + OPZ_ENTE.map(([k, l]) => opt(k, c.ente || '', l)).join('') + '</select></label>' +
+    campo('organizzazione', 'Organizzazione (azienda, ente, studio)', 'es. Gruppo Tecnomec') +
     '<label class="campo-testo">Settore<span class="ct-settore-slot">' + htmlSettoriSelect(c.settore || '', c.ente || '') + '</span><span>L’elenco copre tutte le tipologie di ente; il gruppo dell’ente scelto compare per primo.</span></label>' +
     campo('mail', 'Mail', 'es. maria.rossi@esempio.it', 'email') + campo('cellulare', 'Cellulare', 'es. +39 333 1234567', 'tel') +
     campo('luogo', 'Luogo', 'es. Milano; Napoli; Lugano') +
@@ -6262,7 +6453,7 @@ function formContatto(id) {
     const mail = f('mail'); if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { toast('L’indirizzo mail non sembra valido'); $('.f[data-f="mail"]', fin).focus(); return; }
     const primo = f('primo'), ultimo = f('ultimo'); if (primo && ultimo && ultimo < primo) { toast('La data dell’ultimo contatto non può precedere quella del primo'); $('.f[data-f="ultimo"]', fin).focus(); return; }
     const ora = new Date().toISOString(); const n = nuovo ? { id: uid('ct'), autore: S.autore || 'anonimo', creato: ora } : c0;
-    for (const k of ['nome', 'cognome', 'ente', 'mail', 'cellulare', 'luogo', 'settore', 'temi', 'socio', 'progetto', 'status', 'riporto', 'primo', 'ultimo']) n[k] = f(k);
+    for (const k of ['nome', 'cognome', 'ente', 'organizzazione', 'mail', 'cellulare', 'luogo', 'settore', 'temi', 'socio', 'progetto', 'status', 'riporto', 'primo', 'ultimo']) n[k] = f(k);
     n.practice = $$('input[data-m="practice"]:checked', fin).map(x => x.value); n.agg = ora; n.aggDa = S.autore || 'anonimo';
     if (nuovo) elencoContatti().push(n);
     if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.contatti = 'Contatto «' + nomeContatto(n).slice(0, 60) + '» ' + (nuovo ? 'inserito' : 'aggiornato'); segna('contatti');
@@ -6280,23 +6471,23 @@ const LEGENDA_CONTATTI = { status: ['Status della relazione', 'Lo status dice a 
 function apriNotaContatti(btn) { const v = LEGENDA_CONTATTI[btn.dataset.n]; if (!v) return; apriPopoverNota(btn, v[0], v[1]); }
 function esportaContattiCSV() {
   const l = contattiFiltrati(); const cella = v => { const s = String(v == null ? '' : v); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const testa = ['Nome', 'Cognome', 'Ente', 'Mail', 'Cellulare', 'Luogo', 'Settore', 'Temi di interesse', 'Socio di riferimento', 'Practices di riferimento', 'Scheda Progetto', 'Status', 'Riporto', 'Data primo contatto', 'Data ultimo contatto', 'Inserito da', 'Inserito il', 'Aggiornato da', 'Aggiornato il'];
-  const righe = l.map(c => [c.nome, c.cognome, etichettaEnte(c.ente), c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join('; '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, dataBreve(c.primo), dataBreve(c.ultimo), c.autore, c.creato ? dataIt(c.creato) : '', c.aggDa, c.agg ? dataIt(c.agg) : ''].map(cella).join(';'));
+  const testa = ['Nome', 'Cognome', 'Ente', 'Organizzazione', 'Mail', 'Cellulare', 'Luogo', 'Settore', 'Temi di interesse', 'Socio di riferimento', 'Practices di riferimento', 'Scheda Progetto', 'Status', 'Riporto', 'Data primo contatto', 'Data ultimo contatto', 'Inserito da', 'Inserito il', 'Aggiornato da', 'Aggiornato il'];
+  const righe = l.map(c => [c.nome, c.cognome, etichettaEnte(c.ente), c.organizzazione, c.mail, c.cellulare, c.luogo, etichettaSettoreContatto(c.settore), c.temi, c.socio, (c.practice || []).map(nomePractice).join('; '), titoloProgettoContatto(c.progetto), etichettaStatusContatto(c.status), c.riporto, dataBreve(c.primo), dataBreve(c.ultimo), c.autore, c.creato ? dataIt(c.creato) : '', c.aggDa, c.agg ? dataIt(c.agg) : ''].map(cella).join(';'));
   scarica('Onward_Database_relazionale.csv', '﻿' + [testa.join(';')].concat(righe).join('\r\n'), 'text/csv;charset=utf-8');
 }
 function esportaContatti() {
   const l = contattiFiltrati(); const F = filtroContatti(); const filtrato = F.q || F.ente.length || F.status.length || F.socio.length || F.practice.length || F.progetto.length || F.settore;
   let h = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Database relazionale</title><style>body{font-family:Arial;font-size:11pt;line-height:1.4} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12pt;margin-top:16pt} table{border-collapse:collapse;width:100%;font-size:9pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:3pt 4pt;vertical-align:top} tr.i td{background:#e9eff7;font-weight:bold} td.e{width:28%;background:#f3f5f8} p{margin:0 0 6pt}</style></head><body>';
   h += '<h1>Onward · Database relazionale</h1><p>' + l.length + (l.length === 1 ? ' contatto' : ' contatti') + ' al ' + esc(new Date().toLocaleDateString('it-IT')) + (filtrato ? '; elenco filtrato secondo la ricerca corrente' : '') + '. Per status: ' + STATUS_CONTATTO.map(([k, lab]) => lab + ' ' + l.filter(c => (c.status || 'idea') === k).length).join(', ') + '.</p>';
-  h += '<table><tr class="i"><td>Contatto</td><td>Ente</td><td>Settore</td><td>Luogo</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Ultimo contatto</td></tr>' + l.map(c => '<tr><td>' + esc(nomeContatto(c)) + '</td><td>' + esc(etichettaEnte(c.ente)) + '</td><td>' + esc(etichettaSettoreContatto(c.settore)) + '</td><td>' + esc(c.luogo || '') + '</td><td>' + esc(etichettaStatusContatto(c.status)) + '</td><td>' + esc(c.socio || '') + '</td><td>' + esc((c.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc(titoloProgettoContatto(c.progetto)) + '</td><td>' + esc(dataBreve(c.ultimo)) + '</td></tr>').join('') + '</table>';
-  for (const c of l) { const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(nomeContatto(c)) + '</h2><table>' + riga('Ente', esc(etichettaEnte(c.ente))) + riga('Settore', esc(etichettaSettoreContatto(c.settore))) + riga('Mail', esc(c.mail)) + riga('Cellulare', esc(c.cellulare)) + riga('Luogo', esc(c.luogo)) + riga('Status', esc(etichettaStatusContatto(c.status))) + riga('Socio di riferimento', esc(c.socio)) + riga('Practices di riferimento', esc((c.practice || []).map(nomePractice).join('; '))) + riga('Scheda Progetto collegata', esc(titoloProgettoContatto(c.progetto))) + riga('Temi di interesse', esc(c.temi || '').replace(/\n/g, '<br>')) + riga('Riporto', esc(c.riporto)) + riga('Data primo contatto', esc(dataBreve(c.primo))) + riga('Data ultimo contatto', esc(dataBreve(c.ultimo))) + riga('Inserito', esc((c.autore || '') + ', ' + dataIt(c.creato))) + (c.agg && c.agg !== c.creato ? riga('Aggiornato', esc((c.aggDa || '') + ', ' + dataIt(c.agg))) : '') + '</table>'; }
+  h += '<table><tr class="i"><td>Contatto</td><td>Organizzazione</td><td>Ente</td><td>Settore</td><td>Luogo</td><td>Status</td><td>Socio di riferimento</td><td>Practices</td><td>Scheda Progetto</td><td>Ultimo contatto</td></tr>' + l.map(c => '<tr><td>' + esc(nomeContatto(c)) + '</td><td>' + esc(c.organizzazione || '') + '</td><td>' + esc(etichettaEnte(c.ente)) + '</td><td>' + esc(etichettaSettoreContatto(c.settore)) + '</td><td>' + esc(c.luogo || '') + '</td><td>' + esc(etichettaStatusContatto(c.status)) + '</td><td>' + esc(c.socio || '') + '</td><td>' + esc((c.practice || []).map(nomePractice).join('; ')) + '</td><td>' + esc(titoloProgettoContatto(c.progetto)) + '</td><td>' + esc(dataBreve(c.ultimo)) + '</td></tr>').join('') + '</table>';
+  for (const c of l) { const riga = (a, b) => b ? '<tr><td class="e">' + esc(a) + '</td><td>' + b + '</td></tr>' : ''; h += '<h2>' + esc(nomeContatto(c)) + '</h2><table>' + riga('Organizzazione', esc(c.organizzazione || '')) + riga('Ente', esc(etichettaEnte(c.ente))) + riga('Settore', esc(etichettaSettoreContatto(c.settore))) + riga('Mail', esc(c.mail)) + riga('Cellulare', esc(c.cellulare)) + riga('Luogo', esc(c.luogo)) + riga('Status', esc(etichettaStatusContatto(c.status))) + riga('Socio di riferimento', esc(c.socio)) + riga('Practices di riferimento', esc((c.practice || []).map(nomePractice).join('; '))) + riga('Scheda Progetto collegata', esc(titoloProgettoContatto(c.progetto))) + riga('Temi di interesse', esc(c.temi || '').replace(/\n/g, '<br>')) + riga('Riporto', esc(c.riporto)) + riga('Data primo contatto', esc(dataBreve(c.primo))) + riga('Data ultimo contatto', esc(dataBreve(c.ultimo))) + riga('Inserito', esc((c.autore || '') + ', ' + dataIt(c.creato))) + (c.agg && c.agg !== c.creato ? riga('Aggiornato', esc((c.aggDa || '') + ', ' + dataIt(c.agg))) : '') + '</table>'; }
   scarica('Onward_Database_relazionale.doc', h + '</body></html>', 'application/msword');
 }
 // contatti collegati a una Scheda Progetto: riga nella scheda, con apertura del database filtrato
 function htmlContattiScheda(p) { const l = contattiDiProgetto(p.id); if (!l.length) return ''; return '<span><b>Contatti</b> <button class="ct-lnk" data-pg="contatti" data-id="' + esc(p.id) + '" title="Apre il Database relazionale sui contatti collegati a questa scheda">' + l.slice(0, 3).map(nomeContatto).map(esc).join(', ') + (l.length > 3 ? ' e altri ' + (l.length - 3) : '') + '</button></span>'; }
 function avviaContatti() {
   const m = $('#contatti'); if (!m) return; const b = $('#b-contatti'); if (b) b.onclick = apriContatti; $('#contatti-chiudi').onclick = chiudiContatti;
-  $('#ct-nuovo', m).onclick = () => formContatto(null); $('#ct-word', m).onclick = () => { toast('Preparazione del file Word…'); esportaContatti(); }; $('#ct-csv', m).onclick = esportaContattiCSV;
+  $('#ct-nuovo', m).onclick = () => formContatto(null); avviaImportContatti(); $('#ct-word', m).onclick = () => { toast('Preparazione del file Word…'); esportaContatti(); }; $('#ct-csv', m).onclick = esportaContattiCSV;
   m.addEventListener('input', ev => { if (ev.target.id === 'ct-q') { filtroContatti().q = ev.target.value; aggiornaListaContatti(); } });
   m.addEventListener('change', ev => { const F = filtroContatti(); const c = ev.target.closest('input[data-ctf]'); if (c) { const k = c.dataset.ctf; const cur = new Set(F[k]); if (c.checked) cur.add(c.value); else cur.delete(c.value); F[k] = [...cur]; aggiornaListaContatti(); return; } if (ev.target.id === 'ct-ordine') { F.ordine = ev.target.value; aggiornaListaContatti(); } if (ev.target.id === 'ct-settore') { F.settore = ev.target.value; aggiornaListaContatti(); } });
   m.addEventListener('click', ev => { const b = ev.target.closest('button[data-ct], #ct-azzera'); if (!b) return; const F = filtroContatti();
@@ -6305,6 +6496,121 @@ function avviaContatti() {
     if (az === 'nota') { ev.preventDefault(); apriNotaContatti(b); return; }
     if (az === 'filtra') { const k = b.dataset.k; const cur = new Set(F[k] || []); if (cur.has(b.dataset.v)) cur.delete(b.dataset.v); else cur.add(b.dataset.v); F[k] = [...cur]; disegnaContatti(); return; }
     if (az === 'progetto') { const p = progettoDi(b.dataset.id); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; } });
+}
+// ---- importct_mod
+// ================================================================ Importazione dei contatti da file: vCard (.vcf, il formato della rubrica di iPhone, iPad e Mac)
+// e CSV (Excel, Numbers, Google Contatti, o l'esportazione della piattaforma). Il file resta nel browser: si legge, si mostra l'anteprima con la
+// corrispondenza delle colonne e i valori comuni, si saltano i contatti già presenti e si registra tutto nel Database relazionale condiviso.
+const CT_IMPORT_CAMPI = [['nome', 'Nome'], ['cognome', 'Cognome'], ['nomecompleto', 'Nome e cognome insieme'], ['organizzazione', 'Organizzazione'], ['mail', 'Mail'], ['cellulare', 'Cellulare'], ['luogo', 'Luogo'], ['settore', 'Settore'], ['ente', 'Ente (tipologia)'], ['status', 'Status'], ['socio', 'Socio di riferimento'], ['temi', 'Temi di interesse'], ['riporto', 'Riporto'], ['primo', 'Data primo contatto'], ['ultimo', 'Data ultimo contatto'], ['', 'Non importare']];
+const CT_IMPORT_SINONIMI = { nome: ['nome', 'first name', 'firstname', 'given name', 'givenname', 'prenom', 'prénom', 'first', 'name'], cognome: ['cognome', 'last name', 'lastname', 'surname', 'family name', 'familyname', 'nom', 'last'], nomecompleto: ['nome completo', 'full name', 'fullname', 'display name', 'nominativo', 'contatto', 'nome e cognome', 'nome cognome'], organizzazione: ['organizzazione', 'organization', 'organisation', 'company', 'azienda', 'societa', 'società', 'company name', 'org', 'organization name', 'ente/azienda', 'datore di lavoro', 'employer'], mail: ['mail', 'e-mail', 'email', 'e-mail address', 'email address', 'e-mail 1 - value', 'email 1', 'e-mail 1', 'indirizzo e-mail', 'indirizzo email', 'posta elettronica', 'e-mail 1 - valore'], cellulare: ['cellulare', 'mobile', 'mobile phone', 'cell', 'cell phone', 'telefono', 'phone', 'tel', 'phone 1 - value', 'telefono cellulare', 'mobile number', 'phone number', 'numero di telefono', 'telefono 1 - valore'], luogo: ['luogo', 'città', 'citta', 'city', 'comune', 'localita', 'località', 'address 1 - city', 'home city', 'work city', 'indirizzo 1 - città'], settore: ['settore', 'industry', 'sector'], ente: ['ente', 'tipologia di ente', 'tipo ente', 'tipologia'], status: ['status', 'stato', 'stato della relazione'], socio: ['socio di riferimento', 'socio', 'referente onward'], temi: ['temi di interesse', 'temi', 'note', 'notes', 'annotazioni', 'interessi', 'note 1'], riporto: ['riporto', 'riporto (chi ce lo ha presentato)', 'presentato da', 'referral', 'segnalato da'], primo: ['data primo contatto', 'primo contatto', 'primo'], ultimo: ['data ultimo contatto', 'ultimo contatto', 'ultimo'] };
+function normIntestazione(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[_\-.]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+function campoDaIntestazione(h, usati) {
+  const n = normIntestazione(h); if (!n) return '';
+  for (const [k, lista] of Object.entries(CT_IMPORT_SINONIMI)) if (lista.some(x => normIntestazione(x) === n) && !usati.has(k)) return k;
+  const parziali = [['mail', /e ?mail|posta/], ['cellulare', /mobile|cell|telefono|phone|tel\b/], ['organizzazione', /organi|company|azienda|societa|ente|studio/], ['luogo', /citt|city|comune|luogo|localit/], ['temi', /note|temi|interess/], ['cognome', /cognome|last|surname|family/], ['nome', /nome|first|given/]];
+  for (const [k, re] of parziali) if (re.test(n) && !usati.has(k)) return k;
+  return '';
+}
+function decodificaFileTesto(buf) { try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); } catch (e) { try { return new TextDecoder('windows-1252').decode(buf); } catch (e2) { return new TextDecoder().decode(buf); } } }
+function analizzaCSV(testo) {
+  testo = String(testo || '').replace(/^﻿/, ''); const prima = (testo.split(/\r?\n/).find(l => l.trim()) || ''); const conta = ch => prima.split(ch).length - 1; const sep = [';', ',', '\t'].sort((a, b) => conta(b) - conta(a))[0];
+  const righe = []; let riga = [], campo = '', inStr = false;
+  for (let i = 0; i < testo.length; i++) { const ch = testo[i]; if (inStr) { if (ch === '"') { if (testo[i + 1] === '"') { campo += '"'; i++; } else inStr = false; } else campo += ch; } else if (ch === '"') inStr = true; else if (ch === sep) { riga.push(campo); campo = ''; } else if (ch === '\n' || ch === '\r') { if (ch === '\r' && testo[i + 1] === '\n') i++; riga.push(campo); righe.push(riga); riga = []; campo = ''; } else campo += ch; }
+  if (campo !== '' || riga.length) { riga.push(campo); righe.push(riga); }
+  return { righe: righe.filter(r => r.some(x => String(x).trim() !== '')), sep };
+}
+function decodificaQP(v, params) {
+  const m = /CHARSET=([\w-]+)/i.exec(params || ''); const cs = (m ? m[1] : 'utf-8').toLowerCase(); const bytes = [];
+  for (let i = 0; i < v.length; i++) { if (v[i] === '=' && /^[0-9A-Fa-f]{2}$/.test(v.substr(i + 1, 2))) { bytes.push(parseInt(v.substr(i + 1, 2), 16)); i += 2; } else bytes.push(v.charCodeAt(i) & 255); }
+  try { return new TextDecoder(cs).decode(new Uint8Array(bytes)); } catch (e) { return new TextDecoder().decode(new Uint8Array(bytes)); }
+}
+function analizzaVCard(testo) {
+  const out = []; const blocchi = String(testo || '').replace(/\r\n?/g, '\n').split(/^BEGIN:VCARD[ \t]*$/mi).slice(1);
+  for (const b of blocchi) {
+    const corpo = b.split(/^END:VCARD/mi)[0]; const righe = [];
+    for (const l of corpo.split('\n')) { const prev = righe.length ? righe[righe.length - 1] : null; if (prev !== null && /^[ \t]/.test(l)) righe[righe.length - 1] += l.slice(1); else if (prev !== null && /QUOTED-PRINTABLE/i.test(prev) && /=$/.test(prev)) righe[righe.length - 1] = prev.slice(0, -1) + l; else righe.push(l); }
+    const c = { nome: '', cognome: '', organizzazione: '', mail: '', cellulare: '', luogo: '', temi: '', titolo: '' }; let fn = ''; let telCell = false, telPref = false, mailPref = false;
+    for (const l of righe) { const i = l.indexOf(':'); if (i < 0) continue; const chiave = l.slice(0, i); let val = l.slice(i + 1); const parti = chiave.split(';'); const nome = parti[0].toUpperCase().replace(/^ITEM\d+\./, ''); const params = parti.slice(1).join(';').toUpperCase();
+      if (/ENCODING=QUOTED-PRINTABLE/.test(params)) val = decodificaQP(val, params); val = val.replace(/\\n/gi, '\n').replace(/\\,/g, ',').replace(/\\;/g, ';').trim();
+      if (nome === 'N') { const p = val.split(';'); c.cognome = (p[0] || '').trim(); c.nome = [p[1], p[2]].map(x => String(x || '').trim()).filter(Boolean).join(' '); }
+      else if (nome === 'FN') fn = val; else if (nome === 'ORG') c.organizzazione = val.split(';').map(x => x.trim()).filter(Boolean).join(' · '); else if (nome === 'TITLE') c.titolo = val;
+      else if (nome === 'EMAIL') { const pref = /PREF/.test(params); if (!c.mail || (pref && !mailPref)) { c.mail = val; mailPref = pref; } }
+      else if (nome === 'TEL') { const v = val.replace(/^tel:/i, '').trim(); const cell = /CELL|MOBILE|IPHONE/.test(params); const pref = /PREF/.test(params); if (!c.cellulare || (cell && !telCell) || (pref && !telPref && !telCell)) { c.cellulare = v; telCell = cell; telPref = pref; } }
+      else if (nome === 'ADR') { const p = val.split(';'); if (!c.luogo) c.luogo = (p[3] || '').trim(); }
+      else if (nome === 'NOTE') c.temi = val; }
+    const orgBase = c.organizzazione.split(' · ')[0];
+    if (!c.nome && !c.cognome && orgBase && (!fn || normIntestazione(fn) === normIntestazione(orgBase))) c.cognome = orgBase;
+    else if (!c.nome && !c.cognome && fn) { const p = fn.trim().split(/\s+/); c.cognome = p.length > 1 ? p[p.length - 1] : ''; c.nome = p.length > 1 ? p.slice(0, -1).join(' ') : p[0]; }
+    if (c.titolo) c.temi = ['Ruolo: ' + c.titolo, c.temi].filter(Boolean).join('\n'); delete c.titolo;
+    if (c.nome || c.cognome) out.push(c);
+  }
+  return out;
+}
+function dataImportata(v) { v = String(v || '').trim(); if (!v) return ''; let m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(v); if (m) return m[1] + '-' + m[2].padStart(2, '0') + '-' + m[3].padStart(2, '0'); m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/.exec(v); if (m) { const a = m[3].length === 2 ? '20' + m[3] : m[3]; return a + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0'); } return ''; }
+function chiaveOpzione(lista, v) { const n = normIntestazione(v); if (!n) return ''; const x = lista.find(o => normIntestazione(o[0]) === n || normIntestazione(o[1]) === n); return x ? x[0] : ''; }
+function contattiDaCSV(dati, mappa) {
+  const out = []; const idx = {}; mappa.forEach((k, i) => { if (k && idx[k] == null) idx[k] = i; });
+  for (const r of dati.righe.slice(1)) { const v = k => idx[k] == null ? '' : String(r[idx[k]] == null ? '' : r[idx[k]]).trim(); const c = { nome: v('nome'), cognome: v('cognome'), organizzazione: v('organizzazione'), mail: v('mail'), cellulare: v('cellulare'), luogo: v('luogo'), temi: v('temi'), riporto: v('riporto'), primo: dataImportata(v('primo')), ultimo: dataImportata(v('ultimo')), status: chiaveOpzione(STATUS_CONTATTO, v('status')), socio: v('socio'), ente: chiaveOpzione(OPZ_ENTE, v('ente')), settore: chiaveOpzione(settoriContatto(), v('settore')) };
+    if (!c.nome && !c.cognome && v('nomecompleto')) { const p = v('nomecompleto').split(/\s+/); c.cognome = p.length > 1 ? p[p.length - 1] : ''; c.nome = p.length > 1 ? p.slice(0, -1).join(' ') : p[0]; }
+    if (!c.nome && !c.cognome && c.organizzazione) c.cognome = c.organizzazione;
+    if (c.nome || c.cognome) out.push(c); }
+  return out;
+}
+function chiaviContattoEsistente() { const m = new Set(); for (const c of elencoContatti()) { if (c.mail) m.add('m:' + normIntestazione(c.mail)); m.add('n:' + normIntestazione(c.nome + ' ' + c.cognome)); } return m; }
+function contattoGiaPresente(c, chiavi) { return (c.mail && chiavi.has('m:' + normIntestazione(c.mail))) || chiavi.has('n:' + normIntestazione(c.nome + ' ' + c.cognome)); }
+async function importaContattiDaFile(file) {
+  if (!file) return; if (!puoScrivereContatti()) { toast('Per importare i contatti occorre il repository collegato'); return; }
+  let testo; try { testo = decodificaFileTesto(await file.arrayBuffer()); } catch (e) { toast('Impossibile leggere il file'); return; }
+  const vcf = /BEGIN:VCARD/i.test(testo) || /\.vcf$|\.vcard$/i.test(file.name);
+  const st = { nome: file.name, tipo: vcf ? 'vcf' : 'csv', salta: true, ente: '', status: 'idea', socio: nomiSociProgetti().includes(S.autore) ? S.autore : '', practice: [], riporto: '' };
+  if (vcf) { st.contatti = analizzaVCard(testo); if (!st.contatti.length) { toast('Nel file non sono stati trovati contatti in formato vCard'); return; } }
+  else { st.dati = analizzaCSV(testo); if (st.dati.righe.length < 2) { toast('Il file CSV non contiene righe di dati oltre all’intestazione'); return; } const usati = new Set(); st.mappa = st.dati.righe[0].map(h => { const k = campoDaIntestazione(h, usati); if (k) usati.add(k); return k; }); st.contatti = contattiDaCSV(st.dati, st.mappa); }
+  apriImportContatti(st);
+}
+function apriImportContatti(st) {
+  chiudiFinestra(); const fin = el('div', { class: 'finestra aperta finestra-ente finestra-import', id: 'finestra' }); document.body.appendChild(fin); $('#sfondo').classList.add('aperto');
+  const disegna = () => {
+    if (st.tipo === 'csv') st.contatti = contattiDaCSV(st.dati, st.mappa);
+    const chiavi = chiaviContattoEsistente(); const doppi = st.contatti.filter(c => contattoGiaPresente(c, chiavi)).length; const daImportare = st.salta ? st.contatti.length - doppi : st.contatti.length; st.daImportare = daImportare;
+    const opt = (v, cur, lab) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(lab) + '</option>';
+    const soci = nomiSociProgetti();
+    let h = '<div class="fin-testa"><b>Importa contatti da «' + esc(st.nome) + '»</b><button class="btn piccolo" id="fin-chiudi">Chiudi</button></div>';
+    h += '<p class="nota-pannello">' + (st.tipo === 'vcf' ? 'File vCard (rubrica di iPhone, iPad, Mac o altri sistemi): letti ' + st.contatti.length + (st.contatti.length === 1 ? ' contatto' : ' contatti') + ' con nome, organizzazione, mail, cellulare, città e note.' : 'File CSV: ' + (st.dati.righe.length - 1) + ' righe di dati e ' + st.dati.righe[0].length + ' colonne (separatore «' + (st.dati.sep === '\t' ? 'tabulazione' : st.dati.sep) + '»). Controllare la corrispondenza tra le colonne del file e i campi del Database relazionale: la piattaforma la propone dai titoli delle colonne e si può correggere.') + ' Il file resta nel browser: nel repository entrano solo i contatti importati.</p>';
+    if (st.tipo === 'csv') h += '<div class="ct-imp-mappa"><table class="tab"><thead><tr class="intestazione"><td>Colonna del file</td><td>Esempio</td><td>Campo del Database relazionale</td></tr></thead><tbody>' + st.dati.righe[0].map((t, i) => { const es = (st.dati.righe.slice(1).map(r => r[i]).find(v => String(v || '').trim()) || ''); return '<tr><td><b>' + esc(t) + '</b></td><td class="ct-imp-es">' + esc(taglioNAI(es, 40)) + '</td><td><select class="ricerca ct-imp-sel" data-col="' + i + '">' + CT_IMPORT_CAMPI.map(([k, l]) => opt(k, st.mappa[i] || '', l)).join('') + '</select></td></tr>'; }).join('') + '</tbody></table></div>';
+    h += '<div class="pop-tit">Valori per tutti i contatti importati (dove il file non li indica)</div><div class="fin-griglia ct-imp-griglia">' +
+      '<label class="campo-testo">Ente (tipologia)<select class="ricerca" id="ct-imp-ente">' + opt('', st.ente, 'Automatico: Azienda se c’è l’organizzazione, altrimenti Privato') + OPZ_ENTE.map(([k, l]) => opt(k, st.ente, l)).join('') + '</select></label>' +
+      '<label class="campo-testo">Status<select class="ricerca" id="ct-imp-status">' + STATUS_CONTATTO.map(([k, l]) => opt(k, st.status, l)).join('') + '</select></label>' +
+      '<label class="campo-testo">Socio di riferimento<select class="ricerca" id="ct-imp-socio">' + opt('', st.socio, 'non indicato') + soci.map(n => opt(n, st.socio, n)).join('') + '</select></label>' +
+      '<label class="campo-testo">Riporto (chi ce lo ha presentato)<input class="ricerca" id="ct-imp-riporto" value="' + esc(st.riporto) + '" placeholder="es. rubrica personale di ' + esc(S.autore || '') + '"></label></div>' +
+      '<div class="pop-tit">Practices di riferimento (facoltative)</div><div class="pg-multi">' + practiceElenco().map(x => '<label class="pg-opt"><input type="checkbox" data-imp-pr="' + esc(x.id) + '"' + (st.practice.includes(x.id) ? ' checked' : '') + '> <span>' + esc(x.num + ' ' + x.nome) + '</span></label>').join('') + '</div>';
+    h += '<label class="ct-imp-salta"><input type="checkbox" id="ct-imp-salta"' + (st.salta ? ' checked' : '') + '> Salta i contatti già presenti nel database (stessa mail, oppure stesso nome e cognome)' + (doppi ? ' <b>' + doppi + (doppi === 1 ? ' trovato' : ' trovati') + '</b>' : ' <small>nessuno trovato</small>') + '</label>';
+    const ant = st.contatti.slice(0, 8);
+    h += '<div class="pop-tit">Anteprima' + (st.contatti.length > 8 ? ' (primi 8 di ' + st.contatti.length + ')' : '') + '</div><div class="ct-imp-ant"><table class="tab"><thead><tr class="intestazione"><td>Nome</td><td>Cognome</td><td>Organizzazione</td><td>Mail</td><td>Cellulare</td><td>Luogo</td><td></td></tr></thead><tbody>' + ant.map(c => '<tr' + (contattoGiaPresente(c, chiavi) ? ' class="ct-imp-doppio"' : '') + '><td>' + esc(c.nome) + '</td><td>' + esc(c.cognome) + '</td><td>' + esc(c.organizzazione) + '</td><td>' + esc(c.mail) + '</td><td>' + esc(c.cellulare) + '</td><td>' + esc(c.luogo) + '</td><td>' + (contattoGiaPresente(c, chiavi) ? '<span class="sem">già presente</span>' : '') + '</td></tr>').join('') + (ant.length ? '' : '<tr><td colspan="7" class="pg-muto">Con questa corrispondenza delle colonne non risulta alcun contatto: indicare almeno la colonna del nome o del cognome.</td></tr>') + '</tbody></table></div>';
+    h += '<div class="azioni gl-azioni"><span class="nota-pannello">I contatti importati sono condivisi con tutti i Soci e restano nella Cronologia; Network AI li legge alla prossima analisi.</span><span class="spazio"></span><button class="btn piccolo" id="fin-annulla">Annulla</button><button class="btn piccolo primario" id="ct-imp-ok"' + (daImportare ? '' : ' disabled') + '>Importa ' + daImportare + (daImportare === 1 ? ' contatto' : ' contatti') + '</button></div>';
+    fin.innerHTML = h;
+    $('#fin-chiudi', fin).onclick = $('#fin-annulla', fin).onclick = chiudiFinestra;
+    $('#ct-imp-ok', fin).onclick = () => eseguiImportContatti(st);
+  };
+  fin.addEventListener('change', ev => { const t = ev.target;
+    if (t.classList.contains('ct-imp-sel')) { st.mappa[+t.dataset.col] = t.value; disegna(); return; }
+    if (t.id === 'ct-imp-salta') { st.salta = t.checked; disegna(); return; }
+    if (t.id === 'ct-imp-ente') st.ente = t.value; if (t.id === 'ct-imp-status') st.status = t.value; if (t.id === 'ct-imp-socio') st.socio = t.value; if (t.id === 'ct-imp-riporto') st.riporto = t.value.trim();
+    if (t.dataset && t.dataset.impPr) { const cur = new Set(st.practice); if (t.checked) cur.add(t.dataset.impPr); else cur.delete(t.dataset.impPr); st.practice = [...cur]; } });
+  fin.addEventListener('input', ev => { if (ev.target.id === 'ct-imp-riporto') st.riporto = ev.target.value.trim(); });
+  disegna();
+}
+function eseguiImportContatti(st) {
+  if (!puoScrivereContatti()) return; const chiavi = chiaviContattoEsistente(); const ora = new Date().toISOString(); const l = elencoContatti(); let n = 0, saltati = 0;
+  for (const c of st.contatti) { if (st.salta && contattoGiaPresente(c, chiavi)) { saltati++; continue; }
+    const nuovo = { id: uid('ct'), autore: S.autore || 'anonimo', creato: ora, agg: ora, aggDa: S.autore || 'anonimo', nome: c.nome || '', cognome: c.cognome || '', organizzazione: c.organizzazione || '', ente: c.ente || st.ente || (c.organizzazione ? 'azienda' : 'privato'), mail: c.mail || '', cellulare: c.cellulare || '', luogo: c.luogo || '', settore: c.settore || '', temi: c.temi || '', socio: c.socio || st.socio || '', practice: st.practice.slice(), progetto: '', status: c.status || st.status || 'idea', riporto: c.riporto || st.riporto || '', primo: c.primo || '', ultimo: c.ultimo || '' };
+    l.push(nuovo); if (nuovo.mail) chiavi.add('m:' + normIntestazione(nuovo.mail)); chiavi.add('n:' + normIntestazione(nuovo.nome + ' ' + nuovo.cognome)); n++; }
+  if (!n) { toast('Nessun contatto da importare' + (saltati ? ': erano tutti già presenti' : '')); return; }
+  if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.contatti = 'Database relazionale: importati ' + n + (n === 1 ? ' contatto' : ' contatti') + ' da ' + st.nome; segna('contatti');
+  chiudiFinestra(); dopoModificaContatti(); disegnaContatti(true); toast('Importati ' + n + (n === 1 ? ' contatto' : ' contatti') + (saltati ? '; ' + saltati + ' già presenti non duplicati' : '') + '. Il salvataggio nel repository è in corso.', 6000);
+}
+function avviaImportContatti() {
+  const m = $('#contatti'); if (!m) return; const b = $('#ct-importa', m), f = $('#ct-import-file', m); if (!b || !f) return;
+  b.onclick = () => { f.value = ''; f.click(); }; f.onchange = () => { const file = f.files && f.files[0]; if (file) importaContattiDaFile(file); };
 }
 // ---- tools_amm_mod
 // ================================================================ Tools: Format Incarico (pagina in preparazione: i format compilabili per i contratti delle linee di servizio)
@@ -7397,10 +7703,10 @@ function intestazioniAI(chiave) { return { 'content-type': 'application/json', '
 async function modelliAI(chiave) { const r = await fetch('https://api.anthropic.com/v1/models?limit=100', { headers: intestazioniAI(chiave) }); if (!r.ok) { const t = await r.text(); throw new Error('risposta ' + r.status + ': ' + t.slice(0, 160)); } const j = await r.json(); return (j.data || []).map(m => ({ id: m.id, nome: m.display_name || m.id })); }
 function htmlAnalisiAI() {
   const c = cfgAI(); const opz = (c.modelli || []).map(m => '<option value="' + esc(m.id) + '"' + (m.id === c.modello ? ' selected' : '') + '>' + esc(m.nome) + '</option>').join('');
-  return '<h4>Analisi dei documenti con AI</h4><p class="nota-pannello">La pagina «Accordi Società Partner» legge gli accordi con l’AI e ne genera lo schema di sintesi. Serve una chiave API personale di Anthropic (console.anthropic.com, sezione API keys): resta salvata solo in questo browser, come il token del repository, e viene usata soltanto per inviare i documenti da analizzare direttamente al servizio. Ogni analisi ha un costo a consumo sul proprio account.</p>' +
+  return '<h4>Analisi dei documenti con AI</h4><p class="nota-pannello">La pagina «Accordi Società Partner» legge gli accordi con l’AI e ne genera lo schema di sintesi; «Network AI» legge l’insieme di contatti, Schede Progetto, Soci, Società partner e Practices e segnala le connessioni interessanti. Serve una chiave API personale di Anthropic (console.anthropic.com, sezione API keys): resta salvata solo in questo browser, come il token del repository, e viene usata soltanto per inviare i documenti da analizzare direttamente al servizio. Ogni analisi ha un costo a consumo sul proprio account.</p>' +
     '<label class="campo-testo">Chiave API Anthropic<input id="ai-chiave" type="password" value="' + esc(c.chiave || '') + '" autocomplete="off"><span>Con «Verifica e salva» la chiave viene provata e si carica l’elenco dei modelli disponibili.</span></label>' +
     '<label class="campo-testo">Modello<select id="ai-modello"' + (opz ? '' : ' disabled') + '>' + (opz || '<option value="">Prima verificare la chiave</option>') + '</select><span>Per i contratti è adatto un modello della famiglia Sonnet; Opus è più accurato e più costoso.</span></label>' +
-    '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="ai-verifica">Verifica e salva</button>' + (c.chiave && c.modello ? '<button class="btn" id="ai-prova" title="Invia una richiesta minima al modello scelto per verificare che chiave, credito e collegamento funzionino">Prova una richiesta</button>' : '') + (c.chiave ? '<button class="btn" id="ai-togli">Togli la chiave</button>' : '') + '</div><div id="ai-esito">' + (c.chiave ? '<p class="nota-pannello">Chiave salvata in questo browser (termina con …' + esc(String(c.chiave).slice(-4)) + ')' + (c.modello ? ', modello ' + esc(c.modello) : ', modello da scegliere') + '.</p>' : '') + '</div>';
+    '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.4rem 0"><button class="btn" id="ai-verifica">Verifica e salva</button>' + (c.chiave && c.modello ? '<button class="btn" id="ai-prova" title="Invia una richiesta minima al modello scelto per verificare che chiave, credito e collegamento funzionino">Prova una richiesta</button>' : '') + (c.chiave ? '<button class="btn" id="ai-togli">Togli la chiave</button>' : '') + '</div>' + (c.chiave && c.modello ? '<div class="ai-opz"><label><input type="checkbox" id="ai-auto-network"' + (c.autoNetwork === false ? '' : ' checked') + '><span>Network AI: analisi automatica a ogni modifica di contatti, Schede Progetto, Soci e Società partner</span></label><small>Parte da questo browser un minuto dopo l’ultima modifica, propria o arrivata da altri Soci; ogni analisi ha un costo a consumo sull’account di chi la esegue.</small></div>' : '') + '<div id="ai-esito">' + (c.chiave ? '<p class="nota-pannello">Chiave salvata in questo browser (termina con …' + esc(String(c.chiave).slice(-4)) + ')' + (c.modello ? ', modello ' + esc(c.modello) : ', modello da scegliere') + '.</p>' : '') + '</div>';
 }
 function attivaAnalisiAI(c) {
   const b = $('#ai-verifica', c); if (!b) return;
@@ -7409,6 +7715,7 @@ function attivaAnalisiAI(c) {
     catch (e) { esito.innerHTML = '<div class="avviso errore">Verifica non riuscita: ' + esc(e.message || e) + '. Controllare la chiave; se il browser blocca la richiesta, riprovare da Safari o Chrome aggiornati.</div>'; b.disabled = false; b.textContent = 'Verifica e salva'; } };
   const sel = $('#ai-modello', c); if (sel) sel.onchange = () => { const cur = cfgAI(); cur.modello = sel.value; salvaCfgAI(cur); toast('Modello per l’analisi: ' + sel.value); };
   const t = $('#ai-togli', c); if (t) t.onclick = () => { salvaCfgAI({}); costruisciImpostazioni(); toast('Chiave API rimossa da questo browser'); };
+  const an = $('#ai-auto-network', c); if (an) an.onchange = () => { const cur = cfgAI(); cur.autoNetwork = an.checked; salvaCfgAI(cur); toast(an.checked ? 'Network AI: analisi automatica attiva' : 'Network AI: analisi automatica disattivata; resta «Analizza ora»'); if (an.checked) pianificaNetworkAI(); else { clearTimeout(naiTimer); S.naiProgrammata = null; aggiornaNetworkAISeAperto(); } };
   const pr = $('#ai-prova', c); if (pr) pr.onclick = async () => { const cur = cfgAI(); const esito = $('#ai-esito', c); pr.disabled = true; pr.textContent = 'Prova in corso…'; try { const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: intestazioniAI(cur.chiave), body: JSON.stringify({ model: cur.modello, max_tokens: 20, messages: [{ role: 'user', content: 'Rispondi solo con la parola OK.' }] }) }); const t = await r.text(); if (!r.ok) { let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg); } const j = JSON.parse(t); esito.innerHTML = '<div class="avviso">Collegamento funzionante: il modello ' + esc(cur.modello) + ' ha risposto «' + esc(((j.content || [])[0] || {}).text || '') + '». L’analisi degli accordi può partire.</div>'; } catch (e) { esito.innerHTML = '<div class="avviso errore">Prova non riuscita: ' + esc(e.message || e) + (/Failed to fetch|Load failed|NetworkError/i.test(String(e.message || e)) ? '. Il browser non ha raggiunto il servizio: controllare rete, estensioni che bloccano le richieste o firewall aziendale.' : '') + '</div>'; } pr.disabled = false; pr.textContent = 'Prova una richiesta'; };
 }
 // ---- documenti dell'accordo nel repository (accordi/<id>/<file>), come i Documenti di Progetto
@@ -7463,10 +7770,10 @@ async function generaSintesiAI(id) {
   statoAnalisi(id, 'corso', 'Lettura dei documenti dal repository e analisi con l’AI (' + cfg.modello + '): può richiedere fino a un minuto. Non chiudere la pagina.'); disegnaAccordi();
   try { const { blocchi, usati, saltati } = await blocchiPerAI(a);
     statoAnalisi(id, 'corso', 'Documenti letti (' + usati.join(', ') + '): analisi con l’AI in corso (' + cfg.modello + ')…'); disegnaAccordi();
-    const body = { model: cfg.modello, max_tokens: 8000, system: AC_ISTRUZIONI, messages: [{ role: 'user', content: blocchi.concat([{ type: 'text', text: 'Società partner: ' + nomeAccordo(a) + '. Analizza i documenti allegati e restituisci il JSON richiesto.' }]) }] };
+    const body = { model: cfg.modello, max_tokens: 32000, system: AC_ISTRUZIONI, messages: [{ role: 'user', content: blocchi.concat([{ type: 'text', text: 'Società partner: ' + nomeAccordo(a) + '. Analizza i documenti allegati e restituisci il JSON richiesto.' }]) }] };
     const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: intestazioniAI(cfg.chiave), body: JSON.stringify(body) });
     if (!r.ok) { const t = await r.text(); let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg + (r.status === 401 ? ' (chiave non valida o revocata: verificarla nelle Impostazioni)' : r.status === 400 && /credit|billing/i.test(msg) ? ' (aggiungere credito nella console Anthropic, sezione Billing)' : r.status === 404 ? ' (modello non disponibile: sceglierne un altro nelle Impostazioni)' : r.status === 429 ? ' (limite di richieste: riprovare tra un minuto)' : '')); }
-    const j = await r.json(); if (j.stop_reason === 'max_tokens') throw new Error('risposta troncata dal limite di lunghezza: riprovare, se il caso con un documento più breve'); const testo = (j.content || []).filter(x => x.type === 'text').map(x => x.text).join('\n'); let dati; try { dati = estraiJSON(testo); } catch (e) { console.error('Risposta AI non in JSON:', testo); throw new Error('la risposta dell’AI non è nello schema atteso (dettaglio nella console del browser): riprovare'); }
+    const j = await r.json(); console.info('Accordi AI: risposta', j.stop_reason, j.usage, (j.content || []).map(x => x.type).join(',')); if (j.stop_reason === 'max_tokens') throw new Error('risposta interrotta per lunghezza (' + (j.usage && j.usage.output_tokens || '?') + ' token prodotti): riprovare, se il caso con un documento più breve'); const testo = (j.content || []).filter(x => x.type === 'text').map(x => x.text).join('\n'); let dati; try { dati = estraiJSON(testo); } catch (e) { console.error('Risposta AI non in JSON:', testo); throw new Error('la risposta dell’AI non è nello schema atteso (dettaglio nella console del browser): riprovare'); }
     const s = sintesiVuota(); for (const [k, , t] of AC_CAMPI) { const v = dati[k]; if (t === 'l') s[k] = Array.isArray(v) ? v.map(x => typeof x === 'object' && x ? Object.values(x).filter(Boolean).join(': ') : String(x)).filter(Boolean) : (v ? [String(v)] : []); else s[k] = v == null ? '' : (typeof v === 'object' ? JSON.stringify(v) : String(v)); }
     a.sintesi = s; a.generata = { quando: new Date().toISOString(), modello: cfg.modello, file: usati, tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null }; a.stato = 'bozza'; segnaAccordo(a, 'Accordo con «' + nomeAccordo(a) + '»: sintesi generata con l’AI');
     statoAnalisi(id, null); disegnaAccordi(); toast('Sintesi generata: rivederla e confermarla con «Segna come verificata»' + (saltati.length ? '. Non analizzati: ' + saltati.join('; ') : ''), 6000); }
@@ -7626,6 +7933,304 @@ function avviaDettatura_inizializza() {
   document.addEventListener('scroll', posizionaDettatura, true); window.addEventListener('resize', posizionaDettatura);
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && DETT.attivo) fermaDettatura(); });
 }
+// ---- networkai_mod
+// ================================================================ Progetti e Rete: Network AI (contenuto/networkai.json). Legge e mappa il Database relazionale, le Schede Progetto,
+// Soci e Società Partner e Practices e Servizi; disegna la mappa delle relazioni e, a ogni modifica dei dati, fa leggere l'insieme all'AI
+// (chiave API delle Impostazioni) per segnalare sinergie tra Soci, possibilità di business, azioni comuni e opportunità legate a persone, Practices e Società partner.
+function networkaiVuoto() { return { analisi: [] }; }
+function elencoAnalisiNAI() { if (!S.networkai) S.networkai = networkaiVuoto(); if (!Array.isArray(S.networkai.analisi)) S.networkai.analisi = []; return S.networkai.analisi; }
+function ultimaAnalisiNAI() { return elencoAnalisiNAI().slice().sort((a, b) => (Date.parse(b.quando) || 0) - (Date.parse(a.quando) || 0))[0] || null; }
+function puoScrivereNAI() { return !S.readonly && !!S.backend; }
+const NAI_TIPI = [['sinergia_soci', 'Sinergie tra Soci', 'Competenze, relazioni e progetti di Soci diversi che, messi insieme, valgono più della somma.'], ['business', 'Possibilità di business', 'Contatti, progetti e servizi che si possono trasformare in una proposta concreta.'], ['azione_comune', 'Azioni comuni', 'Iniziative che due o più Soci possono fare insieme nelle prossime settimane.'], ['persona', 'Opportunità legate a persone', 'Contatti da riattivare, presentazioni da fare, relazioni da collegare.'], ['practice', 'Opportunità per Practice', 'Servizi e Practices con domanda visibile nella rete o scoperte.'], ['partner', 'Opportunità con le Società partner', 'Progetti e contatti in cui una Società partner porta un contributo decisivo.']];
+const NAI_STATI = [['nuova', 'Nuova'], ['in_corso', 'In corso'], ['chiusa', 'Chiusa'], ['scartata', 'Scartata']];
+function taglioNAI(t, n) { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+function impronta32(s) { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+// i dati letti dalle quattro pagine, in forma compatta: sono la base della mappa e il testo che l'AI riceve
+function datiNAI() {
+  const R = S.rete || {}; const pr = typeof practiceElenco === 'function' ? practiceElenco() : [];
+  const practice = pr.map(p => ({ id: p.id, num: p.num, nome: p.nome, servizi: (p.servizi || []).map(x => typeof x === 'string' ? x : (x && x.nome) || '').filter(Boolean).slice(0, 12) }));
+  const ruoli = e => (e.practice || []).map(x => x.id + (x.ruolo && x.ruolo !== 'riferimento' ? ':' + x.ruolo : ''));
+  const soci = (R.soci || []).map(s => ({ id: s.id, nome: s.nome, qualifica: taglioNAI(s.qualifica, 80), practice: ruoli(s), sintesi: taglioNAI(s.sintesi, 320), presidio: taglioNAI(s.presidio, 200), attivita: taglioNAI(s.attivita, 320), reti: taglioNAI(s.reti, 240), progetti: taglioNAI(s.progetti, 200) }));
+  const partner = (R.partner || []).map(p => ({ id: p.id, nome: p.nome, sede: taglioNAI(p.sede, 60), practice: ruoli(p), ambito: taglioNAI(p.ambito, 240), profilo: taglioNAI(p.profilo, 320), attivita: taglioNAI(p.attivita, 200) }));
+  const advisor = (R.advisor || []).concat(R.consulenti || []).map(a => ({ id: a.id, nome: a.nome, qualifica: taglioNAI(a.qualifica, 80), societa: a.societa || '', practice: ruoli(a), profilo: taglioNAI(a.profilo, 240) }));
+  const contatti = elencoContatti().map(c => ({ id: c.id, nome: nomeContatto(c), organizzazione: taglioNAI(c.organizzazione, 80), ente: etichettaEnte(c.ente), settore: etichettaSettoreContatto(c.settore), luogo: taglioNAI(c.luogo, 60), status: c.status || '', socio: c.socio || '', practice: c.practice || [], progetto: c.progetto || '', temi: taglioNAI(c.temi, 300), riporto: taglioNAI(c.riporto, 120), primo: c.primo || '', ultimo: c.ultimo || '' }));
+  const progetti = elencoProgetti().map(p => { const q = typeof parametriDi === 'function' ? parametriDi(p) : {}; return { id: p.id, titolo: p.titolo || '', soggetti: taglioNAI(p.soggetti, 160), luogo: taglioNAI(p.luogo, 60), stato: p.stato || '', referente: p.referente || '', practice: p.practice || [], partner: p.sinergie || [], valore: p.valore || '', linea: q.linea || '', descrizione: taglioNAI(p.descrizione, 420) }; });
+  return { practice, soci, partner, advisor, contatti, progetti };
+}
+function improntaNAI(d) { return impronta32(JSON.stringify(d || datiNAI())); }
+function conteggiNAI(d) { d = d || datiNAI(); return { soci: d.soci.length, partner: d.partner.length, advisor: d.advisor.length, practice: d.practice.length, contatti: d.contatti.length, progetti: d.progetti.length }; }
+function testoConteggi(c) { return [c.soci + (c.soci === 1 ? ' Socio' : ' Soci'), c.partner + ' Società partner', c.practice + ' Practices', c.contatti + ' contatti', c.progetti + ' Schede Progetto'].join(', '); }
+// ---- la mappa: nodi e archi ricavati dai dati
+function nomeNorm(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim(); }
+function grafoNAI(d, opz) {
+  d = d || datiNAI(); opz = opz || {}; const nodi = new Map(); const archi = []; const agg = (id, tipo, nome, extra) => { if (!nodi.has(id)) nodi.set(id, Object.assign({ id, tipo, nome, gradi: 0 }, extra || {})); return nodi.get(id); };
+  const arco = (a, b, tipo) => { if (!a || !b || a === b || !nodi.has(a) || !nodi.has(b)) return; archi.push({ a, b, tipo }); nodi.get(a).gradi++; nodi.get(b).gradi++; };
+  for (const p of d.practice) agg('pr:' + p.id, 'practice', p.num + ' ' + p.nome, { num: p.num, rif: p.id });
+  const sociPerNome = new Map();
+  for (const s of d.soci) { agg('so:' + s.id, 'socio', s.nome, { rif: s.id }); sociPerNome.set(nomeNorm(s.nome), 'so:' + s.id); const parti = nomeNorm(s.nome).split(' '); if (parti.length > 1) sociPerNome.set(parti[parti.length - 1], 'so:' + s.id); }
+  const socioDaNome = n => { const k = nomeNorm(n); if (!k) return null; if (sociPerNome.has(k)) return sociPerNome.get(k); const cogn = k.split(' ').pop(); if (sociPerNome.has(cogn)) return sociPerNome.get(cogn); agg('so:' + k, 'socio', n, { rif: null }); sociPerNome.set(k, 'so:' + k); return 'so:' + k; };
+  for (const p of d.partner) agg('pa:' + p.id, 'partner', p.nome, { rif: p.id });
+  if (opz.advisor !== false) for (const a of d.advisor) agg('ad:' + a.id, 'advisor', a.nome, { rif: a.id, societa: a.societa || '' });
+  if (opz.contatti !== false) for (const c of d.contatti) agg('ct:' + c.id, 'contatto', c.nome, { rif: c.id, status: c.status, sotto: [c.organizzazione, c.ente, c.settore].filter(Boolean).join(' · ') });
+  if (opz.progetti !== false) for (const p of d.progetti) agg('pg:' + p.id, 'progetto', p.titolo || 'Senza titolo', { rif: p.id, stato: p.stato });
+  for (const s of d.soci) for (const x of s.practice) arco('so:' + s.id, 'pr:' + String(x).split(':')[0], 'practice');
+  for (const p of d.partner) for (const x of p.practice) arco('pa:' + p.id, 'pr:' + String(x).split(':')[0], 'practice');
+  if (opz.advisor !== false) for (const a of d.advisor) { if (a.societa) arco('ad:' + a.id, 'pa:' + a.societa, 'societa'); for (const x of a.practice) arco('ad:' + a.id, 'pr:' + String(x).split(':')[0], 'practice'); }
+  if (opz.contatti !== false) for (const c of d.contatti) { if (c.socio) arco('ct:' + c.id, socioDaNome(c.socio), 'socio'); for (const x of c.practice) arco('ct:' + c.id, 'pr:' + x, 'practice'); if (c.progetto && opz.progetti !== false) arco('ct:' + c.id, 'pg:' + c.progetto, 'progetto'); }
+  if (opz.progetti !== false) for (const p of d.progetti) { if (p.referente) arco('pg:' + p.id, socioDaNome(p.referente), 'socio'); for (const x of p.practice) arco('pg:' + p.id, 'pr:' + x, 'practice'); for (const x of p.partner) arco('pg:' + p.id, 'pa:' + x, 'partner'); }
+  return { nodi: Array.from(nodi.values()), archi, rimappa: new Map() };
+}
+// ---- la mappa a corsie: da sinistra a destra Practices, Soci, Società partner e advisor, Schede Progetto, Contatti; ogni corsia è ordinata
+// seguendo la corsia precedente (i Soci sotto le loro Practices, le Schede e i contatti sotto il Socio che li segue), i collegamenti sono curve tra le corsie
+const NAI_CORSIE = [['practice', 'Practices', 1.05], ['socio', 'Soci', 0.9], ['partner', 'Partner e Advisor', 1.0], ['progetto', 'Schede Progetto', 1.25], ['contatto', 'Contatti', 0.8]];
+const NAI_MAX_CONTATTI = window.ONWARD_NAI_MAX_CONTATTI || 40;
+function corsiaNAI(tipo) { return tipo === 'advisor' ? 'partner' : tipo === 'gruppo' ? 'contatto' : tipo; }
+function classePrNAI(id) { const p = String(id || '').replace(/^pr:/, ''); return typeof PR_COL !== 'undefined' && PR_COL[p] ? PR_COL[p] : ''; }
+function statoNAI() { if (!S.nai) S.nai = { sel: null, conn: null, q: '', mostra: { contatti: true, progetti: true, advisor: true }, archi: true, suggeriti: false, espansi: new Set(), filtri: null, chiusi: new Set() }; if (!S.nai.espansi) S.nai.espansi = new Set(); if (!S.nai.chiusi) S.nai.chiusi = new Set(); if (!S.nai.filtri) S.nai.filtri = { tipo: new Set(), prio: new Set(), stato: new Set(), oriz: new Set(), nuove: false }; return S.nai; }
+function orizzonteNAI(c) { const o = nomeNorm(c && c.orizzonte); return /settiman|giorn/.test(o) ? 'settimane' : /mes|trimestr|ann/.test(o) ? 'mesi' : o ? 'altro' : ''; }
+function filtraConnessioneNAI(c) { const F = statoNAI().filtri; return (!F.tipo.size || F.tipo.has(c.tipo)) && (!F.prio.size || F.prio.has(c.priorita || 'media')) && (!F.stato.size || F.stato.has(c.stato || 'nuova')) && (!F.nuove || !!c.nuova) && (!F.oriz.size || F.oriz.has(orizzonteNAI(c))); }
+function filtriAttiviNAI() { const F = statoNAI().filtri; return F.tipo.size + F.prio.size + F.stato.size + F.oriz.size + (F.nuove ? 1 : 0); }
+// con molti contatti la corsia li raggruppa per Socio di riferimento (gruppi che si aprono con un clic)
+function grafoCorsieNAI(g) {
+  const st = statoNAI(); const contatti = g.nodi.filter(x => x.tipo === 'contatto'); if (contatti.length <= NAI_MAX_CONTATTI) return g;
+  const socioDi = new Map(); for (const e of g.archi) { if (e.tipo !== 'socio') continue; if (e.a.startsWith('ct:')) socioDi.set(e.a, e.b); else if (e.b.startsWith('ct:')) socioDi.set(e.b, e.a); }
+  const nodi = []; const gruppi = new Map(); const rimappa = new Map();
+  for (const x of g.nodi) { if (x.tipo !== 'contatto') { nodi.push(x); continue; } const so = socioDi.get(x.id) || 'nessuno'; if (st.espansi.has(so)) { nodi.push(x); continue; } const gid = 'gc:' + so; if (!gruppi.has(gid)) { const sn = g.nodi.find(n => n.id === so); const gr = { id: gid, tipo: 'gruppo', nome: sn ? 'Contatti di ' + sn.nome : 'Contatti senza Socio', gradi: 0, n: 0, socio: so !== 'nessuno' ? so : null, membri: [] }; gruppi.set(gid, gr); nodi.push(gr); } const gr = gruppi.get(gid); gr.n++; gr.membri.push({ id: x.id, nome: x.nome }); rimappa.set(x.id, gid); }
+  for (const gr of gruppi.values()) gr.nome += ' (' + gr.n + ')';
+  const archi = []; const visti = new Set(); for (const e of g.archi) { const a = rimappa.get(e.a) || e.a, b = rimappa.get(e.b) || e.b; if (a === b) continue; const k = a + '|' + b + '|' + e.tipo; if (visti.has(k)) continue; visti.add(k); archi.push({ a, b, tipo: e.tipo }); }
+  const gradi = new Map(); for (const e of archi) { gradi.set(e.a, (gradi.get(e.a) || 0) + 1); gradi.set(e.b, (gradi.get(e.b) || 0) + 1); } for (const gr of gruppi.values()) gr.gradi = gradi.get(gr.id) || 0;
+  return { nodi, archi, rimappa };
+}
+function nodoVisibileNAI(g, id) { if (!id) return null; if (g.nodi.some(x => x.id === id)) return id; return g.rimappa && g.rimappa.get(id) || null; }
+function disponiCorsieNAI(g, W) {
+  const perCorsia = new Map(NAI_CORSIE.map(([k]) => [k, []])); for (const x of g.nodi) perCorsia.get(corsiaNAI(x.tipo)).push(x);
+  const attive = NAI_CORSIE.filter(([k]) => perCorsia.get(k).length); const nC = Math.max(1, attive.length);
+  const padX = 10, gapX = Math.max(26, Math.min(44, W * 0.03)); const pesoTot = attive.reduce((t, a) => t + (a[2] || 1), 0); const lwBase = (W - 2 * padX - gapX * (nC - 1)) / pesoTot; const xs = []; let xc = padX; for (const a of attive) { xs.push([xc, lwBase * (a[2] || 1)]); xc += lwBase * (a[2] || 1) + gapX; } const testa = 34, padY = 12;
+  const rows = Math.max(1, ...attive.map(([k]) => perCorsia.get(k).length)); const rh = rows > 40 ? 22 : rows > 24 ? 26 : 30; const H = Math.max(460, Math.min(3600, testa + padY * 2 + rows * rh));
+  const inner = H - testa - padY * 2; const vicini = new Map(); for (const e of g.archi) { if (!vicini.has(e.a)) vicini.set(e.a, []); if (!vicini.has(e.b)) vicini.set(e.b, []); vicini.get(e.a).push(e.b); vicini.get(e.b).push(e.a); }
+  const yDi = new Map();
+  attive.forEach(([k], ci) => {
+    const lista = perCorsia.get(k); const x0 = xs[ci][0], lw = xs[ci][1]; let ord;
+    if (k === 'practice') ord = lista.slice().sort((a, b) => String(a.num || '').localeCompare(String(b.num || '')) || a.nome.localeCompare(b.nome));
+    else {
+      const chiave = x => { const vs = (vicini.get(x.id) || []).map(id => yDi.get(id)).filter(v => v != null); return vs.length ? vs.reduce((s, v) => s + v, 0) / vs.length : 1e9; };
+      const base = lista.filter(x => x.tipo !== 'advisor').map(x => ({ x, s: chiave(x) })).sort((p, q) => (p.s - q.s) || p.x.nome.localeCompare(q.x.nome)); ord = [];
+      for (const it of base) { ord.push(it.x); if (k === 'partner') for (const a of lista) if (a.tipo === 'advisor' && a.societa === it.x.rif) ord.push(a); }
+      if (k === 'partner') for (const a of lista) if (a.tipo === 'advisor' && !ord.includes(a)) ord.push(a);
+    }
+    const m = ord.length; const passo = inner / m; const h = Math.min(rh - 4, Math.max(18, passo - 4));
+    ord.forEach((x, i) => { x.x = x0; x.y = testa + padY + passo * (i + 0.5); x.w = lw; x.h = h; x.corsia = ci; yDi.set(x.id, x.y); });
+  });
+  return { W, H, corsie: attive.map(([k, et], ci) => ({ k, et, n: perCorsia.get(k).length, x: xs[ci][0], w: xs[ci][1] })) };
+}
+function curvaNAI(a, b) {
+  if (a.corsia === b.corsia) { const x = a.x + a.w; const dx = 26 + Math.min(40, Math.abs(b.y - a.y) / 6); return 'M ' + x.toFixed(1) + ' ' + a.y.toFixed(1) + ' C ' + (x + dx).toFixed(1) + ' ' + a.y.toFixed(1) + ', ' + (x + dx).toFixed(1) + ' ' + b.y.toFixed(1) + ', ' + x.toFixed(1) + ' ' + b.y.toFixed(1); }
+  const [s, t] = a.corsia < b.corsia ? [a, b] : [b, a]; const x1 = s.x + s.w, x2 = t.x; const mx = (x1 + x2) / 2;
+  return 'M ' + x1.toFixed(1) + ' ' + s.y.toFixed(1) + ' C ' + mx.toFixed(1) + ' ' + s.y.toFixed(1) + ', ' + mx.toFixed(1) + ' ' + t.y.toFixed(1) + ', ' + x2.toFixed(1) + ' ' + t.y.toFixed(1);
+}
+// che cosa evidenziare: i collegamenti del nodo scelto e il percorso della connessione scelta (soggetti in ordine di corsia; tratteggio dove il collegamento non esiste ancora)
+function evidenzeNAI(g) {
+  const st = statoNAI(); const nodi = new Set(); const archi = new Set(); const percorsi = []; let attiva = false; const key = (a, b) => a + '|' + b;
+  if (st.sel && g.nodi.some(x => x.id === st.sel)) { attiva = true; nodi.add(st.sel); for (const e of g.archi) if (e.a === st.sel || e.b === st.sel) { nodi.add(e.a); nodi.add(e.b); archi.add(key(e.a, e.b)); archi.add(key(e.b, e.a)); } }
+  const c = connessioneNAI(st.conn);
+  if (c) { const pos = new Map(g.nodi.map(x => [x.id, x])); const ids = Array.from(new Set((c.soggetti || []).map(s => nodoVisibileNAI(g, s.nodo)).filter(Boolean)));
+    if (ids.length) { attiva = true; for (const id of ids) nodi.add(id); const esiste = (p, q) => g.archi.some(e => (e.a === p && e.b === q) || (e.a === q && e.b === p));
+      for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) if (esiste(ids[i], ids[j])) { archi.add(key(ids[i], ids[j])); archi.add(key(ids[j], ids[i])); }
+      const ord = ids.slice().sort((p, q) => (pos.get(p).corsia - pos.get(q).corsia) || (pos.get(p).y - pos.get(q).y));
+      for (let i = 0; i + 1 < ord.length; i++) if (!esiste(ord[i], ord[i + 1])) percorsi.push({ a: ord[i], b: ord[i + 1] }); } }
+  const suggeriti = []; const a = ultimaAnalisiNAI();
+  if (!c && st.suggeriti !== false && a) { const pos = new Map(g.nodi.map(x => [x.id, x])); const esiste = (p, q) => g.archi.some(e => (e.a === p && e.b === q) || (e.a === q && e.b === p));
+    for (const k of (a.connessioni || [])) { if (k.stato === 'chiusa' || k.stato === 'scartata' || !filtraConnessioneNAI(k)) continue; const ids = Array.from(new Set((k.soggetti || []).map(s2 => nodoVisibileNAI(g, s2.nodo)).filter(Boolean))); if (ids.length < 2) continue; const ord = ids.slice().sort((p, q) => (pos.get(p).corsia - pos.get(q).corsia) || (pos.get(p).y - pos.get(q).y)); for (let i = 0; i + 1 < ord.length; i++) if (!esiste(ord[i], ord[i + 1])) suggeriti.push({ a: ord[i], b: ord[i + 1], conn: k.id, titolo: k.titolo, prio: k.priorita }); } }
+  return { attiva, nodi, archi, percorsi, suggeriti };
+}
+function connessioneNAI(id) { if (!id) return null; const a = ultimaAnalisiNAI(); return a && (a.connessioni || []).find(x => x.id === id) || null; }
+function svgMappaNAI(g, L) {
+  const st = statoNAI(); const q = nomeNorm(st.q); const pos = new Map(g.nodi.map(x => [x.id, x])); const ev = evidenzeNAI(g);
+  const match = x => !q || nomeNorm(x.nome).includes(q) || nomeNorm(x.sotto || '').includes(q) || (x.membri || []).some(m => nomeNorm(m.nome).includes(q));
+  const dim = x => (ev.attiva && !ev.nodi.has(x.id)) || !match(x);
+  let h = '<svg class="nai-svg" viewBox="0 0 ' + L.W + ' ' + L.H + '" width="100%" height="' + L.H + '" role="img" aria-label="Mappa delle relazioni della rete">';
+  h += '<g class="nai-corsie">' + L.corsie.map(c => '<rect class="nai-corsia" x="' + (c.x - 6).toFixed(1) + '" y="4" width="' + (c.w + 12).toFixed(1) + '" height="' + (L.H - 8) + '" rx="12"/><text class="nai-corsia-et" x="' + c.x.toFixed(1) + '" y="22">' + esc(c.et) + ' <tspan>' + c.n + '</tspan></text>').join('') + '</g>';
+  h += '<g class="nai-archi">' + g.archi.map(e => { const a = pos.get(e.a), b = pos.get(e.b); if (!a || !b) return ''; const evid = ev.archi.has(e.a + '|' + e.b); if (st.archi === false && !evid) return ''; return '<path class="nai-arco nai-arco-' + e.tipo + (evid ? ' nai-arco-ev' : '') + (ev.attiva && !evid ? ' nai-arco-dim' : '') + '" d="' + curvaNAI(a, b) + '"/>'; }).join('') + '</g>';
+  h += '<g class="nai-percorsi">' + ev.suggeriti.map(p => { const a = pos.get(p.a), b = pos.get(p.b); if (!a || !b) return ''; const d = curvaNAI(a, b); return '<g class="nai-sugg nai-sugg-' + esc(p.prio || 'media') + '" data-nai-sugg="' + esc(p.conn) + '"><title>' + esc('Suggerito dall’AI: ' + p.titolo + ' (clic per aprire la connessione)') + '</title><path class="nai-sugg-tocco" d="' + d + '"/><path class="nai-percorso nai-percorso-sugg" d="' + d + '"/></g>'; }).join('') + ev.percorsi.map(p => { const a = pos.get(p.a), b = pos.get(p.b); return a && b ? '<path class="nai-percorso" d="' + curvaNAI(a, b) + '"><title>Collegamento possibile suggerito dall’AI</title></path>' : ''; }).join('') + '</g>';
+  h += '<g class="nai-nodi">' + g.nodi.map(x => { const ind = x.tipo === 'advisor' ? 16 : 0; const w = x.w - ind; const cls = 'nai-nodo nai-' + x.tipo + (x.tipo === 'practice' ? ' ' + classePrNAI(x.id) : '') + (st.sel === x.id ? ' nai-sel' : '') + (dim(x) ? ' nai-dim' : '') + (ev.attiva && ev.nodi.has(x.id) && st.sel !== x.id ? ' nai-vicino' : '');
+    const maxCh = Math.max(5, Math.floor((w - (x.tipo === 'practice' ? 36 : 26)) / (x.tipo === 'practice' || x.tipo === 'socio' || x.tipo === 'partner' ? 6.6 : 5.9))); const label = taglioNAI(x.tipo === 'practice' ? x.nome.replace(/^\d+\s+/, '') : x.nome, maxCh); const cy = (x.h / 2).toFixed(1), ty = (x.h / 2 + 4).toFixed(1);
+    const tit = x.nome + (x.sotto ? ' · ' + x.sotto : '') + ' (' + etichettaTipoNAI(x.tipo) + ', ' + x.gradi + (x.gradi === 1 ? ' collegamento' : ' collegamenti') + (x.tipo === 'gruppo' ? '; clic per aprire' : '') + ')';
+    return '<g class="' + cls + '" data-nai="' + esc(x.id) + '" transform="translate(' + (x.x + ind).toFixed(1) + ',' + (x.y - x.h / 2).toFixed(1) + ')" tabindex="0"><title>' + esc(tit) + '</title><rect width="' + w.toFixed(1) + '" height="' + x.h.toFixed(1) + '" rx="' + (x.tipo === 'practice' ? 8 : 6) + '"/>' +
+      (x.tipo === 'practice' ? '<text class="nai-num" x="16" y="' + ty + '" text-anchor="middle">' + esc(x.num || '') + '</text><text class="nai-et" x="30" y="' + ty + '">' + esc(label) + '</text>' : '<circle class="nai-punto" cx="11" cy="' + cy + '" r="4"/><text class="nai-et" x="21" y="' + ty + '">' + esc(label) + '</text>') + '</g>'; }).join('') + '</g></svg>';
+  return h;
+}
+function etichettaTipoNAI(t) { return { practice: 'Practice', socio: 'Socio', partner: 'Società partner', advisor: 'Advisor', contatto: 'Contatto', progetto: 'Scheda Progetto', gruppo: 'Gruppo di contatti' }[t] || t; }
+// ---- l'analisi con l'AI
+const NAI_ISTRUZIONI = 'Sei lo strategic partner che tiene la regia della rete di Onward Strategic Partners, una società di consulenza strategica italiana organizzata in cinque Practices. Ricevi in JSON la fotografia completa della rete: Soci (con competenze, presidi e reti personali), Società partner e advisor, Practices con i servizi, contatti del database relazionale (con status della relazione, Socio di riferimento, Practices e temi di interesse) e Schede Progetto (con stato, referente, Practices, Società partner coinvolte, valore, descrizione). Leggi tutto in modo incrociato e individua le connessioni interessanti che i singoli Soci, vedendo solo la propria parte, non vedrebbero. Restituisci SOLO un oggetto JSON, senza testo prima o dopo e senza blocchi di codice, con questa forma:\n' +
+  '{"sintesi": "lettura d’insieme della rete in cinque-otto righe: dove si concentra il valore, che cosa manca, che cosa muovere per primo", "connessioni": [{"tipo": "sinergia_soci | business | azione_comune | persona | practice | partner", "titolo": "titolo breve e concreto", "descrizione": "perché è interessante, con i dati che la sostengono (nomi, status, temi, progetti)", "soggetti": [{"tipo": "socio | partner | advisor | practice | contatto | progetto", "id": "l’id esatto ricevuto nei dati", "nome": "nome"}], "priorita": "alta | media | bassa", "prossimo_passo": "l’azione concreta, chi la fa e con chi", "orizzonte": "settimane | mesi"}], "avvisi": ["segnali da presidiare: contatti con potenziale fermi da oltre 90 giorni, schede senza referente o senza Practice, Practices senza presidio, concentrazioni di rischio, dati incompleti che limitano la lettura"]}\n' +
+  'Regole: da 8 a 12 connessioni, ordinate per priorità, testi asciutti (sintesi al massimo 120 parole, descrizione al massimo 70 parole, prossimo passo al massimo 30 parole, avvisi al massimo 8 di una riga), distribuite tra i sei tipi quando i dati lo consentono (sinergie tra Soci; possibilità di business; azioni comuni tra Soci; opportunità legate a persone; opportunità per Practice e servizi; opportunità con le Società partner); ogni connessione deve poggiare su almeno due elementi diversi dei dati e citarli per nome; usa sempre gli id esatti nei soggetti; non inventare persone, aziende o fatti non presenti nei dati; scrivi in italiano, in stile sobrio e professionale, senza lineetta lunga e senza elenchi puntati dentro i campi.';
+// se la risposta si interrompe per lunghezza, si recuperano le connessioni complete già scritte
+function recuperaJSONTroncatoNAI(testo) {
+  const t = String(testo || ''); const out = { sintesi: '', connessioni: [], avvisi: [], troncata: true };
+  const ms = t.match(/"sintesi"\s*:\s*"((?:[^"\\]|\\.)*)"/); if (ms) { try { out.sintesi = JSON.parse('"' + ms[1] + '"'); } catch (e) { out.sintesi = ms[1]; } }
+  const ic = t.indexOf('"connessioni"'); if (ic < 0) return out; const ia = t.indexOf('[', ic); if (ia < 0) return out;
+  let i = ia + 1, prof = 0, inStr = false, esc2 = false, inizio = -1;
+  for (; i < t.length; i++) { const ch = t[i]; if (inStr) { if (esc2) esc2 = false; else if (ch === '\\') esc2 = true; else if (ch === '"') inStr = false; continue; } if (ch === '"') { inStr = true; continue; } if (ch === '{') { if (prof === 0) inizio = i; prof++; } else if (ch === '}') { prof--; if (prof === 0 && inizio >= 0) { try { out.connessioni.push(JSON.parse(t.slice(inizio, i + 1))); } catch (e) {} inizio = -1; } } else if (ch === ']' && prof === 0) break; }
+  return out;
+}
+function analisiInCorsoNAI() { return !!(S.naiStato && S.naiStato.tipo === 'corso'); }
+function statoAnalisiNAI(tipo, testo) { S.naiStato = tipo ? { tipo, testo, quando: Date.now() } : null; aggiornaNetworkAISeAperto(); }
+async function analizzaNetworkAI(manuale) {
+  if (!puoScrivereNAI()) { if (manuale) toast('Per registrare l’analisi occorre il repository collegato'); return; }
+  const cfg = cfgAI(); if (!cfg.chiave || !cfg.modello) { if (manuale) { toast('Per l’analisi con AI inserire la chiave API nelle Impostazioni (sezione «Analisi dei documenti con AI»)', 5000); costruisciImpostazioni(); apriPannello('pan-impostazioni'); } return; }
+  if (analisiInCorsoNAI()) { if (manuale) toast('Un’analisi è già in corso'); return; }
+  const d = datiNAI(); const impronta = improntaNAI(d); const ultima = ultimaAnalisiNAI();
+  if (!manuale && ultima && ultima.impronta === impronta) return;
+  if (!d.soci.length && !d.contatti.length && !d.progetti.length) { if (manuale) toast('Non ci sono ancora dati da leggere: inserire Soci, contatti o Schede Progetto'); return; }
+  statoAnalisiNAI('corso', 'Lettura di ' + testoConteggi(conteggiNAI(d)) + ' e analisi con l’AI (' + cfg.modello + '): può richiedere fino a un minuto.');
+  try {
+    const body = { model: cfg.modello, max_tokens: 32000, system: NAI_ISTRUZIONI, messages: [{ role: 'user', content: [{ type: 'text', text: 'Fotografia della rete di Onward al ' + new Date().toLocaleDateString('it-IT') + ':\n' + JSON.stringify(d) + '\n\nIndividua le connessioni interessanti e restituisci il JSON richiesto.' }] }] };
+    const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', headers: intestazioniAI(cfg.chiave), body: JSON.stringify(body) });
+    if (!r.ok) { const t = await r.text(); let msg = t.slice(0, 300); try { msg = JSON.parse(t).error.message; } catch (e) {} throw new Error('il servizio ha risposto ' + r.status + ': ' + msg + (r.status === 401 ? ' (chiave non valida: verificarla nelle Impostazioni)' : r.status === 400 && /credit|billing/i.test(msg) ? ' (aggiungere credito nella console Anthropic)' : '')); }
+    const j = await r.json(); const testo = (j.content || []).filter(x => x.type === 'text').map(x => x.text).join('\n'); console.info('Network AI: risposta', j.stop_reason, j.usage, (j.content || []).map(x => x.type).join(','));
+    let dati; try { dati = estraiJSON(testo); } catch (e) { dati = recuperaJSONTroncatoNAI(testo); if (!dati.connessioni.length) { console.error('Network AI: risposta non in JSON', testo); throw new Error(j.stop_reason === 'max_tokens' ? 'risposta interrotta per lunghezza (' + (j.usage && j.usage.output_tokens || '?') + ' token prodotti) senza connessioni complete: riprovare' : 'la risposta dell’AI non è nello schema atteso: riprovare'); } }
+    if (j.stop_reason === 'max_tokens' && !dati.troncata) dati.troncata = true;
+    const g = grafoNAI(d); const nodi = new Map(g.nodi.map(x => [x.rif || x.id, x])); const tipiOk = NAI_TIPI.map(t => t[0]);
+    const prec = ultimaAnalisiNAI(); const precTitoli = new Map((prec && prec.connessioni || []).map(c => [nomeNorm(c.titolo), c]));
+    const connessioni = (Array.isArray(dati.connessioni) ? dati.connessioni : []).map((c, i) => { const tipo = tipiOk.includes(c.tipo) ? c.tipo : 'business'; const sogg = (Array.isArray(c.soggetti) ? c.soggetti : []).map(s => { const id = String(s.id || ''); const tipoS = String(s.tipo || ''); const chiave = { socio: 'so:', partner: 'pa:', advisor: 'ad:', practice: 'pr:', contatto: 'ct:', progetto: 'pg:' }[tipoS]; const nodo = chiave ? g.nodi.find(x => x.id === chiave + id) : null; return { tipo: tipoS, id, nome: String((nodo && nodo.nome) || s.nome || id), nodo: nodo ? nodo.id : null }; }).filter(s => s.nome);
+      const precC = precTitoli.get(nomeNorm(c.titolo)); return { id: uid('nc'), tipo, titolo: taglioNAI(c.titolo, 140), descrizione: String(c.descrizione || '').trim(), soggetti: sogg, priorita: ['alta', 'media', 'bassa'].includes(c.priorita) ? c.priorita : 'media', prossimo_passo: String(c.prossimo_passo || '').trim(), orizzonte: String(c.orizzonte || '').trim(), stato: precC ? (precC.stato || 'nuova') : 'nuova', nuova: !precC }; });
+    const a = { id: uid('na'), quando: new Date().toISOString(), autore: S.autore || 'anonimo', modello: cfg.modello, impronta, conteggi: conteggiNAI(d), sintesi: String(dati.sintesi || '').trim(), connessioni, avvisi: (Array.isArray(dati.avvisi) ? dati.avvisi : []).map(x => String(x)).filter(Boolean).concat(dati.troncata ? ['La risposta dell’AI si è interrotta per lunghezza: l’elenco delle connessioni è parziale (' + connessioni.length + ' recuperate); una nuova analisi può completarlo.'] : []), tokens: j.usage ? (j.usage.input_tokens || 0) + (j.usage.output_tokens || 0) : null, automatica: !manuale };
+    const l = elencoAnalisiNAI(); l.unshift(a); l.sort((x, y) => (Date.parse(y.quando) || 0) - (Date.parse(x.quando) || 0)); if (l.length > 12) l.length = 12;
+    if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.networkai = 'Network AI: analisi ' + (manuale ? 'richiesta' : 'automatica') + ' della rete (' + connessioni.length + ' connessioni)'; segna('networkai');
+    clearTimeout(naiTimer); S.naiProgrammata = null; statoAnalisiNAI(null); toast('Network AI: ' + connessioni.length + ' connessioni individuate' + (connessioni.filter(c => c.nuova).length ? ', ' + connessioni.filter(c => c.nuova).length + ' nuove' : ''), 6000);
+  } catch (e) { console.error('Network AI non riuscita', e); statoAnalisiNAI('errore', String(e && e.message || e) + (/Failed to fetch|Load failed|NetworkError/i.test(String(e && e.message || e)) ? ' (il browser non ha raggiunto il servizio)' : '')); }
+}
+// analisi automatica: a ogni modifica dei quattro registri (propria o arrivata da altri Soci) l'analisi riparte da sola, dopo una pausa, se in questo browser c'è la chiave
+let naiTimer = null;
+function pianificaNetworkAI(motivo) {
+  const cfg = cfgAI(); if (!cfg.chiave || !cfg.modello || cfg.autoNetwork === false || !puoScrivereNAI()) { aggiornaNetworkAISeAperto(); return; }
+  clearTimeout(naiTimer); S.naiProgrammata = Date.now() + (window.ONWARD_NAI_MS || 60000); aggiornaNetworkAISeAperto();
+  naiTimer = setTimeout(() => { S.naiProgrammata = null; analizzaNetworkAI(false); }, window.ONWARD_NAI_MS || 60000);
+}
+function dopoModificaDatiNAI() { aggiornaNetworkAISeAperto(); pianificaNetworkAI(); }
+function fondiNetworkAI(remoto) {
+  const R = Object.assign(networkaiVuoto(), remoto || {}), M = S.networkai || networkaiVuoto(); const out = new Map();
+  for (const a of (R.analisi || []).concat(M.analisi || [])) { const cur = out.get(a.id); if (!cur || (Date.parse(a.agg || a.quando) || 0) >= (Date.parse(cur.agg || cur.quando) || 0)) out.set(a.id, clone(a)); }
+  const l = Array.from(out.values()).sort((x, y) => (Date.parse(y.quando) || 0) - (Date.parse(x.quando) || 0)); if (l.length > 12) l.length = 12; S.networkai = { analisi: l };
+}
+// ---- la pagina
+function apriNetworkAI() { const m = $('#networkai'); if (!m) return; chiudiViste(); m.hidden = false; document.body.classList.add('con-mappe'); disegnaNetworkAI(true); const u = ultimaAnalisiNAI(); if (!S.naiProgrammata && !analisiInCorsoNAI() && (!u || u.impronta !== improntaNAI())) pianificaNetworkAI(); }
+function chiudiNetworkAI() { const m = $('#networkai'); if (!m || m.hidden) return; m.hidden = true; document.body.classList.remove('con-mappe'); chiudiPopover(); }
+function aggiornaNetworkAISeAperto() { if ($('#networkai') && !$('#networkai').hidden) disegnaNetworkAI(false); }
+function htmlStatoNAI(d) {
+  const ultima = ultimaAnalisiNAI(); const cfg = cfgAI(); const c = conteggiNAI(d); const cambiati = ultima ? ultima.impronta !== improntaNAI(d) : true; const st = S.naiStato;
+  let riga;
+  if (st && st.tipo === 'corso') riga = '<span class="sem attenzione">Analisi in corso</span> ' + esc(st.testo);
+  else if (st && st.tipo === 'errore') riga = '<span class="sem allarme">Analisi non riuscita</span> ' + esc(st.testo);
+  else if (!cfg.chiave || !cfg.modello) riga = '<span class="sem">AI non collegata in questo browser</span> Per l’analisi automatica inserire la chiave API nelle Impostazioni (sezione «Analisi dei documenti con AI»); le analisi fatte da altri Soci restano leggibili qui.';
+  else if (cfg.autoNetwork === false) riga = '<span class="sem">Analisi automatica disattivata</span> Si riattiva dalle Impostazioni; «Analizza ora» resta disponibile.';
+  else if (S.naiProgrammata) riga = '<span class="sem attenzione">Dati cambiati</span> Analisi automatica in programma tra ' + Math.max(1, Math.round((S.naiProgrammata - Date.now()) / 1000)) + ' secondi.';
+  else if (cambiati) riga = '<span class="sem attenzione">Dati cambiati dopo l’ultima analisi</span> Alla prossima modifica l’analisi riparte da sola; «Analizza ora» la avvia subito.';
+  else riga = '<span class="sem ok">Analisi aggiornata</span> I dati non sono cambiati dopo l’ultima analisi.';
+  return '<div class="nai-stato"><div class="nai-stato-riga">' + riga + '</div><div class="nai-stato-dati"><span><b>Dati letti ora</b> ' + esc(testoConteggi(c)) + '</span>' + (ultima ? '<span><b>Ultima analisi</b> ' + esc(dataIt(ultima.quando)) + ' di ' + esc(ultima.autore || '') + ' (' + esc(ultima.modello || '') + ', ' + (ultima.automatica ? 'automatica' : 'richiesta') + ') su ' + esc(testoConteggi(ultima.conteggi || c)) + '</span>' : '<span>Nessuna analisi finora.</span>') + '</div></div>';
+}
+function htmlLegendaNAI(g) {
+  const st = statoNAI(); const conta = t => g.nodi.filter(x => x.tipo === t).length + (t === 'contatto' ? g.nodi.filter(x => x.tipo === 'gruppo').reduce((n, x) => n + (x.n || 0), 0) : 0);
+  return '<div class="nai-legenda">' + [['practice', 'Practices'], ['socio', 'Soci'], ['partner', 'Società partner'], ['advisor', 'Advisor'], ['progetto', 'Schede Progetto'], ['contatto', 'Contatti']].map(([t, l]) => { const filtro = { advisor: 'advisor', contatto: 'contatti', progetto: 'progetti' }[t]; return '<label class="nai-leg' + (filtro ? ' nai-leg-f' : '') + '">' + (filtro ? '<input type="checkbox" data-nai-mostra="' + filtro + '"' + (st.mostra[filtro] ? ' checked' : '') + '>' : '') + '<i class="nai-pallino nai-' + t + '"></i>' + esc(l) + ' <small>' + conta(t) + '</small></label>'; }).join('') +
+    '<label class="nai-leg nai-leg-f nai-leg-archi"><input type="checkbox" data-nai-archi' + (st.archi === false ? '' : ' checked') + '><i class="nai-linea"></i>Collegamenti registrati</label><label class="nai-leg nai-leg-f" title="Tratteggio arancione: il collegamento che una connessione dell’AI suggerisce di creare; un clic sulla linea apre la connessione"><input type="checkbox" data-nai-suggeriti' + (st.suggeriti === false ? '' : ' checked') + '><i class="nai-linea nai-linea-percorso"></i>Tutti i percorsi suggeriti dall’AI</label></div>';
+}
+function htmlDettaglioNodoNAI(g, id, analisi) {
+  const x = g.nodi.find(n => n.id === id); if (!x) return '';
+  if (x.tipo === 'gruppo') return '<div class="nai-det"><div class="nai-det-testa"><span class="nai-det-occhiello"><i class="nai-pallino nai-contatto"></i>Gruppo di contatti</span><button class="btn piccolo" data-nai-chiudi>Chiudi</button></div><h3>' + esc(x.nome) + '</h3><div class="nai-det-gruppo"><span class="nai-det-et">Contatti</span>' + (x.membri || []).map(v => '<button class="nai-chip nai-contatto" data-nai-vai="' + esc(v.id) + '">' + esc(taglioNAI(v.nome, 40)) + '</button>').join('') + '</div><div class="nai-det-azioni"><button class="btn piccolo" data-nai-apri-gruppo="' + esc(x.id) + '">Apri il gruppo sulla mappa</button></div></div>';
+  const vic = g.archi.filter(e => e.a === id || e.b === id).map(e => g.nodi.find(n => n.id === (e.a === id ? e.b : e.a))).filter(Boolean);
+  const perTipo = {}; for (const v of vic) (perTipo[v.tipo] = perTipo[v.tipo] || []).push(v);
+  const conn = (analisi && analisi.connessioni || []).filter(c => (c.soggetti || []).some(s => s.nodo === id));
+  const apri = x.tipo === 'contatto' ? 'contatto' : x.tipo === 'progetto' ? 'progetto' : x.tipo === 'practice' ? 'practice' : (x.rif ? 'ente' : '');
+  return '<div class="nai-det"><div class="nai-det-testa"><span class="nai-det-occhiello"><i class="nai-pallino nai-' + x.tipo + '"></i>' + esc(etichettaTipoNAI(x.tipo)) + '</span><button class="btn piccolo" data-nai-chiudi>Chiudi</button></div><h3>' + esc(x.nome) + '</h3>' + (x.sotto ? '<small>' + esc(x.sotto) + '</small>' : '') +
+    (vic.length ? Object.keys(perTipo).map(t => '<div class="nai-det-gruppo"><span class="nai-det-et">' + esc(etichettaTipoNAI(t)) + (perTipo[t].length > 1 ? ' (' + perTipo[t].length + ')' : '') + '</span>' + perTipo[t].map(v => '<button class="nai-chip nai-' + v.tipo + '" data-nai-vai="' + esc(v.id) + '">' + esc(taglioNAI(v.nome, 40)) + '</button>').join('') + '</div>').join('') : '<p class="pg-muto">Nessun collegamento registrato: si crea indicando Socio di riferimento, Practices, Scheda Progetto o Società partner nelle schede.</p>') +
+    (conn.length ? '<div class="nai-det-gruppo"><span class="nai-det-et">Nelle connessioni dell’AI</span>' + conn.map(c => '<button class="nai-chip nai-conn" data-nai-conn="' + esc(c.id) + '">' + esc(taglioNAI(c.titolo, 60)) + '</button>').join('') + '</div>' : '') +
+    (apri ? '<div class="nai-det-azioni"><button class="btn piccolo" data-nai-apri="' + apri + '" data-rif="' + esc(x.rif || '') + '">' + (x.tipo === 'contatto' ? 'Apri nel Database relazionale' : x.tipo === 'progetto' ? 'Apri la Scheda Progetto' : x.tipo === 'practice' ? 'Apri in Practices e Servizi' : 'Apri la scheda') + '</button></div>' : '') + '</div>';
+}
+function htmlFiltriNAI(a) {
+  const st = statoNAI(); const F = st.filtri; const l = a.connessioni || []; const n = t => l.filter(t).length;
+  const chip = (gruppo, v, et, cnt, extra) => '<button class="nai-chipf' + (extra || '') + ((gruppo === 'nuove' ? F.nuove : F[gruppo].has(v)) ? ' attivo' : '') + '" data-nai-f="' + gruppo + '" data-v="' + esc(v) + '"' + (cnt === 0 ? ' disabled' : '') + '>' + esc(et) + (cnt != null ? ' <small>' + cnt + '</small>' : '') + '</button>';
+  const riga = (et, chips) => '<div class="nai-filtri-riga"><span class="nai-det-et">' + et + '</span><div class="nai-filtri-chips">' + chips + '</div></div>';
+  const mostrate = l.filter(filtraConnessioneNAI).length;
+  return '<div class="nai-filtri">' +
+    riga('Categoria', NAI_TIPI.map(([t, et]) => chip('tipo', t, et, n(c => c.tipo === t), ' nai-chipf-cat')).join('')) +
+    riga('Priorità', [['alta', 'Alta'], ['media', 'Media'], ['bassa', 'Bassa']].map(([v, et]) => chip('prio', v, et, n(c => (c.priorita || 'media') === v), ' nai-chipf-' + v)).join('')) +
+    riga('Stato', NAI_STATI.map(([v, et]) => chip('stato', v, et, n(c => (c.stato || 'nuova') === v))).join('') + chip('nuove', '1', 'Solo le nuove di questa analisi', n(c => !!c.nuova), ' nai-chipf-nuove')) +
+    riga('Orizzonte', [['settimane', 'Settimane'], ['mesi', 'Mesi']].map(([v, et]) => chip('oriz', v, et, n(c => orizzonteNAI(c) === v))).join('')) +
+    '<div class="nai-filtri-esito"><span>' + (filtriAttiviNAI() ? mostrate + ' di ' + l.length + ' connessioni mostrate' : l.length + ' connessioni') + '</span>' + (filtriAttiviNAI() ? '<button class="btn piccolo" data-nai-f-azzera>Azzera i filtri</button>' : '') + '</div></div>' +
+    '<details class="nai-legenda-carte"' + (st.legendaAperta ? ' open' : '') + '><summary>Come leggere le schede delle connessioni</summary><dl>' +
+    '<dt>Categoria</dt><dd>Le sei famiglie di connessioni: sinergie tra Soci, possibilità di business, azioni comuni, opportunità legate a persone, per Practice, con le Società partner. I filtri in alto le selezionano; con più filtri attivi valgono tutti insieme.</dd>' +
+    '<dt>Priorità</dt><dd>Quanto conviene muoversi per prima: alta (bordo arancione), media (bordo ocra), bassa. La assegna l’AI in base al valore e all’urgenza che legge nei dati.</dd>' +
+    '<dt>Nuova</dt><dd>La connessione non c’era nell’analisi precedente. Le connessioni già viste conservano lo stato che i Soci avevano scelto.</dd>' +
+    '<dt>Orizzonte</dt><dd>Il tempo in cui il prossimo passo ha senso: «settimane» per un’azione da fare subito, «mesi» per un’iniziativa da preparare.</dd>' +
+    '<dt>Stato</dt><dd>La tendina in alto a destra di ogni scheda: nuova, in corso, chiusa, scartata. È condivisa nel repository, quindi tutti i Soci vedono chi ha preso in carico che cosa.</dd>' +
+    '<dt>Soggetti</dt><dd>Le persone, le Società partner, le Practices, i contatti e le Schede su cui la connessione poggia: un clic seleziona il nodo sulla mappa e ne mostra i collegamenti.</dd>' +
+    '<dt>Prossimo passo</dt><dd>L’azione concreta proposta dall’AI, con chi la fa e con chi.</dd>' +
+    '<dt>Mostra il percorso sulla mappa</dt><dd>Evidenzia sulla mappa i soggetti della connessione: linea piena per i collegamenti già registrati, tratteggio arancione per il collegamento che l’AI suggerisce di creare. Con «Percorsi suggeriti dall’AI» acceso, i tratteggi di tutte le connessioni aperte restano visibili sulla mappa e un clic su uno di essi apre la scheda.</dd></dl></details>';
+}
+function htmlConnessioniNAI(a, scrive) {
+  if (!a) return '<div class="avviso nai-vuoto">Nessuna analisi finora. La pagina legge già i dati e disegna la mappa; con la chiave API nelle Impostazioni, «Analizza ora» (e poi ogni modifica ai dati) fa leggere l’insieme all’AI, che segnala qui sinergie tra Soci, possibilità di business, azioni comuni e opportunità legate a persone, Practices e Società partner.</div>';
+  const l = (a.connessioni || []).filter(filtraConnessioneNAI); const ord = { alta: 0, media: 1, bassa: 2 };
+  const st = statoNAI(); const carta = c => '<article class="nai-carta nai-p-' + esc(c.priorita) + (c.stato === 'chiusa' || c.stato === 'scartata' ? ' nai-chiusa' : '') + (st.conn === c.id ? ' nai-carta-sel' : '') + '" data-nai-carta="' + esc(c.id) + '"><div class="nai-carta-testa"><span class="nai-prio nai-prio-' + esc(c.priorita) + '" title="Priorità assegnata dall’AI">' + esc({ alta: 'Priorità alta', media: 'Priorità media', bassa: 'Priorità bassa' }[c.priorita] || '') + '</span>' + (c.nuova ? '<span class="nai-nuova" title="Non c’era nell’analisi precedente">Nuova</span>' : '') + (c.orizzonte ? '<span class="nai-oriz" title="Orizzonte del prossimo passo: settimane per un’azione da fare subito, mesi per un’iniziativa da preparare">Orizzonte: ' + esc(c.orizzonte) + '</span>' : '') + (scrive ? '<select class="nai-stato-sel" data-nai-stato="' + esc(c.id) + '" title="Stato della connessione, condiviso con i Soci">' + NAI_STATI.map(([v, l2]) => '<option value="' + v + '"' + ((c.stato || 'nuova') === v ? ' selected' : '') + '>' + l2 + '</option>').join('') + '</select>' : '<span class="nai-stato-et">' + esc(etichettaOpz(NAI_STATI, c.stato || 'nuova')) + '</span>') + '</div><h4>' + esc(c.titolo) + '</h4><p>' + esc(c.descrizione) + '</p>' + ((c.soggetti || []).length ? '<div class="nai-sogg"><span class="nai-det-et">Soggetti</span>' + c.soggetti.map(s => '<button class="nai-chip nai-' + esc(s.tipo === 'practice' ? 'practice' : s.tipo) + (s.nodo ? '' : ' nai-chip-off') + '" ' + (s.nodo ? 'data-nai-vai="' + esc(s.nodo) + '"' : 'disabled') + '>' + esc(taglioNAI(s.nome, 40)) + '</button>').join('') + '</div>' : '') + (c.prossimo_passo ? '<div class="nai-passo"><span class="nai-det-et">Prossimo passo</span>' + esc(c.prossimo_passo) + '</div>' : '') + ((c.soggetti || []).some(s2 => s2.nodo) ? '<div class="nai-carta-azioni"><button class="btn piccolo' + (st.conn === c.id ? ' attivo' : '') + '" data-nai-percorso="' + esc(c.id) + '">' + (st.conn === c.id ? 'Nascondi il percorso' : 'Mostra il percorso sulla mappa') + '</button></div>' : '') + '</article>';
+  const gruppi = NAI_TIPI.map(([t, et, sotto], gi) => { const lt = l.filter(c => c.tipo === t).sort((x, y) => (ord[x.priorita] ?? 1) - (ord[y.priorita] ?? 1)); if (!lt.length) return ''; const chiuso = st.chiusi.has(t); const alte = lt.filter(c => c.priorita === 'alta').length, nuove = lt.filter(c => c.nuova).length; return '<section class="nai-gruppo' + (chiuso ? ' nai-gruppo-chiuso' : '') + '" data-nai-gruppo="' + t + '"><div class="nai-gruppo-testa" role="button" tabindex="0" data-nai-gruppo-toggle="' + t + '" title="' + (chiuso ? 'Mostra le connessioni di questa categoria' : 'Riduci questa categoria') + '"><span class="nai-gruppo-num">' + (gi + 1) + '</span><div class="nai-gruppo-titoli"><h3>' + esc(et) + '</h3><span>' + esc(sotto) + '</span></div><div class="nai-gruppo-conti"><b>' + lt.length + '</b>' + (alte ? '<i class="nai-gruppo-alta">' + alte + ' alta' + (alte > 1 ? '' : '') + '</i>' : '') + (nuove ? '<i class="nai-gruppo-nuove">' + nuove + (nuove === 1 ? ' nuova' : ' nuove') + '</i>' : '') + '<span class="nai-gruppo-freccia">' + (chiuso ? 'Mostra' : 'Riduci') + '</span></div></div>' + (chiuso ? '' : lt.map(carta).join('')) + '</section>'; }).join('');
+  return htmlFiltriNAI(a) + '<div class="nai-sintesi"><div class="nai-det-et">Lettura d’insieme</div><p>' + esc(a.sintesi || '') + '</p></div>' + (gruppi || '<div class="avviso nai-vuoto">Nessuna connessione corrisponde ai filtri scelti.</div>') + ((a.avvisi || []).length ? '<section class="nai-gruppo nai-avvisi"><div class="nai-gruppo-testa"><span class="nai-gruppo-num">!</span><div class="nai-gruppo-titoli"><h3>Segnali da presidiare</h3><span>Dati incompleti, contatti fermi, schede senza referente o Practice.</span></div><div class="nai-gruppo-conti"><b>' + a.avvisi.length + '</b></div></div><ul>' + a.avvisi.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></section>' : '');
+}
+function disegnaNetworkAI(tutto) {
+  const m = $('#networkai'); if (!m || m.hidden) return; const corpo = $('.mappe-corpo', m); const st = statoNAI(); const d = datiNAI(); const g = grafoCorsieNAI(grafoNAI(d, st.mostra)); const a = ultimaAnalisiNAI(); const scrive = puoScrivereNAI();
+  const tav0 = $('.nai-tavola', corpo); const cw = corpo.clientWidth || 1200; const larg = tav0 && tav0.clientWidth ? tav0.clientWidth - 2 : Math.max(560, Math.min(1600, cw <= 1280 ? cw - 82 : cw * 0.6 - 62));
+  const L = disponiCorsieNAI(g, larg); const conn = connessioneNAI(st.conn); const scorri = $('.nai-tavola', corpo) ? $('.nai-tavola', corpo).scrollTop : 0;
+  corpo.innerHTML = htmlAvvisoRegistro('Le analisi di Network AI salvate nel repository') + htmlStatoNAI(d) +
+    '<div class="nai-layout"><div class="nai-mappa"><div class="nai-mappa-testa"><h2>La mappa della rete</h2><span>Da sinistra a destra: le Practices, i Soci che le presidiano, le Società partner con i loro advisor, le Schede Progetto e i contatti seguiti da ciascun Socio. Un clic su un nodo mostra i suoi collegamenti; «Mostra il percorso sulla mappa» su una connessione dell’AI evidenzia i soggetti coinvolti e i collegamenti possibili.</span><input class="ricerca nai-cerca" placeholder="Cerca nella mappa" value="' + esc(st.q) + '"></div>' + htmlLegendaNAI(g) +
+    (conn ? '<div class="nai-percorso-testa"><span class="nai-det-et">Percorso evidenziato</span><b>' + esc(conn.titolo) + '</b><span class="nai-percorso-nota">In arancione i soggetti della connessione e i collegamenti già registrati; tratteggiato il collegamento che l’AI suggerisce di creare.</span><button class="btn piccolo" data-nai-conn-chiudi>Chiudi</button></div>' : '') +
+    '<div class="nai-tavola">' + svgMappaNAI(g, L) + '</div>' + (st.sel ? htmlDettaglioNodoNAI(g, st.sel, a) : '') + '</div>' +
+    '<div class="nai-connessioni"><div class="nai-conn-testa"><h2>Le connessioni individuate dall’AI</h2>' + (a ? '<span>' + (a.connessioni || []).length + ' connessioni, ' + (a.connessioni || []).filter(c => c.nuova).length + ' nuove rispetto all’analisi precedente; lo stato di ciascuna è condiviso con i Soci.</span>' : '') + '</div>' + htmlConnessioniNAI(a, scrive) + '</div></div>';
+  const tav1 = $('.nai-tavola', corpo); if (tav1 && tav1.clientWidth && Math.abs(tav1.clientWidth - 2 - larg) > 30 && !S.naiRidisegno) { S.naiRidisegno = true; try { disegnaNetworkAI(tutto); } finally { S.naiRidisegno = false; } return; }
+  if (tav1 && scorri) tav1.scrollTop = scorri;
+  const nb = $('#nai-analizza', m); if (nb) { nb.hidden = !scrive; nb.disabled = analisiInCorsoNAI(); nb.textContent = analisiInCorsoNAI() ? 'Analisi in corso…' : 'Analizza ora'; } const w = $('#nai-word', m); if (w) w.hidden = !a;
+  const cerca = $('.nai-cerca', corpo); if (cerca) { cerca.oninput = () => { st.q = cerca.value; const pos = cerca.selectionStart; disegnaNetworkAI(); const c2 = $('.nai-cerca', corpo); if (c2) { c2.focus(); try { c2.setSelectionRange(pos, pos); } catch (e) {} } }; }
+  if (S.naiProgrammata && !S.naiConto) { S.naiConto = setInterval(() => { if (!S.naiProgrammata) { clearInterval(S.naiConto); S.naiConto = null; } const r = $('#networkai .nai-stato-riga'); if (r && S.naiProgrammata) r.innerHTML = '<span class="sem attenzione">Dati cambiati</span> Analisi automatica in programma tra ' + Math.max(1, Math.round((S.naiProgrammata - Date.now()) / 1000)) + ' secondi.'; }, 1000); }
+}
+function selezionaNodoNAI(id) { const st = statoNAI(); if (String(id).startsWith('gc:')) { const so = id.slice(3); if (st.espansi.has(so)) st.espansi.delete(so); else st.espansi.add(so); st.sel = null; disegnaNetworkAI(); return; } st.sel = st.sel === id ? null : id; disegnaNetworkAI(); const det = $('#networkai .nai-det'); if (det) det.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+function apriDaNAI(tipo, rif) {
+  if (tipo === 'contatto') { if (typeof formContatto === 'function') formContatto(rif); return; }
+  if (tipo === 'progetto') { const p = progettoDi(rif); if (!p) return; apriProgetti(); const F2 = filtroProgetti(); F2.q = ''; F2.stato = []; F2.practice = []; F2.sinergie = []; F2.referenti = []; F2.linea = []; F2.esercizio = []; F2.luogo = ''; disegnaProgetti(true); const card = $('#progetti .pg-card[data-id="' + CSS.escape(p.id) + '"]'); if (card) { card.scrollIntoView({ block: 'start', behavior: 'smooth' }); card.classList.add('ct-evid'); setTimeout(() => card.classList.remove('ct-evid'), 2500); } return; }
+  if (tipo === 'practice') { apriMappe('practice', rif); return; }
+  if (tipo === 'ente') { apriMappe('rete', rif); return; }
+}
+const NAI_CSS_DOC = 'body{font-family:Arial;font-size:11pt;line-height:1.4;color:#26221E} h1{font-size:15pt;border-bottom:1px solid #7f7f7f;padding-bottom:3pt} h2{font-size:12.5pt;margin-top:16pt;color:#BE3C00} table{border-collapse:collapse;width:100%;font-size:9.5pt;margin-bottom:8pt} td{border:1px solid #bfbfbf;padding:3pt 5pt;vertical-align:top} tr.i td{background:#F3EFE8;font-weight:bold} p{margin:0 0 6pt} ul{margin:0 0 6pt 16pt}';
+function esportaNetworkAIWord() {
+  const a = ultimaAnalisiNAI(); if (!a) { toast('Nessuna analisi da esportare'); return; }
+  let h = '<h1>Onward · Network AI</h1><p>Analisi del ' + esc(dataIt(a.quando)) + ' di ' + esc(a.autore || '') + ' (' + esc(a.modello || '') + ') su ' + esc(testoConteggi(a.conteggi || conteggiNAI())) + '.</p><h2>Lettura d’insieme</h2><p>' + esc(a.sintesi || '') + '</p>';
+  for (const [t, et] of NAI_TIPI) { const l = (a.connessioni || []).filter(c => c.tipo === t); if (!l.length) continue; h += '<h2>' + esc(et) + '</h2><table><tr class="i"><td style="width:8%">Priorità</td><td style="width:22%">Connessione</td><td>Perché</td><td style="width:22%">Soggetti</td><td style="width:20%">Prossimo passo</td><td style="width:8%">Stato</td></tr>' + l.map(c => '<tr><td>' + esc(c.priorita) + '</td><td><b>' + esc(c.titolo) + '</b></td><td>' + esc(c.descrizione) + '</td><td>' + esc((c.soggetti || []).map(s => s.nome).join(', ')) + '</td><td>' + esc(c.prossimo_passo || '') + '</td><td>' + esc(etichettaOpz(NAI_STATI, c.stato || 'nuova')) + '</td></tr>').join('') + '</table>'; }
+  if ((a.avvisi || []).length) h += '<h2>Segnali da presidiare</h2><ul>' + a.avvisi.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
+  scarica('Onward_Network_AI_' + String(a.quando).slice(0, 10) + '.doc', '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>Network AI</title><style>' + NAI_CSS_DOC + '</style></head><body>' + h + '</body></html>', 'application/msword'); toast('Esportazione in Word avviata');
+}
+function avviaNetworkAI() {
+  const m = $('#networkai'); if (!m) return; const b = $('#b-networkai'); if (b) b.onclick = apriNetworkAI; const c = $('#networkai-chiudi'); if (c) c.onclick = chiudiNetworkAI;
+  const an = $('#nai-analizza', m); if (an) an.onclick = () => analizzaNetworkAI(true); const w = $('#nai-word', m); if (w) w.onclick = esportaNetworkAIWord;
+  m.addEventListener('click', ev => {
+    const nodo = ev.target.closest('.nai-nodo'); if (nodo) { selezionaNodoNAI(nodo.dataset.nai); return; }
+    const sugg = ev.target.closest('.nai-sugg'); if (sugg) { const st = statoNAI(); st.conn = sugg.dataset.naiSugg; st.sel = null; disegnaNetworkAI(); const c = $('#networkai [data-nai-carta="' + CSS.escape(st.conn) + '"]'); if (c) { c.scrollIntoView({ block: 'center', behavior: 'smooth' }); } return; }
+    const gt = ev.target.closest('[data-nai-gruppo-toggle]'); if (gt) { const st = statoNAI(); const k = gt.dataset.naiGruppoToggle; if (st.chiusi.has(k)) st.chiusi.delete(k); else st.chiusi.add(k); disegnaNetworkAI(); return; }
+    const b2 = ev.target.closest('button'); if (!b2) return; const d = b2.dataset;
+    if (d.naiVai) { const st = statoNAI(); if (d.naiVai.startsWith('ct:')) { const g0 = grafoCorsieNAI(grafoNAI(datiNAI(), st.mostra)); const gid = g0.rimappa && g0.rimappa.get(d.naiVai); if (gid) st.espansi.add(gid.slice(3)); } st.sel = d.naiVai; disegnaNetworkAI(); const n = $('#networkai .nai-nodo.nai-sel'); if (n) n.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (d.naiApriGruppo) { const st = statoNAI(); st.espansi.add(d.naiApriGruppo.slice(3)); st.sel = null; disegnaNetworkAI(); return; }
+    if (d.naiPercorso) { const st = statoNAI(); st.conn = st.conn === d.naiPercorso ? null : d.naiPercorso; st.sel = null; disegnaNetworkAI(); if (st.conn) { const t = $('#networkai .nai-mappa'); if (t) t.scrollIntoView({ block: 'start', behavior: 'smooth' }); } return; }
+    if (d.naiConnChiudi !== undefined) { statoNAI().conn = null; disegnaNetworkAI(); return; }
+    if (d.naiF) { const F = statoNAI().filtri; if (d.naiF === 'nuove') F.nuove = !F.nuove; else { const set = F[d.naiF]; if (set) { if (set.has(d.v)) set.delete(d.v); else set.add(d.v); } } disegnaNetworkAI(); return; }
+    if (d.naiFAzzera !== undefined) { statoNAI().filtri = null; statoNAI(); disegnaNetworkAI(); return; }
+    if (d.naiChiudi !== undefined) { statoNAI().sel = null; disegnaNetworkAI(); return; }
+    if (d.naiConn) { const c = $('#networkai [data-nai-carta="' + CSS.escape(d.naiConn) + '"]'); if (c) { c.scrollIntoView({ block: 'center', behavior: 'smooth' }); c.classList.add('ct-evid'); setTimeout(() => c.classList.remove('ct-evid'), 2500); } return; }
+    if (d.naiApri) { apriDaNAI(d.naiApri, d.rif); return; }
+  });
+  m.addEventListener('change', ev => { const t = ev.target;
+    if (t.dataset && t.dataset.naiMostra) { statoNAI().mostra[t.dataset.naiMostra] = t.checked; statoNAI().sel = null; disegnaNetworkAI(); return; }
+    if (t.dataset && t.dataset.naiArchi !== undefined) { statoNAI().archi = t.checked; disegnaNetworkAI(); return; }
+    if (t.dataset && t.dataset.naiSuggeriti !== undefined) { statoNAI().suggeriti = t.checked; disegnaNetworkAI(); return; }
+    if (t.dataset && t.dataset.naiStato) { const a = ultimaAnalisiNAI(); if (!a || !puoScrivereNAI()) return; const c = (a.connessioni || []).find(x => x.id === t.dataset.naiStato); if (!c) return; c.stato = t.value; a.agg = new Date().toISOString(); if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.networkai = 'Network AI: «' + taglioNAI(c.titolo, 50) + '» ' + etichettaOpz(NAI_STATI, c.stato).toLowerCase(); segna('networkai'); const carta = t.closest('.nai-carta'); if (carta) carta.classList.toggle('nai-chiusa', c.stato === 'chiusa' || c.stato === 'scartata'); } });
+  m.addEventListener('toggle', ev => { if (ev.target.classList && ev.target.classList.contains('nai-legenda-carte')) statoNAI().legendaAperta = ev.target.open; }, true);
+  m.addEventListener('keydown', ev => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.classList && ev.target.classList.contains('nai-nodo')) { ev.preventDefault(); selezionaNodoNAI(ev.target.dataset.nai); } if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.dataset && ev.target.dataset.naiGruppoToggle) { ev.preventDefault(); ev.target.click(); } });
+  let naiRz = null; window.addEventListener('resize', () => { if (m.hidden) return; clearTimeout(naiRz); naiRz = setTimeout(() => disegnaNetworkAI(), 150); });
+}
 // ---- bonifica_mod
 // ================================================================ bonifica: rimozione di Virtual Land e dei suoi advisor dal repository (automatica al collegamento per chi può scrivere); i temi restano, affidati a un partner tecnico da individuare
 const BONIFICA_VL = {"placeholder": {"id": "partner-tecnico-da-individuare", "tipo": "partner", "nome": "Partner tecnico da individuare (AI conversazionale, cyber security awareness, storytelling)", "breve": "Partner tecnico da individuare", "qualifica": "Società partner da selezionare", "sede": "", "practice": [{"id": "p03", "ruolo": "riferimento"}, {"id": "p04", "ruolo": "riferimento"}, {"id": "p05", "ruolo": "riferimento"}], "ambito": "Intelligenza artificiale conversazionale a base narrativa per la formazione e il cambiamento organizzativo; cyber security awareness in ottica NIS2 con misurazione comportamentale; storytelling, employee branding e change management", "profilo": "Posizione aperta nella rete di partenza: il promotore sta selezionando una società tecnologica che eroghi questi servizi in partnership con Onward, con Onward capofila verso il cliente e il partner come fornitore tecnico. Requisiti: piattaforma proprietaria o consolidata, referenze verificabili, disponibilità a una Scheda Operativa con margini per tipologia di prodotto e a clausole di scioglimento consensuale.", "attivita": "Da coprire: piattaforme di AI conversazionale a base narrativa per formazione, HR, brand e media; programmi di cyber security awareness per la NIS2 con misurazione dell’awareness; storytelling, brand content, employee branding e change management.", "reti": "", "progetti": "Progetto NIS2/GDPR nel pacchetto ALIS Academy (cyber security awareness in white label per ALIS), da erogare con il partner tecnico selezionato; progetti di comunicazione e formazione con Onward capofila.", "da_completare": "Da individuare: la società partner; poi visura, referenze, Scheda Operativa con le condizioni di margine."}, "soci0": ["Accordi con le società partner (Virtual Land, Skill42, Bando Subito, KeisData, IT Consulting)", "Accordi con le società partner (Skill42, Bando Subito, KeisData, IT Consulting)"], "celle": [["Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData, Virtual Land)", "Martignano e Realfonzo; Galiotto; le società partner coinvolte nei progetti ALIS (Bando Subito, IT Consulting, KeisData) e il partner tecnico da individuare per la cyber security awareness"], ["Martignano, Macchi, Rossetti; Cerquaglia; Skill42; Favro (esperienza nella sanità privata)", "Martignano, Macchi, Rossetti; Cerquaglia; Skill42"], ["Benatti, Favro; Cioffi e Stracomm", "Cioffi e Stracomm"], ["**Partnership Onward–Virtual Land** e progetto NIS2 per ALIS Academy", "**Progetto NIS2/GDPR per ALIS Academy** (cyber security awareness, in white label per ALIS)"], ["Martignano; Favro, Benatti", "Martignano; partner tecnico da individuare"], ["Intesa di massima raggiunta; bozza di accordo attesa entro metà settembre 2026; prodotto NIS2 in uscita a settembre", "Ricerca in corso di una società tecnologica che eroghi il prodotto in partnership con Onward (Onward capofila, partner fornitore tecnico); i temi restano nel pacchetto ALIS Academy"]]};
@@ -7713,6 +8318,7 @@ const MAPPA_PIATTAFORMA = [
   { k: 'pro', nome: 'Progetti e Rete', scopo: 'Il lavoro dei Soci: progetti, contatti, partner e Practice.', voci: [
     { id: 'b-progetti', nome: 'Schede Progetto', descr: 'I progetti che ogni Socio segue e porterà in Onward; alimentano la pipeline e le tavole del documento.', effetto: 'Registro comune: ogni scheda è visibile a tutti i Soci e si salva nel repository.' },
     { id: 'b-contatti', nome: 'Database relazionale', descr: 'I contatti della rete: ente, settore, status della relazione, Socio e Practices di riferimento, scheda collegata.', effetto: 'Registro comune, condiviso con tutti i Soci.' },
+    { id: 'b-networkai', nome: 'Network AI', descr: 'Legge e mappa Database relazionale, Schede Progetto, Soci e Società Partner e Practices e Servizi; a ogni modifica fa leggere l’insieme all’AI, che segnala sinergie tra Soci, possibilità di business, azioni comuni e opportunità legate a persone, Practices e Società partner.', effetto: 'Mappa e connessioni sono condivise nel repository; l’analisi usa la chiave API di chi la esegue.' },
     { id: 'b-mappe', nome: 'Soci e Società Partner', descr: 'La rete di partenza: chi c’è e che cosa porta.', effetto: 'Le schede sono condivise con tutti i Soci.' },
     { id: 'b-accordi', nome: 'Accordi Società Partner', descr: 'Gli accordi con le singole Società partner: si caricano i documenti e la piattaforma, leggendoli con l’AI, compila lo schema di sintesi con gli elementi essenziali e caratterizzanti.', effetto: 'Registro comune: documenti e sintesi sono nel repository, visibili a tutti i Soci.' },
     { id: 'b-practice', nome: 'Practices e Servizi', descr: 'Le cinque Practice, le persone di riferimento e i servizi offerti.', effetto: 'Le modifiche valgono per tutti i Soci.' }] },
@@ -7780,7 +8386,7 @@ function avvia() {
   const barra = $('.barra'); const misura = () => document.documentElement.style.setProperty('--barra-h', barra.offsetHeight + 'px'); misura(); if (window.ResizeObserver) new ResizeObserver(misura).observe(barra); window.addEventListener('resize', misura);
   if (window.ONWARD_GUSCIO) { const G = window.ONWARD_GUSCIO; S.cfg = Object.assign({ tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main', autore: '', token: '', email: '' }, S.cfg || {}, { tipo: 'github', owner: G.owner, repo: G.repo, branch: G.branch || 'main' }); }
   if (window.ONWARD_GUSCIO && location.hash.length > 1) { try { const h = new URLSearchParams(location.hash.slice(1)); const tk = (h.get('t') || '').trim(), nm = (h.get('n') || '').trim(); if (tk) { S.cfg.token = tk; if (nm) S.cfg.autore = nm; localStorage.setItem('onward.cfg', JSON.stringify(S.cfg)); } history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaAccordi(); avviaDettatura_inizializza(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
+  costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaAccordi(); avviaNetworkAI(); avviaDettatura_inizializza(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 avvia();
 })();

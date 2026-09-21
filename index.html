@@ -2734,7 +2734,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-21T21:32:07Z';
+window.ONWARD_BUILD = '2026-09-21T21:46:39Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -3307,7 +3307,7 @@ function applicaDati(key, d) {
   if (key === 'spese') { S.spese = Object.assign(speseVuote(), d || {}); if (!Array.isArray(S.spese.spese)) S.spese.spese = []; return; }
   if (key === 'accordi') { S.accordi = Object.assign(accordiVuoti(), d || {}); if (!Array.isArray(S.accordi.accordi)) S.accordi.accordi = []; return; }
   if (key === 'networkai') { S.networkai = Object.assign(networkaiVuoto(), d || {}); if (!Array.isArray(S.networkai.analisi)) S.networkai.analisi = []; return; }
-  if (key === 'commatt') { S.commatt = Object.assign(commattVuote(), d || {}); if (!Array.isArray(S.commatt.commesse)) S.commatt.commesse = []; return; }
+  if (key === 'commatt') { S.commatt = Object.assign(commattVuote(), d || {}); if (!Array.isArray(S.commatt.commesse)) S.commatt.commesse = []; S.commattDuplicate = unisciCommAttDuplicate(S.commatt.commesse); return; }
   if (key === 'meeting') { S.meeting = Object.assign(meetingVuoto(), d || {}); if (!Array.isArray(S.meeting.riunioni)) S.meeting.riunioni = []; return; }
   if (key === 'diagnosi') { S.diagnosi = Object.assign(diagnosiVuote(), d || {}); if (!Array.isArray(S.diagnosi.diagnosi)) S.diagnosi.diagnosi = []; return; }
   if (key === 'struttura') { if (d.meta) S.meta = d.meta; if (d.nota) S.nota = d.nota; if (d.parti) { for (const p of d.parti) { let mio = S.parti.find(x => x.id === p.id); if (!mio) { mio = { id: p.id, titolo: p.titolo, intro: p.intro || '', capitoli: [] }; S.parti.push(mio); } mio.titolo = p.titolo; mio.intro = p.intro; for (const c of p.capitoli) { let mc = mio.capitoli.find(x => x.id === c.id); if (!mc) { mc = { id: c.id, titolo: c.titolo, blocchi: [] }; mio.capitoli.push(mc); } mc.titolo = c.titolo; } } } return; }
@@ -8988,6 +8988,24 @@ function commattVuote() { return { commesse: [] }; }
 function elencoCommAtt() { if (!S.commatt) S.commatt = commattVuote(); if (!Array.isArray(S.commatt.commesse)) S.commatt.commesse = []; return S.commatt.commesse; }
 function commAttDi(id) { return elencoCommAtt().find(c => c.id === id) || null; }
 function commAttDiProgetto(pid) { return elencoCommAtt().find(c => c.progetto === pid) || null; }
+// due commesse aperte per la stessa Scheda Progetto (per esempio da due browser prima che uno vedesse l’altra) vengono unite: resta la più vecchia;
+// dell’altra si portano attività, rischi, voci di diario, fatture, costi e SAL che non ci sono già (le fasi di partenza, uguali, no); restituisce quante ne ha tolte
+function unisciCommAttDuplicate(lista) {
+  const perProgetto = new Map(); for (const c of lista) { if (!c || !c.progetto) continue; if (!perProgetto.has(c.progetto)) perProgetto.set(c.progetto, []); perProgetto.get(c.progetto).push(c); }
+  let tolte = 0; const via = new Set();
+  const porta = (da, dest, chiave) => { if (!Array.isArray(da) || !da.length) return; if (!Array.isArray(dest[chiave])) dest[chiave] = []; const ids = new Set(dest[chiave].map(x => x && x.id)); for (const x of da) if (x && x.id && !ids.has(x.id)) { dest[chiave].push(clone(x)); ids.add(x.id); } };
+  for (const gruppo of perProgetto.values()) {
+    if (gruppo.length < 2) continue; gruppo.sort((a, b) => (Date.parse(a.creato) || 0) - (Date.parse(b.creato) || 0)); const k = gruppo[0];
+    for (const d of gruppo.slice(1)) {
+      const modificata = !!(d.agg && d.creato && d.agg !== d.creato);
+      if (modificata) { porta(d.attivita, k, 'attivita'); porta(d.rischi, k, 'rischi'); porta(d.diario, k, 'diario'); if (d.eco) { if (!k.eco) k.eco = {}; for (const e of ['fatture', 'costi', 'sal']) porta(d.eco[e], k.eco, e); } if ((Date.parse(d.agg) || 0) > (Date.parse(k.agg) || 0)) { k.agg = d.agg; k.aggDa = d.aggDa || k.aggDa; } }
+      if (!Array.isArray(k.diario)) k.diario = []; k.diario.push({ id: uid('dr'), quando: new Date().toISOString(), autore: 'piattaforma', tipo: 'nota', testo: 'Unita a questa commessa una seconda commessa aperta per la stessa Scheda Progetto da ' + (d.autore || 'un Socio') + ' il ' + dataBreve(d.creato) + (modificata ? ': attività, rischi, diario ed economia non ancora presenti sono stati portati qui.' : ' (senza modifiche rispetto alla proposta iniziale).') });
+      via.add(d.id); tolte++;
+    }
+  }
+  if (tolte) for (let i2 = lista.length - 1; i2 >= 0; i2--) if (via.has(lista[i2].id)) lista.splice(i2, 1);
+  return tolte;
+}
 function puoScrivereCommAtt() { return !S.readonly && !!S.backend; }
 function statoCA() { if (!S.ca) S.ca = { aperta: null, scheda: 'quadro', zoom: 'sett', filtroChi: '', filtroStato: [], ordine: 'agg' }; return S.ca; }
 function etCA(lista, k) { const x = lista.find(o => o[0] === k); return x ? x[1] : (k || ''); }
@@ -9038,7 +9056,9 @@ function nuovaCommAttDaScheda(p, chi) {
 // apre da sola la commessa per ogni scheda Customer o Promoter che non ne ha una (da chi può scrivere); restituisce le commesse create
 function sincronizzaCommesseAttive() {
   if (!puoScrivereCommAtt() || S.repoVuoto) return []; const nuove = [];
+  const unite = unisciCommAttDuplicate(elencoCommAtt()) + (S.commattDuplicate || 0); S.commattDuplicate = 0;
   for (const p of elencoProgetti()) { if (!['customer', 'promoter'].includes(p.stato) || commAttDiProgetto(p.id)) continue; const c = nuovaCommAttDaScheda(p); elencoCommAtt().push(c); nuove.push(c); }
+  if (unite && !nuove.length) { if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.commatt = (unite === 1 ? 'Unite due commesse aperte per la stessa Scheda Progetto' : 'Unite ' + unite + ' commesse duplicate'); segna('commatt'); aggiornaCommAttSeAperte(); aggiornaProgettiSeAperti(); toast(unite === 1 ? 'Due commesse aperte per la stessa Scheda Progetto sono state unite in una' : unite + ' commesse duplicate sono state unite', 6000); }
   if (nuove.length) { if (!S.msgExtra) S.msgExtra = {}; S.msgExtra.commatt = (nuove.length === 1 ? 'Commessa attiva aperta dalla Scheda Progetto «' + titoloCommAtt(nuove[0]).slice(0, 50) + '»' : nuove.length + ' commesse attive aperte dalle Schede Progetto passate a Customer'); segna('commatt'); aggiornaCommAttSeAperte(); aggiornaProgettiSeAperti(); }
   return nuove;
 }
@@ -9050,7 +9070,7 @@ function fondiCommAtt(remoto) {
   const R = Object.assign(commattVuote(), remoto || {}), M = S.commatt || commattVuote(); const out = new Map();
   for (const c of (R.commesse || []).concat(M.commesse || [])) { const cur = out.get(c.id); if (!cur || (Date.parse(c.agg || c.creato) || 0) >= (Date.parse(cur.agg || cur.creato) || 0)) out.set(c.id, clone(c)); }
   const base = (S.base && S.base.commatt && S.base.commatt.commesse) || []; const miei = new Set((M.commesse || []).map(c => c.id)); for (const b of base) if (!miei.has(b.id) && out.has(b.id) && JSON.stringify(out.get(b.id)) === JSON.stringify(b)) out.delete(b.id);
-  S.commatt = { commesse: [...out.values()] };
+  S.commatt = { commesse: [...out.values()] }; unisciCommAttDuplicate(S.commatt.commesse);
 }
 // ---- letture: avanzamento, scadenze, economia
 function fasiCA(c) { return Array.isArray(c.fasi) ? c.fasi : []; }
@@ -9844,7 +9864,7 @@ function avvia() {
   costruisciRegexTermini(); costruisciImpostazioni(); avviaZoom(); avviaFormato(); avviaCommessa(); avviaSoci(); avviaScenari(); avviaSintesi(); avviaRiassunto(); avviaHome(); avviaModifiche(); avviaProgetti(); avviaProiezioni(); avviaContatti(); avviaFormati(); avviaFormatD3(); avviaSpese(); avviaAlberoPSA(); avviaAccordi(); avviaNetworkAI(); avviaCommAtt(); avviaMeeting(); avviaDettatura_inizializza(); avviaGuide(); avviaRitornoHome(); if (window.ONWARD_GUSCIO) { setTimeout(controllaVersionePagina, 4000); setInterval(controllaVersionePagina, 600000); } collega(false).then(() => { if (window.ONWARD_GUSCIO && !(S.cfg && S.cfg.token)) { costruisciImpostazioni(); apriPannello('pan-impostazioni'); } });
 }
 // gancio per i test automatici (attivo solo se la pagina è aperta con window.ONWARD_TEST): espone alcune funzioni di lettura
-if (window.ONWARD_TEST) window.__onward = { grafoNAI, datiNAI, advisorElenco, elencoProgetti, elencoContatti, derivataDi, economiaProgetto };
+if (window.ONWARD_TEST) window.__onward = { grafoNAI, datiNAI, advisorElenco, elencoProgetti, elencoContatti, derivataDi, economiaProgetto, elencoCommAtt };
 avvia();
 })();
 

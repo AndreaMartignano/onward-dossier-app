@@ -2976,7 +2976,7 @@ const MODELLO = (() => {
 </script>
 <script>
 window.ONWARD_GUSCIO = { owner: 'AndreaMartignano', repo: 'onward-dossier', branch: 'main' };
-window.ONWARD_BUILD = '2026-09-26T06:47:43Z';
+window.ONWARD_BUILD = '2026-09-27T05:44:07Z';
 /* Onward · Dossier vivo. Applicazione a file unico: documento, modello, modifica in loco, archivio condiviso. */
 (() => {
 'use strict';
@@ -7119,7 +7119,7 @@ function htmlElencoProposte() {
   const l = elencoProposte().slice().sort((a, b) => (Date.parse(b.quando) || 0) - (Date.parse(a.quando) || 0)); const att = l.filter(p => p.stato === 'in attesa').length;
   let h = '<section class="q-sez"><div class="q-testa"><h3>Proposte di modifica' + (att ? ' <span class="sem attenzione">' + att + ' in attesa</span>' : '') + '</h3><span class="nota-pannello">' + (regimeAttivo() ? 'Regime di approvazione attivo: approvatori ' + esc(approvatori().join(', ') || 'nessuno') + '. Le modifiche degli altri Soci entrano nel testo solo dopo il via libera.' : 'Il regime di approvazione non è attivo: tutti i Soci scrivono direttamente nel testo. Si attiva dalle Impostazioni.') + ' Il modello ufficiale cambia in ogni caso solo con una proposta di adozione approvata da ' + esc(approvatoriModello().join(', ')) + '.</span></div>';
   if (!l.length) h += '<p class="nota-pannello">Nessuna proposta finora.</p>';
-  else h += '<div class="tabella-wrap"><table class="tab q-tab mod-tab pr-tab"><tr class="intestazione"><td>Stato</td><td>Chi</td><td>Quando</td><td>Proposta</td><td>Che cosa tocca</td><td>Decisione</td><td></td></tr>' + l.map(p => '<tr><td>' + etichettaStatoProposta(p.stato) + '</td><td><b>' + esc(p.autore || '') + '</b></td><td>' + esc(dataIt(p.quando)) + '</td><td>' + esc(p.descrizione || '') + '</td><td>' + esc((p.chiavi || []).map(nomeChiave).join('; ')) + '</td><td>' + (p.decisione ? esc((p.decisione.da || '') + ', ' + dataIt(p.decisione.quando)) + (p.decisione.nota ? '<small>' + esc(p.decisione.nota) + '</small>' : '') : '<span class="mod-muto">in sospeso</span>') + '</td><td><button class="btn piccolo" data-pr="apri" data-id="' + esc(p.id) + '">' + (p.stato === 'in attesa' && isApprovatore() ? 'Esamina' : 'Apri') + '</button></td></tr>').join('') + '</table></div>';
+  else h += '<div class="tabella-wrap"><table class="tab q-tab mod-tab pr-tab"><tr class="intestazione"><td>Stato</td><td>Chi</td><td>Quando</td><td>Proposta</td><td>Che cosa tocca</td><td>Decisione</td><td></td></tr>' + l.map(p => '<tr><td>' + etichettaStatoProposta(p.stato) + '</td><td><b>' + esc(p.autore || '') + '</b></td><td>' + esc(dataIt(p.quando)) + '</td><td>' + esc(p.descrizione || '') + '</td><td>' + esc((p.chiavi || []).map(nomeChiave).join('; ')) + '</td><td>' + (p.decisione ? esc((p.decisione.da || '') + ', ' + dataIt(p.decisione.quando)) + (p.decisione.nota ? '<small>' + esc(p.decisione.nota) + '</small>' : '') : '<span class="mod-muto">in sospeso</span>') + '</td><td><button class="btn piccolo" data-pr="apri" data-id="' + esc(p.id) + '">' + (p.stato === 'in attesa' && (p.tipo === 'adozione' ? isApprovatoreModello() : isApprovatore()) ? 'Esamina' : 'Apri') + '</button></td></tr>').join('') + '</table></div>';
   return h + '</section>';
 }
 async function finestraEsame(id) {
@@ -7155,7 +7155,7 @@ function fondiProposte(remoto) { const R = Object.assign(proposteVuote(), remoto
 function aggiornaBadgeModifiche() { const b = $('#b-modifiche'); if (!b) return; const n = proposteInAttesa().filter(p => p.tipo === 'adozione' ? isApprovatoreModello() : isApprovatore()).length; const et = $('b', b) || b; et.textContent = n ? 'Modifiche (' + n + ')' : 'Modifiche'; const ab = $('#b-area-ser'); if (ab) { let bd = $('.a-badge', ab); if (n) { if (!bd) { bd = el('span', { class: 'a-badge', title: 'Proposte in attesa di approvazione' }); ab.appendChild(bd); } bd.textContent = String(n); } else if (bd) bd.remove(); } b.title = n ? n + (n === 1 ? ' proposta in attesa di approvazione' : ' proposte in attesa di approvazione') : 'Soci con accesso, accessi, commenti, proposte e modifiche in ordine cronologico'; }
 function notificaProposte(prima) {
   const P = new Map((prima && prima.proposte || []).map(p => [p.id, p])); const mio = normNome(S.autore);
-  for (const p of elencoProposte()) { const old = P.get(p.id); if (!old) { if (isApprovatore() && p.stato === 'in attesa' && normNome(p.autore) !== mio) toast('Nuova proposta di ' + p.autore + ' in attesa di approvazione: «' + String(p.descrizione || '').slice(0, 60) + '» (voce Modifiche)', 7000); continue; }
+  for (const p of elencoProposte()) { const old = P.get(p.id); if (!old) { if ((p.tipo === 'adozione' ? isApprovatoreModello() : isApprovatore()) && p.stato === 'in attesa' && normNome(p.autore) !== mio) toast((p.tipo === 'adozione' ? 'Nuova proposta di adozione del modello ufficiale di ' : 'Nuova proposta di ') + p.autore + ' in attesa di approvazione: «' + String(p.descrizione || '').slice(0, 60) + '» (voce Modifiche)', 7000); continue; }
     if (old.stato !== p.stato && normNome(p.autore) === mio && (p.stato === 'approvata' || p.stato === 'respinta')) toast('La tua proposta «' + String(p.descrizione || '').slice(0, 60) + '» è stata ' + p.stato + (p.decisione && p.decisione.da ? ' da ' + p.decisione.da : '') + (p.decisione && p.decisione.nota ? ': ' + p.decisione.nota : ''), 9000); }
 }
 function dopoNovita(k, prima) {
